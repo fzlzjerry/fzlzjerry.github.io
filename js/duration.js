@@ -5,9 +5,9 @@ function createtime() {
   const timeDifference = now - grt;
 
   const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+  const seconds = Math.floor((timeDifference / 1000) % 60);
 
   const hnum = hours < 10 ? "0" + hours : hours;
   const mnum = minutes < 10 ? "0" + minutes : minutes;
@@ -17,4 +17,8 @@ function createtime() {
   document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
 }
 
-setInterval(createtime, 250);
+// 页面加载时立即调用一次createtime函数
+window.onload = createtime;
+
+// 每秒更新一次时间
+setInterval(createtime, 1000);
