@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Morax</title>
+  <title>Morax Blog</title>
   
   <subtitle>Morax</subtitle>
   <link href="https://morax.blog/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://morax.blog/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Morax Cheng</name>
     
   </author>
   
