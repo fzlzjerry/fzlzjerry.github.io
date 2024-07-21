@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
@@ -18,37 +18,24 @@
   <meta name="author" content="Morax Cheng">
   <meta name="keywords" content="">
   
-    <meta name="description" content="深度学习中的图像分类——基于ResNet50V2的MNIST数据集实验大家好，我是Morax Cheng，现在就读于惠州小径湾贝赛思G8。在这篇文章中，我们将详细讲解深度学习图像分类的原理，并以MNIST数据集为例，展示如何利用ResNet50V2模型实现手写数字的分类任务。我们将从数据预处理、模型构建、训练到评估的各个环节进行原理解析。 一、原理解析深度学习与卷积神经网络深度学习是一种通过模拟人">
+    <meta name="description" content="Basic Programming: Understanding Python’s classWelcome to our basic programming course! Today, we will delve into an important concept in Python: class. Key Concepts of ClassAttributesAttributes are v">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于ResNet残差网络的图像识别">
-<meta property="og:url" content="https://morax.blog/2024/07/15/%E5%9F%BA%E4%BA%8EResNet%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C%E7%9A%84%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB/index.html">
+<meta property="og:title" content="Basic Programming: Understanding Python&#39;s class">
+<meta property="og:url" content="https://morax.blog/2024/07/21/Basic-Programming-Understanding-Python-s-class/index.html">
 <meta property="og:site_name" content="Morax Blog">
-<meta property="og:description" content="深度学习中的图像分类——基于ResNet50V2的MNIST数据集实验大家好，我是Morax Cheng，现在就读于惠州小径湾贝赛思G8。在这篇文章中，我们将详细讲解深度学习图像分类的原理，并以MNIST数据集为例，展示如何利用ResNet50V2模型实现手写数字的分类任务。我们将从数据预处理、模型构建、训练到评估的各个环节进行原理解析。 一、原理解析深度学习与卷积神经网络深度学习是一种通过模拟人">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://morax.blog/images/image.png">
-<meta property="og:image" content="https://morax.blog/images/image1.png">
-<meta property="og:image" content="https://morax.blog/images/image3.png">
-<meta property="og:image" content="https://morax.blog/images/image2.png">
-<meta property="og:image" content="https://morax.blog/images/image5.png">
-<meta property="og:image" content="https://morax.blog/images/image6.png">
-<meta property="og:image" content="https://morax.blog/images/image7.png">
-<meta property="og:image" content="https://morax.blog/images/image8.png">
-<meta property="og:image" content="https://morax.blog/images/image9.png">
-<meta property="og:image" content="https://morax.blog/images/image10.png">
-<meta property="og:image" content="https://morax.blog/images/image11.png">
-<meta property="og:image" content="https://morax.blog/images/image12.png">
-<meta property="article:published_time" content="2024-07-15T10:29:08.000Z">
-<meta property="article:modified_time" content="2024-07-17T04:54:24.359Z">
+<meta property="og:description" content="Basic Programming: Understanding Python’s classWelcome to our basic programming course! Today, we will delve into an important concept in Python: class. Key Concepts of ClassAttributesAttributes are v">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-21T03:00:17.000Z">
+<meta property="article:modified_time" content="2024-07-21T03:08:28.499Z">
 <meta property="article:author" content="Morax Cheng">
-<meta property="article:tag" content="python, CNN, ResNET">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://morax.blog/images/image.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>基于ResNet残差网络的图像识别 - Morax Blog</title>
+  <title>Basic Programming: Understanding Python&#39;s class - Morax Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -84,8 +71,11 @@
 
   
 <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/shubiao.css">
-<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
 <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/star.min.js.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/containsWord.min.js.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/love.min.js.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
 
 
 
@@ -166,7 +156,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -178,7 +168,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -190,7 +180,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -202,7 +192,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -214,7 +204,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -226,7 +216,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
-                <span>友链</span>
+                <span>Links</span>
               </a>
             </li>
           
@@ -260,7 +250,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="基于ResNet残差网络的图像识别"></span>
+            <span id="subtitle" data-typed-text="Basic Programming: Understanding Python&#39;s class"></span>
           
         </div>
 
@@ -276,8 +266,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-15 18:29" pubdate>
-          2024年7月15日 晚上
+        <time datetime="2024-07-21 11:00" pubdate>
+          July 21, 2024 am
         </time>
       </span>
     
@@ -288,7 +278,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          208 words
         
       </span>
     
@@ -299,7 +289,7 @@
         
         
         
-          7 分钟
+          1 mins
         
       </span>
     
@@ -344,45 +334,37 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">基于ResNet残差网络的图像识别</h1>
+            <h1 id="seo-header">Basic Programming: Understanding Python&#39;s class</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="深度学习中的图像分类——基于ResNet50V2的MNIST数据集实验"><a href="#深度学习中的图像分类——基于ResNet50V2的MNIST数据集实验" class="headerlink" title="深度学习中的图像分类——基于ResNet50V2的MNIST数据集实验"></a>深度学习中的图像分类——基于ResNet50V2的MNIST数据集实验</h1><p>大家好，我是Morax Cheng，现在就读于惠州小径湾贝赛思G8。在这篇文章中，我们将详细讲解深度学习图像分类的原理，并以MNIST数据集为例，展示如何利用ResNet50V2模型实现手写数字的分类任务。我们将从数据预处理、模型构建、训练到评估的各个环节进行原理解析。</p>
-<h2 id="一、原理解析"><a href="#一、原理解析" class="headerlink" title="一、原理解析"></a>一、原理解析</h2><h3 id="深度学习与卷积神经网络"><a href="#深度学习与卷积神经网络" class="headerlink" title="深度学习与卷积神经网络"></a>深度学习与卷积神经网络</h3><p>深度学习是一种通过模拟人脑神经网络结构来解决复杂问题的机器学习方法。卷积神经网络（CNN）是一类专门用于处理图像数据的深度学习模型。CNN通过层级结构中的卷积层、池化层和全连接层来自动提取图像特征，并最终进行分类或回归任务。</p>
-<h4 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h4><p>卷积层是CNN的核心部分，它通过卷积操作（即滤波器在图像上滑动）提取局部特征。这些滤波器在训练过程中学习到不同的特征，例如边缘、角点和纹理。</p>
-<h4 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h4><p>池化层用于下采样图像特征，以减少计算量和防止过拟合。常见的池化操作包括最大池化和平均池化，它们分别取局部区域的最大值或平均值。</p>
-<h4 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h4><p>全连接层连接每个神经元到所有上一层的神经元，类似于传统神经网络。它们通常位于网络的末端，用于对提取到的特征进行分类。</p>
-<h3 id="ResNet50V2模型"><a href="#ResNet50V2模型" class="headerlink" title="ResNet50V2模型"></a>ResNet50V2模型</h3><p>ResNet（Residual Network）是一种深度卷积神经网络，采用了残差结构来解决深层网络中的梯度消失问题。ResNet50V2是ResNet家族的一员，具有50层深度。</p>
-<h4 id="残差结构"><a href="#残差结构" class="headerlink" title="残差结构"></a>残差结构</h4><p>残差结构通过引入捷径连接（skip connection），允许梯度在反向传播过程中直接传递，避免梯度消失。具体来说，残差块的输出是输入与卷积结果的叠加：<code>Output=Input+Conv(Input)</code>。这种结构使得网络能够更容易地训练更深的模型，并且在实际应用中取得了显著的效果。</p>
-<h2 id="二、训练流程解析"><a href="#二、训练流程解析" class="headerlink" title="二、训练流程解析"></a>二、训练流程解析</h2><h3 id="环境设置与必要库的导入"><a href="#环境设置与必要库的导入" class="headerlink" title="环境设置与必要库的导入"></a>环境设置与必要库的导入</h3><p>首先，我们需要导入所需的库，包括TensorFlow、NumPy和Matplotlib。TensorFlow用于构建和训练我们的模型，NumPy用于处理数据，Matplotlib用于可视化训练过程中的损失和准确性变化。</p>
-<p><img src="/images/image.png" srcset="/img/loading.gif" lazyload alt="overwrote existing file"></p>
-<p>接着，我们设置混合精度策略，以提升训练速度和效率。</p>
-<p><img src="/images/image1.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h3 id="数据集下载与预处理"><a href="#数据集下载与预处理" class="headerlink" title="数据集下载与预处理"></a>数据集下载与预处理</h3><p>我们将从TensorFlow提供的URL下载MNIST数据集，并将其保存在本地。如果数据集已经存在，则跳过下载步骤。</p>
-<p><img src="/images/image3.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<p>下载完成后，我们加载并预处理数据。MNIST数据集包含手写数字的灰度图像，我们需要将其归一化并进行分类标签的one-hot编码。</p>
-<p><img src="/images/image2.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h3 id="调整输入图像大小"><a href="#调整输入图像大小" class="headerlink" title="调整输入图像大小"></a>调整输入图像大小</h3><p>由于ResNet50V2模型的输入要求是32x32的RGB图像，我们需要将MNIST图像从28x28调整为32x32，并从单通道转换为三通道。</p>
-<p><img src="/images/image5.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h3 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h3><p>数据增强是一种提高模型泛化能力的方法，通过随机变化图像的旋转、缩放、平移等操作，生成多样化的训练样本。</p>
-<p><img src="/images/image6.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h3 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h3><p>我们使用预训练的ResNet50V2模型作为特征提取器，并在其顶部添加自定义的全连接层来完成分类任务。为了处理MNIST数据的单通道图像，我们将其转换为三通道图像。</p>
-<p><img src="/images/image7.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h3 id="模编译与训练模型"><a href="#模编译与训练模型" class="headerlink" title="模编译与训练模型"></a>模编译与训练模型</h3><p>我们选择Adam优化器，并设置了一系列回调函数来监控训练过程。特别是，我们自定义了一个回调函数，用于在每个epoch结束后记录并绘制训练和验证的损失与准确性。</p>
-<p><img src="/images/image8.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h3 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h3><p>最后，我们加载最优模型并对测试数据集进行评估，打印出模型的准确性。</p>
-<p><img src="/images/image9.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h2 id="三、手写数字识别模型GUI"><a href="#三、手写数字识别模型GUI" class="headerlink" title="三、手写数字识别模型GUI"></a>三、手写数字识别模型GUI</h2><p>我们将使用 tkinter 和 PIL 构建一个简单的图形用户界面应用，用于手写数字的识别。应用程序允许用户在画布上绘制数字，并通过训练好的模型进行预测。</p>
-<p><img src="/images/image10.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<h2 id="四、训练日志和训练图示"><a href="#四、训练日志和训练图示" class="headerlink" title="四、训练日志和训练图示"></a>四、训练日志和训练图示</h2><p>这是模型训练过程中记录的日志和训练曲线图：</p>
-<p><img src="/images/image11.png" srcset="/img/loading.gif" lazyload alt="upload successful"><br><img src="/images/image12.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
-<p>从图中可以看出，训练损失和验证损失在初始几轮快速下降后趋于稳定，表明模型的收敛性良好。同时，训练准确性和验证准确性在训练过程中也持续提高，最终模型在测试集上的准确性达到了99.23%。这表明我们的ResNet50V2模型在MNIST数据集上的表现非常出色。</p>
-<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>通过本文，我们成功地利用ResNet50V2模型对MNIST数据集进行了图像分类任务，并构建了一个用于手写数字识别的图形用户界面（GUI）应用。整个过程涵盖了从数据集下载、预处理、数据增强、模型构建、模型训练到最终评估的各个步骤。通过训练日志和曲线图，我们可以清楚地看到模型在训练过程中的表现。</p>
-<p>训练曲线图表明，模型在初期快速学习，损失显著下降，准确性显著提高。随着训练的进行，模型的损失和准确性趋于稳定，表明模型达到了良好的收敛状态。最终，模型在测试集上取得了99.23%的准确性，验证了我们使用ResNet50V2进行图像分类的有效性。</p>
-<p>此外，我们还构建了一个简单的GUI应用，用户可以在画布上绘制手写数字，并通过训练好的模型进行实时识别。这展示了深度学习在实际应用中的潜力和灵活性。</p>
-<p>本文实验不仅让我们熟悉了深度学习图像分类的基本流程和原理，还通过实际应用展示了深度学习模型的实用性和强大功能。希望这篇文章能够帮助你更好地理解和应用深度学习技术。</p>
+                <h1 id="Basic-Programming-Understanding-Python’s-class"><a href="#Basic-Programming-Understanding-Python’s-class" class="headerlink" title="Basic Programming: Understanding Python’s class"></a>Basic Programming: Understanding Python’s class</h1><p>Welcome to our basic programming course! Today, we will delve into an important concept in Python: class.</p>
+<h2 id="Key-Concepts-of-Class"><a href="#Key-Concepts-of-Class" class="headerlink" title="Key Concepts of Class"></a>Key Concepts of Class</h2><h3 id="Attributes"><a href="#Attributes" class="headerlink" title="Attributes"></a>Attributes</h3><p>Attributes are variables within a class used to store the state or data of an object. For example, in a game, a character may have attributes like name, health, and attack power. Attributes are defined in the <code>__init__</code> method and referenced using the <code>self</code> keyword.</p>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h3><p>Methods are functions within a class that define the behavior of an object. For example, a character may have behaviors such as attack, defend, and move. Methods access an object’s attributes and other methods using the <code>self</code> parameter.</p>
+<h3 id="Constructor"><a href="#Constructor" class="headerlink" title="Constructor"></a>Constructor</h3><p>The constructor is a special method used to initialize an object’s attributes. In Python, the constructor is the <code>__init__</code> method. The constructor is automatically called when an object is created, setting the initial state. For example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Character</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name, health, attack_power</span>):<br>        <span class="hljs-variable language_">self</span>.name = name              <span class="hljs-comment"># Initialize the name attribute</span><br>        <span class="hljs-variable language_">self</span>.health = health          <span class="hljs-comment"># Initialize the health attribute</span><br>        <span class="hljs-variable language_">self</span>.attack_power = attack_power  <span class="hljs-comment"># Initialize the attack_power attribute</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Inheritance"><a href="#Inheritance" class="headerlink" title="Inheritance"></a>Inheritance</h3><p>Inheritance allows us to create a new class that inherits attributes and methods from an existing class, promoting code reuse. Subclasses can reuse methods and attributes from the parent class and add new ones. For example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Hero</span>(<span class="hljs-title class_ inherited__">Character</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name, health, attack_power, special_ability</span>):<br>        <span class="hljs-built_in">super</span>().__init__(name, health, attack_power)  <span class="hljs-comment"># Call the parent class constructor</span><br>        <span class="hljs-variable language_">self</span>.special_ability = special_ability  <span class="hljs-comment"># Initialize the special_ability attribute</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Polymorphism"><a href="#Polymorphism" class="headerlink" title="Polymorphism"></a>Polymorphism</h3><p>Polymorphism allows objects of different classes to be treated as objects of a common superclass. This enables us to write more general and flexible code. For example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">perform_attack</span>(<span class="hljs-params">character</span>):<br>    character.attack()  <span class="hljs-comment"># Call the attack method of the passed object</span><br><br>hero = Hero(<span class="hljs-string">&quot;Lancelot&quot;</span>, <span class="hljs-number">100</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&quot;Sword Mastery&quot;</span>)  <span class="hljs-comment"># Create a Hero object</span><br>monster = Monster(<span class="hljs-string">&quot;Orc&quot;</span>, <span class="hljs-number">150</span>, <span class="hljs-number">20</span>)  <span class="hljs-comment"># Create a Monster object</span><br>perform_attack(hero)  <span class="hljs-comment"># Call the attack method on the Hero object</span><br>perform_attack(monster)  <span class="hljs-comment"># Call the attack method on the Monster object</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Detailed-Example"><a href="#Detailed-Example" class="headerlink" title="Detailed Example"></a>Detailed Example</h3><p>Let’s understand class through a more detailed example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vehicle</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, brand, model, year</span>):<br>        <span class="hljs-variable language_">self</span>.brand = brand  <span class="hljs-comment"># Initialize the brand attribute</span><br>        <span class="hljs-variable language_">self</span>.model = model  <span class="hljs-comment"># Initialize the model attribute</span><br>        <span class="hljs-variable language_">self</span>.year = year    <span class="hljs-comment"># Initialize the year attribute</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">display_info</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;self.year&#125;</span> <span class="hljs-subst">&#123;self.brand&#125;</span> <span class="hljs-subst">&#123;self.model&#125;</span>&quot;</span>  <span class="hljs-comment"># Return vehicle information</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ElectricVehicle</span>(<span class="hljs-title class_ inherited__">Vehicle</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, brand, model, year, battery_capacity</span>):<br>        <span class="hljs-built_in">super</span>().__init__(brand, model, year)  <span class="hljs-comment"># Call the parent class constructor</span><br>        <span class="hljs-variable language_">self</span>.battery_capacity = battery_capacity  <span class="hljs-comment"># Initialize the battery_capacity attribute</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">display_info</span>(<span class="hljs-params">self</span>):<br>        base_info = <span class="hljs-built_in">super</span>().display_info()  <span class="hljs-comment"># Call the parent class display_info method</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;base_info&#125;</span> with a battery capacity of <span class="hljs-subst">&#123;self.battery_capacity&#125;</span> kWh&quot;</span>  <span class="hljs-comment"># Return information with battery capacity</span><br><br><span class="hljs-comment"># Create objects and call methods</span><br>tesla = ElectricVehicle(<span class="hljs-string">&quot;Tesla&quot;</span>, <span class="hljs-string">&quot;Model S&quot;</span>, <span class="hljs-number">2022</span>, <span class="hljs-number">100</span>)  <span class="hljs-comment"># Create an ElectricVehicle object</span><br><span class="hljs-built_in">print</span>(tesla.display_info())  <span class="hljs-comment"># Print object information</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Code-Explanation"><a href="#Code-Explanation" class="headerlink" title="Code Explanation"></a>Code Explanation</h3><p>•   Vehicle Class: This is a basic class representing a vehicle. It has three attributes: brand, model, and year. The display_info method returns the vehicle’s information.</p>
+<p>•   ElectricVehicle Class: This class inherits from the Vehicle class and represents an electric vehicle. It adds a new attribute: battery capacity. The display_info method calls the parent class’s method and adds battery capacity to the returned information.</p>
+<h2 id="Why-Learn-and-Use-Class"><a href="#Why-Learn-and-Use-Class" class="headerlink" title="Why Learn and Use Class?"></a>Why Learn and Use Class?</h2><h3 id="Modular-Code"><a href="#Modular-Code" class="headerlink" title="Modular Code"></a>Modular Code</h3><p>Encapsulating related attributes and methods together makes code more structured and clear. This organization makes the code easier to understand and manage.</p>
+<h3 id="Code-Reuse"><a href="#Code-Reuse" class="headerlink" title="Code Reuse"></a>Code Reuse</h3><p>Inheritance and composition allow us to extend functionality without duplicating code. Subclasses can inherit attributes and methods from the parent class, avoiding redundant code and improving development efficiency.</p>
+<h3 id="Easy-Maintenance"><a href="#Easy-Maintenance" class="headerlink" title="Easy Maintenance"></a>Easy Maintenance</h3><p>Modifying a class definition can affect all related objects, simplifying maintenance and updates. Changing code in one place can impact all instances using that class, reducing the potential for errors.</p>
+<h3 id="Simulating-the-Real-World"><a href="#Simulating-the-Real-World" class="headerlink" title="Simulating the Real World"></a>Simulating the Real World</h3><p>Classes and objects allow us to more naturally simulate and solve real-world problems. By defining classes and objects, we can represent and handle complex systems and behaviors more intuitively.</p>
+<h2 id="Further-Reading-and-Learning"><a href="#Further-Reading-and-Learning" class="headerlink" title="Further Reading and Learning"></a>Further Reading and Learning</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/classes.html">Python Official Documentation</a>: A detailed introduction to the concepts and usage of classes in Python.</li>
+<li><a target="_blank" rel="noopener" href="https://realpython.com/tutorials/object-oriented-programming/">Real Python</a>: Provides rich tutorials and examples to help understand and master object-oriented programming in Python.</li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>By learning and mastering these concepts, I hope you can better understand and use Python classes, laying a solid foundation for developing more complex and powerful applications.</p>
 
                 
               </div>
@@ -401,7 +383,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%9E%E6%88%98/" class="category-chain-item">神经网络实战</a>
+  <a href="/categories/Python-Basic-Programming/" class="category-chain-item">Python Basic Programming</a>
   
   
 
@@ -416,7 +398,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/python-CNN-ResNET/" class="print-no-link">#python, CNN, ResNET</a>
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
       
     </div>
   
@@ -428,32 +410,32 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>基于ResNet残差网络的图像识别</div>
-      <div>https://morax.blog/2024/07/15/基于ResNet残差网络的图像识别/</div>
+      <div>Basic Programming: Understanding Python&#39;s class</div>
+      <div>https://morax.blog/2024/07/21/Basic-Programming-Understanding-Python-s-class/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>作者</div>
+          <div>Author</div>
           <div>Morax Cheng</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2024年7月15日</div>
+          <div>Posted on</div>
+          <div>July 21, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>许可协议</div>
+          <div>Licensed under</div>
           <div>
             
               
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
                     <i class="iconfont icon-by"></i>
                   </span>
                 </a>
@@ -473,19 +455,13 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/07/21/Python%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Python%E7%9A%84class/" title="Python编程基础：深入理解Python的class">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Python编程基础：深入理解Python的class</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/07/15/hello-world/" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
-                        <span class="visible-mobile">下一篇</span>
+                      <a href="/2024/07/15/Image%20recognition%20based%20on%20ResNet%20residual%20network/" title="Image Recognition Based on ResNet Residual Network">
+                        <span class="hidden-mobile">Image Recognition Based on ResNet Residual Network</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -505,9 +481,9 @@
       Fluid.utils.createCssLink('/css/gitalk.css')
       Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
         var options = Object.assign(
-          {"clientID":"Ov23lif1JVJLS8O7lmCQ","clientSecret":"7e90fd1277297ceca0aacc85382c26719623f0f3","repo":"comments","owner":"fzlzjerry","admin":["fzlzjerry"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {"clientID":"Ov23lif1JVJLS8O7lmCQ","clientSecret":"7e90fd1277297ceca0aacc85382c26719623f0f3","repo":"comments","owner":"fzlzjerry","admin":["fzlzjerry"],"language":"en","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '72855e1d06132d21af01c790327e5830'
+            id: 'dbd27c09425960d98d1111e2fef9dda6'
           }
         )
         var gitalk = new Gitalk(options);
@@ -533,7 +509,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>目录</span>
+    <span>Table of Contents</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -589,7 +565,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -597,7 +573,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -813,10 +789,6 @@
 
   
 <script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.min.js"></script>
-<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/runtime.min.js"></script>
-<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicLine.min.js"></script>
-<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/star.min.js"></script>
-<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/containsWord.min.js"></script>
 <script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/love.min.js"></script>
 
 
@@ -829,7 +801,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":2,"width":200,"height":350,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":1,"opacityOnHover":0.5},"log":false});</script></body>
 </html>
