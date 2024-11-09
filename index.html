@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Morax Cheng's Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animation CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            scroll-behavior: smooth;
+        }
+        /* Navigation Bar */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #343a40 !important;
+            font-weight: 500;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #007bff !important;
+        }
+        /* Header Section */
+        header {
+            background: url('your-header-image.jpg') no-repeat center center/cover;
+            color: #ffffff;
+            padding: 150px 0 100px 0;
+            position: relative;
+        }
+        header::after {
+            content: '';
+            background-color: rgba(0, 123, 255, 0.6);
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+        }
+        header .container {
+            position: relative;
+            z-index: 2;
+        }
+        header h1 {
+            font-size: 3.5em;
+            font-weight: bold;
+        }
+        header h3 {
+            font-weight: 300;
+            margin-top: 20px;
+        }
+        .social-links a {
+            margin: 0 15px;
+            color: #ffffff;
+            font-size: 1.5em;
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: #ffd700;
+        }
+        /* About Section */
+        #about {
+            background-color: #ffffff;
+            padding: 80px 0;
+        }
+        #about h2 {
+            margin-bottom: 40px;
+        }
+        #about p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #343a40;
+        }
+        /* Skills Section */
+        #skills {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        #skills h2 {
+            margin-bottom: 60px;
+        }
+        .skill-item {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .skill-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .skill-item img {
+            width: 80px;
+            height: 80px;
+            transition: transform 0.3s;
+            filter: grayscale(100%);
+        }
+        .skill-item:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+        .skill-item p {
+            margin-top: 10px;
+            font-weight: 500;
+            color: #343a40;
+        }
+        /* Projects Section */
+        #projects {
+            background-color: #ffffff;
+            padding: 80px 0;
+        }
+        #projects h2 {
+            margin-bottom: 60px;
+        }
+        .project-item {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+        }
+        .project-item h4 a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .project-item h4 a:hover {
+            text-decoration: underline;
+        }
+        /* GitHub Stats Section */
+        #github-stats {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        #github-stats h2 {
+            margin-bottom: 60px;
+            color: #343a40;
+        }
+        #github-stats img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        /* Contact Section */
+        #contact {
+            background-color: #ffffff;
+            padding: 80px 0;
+        }
+        #contact h2 {
+            margin-bottom: 40px;
+        }
+        #contact p {
+            font-size: 1.2em;
+            color: #343a40;
+        }
+        #contact a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #contact a:hover {
+            text-decoration: underline;
+        }
+        /* Footer */
+        footer {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            padding: 20px 0;
+            text-align: center;
+        }
+        /* Scroll to Top Button */
+        #scrollTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 20px;
+            display: none;
+            cursor: pointer;
+            z-index: 99;
+            transition: background-color 0.3s;
+        }
+        #scrollTop:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Morax Cheng</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#about">About Me</a></li>
+                <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#github-stats">GitHub Stats</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Header Section -->
+<header class="text-center">
+    <div class="container">
+        <h1 data-aos="fade-down">Hi 👋, I'm Morax Cheng</h1>
+        <h3 data-aos="fade-up" data-aos-delay="200">A passionate teenage open-source developer from China</h3>
+        <div class="social-links mt-4" data-aos="fade-up" data-aos-delay="400">
+            <a href="https://twitter.com/moraxcheng" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://fb.com/moraxcheng" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://instagram.com/moraxcheng" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:james20081204@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+</header>
+
+<!-- About Section -->
+<section id="about">
+    <div class="container" data-aos="fade-right">
+        <h2 class="text-center">About Me</h2>
+        <p>Hello! I'm Morax Cheng, a teenage open-source enthusiast and developer based in China. I have a strong passion for coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.</p>
+        <p>🔭 I’m currently working on <a href="https://github.com/fzlzjerry/graphing_calculator" target="_blank">Graphing Calculator</a></p>
+        <p>🌱 I’m currently learning <strong>Matlab</strong> and diving deeper into machine learning algorithms.</p>
+        <p>👯 I’m looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" target="_blank">bili2text</a> and other exciting open-source projects.</p>
+        <p>💬 Ask me about <strong>Python, C++, Machine Learning, and Data Analysis</strong></p>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills">
+    <div class="container">
+        <h2 class="text-center" data-aos="fade-up">Languages and Tools</h2>
+        <div class="row justify-content-center">
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="0">
+                <a href="https://www.python.org/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python">
+                    <p>Python</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="50">
+                <a href="https://isocpp.org/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="C++">
+                    <p>C++</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="100">
+                <a href="https://www.open-std.org/jtc1/sc22/wg14/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="C">
+                    <p>C</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="150">
+                <a href="https://pytorch.org/" target="_blank">
+                    <img src="https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg" alt="PyTorch">
+                    <p>PyTorch</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="200">
+                <a href="https://www.tensorflow.org/" target="_blank">
+                    <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="TensorFlow">
+                    <p>TensorFlow</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="250">
+                <a href="https://opencv.org/" target="_blank">
+                    <img src="https://www.vectorlogo.zone/logos/opencv/opencv-icon.svg" alt="OpenCV">
+                    <p>OpenCV</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="300">
+                <a href="https://www.mysql.com/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="MySQL">
+                    <p>MySQL</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="350">
+                <a href="https://www.linux.org/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="Linux">
+                    <p>Linux</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="400">
+                <a href="https://www.docker.com/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="Docker">
+                    <p>Docker</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="450">
+                <a href="https://git-scm.com/" target="_blank">
+                    <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="Git">
+                    <p>Git</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="500">
+                <a href="https://azure.microsoft.com/" target="_blank">
+                    <img src="https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg" alt="Azure">
+                    <p>Azure</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="550">
+                <a href="https://www.mathworks.com/products/matlab.html" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png" alt="Matlab">
+                    <p>Matlab</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="600">
+                <a href="https://hexo.io/" target="_blank">
+                    <img src="https://www.vectorlogo.zone/logos/hexoio/hexoio-icon.svg" alt="Hexo">
+                    <p>Hexo</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="650">
+                <a href="https://pandas.pydata.org/" target="_blank">
+                    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/pandas/pandas-original.svg" alt="Pandas">
+                    <p>Pandas</p>
+                </a>
+            </div>
+            <!-- Skill Item -->
+            <div class="col-md-2 col-4 skill-item" data-aos="zoom-in" data-aos-delay="700">
+                <a href="https://scikit-learn.org/" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="Scikit-learn">
+                    <p>Scikit-learn</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects">
+    <div class="container">
+        <h2 class="text-center" data-aos="fade-up">Projects</h2>
+        <div class="row">
+            <!-- Project 1 -->
+            <div class="col-md-6" data-aos="fade-right" data-aos-delay="0">
+                <div class="project-item">
+                    <h4><a href="https://github.com/fzlzjerry/graphing_calculator" target="_blank">Graphing Calculator</a></h4>
+                    <p>A powerful tool for plotting mathematical functions with a user-friendly interface.</p>
+                </div>
+            </div>
+            <!-- Project 2 -->
+            <div class="col-md-6" data-aos="fade-left" data-aos-delay="0">
+                <div class="project-item">
+                    <h4><a href="https://github.com/lanbinshijie/bili2text" target="_blank">bili2text</a></h4>
+                    <p>Collaborative project for text extraction from Bilibili videos, enhancing accessibility.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GitHub Stats Section -->
+<section id="github-stats">
+    <div class="container text-center">
+        <h2 data-aos="fade-up">GitHub Stats</h2>
+        <div data-aos="fade-up" data-aos-delay="200">
+            <img src="https://github-readme-stats.vercel.app/api?username=fzlzjerry&show_icons=true&locale=en&theme=default" alt="GitHub Stats">
+            <img src="https://github-readme-stats.vercel.app/api/top-langs?username=fzlzjerry&show_icons=true&locale=en&layout=compact&theme=default" alt="Top Languages">
+        </div>
+        <div data-aos="fade-up" data-aos-delay="400">
+            <a href="https://github.com/ryo-ma/github-profile-trophy" target="_blank">
+                <img src="https://github-profile-trophy.vercel.app/?username=fzlzjerry&theme=flat" alt="GitHub Trophies">
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <div class="container text-center" data-aos="fade-up">
+        <h2>Contact Me</h2>
+        <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out!</p>
+        <p>Email: <a href="mailto:james20081204@gmail.com">james20081204@gmail.com</a></p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 Morax Cheng. All rights reserved.</p>
+</footer>
+
+<!-- Scroll to Top Button -->
+<button id="scrollTop" onclick="topFunction()"><i class="fas fa-arrow-up"></i></button>
+
+<!-- Bootstrap JS and Dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AOS Animation JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 1000,
+        once: true,
+    });
+
+    // Scroll to Top Button
+    var scrollTopBtn = document.getElementById("scrollTop");
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
