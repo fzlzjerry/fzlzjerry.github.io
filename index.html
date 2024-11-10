@@ -588,7 +588,11 @@
 
     // Function to reset a single progress bar
     function resetProgressBar(bar) {
+        bar.style.transition = 'none';
         bar.style.width = '0%';
+        // Force reflow to apply the change immediately
+        void bar.offsetWidth;
+        bar.style.transition = 'width 2s ease';
     }
 
     // Select all progress bars
