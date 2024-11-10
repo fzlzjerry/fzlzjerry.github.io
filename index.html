@@ -239,6 +239,7 @@
                 <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
                 <li class="nav-item"><a class="nav-link" href="#github-stats">GitHub Stats</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
             </ul>
         </div>
     </div>
@@ -535,7 +536,7 @@
     AOS.init({
         duration: 1000, // 统一动画持续时间
         easing: 'ease-in-out', // 统一缓动函数
-        once: false, // 允许动画循环播放
+        once: false, // ���许动画循环播放
         mirror: false, // 禁止动画在离开时触发
     });
 
@@ -570,10 +571,12 @@
     // Smooth scrolling for navigation links
     document.querySelectorAll('.nav-link').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            if (this.getAttribute('href').startsWith('#')) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         });
     });
 
