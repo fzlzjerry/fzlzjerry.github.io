@@ -1,13 +1,149 @@
 /* ...existing code... */
 
+/* Markdown content styles */
 .markdown-content {
-    background-color: #ffffff;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 5px;
-    /* Optional: Add additional styles for better markdown rendering */
-    line-height: 1.6;
-    font-family: Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.8;
+    font-family: 'Georgia', serif;
+    color: #333;
+    background-color: #fff;
 }
+
+/* Headings */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    color: #222;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+/* Paragraphs */
+.markdown-content p {
+    margin-bottom: 1em;
+}
+
+/* Links */
+.markdown-content a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.markdown-content a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+.markdown-content ul,
+.markdown-content ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+.markdown-content li {
+    margin-bottom: 0.5em;
+}
+
+/* Code blocks */
+.markdown-content pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.markdown-content code {
+    background-color: #f1f1f1;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.95em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Improve code block styling */
+.markdown-content pre code {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    display: block;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Blockquotes */
+.markdown-content blockquote {
+    border-left: 4px solid #007bff;
+    margin-left: 0;
+    padding-left: 1em;
+    color: #666;
+    font-style: italic;
+}
+
+/* Images */
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+
+/* Tables */
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+.markdown-content th,
+.markdown-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.markdown-content th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Task list styling */
+.markdown-content input[type="checkbox"] {
+    margin-right: 0.5em;
+}
+
+/* Table of Contents styling */
+#toc {
+    position: sticky;
+    top: 80px;
+}
+
+.toc {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.toc a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.toc a:hover {
+    text-decoration: underline;
+}
+
+/* ...existing code... */
 
 .list-group-item a {
     text-decoration: none;
@@ -60,4 +196,10 @@ pre {
 code {
     font-family: 'Source Code Pro', monospace;
     font-size: 0.95em;
+}
+
+/* 公式的容器 */
+.markdown-content .MathJax_Display {
+    overflow-x: auto;
+    white-space: normal;
 }

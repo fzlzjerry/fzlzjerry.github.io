@@ -31,6 +31,26 @@
     </style>
     <!-- 引入Highlight.js CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
+    <!-- Link to styles.css -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include Tocbot CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+    <!-- MathJax 配置 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <!-- 引入 MathJax 脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <!-- Update Navigation Bar -->
@@ -60,25 +80,20 @@
     <!-- Blog Section -->
     <div class="container">
         <h2 class="my-4">Blog</h2>
-        <!-- Remove Upload Form -->
-        <!--
-        <form id="uploadForm" class="mb-4">
-            <div class="mb-3">
-                <label for="markdownFile" class="form-label">Upload Markdown Article</label>
-                <input class="form-control" type="file" id="markdownFile" accept=".md">
+        <div class="row">
+            <!-- Articles List -->
+            <div class="col-md-3">
+                <div id="articlesList" class="list-group mb-4">
+                    <!-- ...existing code... -->
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
-        -->
-
-        <!-- Articles List -->
-        <div id="articlesList" class="list-group mb-4">
-            <!-- ...existing code... -->
-        </div>
-
-        <!-- Article Content -->
-        <div id="articleContent" class="markdown-content">
-            <!-- ...existing code... -->
+            <!-- Article Content and TOC -->
+            <div class="col-md-9">
+                <div id="toc"></div>
+                <div id="articleContent" class="markdown-content">
+                    <!-- 内容将在此处渲染 -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -90,8 +105,8 @@
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <!-- 引入Highlight.js库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <!-- 引入MathJax库 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <!-- Include Tocbot JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
     <!-- Custom Scripts -->
     <script src="scripts.js"></script>
     <!-- Remove the inline AOS.init script -->
@@ -108,29 +123,7 @@
     -->
 
     <script>
-        // 配置Marked.js以使用Highlight.js进行代码高亮
-        marked.setOptions({
-            highlight: function(code, lang) {
-                if (hljs.getLanguage(lang)) {
-                    return hljs.highlight(code, { language: lang }).value;
-                } else {
-                    return hljs.highlightAuto(code).value;
-                }
-            }
-        });
-
-        // 渲染Markdown后初始化Highlight.js和MathJax
-        function displayArticle(title, content) {
-            document.getElementById('articleContent').innerHTML = marked.parse(content);
-            // 初始化Highlight.js
-            document.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightBlock(block);
-            });
-            // 初始化MathJax
-            if (typeof MathJax !== 'undefined') {
-                MathJax.typesetPromise();
-            }
-        }
+        // 删除在 blog.html 中对 marked.js 的配置，确保只在 scripts.js 中配置
 
         // Remove Upload Handler
         /*

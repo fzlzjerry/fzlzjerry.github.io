@@ -85,9 +85,9 @@ h(x) = f(x) + g(x) = a \sin(wx) + kx + b \quad \text{(final result of the entire
 $$
 The parameters were adjusted using historical data. After the training process, the curve-like function was executed, providing the project with a universal model.
 
-![Fig 2: Linear regression prediction for 03_Sea](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfaUF21RAk3BPtcTIttX8WS8-c1GNgii5m7KROCVzr97Ppjz3ZlHmx6VzE28WiwlpWUbupWks5_21F9X0w5hLqTc473hL54untC7GFj5TA65Kla7B1ItfVoHO_IpfJCbYFP3rSPSa7sK_dLFfwVUxaGgPks?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 2: Linear regression prediction for 03_Sea](https://ice.frostsky.com/2024/11/12/2866817939a97eab9bab75bf986d674e.png)
 
-![Fig 3: The actual function for predicting 03_Sea](https://lh7-rt.googleusercontent.com/docsz/AD_4nXd7yf62pMenkCLpOE3uL2TOs8PxDqiToWeBOpAMSDjxqYyKqqEsZRha7U4v9d8Nrkbxbv-UqSA64YE60940XjJyJGdsE-vO2qnB16NLlb8UMDohzv-m_QdaVT0B8Xze9wFA-kbuPYhAOY5L1kiewg2dHrJ0?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 3: The actual function for predicting 03_Sea](https://ice.frostsky.com/2024/11/12/3f936f38064061ca3b4042fd7a51ec2c.png)
 
 The actual function of our prediction is as shown in *Figure 3*. The wavelength of the sine function is not an integer. So for \( x \) (an integer), it looks like messy lines.
 
@@ -95,9 +95,9 @@ Besides this, this linear regression model also has another limitation: if you a
 
 For example, the Port of Los Angeles is the biggest in the US, and the Port of Boston is small. In this case, we cannot use our curve-like linear regression model since it performs badly in both of these cases.
 
-![Fig 4a: 03_Los](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfmjasHLtXGKPRt1UDchs-1eTkqqFbK5wUnSMxesvNLOuwlWy30LzStBJkfRpkelSG5fAZdCIKIxtnNu76K7wTejO3FF-xqaP7n3Ow-m3eJ5x6XQGOlRpx3FCqDQ_bf01KhieseaI4BTK9NBTwBb1L2xoY?key=f8ioHm0mBJ3pXxdfQr7K2g)
+![Fig 4a: 03_Los](https://ice.frostsky.com/2024/11/12/85f8d40aaed960231853e9e164869fc2.png)
 
-![Fig 4b: 02_Bos](https://lh7-rt.googleusercontent.com/docsz/AD_4nXc00yzqXgU70kqK3R4p6k0nVPQTjRlECntVkmLWFwS_Z6UAHjDn6RoA1n1omevwMoG1zk5uQHeW6A6eVa2VQ8k_p9xVMuBAw0ul69cgOqm3TGiglUZmpYLuxUdkg43frIxYpmxPMZi8ZVQtR7JuANZllb-r?key=f8ioHm0mBJ3pXxdfQr7K2g)
+![Fig 4b: 02_Bos](https://ice.frostsky.com/2024/11/12/8bfb6564c0255eb503574170fe86354c.png)
 
 **Fig 4**: 03_Los (top), 02_Bos (bottom)
 
@@ -121,15 +121,15 @@ Based on the results above, we can see that the SARIMAX model has great performa
 
 This is very common for sequence-predict models (which means the model only uses the historical sequence to predict itself, without adding extra dimensions). We will discuss it in our second experiment (3. Expanded Dimension Experiment).
 
-![Fig 5: SARIMAX prediction of 19_Hou](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcaPlRinPc4y1SXsEplRTkunIi5At1vwuAmHR4XVviBz07qRmNVDMJiaax_JacKt-hhOqSStHob4BYWxJCBy1_VfnRyLkMk-RpvugJunofMySNEjDJDnKVmcEN3qzP4ieuNY4ul_LpgEZcgmWw5EUZgQC3n?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 5: SARIMAX prediction of 19_Hou](https://ice.frostsky.com/2024/11/12/92d1ec803d9e3b9701b875a0e96cd768.png)
 
-![Fig 6: SARIMAX prediction for 09_Bos](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfH3Dtrj8-SNgdFwJSIFmsQMSFO-D9OtIpkxcVJPEljDm09tU0Udh-Iakg2eH5Hm-5pNEQwPyF_6kIel8obenWN8uvCQJZOQIS6Z1IqKQ6dC1JAV4z9bNxNVMwrKIsvn_35W64ZtyPYnvPb5Sfqom9Ckf1W?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 6: SARIMAX prediction for 09_Bos](https://ice.frostsky.com/2024/11/12/47772ba8b28931bde05d956cb1e049e7.png)
 
 ### 2.3 DNN Solution
 
 Due to the limited advance brought by the SARIMAX model, we decided to introduce another model, the traditional DNN model, for its universality and positive responses from scholars. Deep neural networks have been widespread and frequently applied in multiple fields, such as computer vision, natural language processing, and robotics. The successful applications of DNNs in these fields have broadened the path for further research and reinforcement in artificial intelligence, with its potential to forecast port data successfully. Moreover, *Hyperparameter Tuning* was used to figure out the best architecture for our DNN. Here is our prediction:
 
-![Fig 7: DNN training result](https://lh7-rt.googleusercontent.com/docsz/AD_4nXe4-_Me38MSZcOex5nVVDlkr0VhuIG9VBHb9hp88fdBT8UoWSGHH-crzMiwOxs1CHUdwaZtgsnsT26uL7Duu-Md_qLiCA8cux8auYxkueDy8O891OnGlNaW1vXHcwNYy2zPXT3DIvngrLz6_cb70aoT8tGV?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 7: DNN training result](https://ice.frostsky.com/2024/11/12/60fc052aadb26e87a0b69760465e901b.png)
 
 The error showcased in the figure leads us to assert it is because we tried to train a universal model that can be used on many ports, even if they don’t have historical data. We introduced a new feature called **‘port_throughput’** (as mentioned in data preprocessing). Since **‘port_throughput’** is a large number, and the values of different ports have huge differences, it is difficult to handle. In theory, the DNN model positively impacts forecasting. However, a very deep network is required, which may not be so efficient.
 
@@ -137,7 +137,7 @@ The error showcased in the figure leads us to assert it is because we tried to t
 
 Based on the attempt with the DNN model, we sought a more suitable model—the RNN model. The RNN holds crucial advantages over the DNN in time series forecasting tasks due to its ability to capture temporal dependencies through recurrent connections. This unique structure allows RNNs to memorize and utilize information from previous time steps, making them precise and effective in modeling sequential data. Unlike DNNs, which struggle with time dependencies and require fixed input lengths, RNNs can handle variable-length sequences and retain long-term information. Variants like Long Short-Term Memory (LSTM) further enhance these capabilities, offering superior performance in tasks with complex temporal patterns and time-based correlations.
 
-![RNN Model](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfdMQntf9xvZzYOaHLTe6PSNpatEdw-fWhv4jugxm1c-juwLaGWCZRqc_N6rDxTVFqrCL_uqK3FSvcS-EdMoN28QqqoJF2SOXYlkZVqPM357iLrefqqw0ms-CXoxhiOdGtga5RGr_f6VbZjqfEwM2lBPv1F?key=f8ioHm0mBJ3pXxdfQr7K2g)
+![RNN Model](https://ice.frostsky.com/2024/11/12/a8a62c20b146eaeab0d41b9afbc7569d.png)
 
 We used a simple LSTM model containing 2 LSTM layers and 2 dense layers; we also added 3 dropout layers and a batch normalization layer to prevent exploding gradients and overfitting.
 
@@ -147,15 +147,15 @@ The result of the RNN model has brought out a common problem of all sequence-pre
 
 You can see the RNN’s prediction in *Figure 8*. It's a bit messy and doesn’t look very good. However, if we just move the prediction graph 1 month earlier on the x-axis (as in *Figure 9*), the result is amazing.
 
-![Fig 8: RNN prediction](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcltus0wfV45u__YcDZwyskHitlR3cByRt63AHmYHg75XDwXnhsPF7SsuHlvvSAKMBQWnOn0pDIoCm2VQslfXMLXHk8gju-h1OpKxvuTtSpjywbOfjuNoT_Vp2QysIjMIj1_bxgO5Lzhz_qn2CdBGNbQ_rg?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 8: RNN prediction](https://ice.frostsky.com/2024/11/12/616d4229917685bee23674b289a6668b.png)
 
-![Fig 9: RNN prediction 1 month earlier](https://lh7-rt.googleusercontent.com/docsz/AD_4nXdcJ0r7U-v-vBULhNp8mB70lsrCCvsQUiaoEGi-kxcoEsr9UsJKbc6aF0szqaXUQGJILt3CI8AO6-D3SVuK9lkpcBSkL4fZBH1TzVHFRecqfdZjlDQop5iaN7o6EYQlutcna9aDYugYD5zazuf0btuqkEcb?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 9: RNN prediction 1 month earlier](https://ice.frostsky.com/2024/11/12/16839aa73dfa904947ab926eb9807ca0.png)
 
 So a critical hypothesis is brought out. What causes this hypothesis?
 
 We can take another graph as an example to explain that.
 
-![Fig 10: Delayed sudden peak](https://lh7-rt.googleusercontent.com/docsz/AD_4nXd3zdrsjV6KMU4iOLH0WUDhgODr2CSoJ2MZmFUAOsAp2RjlSrq17zIUly326XdyuQYqtt2evINvYUzo6yADBDSGAxPKjydLu8RwLswvAvvYCuCdZ261v8aF1hm7kOI9LhnERG2aCAoob6E5lNJ2XBJmLl4z?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 10: Delayed sudden peak](https://ice.frostsky.com/2024/11/12/f31a4d1620ddcfa35dfc5c0661b05dc5.png)
 
 **Fig 10: Delayed sudden peak**
 
@@ -189,7 +189,7 @@ But the demand for ice cream is relevant to the temperature. If we have a hot da
 
 We generated a random sequence of temperature and ice cream demand and applied the SARIMAX model on these random data.
 
-![Fig 11: SARIMAX prediction of ice-cream example](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfJHgX9Q2HNZ_oijDdKXCFZzU0hKg7agokYHnPCXYJmBWXNWCtWuU6cnuaSrpu_owPRAax3cL-KtfM4wF_sf2BdEy_iYXq93QimzTs0DDbeoz3it_5aD7aTDaH3UhClIe_gAxg_ERFc22YdN5oE2vOAP8QU?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 11: SARIMAX prediction of ice-cream example](https://ice.frostsky.com/2024/11/12/f3c8a6def459aa6946e56e7b7c78f0b0.png)
 
 The result is pretty good. For a maximum demand of 1000, the maximum error is ±20, and the MAPE metric is about 0.1078.
 
@@ -205,9 +205,9 @@ So we tried to add three major financial indexes into our model as extra dimensi
 
 We tried all combinations of these three indexes, and the result shows that using IXIC and SPX as two extra dimensions has a huge improvement on the result:
 
-![Fig 12a: Result using indexes with SARIMAX on 02_Hou](https://lh7-rt.googleusercontent.com/docsz/AD_4nXdD-gtD1oYJVmKy2wHtuPhr8C0fcn8DsDRcNdyU0fRa12PIgsxHguPfo8oNKIdsYxuSZ0C1JcivhRlPctVmScPRjiLnG16JoVmPm0HT2FYu0mNTmp9WIBAS06PNd473uZN64ZYAQbroP1peLHnHOdC4mijD?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 12a: Result using indexes with SARIMAX on 02_Hou](https://ice.frostsky.com/2024/11/12/ead13e60594ab5d558a7a06b29af7130.png)
 
-![Fig 12b: Result without indexes](https://lh7-rt.googleusercontent.com/docsz/AD_4nXeWLn07boZxAJ_XQzz8TYI98TBA6DvlRxHyO5ab2M8IQqiXsFe4H3kXvolTG2NEeD3GUk_dMWaf2weVYTPl2KGvQ7lDkBD6JL7GpYlQ-2h0fEL1gYU9LOplu8FBt9lqipstGEtw8yUxv6Izvjmm0a79qZ8?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 12b: Result without indexes](https://ice.frostsky.com/2024/11/12/a7cd70fd147dd94cb887b01f2a96ecf1.png)
 
 **Fig 12**: The result of using indexes using SARIMAX on 02_Hou
 

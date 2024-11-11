@@ -125,16 +125,60 @@ if (window.location.pathname.endsWith('/blog.html')) {
         articlesList.appendChild(articleItem);
     }
 
+    // 自定义标记器：处理数学公式
+    const mathExtension = {
+        name: 'math',
+        level: 'inline', // 级别：inline 或 block
+        start(src) {
+            const match = src.match(/(\${1,2})/);
+            return match ? match.index : -1;
+        },
+        tokenizer(src, tokens) {
+            const match = src.match(/^(\${1,2})([^$]+?)\1/);
+            if (match) {
+                return {
+                    type: 'math',
+                    raw: match[0],
+                    text: match[2],
+                    displayMode: match[1] === '$$'
+                };
+            }
+            return;
+        },
+        renderer(token) {
+            if (token.displayMode) {
+                // 行间公式
+                return `$$${token.text}$$`;
+            } else {
+                // 行内公式
+                return `$${token.text}$`;
+            }
+        }
+    };
+
+    // 使用自定义标记器
+    marked.use({ extensions: [mathExtension] });
+
+    // 修改 displayArticle 函数
     function displayArticle(title, content) {
-        document.getElementById('articleContent').innerHTML = marked.parse(content);
-        // 初始化Highlight.js
+        // 使用 marked.js 解析内容
+        const htmlContent = marked.parse(content);
+
+        // 将内容插入页面
+        document.getElementById('articleContent').innerHTML = htmlContent;
+
+        // 初始化 Highlight.js
         document.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightBlock(block);
         });
-        // 初始化MathJax
+
+        // 初始化 MathJax
         if (typeof MathJax !== 'undefined') {
             MathJax.typesetPromise();
         }
+
+        // 刷新 Tocbot
+        tocbot.refresh();
     }
 
     function loadArticles() {

@@ -4,18 +4,22 @@ function loadBlogPost(postName) {
     fetch(`/assets/md/${postName}.md`)
         .then(response => response.text())
         .then(markdown => {
-            // Function to render markdown content
-            renderMarkdown(markdown);
+            const content = marked.parse(markdown);
+            document.getElementById('blog-post').innerHTML = content;
+            // Initialize Highlight.js
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+            // Initialize MathJax
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise();
+            }
+            // Refresh Tocbot
+            tocbot.refresh();
         })
         .catch(error => {
             console.error('Error loading markdown file:', error);
         });
-}
-
-// Ensure renderMarkdown function exists
-function renderMarkdown(markdown) {
-    const blogPost = document.getElementById('blog-post');
-    blogPost.innerHTML = marked.parse(markdown);
 }
 
 // ...existing code...
