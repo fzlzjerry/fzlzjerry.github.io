@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog - Morax Cheng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+        }
+        .markdown-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Morax Cheng's Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html#about">About Me</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#github-stats">GitHub Stats</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Section -->
+    <div class="container">
+        <h2 class="my-4">Blog</h2>
+        <!-- Remove Upload Form -->
+        <!--
+        <form id="uploadForm" class="mb-4">
+            <div class="mb-3">
+                <label for="markdownFile" class="form-label">Upload Markdown Article</label>
+                <input class="form-control" type="file" id="markdownFile" accept=".md">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        -->
+
+        <!-- Articles List -->
+        <div id="articlesList" class="list-group mb-4">
+            <!-- ...existing code... -->
+        </div>
+
+        <!-- Article Content -->
+        <div id="articleContent" class="markdown-content">
+            <!-- ...existing code... -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- AOS Animation JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- Custom Scripts -->
+    <script src="scripts.js"></script>
+    <!-- Remove the inline AOS.init script -->
+    <!--
+    <script>
+        // Remove Upload Handler
+        AOS.init({
+            duration: 1000, // 统一动画持续时间
+            easing: 'ease-in-out', // 统一缓动函数
+            once: false, // 允许动画循环播放
+            mirror: false, // 禁止动画在离开时触发
+        });
+    </script>
+    -->
+
+    <script>
+        // Remove Upload Handler
+        /*
+        // Handle Markdown File Upload
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('markdownFile');
+            const file = fileInput.files[0];
+            if (file && file.name.endsWith('.md')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    displayArticle(file.name, content);
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Please upload a valid Markdown (.md) file.');
+            }
+        });
+        */
+
+        // Function to Fetch and Display Articles from assets/md
+        function fetchAndDisplayArticles() {
+            // List of markdown files
+            const articles = [
+                { title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem', filename: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem.md' },
+                // Add more articles here
+            ];
+
+            const articlesList = document.getElementById('articlesList');
+            articles.forEach(article => {
+                const articleItem = document.createElement('a');
+                articleItem.href = "#";
+                articleItem.className = "list-group-item list-group-item-action";
+                articleItem.textContent = article.title;
+                articleItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetch(`/assets/md/${article.filename}`)
+                        .then(response => response.text())
+                        .then(markdown => {
+                            document.getElementById('articleContent').innerHTML = marked.parse(markdown);
+                        })
+                        .catch(error => {
+                            console.error('Error loading markdown file:', error);
+                        });
+                });
+                articlesList.appendChild(articleItem);
+            });
+        }
+
+        // Initialize Articles on Page Load
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayArticles);
+    </script>
+</body>
+</html>

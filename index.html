@@ -225,7 +225,7 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.html">
             <img src="https://ice.frostsky.com/2024/11/09/d5c9d398dce910f059f29310c3127162.jpeg" alt="Logo" style="height: 40px;">
             Morax Cheng
         </a>
@@ -240,6 +240,7 @@
                 <li class="nav-item"><a class="nav-link" href="#github-stats">GitHub Stats</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
+                <li class="nav-item"><a class="nav-link" href="/blog.html">Blog</a></li>
             </ul>
         </div>
     </div>
@@ -519,6 +520,14 @@
     </div>
 </section>
 
+<!-- Blog Section -->
+<div class="markdown-content">
+    <!-- Container where markdown content will be rendered -->
+    <div id="blog-post">
+        <!-- ...existing code... -->
+    </div>
+</div>
+
 <!-- Footer -->
 <footer>
     <p>&copy; 2024 Morax Cheng. All rights reserved.</p>
@@ -531,124 +540,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- AOS Animation JS -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-    // Initialize AOS with循环播放配置
-    AOS.init({
-        duration: 1000, // 统一动画持续时间
-        easing: 'ease-in-out', // 统一缓动函数
-        once: false, // ���许动画循环播放
-        mirror: false, // 禁止动画在离开时触发
-    });
-
-    // Scroll to Top Button
-    var scrollTopBtn = document.getElementById("scrollTop");
-    window.onscroll = function() {scrollFunction()};
-
-    function scrollFunction() {
-        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-            scrollTopBtn.style.display = "block";
-        } else {
-            scrollTopBtn.style.display = "none";
-        }
-    }
-
-    function topFunction() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Initialize Typed.js
-    var typed = new Typed('#typed', {
-        strings: [
-            "A passionate teenage open-source developer from China",
-            "A Python enthusiast",
-            "An AI and Machine Learning lover"
-        ],
-        typeSpeed: 50,
-        backSpeed: 25,
-        loop: true,
-    });
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('.nav-link').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            if (this.getAttribute('href').startsWith('#')) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Function to animate a single progress bar
-    function animateProgressBar(bar) {
-        const targetWidth = bar.getAttribute('data-width');
-        bar.style.width = '0%';
-        setTimeout(() => {
-            bar.style.width = targetWidth + '%';
-        }, 100); // Slight delay to ensure transition
-    }
-
-    // Function to reset a single progress bar
-    function resetProgressBar(bar) {
-        bar.style.transition = 'none';
-        bar.style.width = '0%';
-        // Force reflow to apply the change immediately
-        void bar.offsetWidth;
-        bar.style.transition = 'width 2s ease';
-    }
-
-    // Select all progress bars
-    const progressBars = document.querySelectorAll('.progress-bar');
-
-    // Create an IntersectionObserver for each progress bar
-    const observerOptions = {
-        threshold: 0.5
-    };
-
-    const progressBarObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateProgressBar(entry.target);
-            } else {
-                resetProgressBar(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Observe each progress bar
-    progressBars.forEach(bar => {
-        progressBarObserver.observe(bar);
-    });
-
-    // Remove the previous IntersectionObserver for the skills section
-    // const skillsSection = document.querySelector('#skills');
-    // const observer = new IntersectionObserver((entries) => {
-    //     entries.forEach(entry => {
-    //         if (entry.isIntersecting) {
-    //             animateProgressBars();
-    //         } else {
-    //             // Reset progress bars when not in view
-    //             const progressBars = document.querySelectorAll('.progress-bar');
-    //             progressBars.forEach(bar => {
-    //                 bar.style.width = '0%';
-    //             });
-    //         }
-    //     });
-    // }, { threshold: 0.5 });
-
-    // observer.observe(skillsSection);
-
-    // Remove duplicate onscroll event handler
-    // window.onscroll = function() {scrollFunction()};
-
-    // function scrollFunction() {
-    //     if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-    //         scrollTopBtn.style.display = "block";
-    //     } else {
-    //         scrollTopBtn.style.display = "none";
-    //     }
-    // }
-</script>
+<!-- Add Typed.js library -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<!-- Custom Scripts -->
+<script src="scripts.js"></script>
 </body>
 </html>

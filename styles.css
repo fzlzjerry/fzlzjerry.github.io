@@ -1,0 +1,50 @@
+/* ...existing code... */
+
+.markdown-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    /* Optional: Add additional styles for better markdown rendering */
+    line-height: 1.6;
+    font-family: Arial, sans-serif;
+}
+
+.list-group-item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ...existing code... */
+
+.list-group-item a .fas {
+    transition: transform 0.3s;
+}
+
+.list-group-item a.collapsed .fas {
+    transform: rotate(0deg);
+}
+
+.list-group-item a:not(.collapsed) .fas {
+    transform: rotate(180deg);
+}
+
+/* No changes needed for unified animations */
+
+/* ...existing code... */
+
+/* ...existing code... */
+
+/* Ensure all CSS rules are complete */
+.list-group-item a:not(.collapsed) .fas {
+    transform: rotate(180deg);
+}
+
+.list-group-item a .fas {
+    transition: transform 0.3s;
+}
+
+.list-group-item a.collapsed .fas {
+    transform: rotate(0deg);
+}
+
+/* ...existing code... */
