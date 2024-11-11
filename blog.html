@@ -15,6 +15,8 @@
             padding: 20px;
         }
     </style>
+    <!-- 引入Highlight.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -69,6 +71,10 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- AOS Animation JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- 引入Highlight.js库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <!-- 引入MathJax库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
     <!-- Custom Scripts -->
     <script src="scripts.js"></script>
     <!-- Remove the inline AOS.init script -->
@@ -85,6 +91,30 @@
     -->
 
     <script>
+        // 配置Marked.js以使用Highlight.js进行代码高亮
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                } else {
+                    return hljs.highlightAuto(code).value;
+                }
+            }
+        });
+
+        // 渲染Markdown后初始化Highlight.js和MathJax
+        function displayArticle(title, content) {
+            document.getElementById('articleContent').innerHTML = marked.parse(content);
+            // 初始化Highlight.js
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+            // 初始化MathJax
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise();
+            }
+        }
+
         // Remove Upload Handler
         /*
         // Handle Markdown File Upload
@@ -109,6 +139,7 @@
         function fetchAndDisplayArticles() {
             // List of markdown files
             const articles = [
+                { title: 'Hello World', filename: 'Hello World.md' },
                 { title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem', filename: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem.md' },
                 // Add more articles here
             ];
@@ -125,6 +156,14 @@
                         .then(response => response.text())
                         .then(markdown => {
                             document.getElementById('articleContent').innerHTML = marked.parse(markdown);
+                            // 初始化Highlight.js
+                            document.querySelectorAll('pre code').forEach((block) => {
+                                hljs.highlightBlock(block);
+                            });
+                            // 初始化MathJax
+                            if (typeof MathJax !== 'undefined') {
+                                MathJax.typesetPromise();
+                            }
                         })
                         .catch(error => {
                             console.error('Error loading markdown file:', error);

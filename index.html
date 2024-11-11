@@ -219,6 +219,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <!-- Add Typed.js library -->
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <!-- 引入Highlight.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -542,7 +544,35 @@
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <!-- Add Typed.js library -->
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<!-- 引入Highlight.js库 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<!-- 引入MathJax库 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
 <!-- Custom Scripts -->
 <script src="scripts.js"></script>
+<script>
+    // 配置Marked.js以使用Highlight.js进行代码高亮
+    marked.setOptions({
+        highlight: function(code, lang) {
+            if (hljs.getLanguage(lang)) {
+                return hljs.highlight(code, { language: lang }).value;
+            } else {
+                return hljs.highlightAuto(code).value;
+            }
+        }
+    });
+
+    // 初始化MathJax
+    function initMathJax() {
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise();
+        }
+    }
+
+    // ...existing code to render content...
+    // 调用initMathJax()在内容渲染后
+    initMathJax();
+</script>
 </body>
 </html>

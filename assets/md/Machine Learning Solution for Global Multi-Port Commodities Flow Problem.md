@@ -1,3 +1,5 @@
+
+
 # Machine Learning Solution for Global Multi-Port Commodities Flow Problem
 
 **Authors:** Jinyuan Huang, Yixuan Cheng, Ziming Dai, Leo Yang, Yuxuan Wu
@@ -57,17 +59,30 @@ The trigonometric function is a *sine* function, which typically contains a seas
 
 Then, we add up two functions:
 
-- \( f(x) = a \sin(wx) \)
-- \( g(x) = kx + b \)
-- \( h(x) = f(x) + g(x) = a \sin(wx) + kx + b \)
+$$
+f(x) = a \sin(wx)
+$$
 
-Where:
+$$
+g(x) = kx + b
+$$
 
-- \( f(x) \) simulates the *seasonality*.
-- \( g(x) \) simulates the *trend*.
-- \( h(x) \) is the final result of the entire linear regression.
-- \( a \), \( w \), \( k \), and \( b \) are parameters obtained through training.
+$$
+h(x) = f(x) + g(x) = a \sin(wx) + kx + b
+$$
 
+***Where***
+$$
+f(x) = a \sin(wx) \quad \text{(simulates the seasonality)}
+$$
+
+$$
+g(x) = kx + b \quad \text{(simulates the trend)}
+$$
+
+$$
+h(x) = f(x) + g(x) = a \sin(wx) + kx + b \quad \text{(final result of the entire linear regression)}
+$$
 The parameters were adjusted using historical data. After the training process, the curve-like function was executed, providing the project with a universal model.
 
 ![Fig 2: Linear regression prediction for 03_Sea](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfaUF21RAk3BPtcTIttX8WS8-c1GNgii5m7KROCVzr97Ppjz3ZlHmx6VzE28WiwlpWUbupWks5_21F9X0w5hLqTc473hL54untC7GFj5TA65Kla7B1ItfVoHO_IpfJCbYFP3rSPSa7sK_dLFfwVUxaGgPks?key=Zn0lWFJrpCncPRd_XfnnzQ)
@@ -80,9 +95,9 @@ Besides this, this linear regression model also has another limitation: if you a
 
 For example, the Port of Los Angeles is the biggest in the US, and the Port of Boston is small. In this case, we cannot use our curve-like linear regression model since it performs badly in both of these cases.
 
-![Fig 4a: 03_Los](https://lh7-rt.googleusercontent.com/docsz/AD_4nXck44nmZw_kxZ3NKT3WorJRoPA-L25PszJXlQQkNpOsmThfyEckqIqel3HnTGv5oJYQM7dYTNGHY45cQB__nHWtQegH2c644pNzgPVCYqPLv-PWbAKE32xSH89F40sKdfwDhC8NQytfN50WgBvNdVohIp8?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 4a: 03_Los](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfmjasHLtXGKPRt1UDchs-1eTkqqFbK5wUnSMxesvNLOuwlWy30LzStBJkfRpkelSG5fAZdCIKIxtnNu76K7wTejO3FF-xqaP7n3Ow-m3eJ5x6XQGOlRpx3FCqDQ_bf01KhieseaI4BTK9NBTwBb1L2xoY?key=f8ioHm0mBJ3pXxdfQr7K2g)
 
-![Fig 4b: 02_Bos](https://lh7-rt.googleusercontent.com/docsz/AD_4nXeBElyttdlOeNpaA4Z2LlhaXg-2vCH84iVw59BDzMS9ZtaKKUjIDMNEriC0utZUUG_zrlw5pKF8QcsQG5HSJBMRSpJZ-tnQlTPzarUG2Q-zfrxEeit0G5rrrTJa3D-ngwsdtVFHEivvaPWbvJGQH8MyRU_9?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 4b: 02_Bos](https://lh7-rt.googleusercontent.com/docsz/AD_4nXc00yzqXgU70kqK3R4p6k0nVPQTjRlECntVkmLWFwS_Z6UAHjDn6RoA1n1omevwMoG1zk5uQHeW6A6eVa2VQ8k_p9xVMuBAw0ul69cgOqm3TGiglUZmpYLuxUdkg43frIxYpmxPMZi8ZVQtR7JuANZllb-r?key=f8ioHm0mBJ3pXxdfQr7K2g)
 
 **Fig 4**: 03_Los (top), 02_Bos (bottom)
 
@@ -92,8 +107,12 @@ Consequently, another classical model—the SARIMAX model—was involved to rein
 
 **Formula of SARIMAX:**
 
-![SARIMAX Formula](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcaPlRinPc4y1SXsEplRTkunIi5At1vwuAmHR4XVviBz07qRmNVDMJiaax_JacKt-hhOqSStHob4BYWxJCBy1_VfnRyLkMk-RpvugJunofMySNEjDJDnKVmcEN3qzP4ieuNY4ul_LpgEZcgmWw5EUZgQC3n?key=Zn0lWFJrpCncPRd_XfnnzQ)
-
+$$
+\begin{align*}
+& (1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p)(1 - B)^d (1 - \Phi_1 B^s - \Phi_2 B^{2s} - \cdots - \Phi_P B^{Ps})(1 - B^s)^D y_t \\
+&= (1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q)(1 + \Theta_1 B^s + \Theta_2 B^{2s} + \cdots + \Theta_Q B^{Qs}) \epsilon_t + \beta X_t + \epsilon_t
+\end{align*}
+$$
 Although there are numerous variables in this formula, its usage is clear to understand. The SARIMAX model is utilized for time series forecasting, incorporating both seasonal and non-seasonal components along with external regressors. It accounts for autocorrelations, seasonal effects, and external influences, making it suitable for complex time series data such as sales, weather patterns, or economic indicators. By modeling these factors, SARIMAX provides accurate and comprehensive predictions.
 
 During this process, data from two ports showcased distinctive prediction performance: "19_Hou" in *Figure 5* and "09_Bos" in *Figure 6*. In the case of "19_Hou," the trend and seasonality predicted by the model approximate the realistic data. In contrast, "09_Bos" showed an obvious mismatch with realistic seasonal fluctuations.
@@ -102,7 +121,7 @@ Based on the results above, we can see that the SARIMAX model has great performa
 
 This is very common for sequence-predict models (which means the model only uses the historical sequence to predict itself, without adding extra dimensions). We will discuss it in our second experiment (3. Expanded Dimension Experiment).
 
-![Fig 5: SARIMAX prediction of 19_Hou](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfH3Dtrj8-SNgdFwJSIFmsQMSFO-D9OtIpkxcVJPEljDm09tU0Udh-Iakg2eH5Hm-5pNEQwPyF_6kIel8obenWN8uvCQJZOQIS6Z1IqKQ6dC1JAV4z9bNxNVMwrKIsvn_35W64ZtyPYnvPb5Sfqom9Ckf1W?key=Zn0lWFJrpCncPRd_XfnnzQ)
+![Fig 5: SARIMAX prediction of 19_Hou](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcaPlRinPc4y1SXsEplRTkunIi5At1vwuAmHR4XVviBz07qRmNVDMJiaax_JacKt-hhOqSStHob4BYWxJCBy1_VfnRyLkMk-RpvugJunofMySNEjDJDnKVmcEN3qzP4ieuNY4ul_LpgEZcgmWw5EUZgQC3n?key=Zn0lWFJrpCncPRd_XfnnzQ)
 
 ![Fig 6: SARIMAX prediction for 09_Bos](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfH3Dtrj8-SNgdFwJSIFmsQMSFO-D9OtIpkxcVJPEljDm09tU0Udh-Iakg2eH5Hm-5pNEQwPyF_6kIel8obenWN8uvCQJZOQIS6Z1IqKQ6dC1JAV4z9bNxNVMwrKIsvn_35W64ZtyPYnvPb5Sfqom9Ckf1W?key=Zn0lWFJrpCncPRd_XfnnzQ)
 
@@ -117,6 +136,8 @@ The error showcased in the figure leads us to assert it is because we tried to t
 ### 2.4 RNN Solution
 
 Based on the attempt with the DNN model, we sought a more suitable model—the RNN model. The RNN holds crucial advantages over the DNN in time series forecasting tasks due to its ability to capture temporal dependencies through recurrent connections. This unique structure allows RNNs to memorize and utilize information from previous time steps, making them precise and effective in modeling sequential data. Unlike DNNs, which struggle with time dependencies and require fixed input lengths, RNNs can handle variable-length sequences and retain long-term information. Variants like Long Short-Term Memory (LSTM) further enhance these capabilities, offering superior performance in tasks with complex temporal patterns and time-based correlations.
+
+![RNN Model](https://lh7-rt.googleusercontent.com/docsz/AD_4nXfdMQntf9xvZzYOaHLTe6PSNpatEdw-fWhv4jugxm1c-juwLaGWCZRqc_N6rDxTVFqrCL_uqK3FSvcS-EdMoN28QqqoJF2SOXYlkZVqPM357iLrefqqw0ms-CXoxhiOdGtga5RGr_f6VbZjqfEwM2lBPv1F?key=f8ioHm0mBJ3pXxdfQr7K2g)
 
 We used a simple LSTM model containing 2 LSTM layers and 2 dense layers; we also added 3 dropout layers and a batch normalization layer to prevent exploding gradients and overfitting.
 

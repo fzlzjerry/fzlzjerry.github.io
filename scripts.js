@@ -12,7 +12,7 @@ window.onscroll = function() {scrollFunction()};
 
 function scrollFunction() {
     if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-        scrollTopBtn.style.display = "block";
+        scrollTopBtn.style.display = "block"; 
     } else {
         scrollTopBtn.style.display = "none";
     }
@@ -120,9 +120,21 @@ if (window.location.pathname.endsWith('/blog.html')) {
         articleItem.textContent = title;
         articleItem.addEventListener('click', function(e) {
             e.preventDefault();
-            articleContent.innerHTML = marked.parse(content);
+            displayArticle(title, content);
         });
         articlesList.appendChild(articleItem);
+    }
+
+    function displayArticle(title, content) {
+        document.getElementById('articleContent').innerHTML = marked.parse(content);
+        // 初始化Highlight.js
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+        // 初始化MathJax
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise();
+        }
     }
 
     function loadArticles() {
