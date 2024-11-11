@@ -14,15 +14,32 @@
         .markdown-content {
             padding: 20px;
         }
+        /* Add matching navbar styles */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #343a40 !important;
+            font-weight: 500;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #007bff !important;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
     </style>
     <!-- 引入Highlight.js CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation Bar -->
+    <!-- Update Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Morax Cheng's Blog</a>
+            <a class="navbar-brand" href="index.html">
+                <img src="https://ice.frostsky.com/2024/11/09/d5c9d398dce910f059f29310c3127162.jpeg" alt="Logo" style="height: 40px;">
+                Morax Cheng
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,7 +51,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.html#github-stats">GitHub Stats</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
-                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/blog.html">Blog</a></li>
                 </ul>
             </div>
         </div>
