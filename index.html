@@ -556,16 +556,38 @@
     </div>
 </section>
 
-<!-- Add Testimonials Section -->
-<section id="testimonials">
+<!-- Testimonials Section -->
+<section id="testimonials" data-aos="fade-up">
     <div class="container" data-aos="fade-up">
         <h2 class="text-center">Testimonials</h2>
-        <!-- Testimonials content -->
-        <div class="testimonial-item">
-            <p>"Morax is a highly skilled developer with a keen eye for detail."</p>
-            <h5>- Alex Huang</h5>
+        <!-- Testimonials Carousel -->
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-wrap="true" data-bs-touch="true" data-bs-interval="3000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <p>"Morax is a highly skilled developer with a keen eye for detail."</p>
+                    <h5>- Alex Huang</h5>
+                </div>
+                <div class="carousel-item">
+                    <p>"Morax consistently delivers high-quality work and is a pleasure to collaborate with."</p>
+                    <h5>- Benjamin Dai</h5>
+                </div>
+                <div class="carousel-item">
+                    <p>"His problem-solving abilities are exceptional and greatly benefit our projects."</p>
+                    <h5>- Georhan Wen</h5>
+                </div>
+            </div>
+            <!-- 移除手动轮播控制按钮，启用左右滑动和鼠标滚轮 -->
+            <!--
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span> 
+            </button>
+            -->
         </div>
-        <!-- ...more testimonials... -->
     </div>
 </section>
 

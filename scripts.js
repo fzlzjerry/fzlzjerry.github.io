@@ -252,6 +252,37 @@ In this article, we explore solutions to optimize global commodity flows.
             hljs.highlightElement(block);
         });
     });
+
+    const carouselElement = document.getElementById('testimonialCarousel');
+    const carousel = new bootstrap.Carousel(carouselElement, {
+        interval: 3000,
+        wrap: true,
+        touch: true,
+    });
+
+    // Add a timer variable to manage the pause duration
+    let carouselResumeTimer;
+
+    // Modify the wheel event listener
+    carouselElement.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            carousel.prev();
+        } else {
+            carousel.next();
+        }
+        carousel.pause(); // Pause carousel after manual switch
+
+        // Clear any existing timer to prevent multiple timers
+        if (carouselResumeTimer) {
+            clearTimeout(carouselResumeTimer);
+        }
+
+        // Set a new timer to resume carousel cycling after 10 seconds
+        carouselResumeTimer = setTimeout(() => {
+            carousel.cycle(); // Resume auto-sliding
+        }, 10000); // 10000 milliseconds = 10 seconds
+    });
 }
 
 // Removed Node.js-specific code for updating RSS XML
