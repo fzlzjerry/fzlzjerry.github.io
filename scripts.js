@@ -164,12 +164,12 @@ if (window.location.pathname.endsWith('/blog.html')) {
         // 使用 marked.js 解析内容
         const htmlContent = marked.parse(content);
 
-        // 将内容插入页面
+        // 将���容插入页面
         document.getElementById('articleContent').innerHTML = htmlContent;
 
-        // 初始化 Highlight.js
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightBlock(block);
+        // 重新初始化 Highlight.js
+        document.querySelectorAll('#articleContent pre code').forEach((block) => {
+            hljs.highlightElement(block);
         });
 
         // 初始化 MathJax
@@ -184,6 +184,56 @@ if (window.location.pathname.endsWith('/blog.html')) {
     function loadArticles() {
         // Implementation similar to blog.html's fetchAndDisplayArticles
     }
+
+    // Function to Fetch and Display Articles from assets/md
+    function fetchAndDisplayArticles() {
+        // List of markdown files
+        const articles = [
+            { title: 'Hello World', filename: 'Hello World.md' },
+            { title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem', filename: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem.md' },
+            // Add more articles here
+        ];
+
+        const articlesList = document.getElementById('articlesList');
+        articles.forEach(article => {
+            const articleItem = document.createElement('a');
+            articleItem.href = "#";
+            articleItem.className = "list-group-item list-group-item-action";
+            articleItem.textContent = article.title;
+            articleItem.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch(`/assets/md/${article.filename}`)
+                    .then(response => response.text())
+                    .then(markdown => {
+                        document.getElementById('articleContent').innerHTML = marked.parse(markdown);
+                        // 初始化Highlight.js
+                        document.querySelectorAll('pre code').forEach((block) => {
+                            hljs.highlightBlock(block);
+                        });
+                        // 初始���行号
+                        document.querySelectorAll('pre code').forEach((block) => {
+                            hljs.lineNumbersBlock(block);
+                        });
+                        // 初始化MathJax
+                        if (typeof MathJax !== 'undefined') {
+                            MathJax.typesetPromise();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading markdown file:', error);
+                    });
+            });
+            articlesList.appendChild(articleItem);
+        });
+    }
 }
+
+// 更新 Highlight.js 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化 Highlight.js
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightElement(block);
+    });
+});
 
 // No additional changes needed for collapsible functionality as Bootstrap handles it.

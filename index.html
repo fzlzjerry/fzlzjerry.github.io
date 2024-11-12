@@ -16,23 +16,23 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
+            background-color: #ffffff; /* 白色背景 */
+            color: #0d6efd; /* 蓝色文本 */
             scroll-behavior: smooth;
         }
         /* Navigation Bar */
         .navbar {
-            background-color: #ffffff;
+            background-color: #0d6efd; /* 蓝色背景 */
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .navbar-brand, .navbar-nav .nav-link {
-            color: #343a40 !important;
+            color: #ffffff !important; /* 白色文本 */
             font-weight: 500;
             transition: color 0.3s, background-color 0.3s;
         }
         .navbar-nav .nav-link:hover {
-            color: #007bff !important;
-            background-color: rgba(0, 123, 255, 0.1);
+            color: #ffd700 !important; /* 悬停时黄色文本 */
+            background-color: rgba(255, 255, 255, 0.1);
         }
         /* Header Section */
         header {
@@ -179,8 +179,8 @@
         }
         /* Footer */
         footer {
-            background-color: #f8f9fa;
-            color: #6c757d;
+            background-color: #0d6efd; /* 蓝色背景 */
+            color: #ffffff; /* 白色文本 */
             padding: 20px 0;
             text-align: center;
         }
@@ -189,8 +189,8 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: #007bff;
-            color: #ffffff;
+            background-color: #0d6efd; /* 蓝色按钮 */
+            color: #ffffff; /* 白色图标 */
             border: none;
             border-radius: 50%;
             padding: 15px;
@@ -201,7 +201,7 @@
             transition: background-color 0.3s;
         }
         #scrollTop:hover {
-            background-color: #0056b3;
+            background-color: #0056b3; /* 悬停时深蓝色按钮 */
         }
         /* Enhance AOS animations */
         [data-aos] {
@@ -213,6 +213,13 @@
         .progress-bar {
             transition: width 2s ease;
             width: 0;
+        }
+        /* 链接颜色 */
+        .markdown-content a {
+            color: #0d6efd; /* 蓝色链接 */
+        }
+        .markdown-content a:hover {
+            color: #0056b3; /* 悬停时深蓝色链接 */
         }
     </style>
     <!-- Font Awesome Icons -->

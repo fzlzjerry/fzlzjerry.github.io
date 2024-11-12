@@ -10,27 +10,51 @@
     <style>
         body {
             padding-top: 70px;
+            background-color: #ffffff; /* 白色背景 */
+            color: #0d6efd; /* 蓝色文本 */
         }
         .markdown-content {
             padding: 20px;
         }
         /* Add matching navbar styles */
         .navbar {
-            background-color: #ffffff;
+            background-color: #0d6efd; /* 蓝色背景 */
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .navbar-brand, .navbar-nav .nav-link {
-            color: #343a40 !important;
+            color: #ffffff !important; /* 白色文本 */
             font-weight: 500;
             transition: color 0.3s, background-color 0.3s;
         }
         .navbar-nav .nav-link:hover {
-            color: #007bff !important;
-            background-color: rgba(0, 123, 255, 0.1);
+            color: #ffd700 !important; /* 悬停时黄色文本 */
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        /* 链接颜色 */
+        .markdown-content a {
+            color: #0d6efd; /* 蓝色链接 */
+        }
+        .markdown-content a:hover {
+            color: #0056b3; /* 悬停时深蓝色链接 */
+        }
+        /* 页脚样式 */
+        footer {
+            background-color: #0d6efd; /* 蓝色背景 */
+            color: #ffffff; /* 白色文本 */
+        }
+        /* Scroll to Top Button */
+        #scrollTop {
+            background-color: #0d6efd; /* 蓝色按钮 */
+            color: #ffffff; /* 白色图标 */
+        }
+        #scrollTop:hover {
+            background-color: #0056b3; /* 悬停时深蓝色��钮 */
         }
     </style>
     <!-- 引入Highlight.js CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
+    <!-- 引入行号样式 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/hljs-line-numbers.min.css" rel="stylesheet">
     <!-- Link to styles.css -->
     <link rel="stylesheet" href="styles.css">
     <!-- Include Tocbot CSS -->
@@ -185,6 +209,13 @@
 
         // Initialize Articles on Page Load
         document.addEventListener('DOMContentLoaded', fetchAndDisplayArticles);
+    </script>
+    <!-- 添加行号插件支持 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <script>
+        hljs.highlightAll();
+        hljs.initLineNumbersOnLoad();
     </script>
 </body>
 </html>
