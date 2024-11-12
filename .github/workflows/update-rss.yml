@@ -37,10 +37,10 @@ jobs:
         run: node scripts.js update-rss
 
       - name: Pull latest changes
-        run: git pull --rebase
+        run: git pull origin main --rebase --autostash
 
       - name: Commit and push changes
         run: |
           git add rss.xml
           git commit -m "Update RSS feed [skip ci]" || echo "No changes to commit"
-          git push origin HEAD:main
+          git push origin HEAD:main || git push origin HEAD:main --force
