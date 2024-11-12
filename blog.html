@@ -10,59 +10,61 @@
     <style>
         body {
             padding-top: 70px;
-            background-color: #ffffff; /* 白色背景 */
-            color: #0d6efd; /* 蓝色文本 */
+            background-color: #ffffff; /* White background */
+            color: #0d6efd; /* Blue text */
         }
         .markdown-content {
             padding: 20px;
         }
         /* Add matching navbar styles */
         .navbar {
-            background-color: #0d6efd; /* 蓝色背景 */
+            background-color: #0d6efd; /* Blue background */
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .navbar-brand, .navbar-nav .nav-link {
-            color: #ffffff !important; /* 白色文本 */
+            color: #ffffff !important; /* White text */
             font-weight: 500;
             transition: color 0.3s, background-color 0.3s;
         }
         .navbar-nav .nav-link:hover {
-            color: #ffd700 !important; /* 悬停时黄色文本 */
+            color: #ffd700 !important; /* Hover state yellow text */
             background-color: rgba(255, 255, 255, 0.1);
         }
-        /* 链接颜色 */
+        /* Link colors */
         .markdown-content a {
-            color: #0d6efd; /* 蓝色链接 */
+            color: #0d6efd; /* Blue links */
         }
         .markdown-content a:hover {
-            color: #0056b3; /* 悬停时深蓝色链接 */
+            color: #0056b3; /* Hover state dark blue links */
         }
-        /* 页脚样式 */
+        /* Footer styles */
         footer {
-            background-color: #0d6efd; /* 蓝色背景 */
-            color: #ffffff; /* 白色文本 */
+            background-color: #0d6efd; /* Blue background */
+            color: #ffffff; /* White text */
         }
         /* Scroll to Top Button */
         #scrollTop {
-            background-color: #0d6efd; /* 蓝色按钮 */
-            color: #ffffff; /* 白色图标 */
+            background-color: #0d6efd; /* Blue button */
+            color: #ffffff; /* White icon */
         }
         #scrollTop:hover {
-            background-color: #0056b3; /* 悬停时深蓝色��钮 */
+            background-color: #0056b3; /* Hover state dark blue button */
         }
     </style>
-    <!-- 引入Highlight.js CSS -->
+    <!-- Include Highlight.js CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
-    <!-- 引入行号样式 -->
+    <!-- Include line number styles -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/hljs-line-numbers.min.css" rel="stylesheet">
     <!-- Link to styles.css -->
     <link rel="stylesheet" href="styles.css">
     <!-- Include Tocbot CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
-    <!-- 添加RSS源链接 -->
+    <!-- Add RSS feed link -->
     <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+    <!-- Include Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <!-- MathJax 配置 -->
+    <!-- MathJax Configuration -->
     <script>
         MathJax = {
             tex: {
@@ -75,7 +77,7 @@
             }
         };
     </script>
-    <!-- 引入 MathJax 脚本 -->
+    <!-- Include MathJax script -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
@@ -98,6 +100,11 @@
                     <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
                     <li class="nav-item"><a class="nav-link" href="/blog.html">Blog</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="rss.xml" target="_blank">
+                            <i class="fas fa-rss"></i> RSS
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -117,7 +124,7 @@
             <div class="col-md-9">
                 <div id="toc"></div>
                 <div id="articleContent" class="markdown-content">
-                    <!-- 内容将在此处渲染 -->
+                    <!-- Content will be rendered here -->
                 </div>
             </div>
         </div>
@@ -129,7 +136,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- AOS Animation JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <!-- 引入Highlight.js库 -->
+    <!-- Include Highlight.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <!-- Include Tocbot JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
@@ -140,16 +147,16 @@
     <script>
         // Remove Upload Handler
         AOS.init({
-            duration: 1000, // 统一动画持续时间
-            easing: 'ease-in-out', // 统一缓动函数
-            once: false, // 允许动画循环播放
-            mirror: false, // 禁止动画在离开时触发
+            duration: 1000, // Unified animation duration
+            easing: 'ease-in-out', // Unified easing function
+            once: false, // Allow animation to loop
+            mirror: false, // Disable animation on leave
         });
     </script>
     -->
 
     <script>
-        // 删除在 blog.html 中对 marked.js 的配置，确保只在 scripts.js 中配置
+        // Remove the configuration of marked.js in blog.html, ensure it is only configured in scripts.js
 
         // Remove Upload Handler
         /*
@@ -192,11 +199,11 @@
                         .then(response => response.text())
                         .then(markdown => {
                             document.getElementById('articleContent').innerHTML = marked.parse(markdown);
-                            // 初始化Highlight.js
+                            // Initialize Highlight.js
                             document.querySelectorAll('pre code').forEach((block) => {
                                 hljs.highlightBlock(block);
                             });
-                            // 初始化MathJax
+                            // Initialize MathJax
                             if (typeof MathJax !== 'undefined') {
                                 MathJax.typesetPromise();
                             }
@@ -212,7 +219,7 @@
         // Initialize Articles on Page Load
         document.addEventListener('DOMContentLoaded', fetchAndDisplayArticles);
     </script>
-    <!-- 添加行号插件支持 -->
+    <!-- Add line number plugin support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
     <script>

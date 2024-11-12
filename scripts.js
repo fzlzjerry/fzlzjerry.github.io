@@ -125,10 +125,10 @@ if (window.location.pathname.endsWith('/blog.html')) {
         articlesList.appendChild(articleItem);
     }
 
-    // 自定义标记器：处理数学公式
+    // Custom marker: handle mathematical formulas
     const mathExtension = {
         name: 'math',
-        level: 'inline', // 级别：inline 或 block
+        level: 'inline', // Level: inline or block
         start(src) {
             const match = src.match(/(\${1,2})/);
             return match ? match.index : -1;
@@ -147,37 +147,37 @@ if (window.location.pathname.endsWith('/blog.html')) {
         },
         renderer(token) {
             if (token.displayMode) {
-                // 行间公式
+                // Display mode formula
                 return `$$${token.text}$$`;
             } else {
-                // 行内公式
+                // Inline formula
                 return `$${token.text}$`;
             }
         }
     };
 
-    // 使用自定义标记器
+    // Use custom marker
     marked.use({ extensions: [mathExtension] });
 
-    // 修改 displayArticle 函数
+    // Modify displayArticle function
     function displayArticle(title, content) {
-        // 使用 marked.js 解析内容
+        // Use marked.js to parse content
         const htmlContent = marked.parse(content);
 
-        // 将内容插入页面
+        // Insert content into the page
         document.getElementById('articleContent').innerHTML = htmlContent;
 
-        // 重新初始化 Highlight.js
+        // Reinitialize Highlight.js
         document.querySelectorAll('#articleContent pre code').forEach((block) => {
             hljs.highlightElement(block);
         });
 
-        // 初始化 MathJax
+        // Initialize MathJax
         if (typeof MathJax !== 'undefined') {
             MathJax.typesetPromise();
         }
 
-        // 刷新 Tocbot
+        // Refresh Tocbot
         tocbot.refresh();
     }
 
@@ -185,15 +185,34 @@ if (window.location.pathname.endsWith('/blog.html')) {
         // Implementation similar to blog.html's fetchAndDisplayArticles
     }
 
-    // Function to Fetch and Display Articles from assets/md
-    function fetchAndDisplayArticles() {
-        // List of markdown files
-        const articles = [
-            { title: 'Hello World', filename: 'Hello World.md' },
-            { title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem', filename: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem.md' },
-            // Add more articles here
-        ];
+    // Object containing all markdown articles
+    const articlesContent = {
+        'Hello World': `
+# Hello World
 
+Welcome to my blog! This is my first post.
+
+<!-- ...rest of the content... -->
+`,
+        'Machine Learning Solution for Global Multi-Port Commodities Flow Problem': `
+# Machine Learning Solution for Global Multi-Port Commodities Flow Problem
+
+In this article, we explore solutions to optimize global commodity flows.
+
+<!-- ...rest of the content... -->
+`,
+        // Add more articles here
+    };
+
+    // Updated list of articles
+    const articles = [
+        { title: 'Hello World', content: articlesContent['Hello World'] },
+        { title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem', content: articlesContent['Machine Learning Solution for Global Multi-Port Commodities Flow Problem'] },
+        // Add more articles here
+    ];
+
+    // Modify fetchAndDisplayArticles function
+    function fetchAndDisplayArticles() {
         const articlesList = document.getElementById('articlesList');
         articles.forEach(article => {
             const articleItem = document.createElement('a');
@@ -202,35 +221,31 @@ if (window.location.pathname.endsWith('/blog.html')) {
             articleItem.textContent = article.title;
             articleItem.addEventListener('click', function(e) {
                 e.preventDefault();
-                fetch(`/assets/md/${article.filename}`)
-                    .then(response => response.text())
-                    .then(markdown => {
-                        document.getElementById('articleContent').innerHTML = marked.parse(markdown);
-                        // 初始化Highlight.js
-                        document.querySelectorAll('pre code').forEach((block) => {
-                            hljs.highlightBlock(block);
-                        });
-                        // 初始化行号
-                        document.querySelectorAll('pre code').forEach((block) => {
-                            hljs.lineNumbersBlock(block);
-                        });
-                        // 初始化MathJax
-                        if (typeof MathJax !== 'undefined') {
-                            MathJax.typesetPromise();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error loading markdown file:', error);
-                    });
+                document.getElementById('articleContent').innerHTML = marked.parse(article.content);
+                // Initialize Highlight.js
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+                // Initialize MathJax
+                if (typeof MathJax !== 'undefined') {
+                    MathJax.typesetPromise();
+                }
+                // Refresh Tocbot if necessary
+                if (window.tocbot) {
+                    tocbot.refresh();
+                }
             });
             articlesList.appendChild(articleItem);
         });
     }
+
+    // Initialize articles on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayArticles);
 }
 
-// 更新 Highlight.js 初始化
+// Update Highlight.js initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化 Highlight.js
+    // Initialize Highlight.js
     document.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightElement(block);
     });
@@ -240,20 +255,20 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * 更新RSS源
- * 需要在服务器端执行此函数，例如使用Node.js
+ * Update RSS feed
+ * This function needs to be executed on the server side, such as using Node.js
  */
 function updateRSS() {
     const rssPath = path.join(__dirname, 'rss.xml');
     const blogPosts = [
         {
-            title: '机器学习解决全球多港口商品流动问题',
+            title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem',
             link: 'https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem',
-            description: '本文讨论了如何使用机器学习算法优化全球多港口的商品流动问题。',
+            description: 'This article discusses how to use machine learning algorithms to optimize global multi-port commodity flows.',
             pubDate: new Date().toUTCString(),
             guid: 'https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem'
         },
-        // 添加更多博客文章对象
+        // Add more blog post objects
     ];
 
     let rssContent = `<?xml version="1.0" encoding="UTF-8"?>
@@ -261,7 +276,7 @@ function updateRSS() {
     <channel>
         <title>Morax Cheng's Blog</title>
         <link>https://fzlzjerry.github.io/</link>
-        <description>最新的博客文章更新</description>
+        <description>Latest blog post updates</description>
         <language>zh-cn</language>
         <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
         `;
@@ -283,10 +298,10 @@ function updateRSS() {
 </rss>`;
 
     fs.writeFileSync(rssPath, rssContent, 'utf8');
-    console.log('RSS源已更新');
+    console.log('RSS feed updated');
 }
 
-// 如果通过命令行调用，则执行更新
+// If called from the command line, execute the update
 if (require.main === module) {
     const args = process.argv.slice(2);
     if (args.includes('update-rss')) {
