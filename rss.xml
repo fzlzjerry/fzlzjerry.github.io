@@ -3,16 +3,17 @@
     <channel>
         <title>Morax Cheng's Blog</title>
         <link>https://fzlzjerry.github.io/</link>
-        <description>最新的博客文章更新</description>
-        <language>zh-cn</language>
+        <description>Latest blog post updates</description>
+        <language>en-us</language>
         <lastBuildDate>Mon, 27 Apr 2024 00:00:00 +0000</lastBuildDate>
-        <!-- 博客文章项 -->
+        <!-- Blog post items -->
         <item>
             <title>Hello World</title>
             <link>https://fzlzjerry.github.io/blog.html#hello-world</link>
             <description>This is the first article of my blog.</description>
             <pubDate>Mon, 13 Apr 2024 10:00:00 +0000</pubDate>
             <guid>https://fzlzjerry.github.io/blog.html#hello-world</guid>
+        </item>
         <item>
             <title>Machine Learning Solution for Global Multi-Port Commodities Flow Problem</title>
             <link>https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem</link>
@@ -20,6 +21,6 @@
             <pubDate>Mon, 20 Apr 2024 10:00:00 +0000</pubDate>
             <guid>https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem</guid>
         </item>
-        <!-- 添加更多博客文章项 -->
+        <!-- Add more blog post items -->
     </channel>
 </rss>
