@@ -36,11 +36,10 @@ jobs:
       - name: Update RSS feed
         run: node scripts.js update-rss
 
-      - name: Pull latest changes
+      - name: Pull latest changes from remote
         run: |
-          git fetch origin
-          git reset --soft origin/main
-          git pull origin main --rebase --autostash
+          git fetch origin main
+          git rebase origin/main
 
       - name: Commit and push changes
         run: |
