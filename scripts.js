@@ -307,3 +307,9 @@ In this article, we explore solutions to optimize global commodity flows.
 // }
 
 // module.exports = { updateRSS };
+
+// Initialize Highlight.js and the line numbers plugin
+document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    hljs.initLineNumbersOnLoad();
+});
