@@ -36,6 +36,9 @@ jobs:
       - name: Update RSS feed
         run: node scripts.js update-rss
 
+      - name: Pull latest changes
+        run: git pull --rebase
+
       - name: Commit and push changes
         run: |
           git add rss.xml
