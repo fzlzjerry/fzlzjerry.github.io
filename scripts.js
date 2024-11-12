@@ -254,63 +254,25 @@ In this article, we explore solutions to optimize global commodity flows.
     });
 }
 
-// Node.js-specific code
-const fs = require('fs');
-const path = require('path');
+// Removed Node.js-specific code for updating RSS XML
+// const fs = require('fs');
+// const path = require('path');
 
 /**
  * Update RSS feed
  * This function needs to be executed on the server side, such as using Node.js
  */
-function updateRSS() {
-    const rssPath = path.join(__dirname, 'rss.xml');
-    const blogPosts = [
-        {
-            title: 'Machine Learning Solution for Global Multi-Port Commodities Flow Problem',
-            link: 'https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem',
-            description: 'This article discusses how to use machine learning algorithms to optimize global multi-port commodity flows.',
-            pubDate: new Date().toUTCString(),
-            guid: 'https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem'
-        },
-        // Add more blog post objects
-    ];
+// function updateRSS() {
+//     const rssPath = path.join(__dirname, 'rss.xml');
+//     // ...rest of the function...
+// }
 
-    let rssContent = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-    <channel>
-        <title>Morax Cheng's Blog</title>
-        <link>https://fzlzjerry.github.io/</link>
-        <description>Latest blog post updates</description>
-        <language>zh-cn</language>
-        <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-        `;
+// // If called from the command line, execute the update
+// if (require.main === module) {
+//     const args = process.argv.slice(2);
+//     if (args.includes('update-rss')) {
+//         updateRSS();
+//     }
+// }
 
-    blogPosts.forEach(post => {
-        rssContent += `
-        <item>
-            <title>${post.title}</title>
-            <link>${post.link}</link>
-            <description>${post.description}</description>
-            <pubDate>${post.pubDate}</pubDate>
-            <guid>${post.guid}</guid>
-        </item>
-        `;
-    });
-
-    rssContent += `
-    </channel>
-</rss>`;
-
-    fs.writeFileSync(rssPath, rssContent, 'utf8');
-    console.log('RSS feed updated');
-}
-
-// If called from the command line, execute the update
-if (require.main === module) {
-    const args = process.argv.slice(2);
-    if (args.includes('update-rss')) {
-        updateRSS();
-    }
-}
-
-module.exports = { updateRSS };
+// module.exports = { updateRSS };
