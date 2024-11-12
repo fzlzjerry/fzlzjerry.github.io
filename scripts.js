@@ -164,7 +164,7 @@ if (window.location.pathname.endsWith('/blog.html')) {
         // 使用 marked.js 解析内容
         const htmlContent = marked.parse(content);
 
-        // 将���容插入页面
+        // 将内容插入页面
         document.getElementById('articleContent').innerHTML = htmlContent;
 
         // 重新初始化 Highlight.js
@@ -210,7 +210,7 @@ if (window.location.pathname.endsWith('/blog.html')) {
                         document.querySelectorAll('pre code').forEach((block) => {
                             hljs.highlightBlock(block);
                         });
-                        // 初始���行号
+                        // 初始化行号
                         document.querySelectorAll('pre code').forEach((block) => {
                             hljs.lineNumbersBlock(block);
                         });
@@ -236,4 +236,62 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// No additional changes needed for collapsible functionality as Bootstrap handles it.
+const fs = require('fs');
+const path = require('path');
+
+/**
+ * 更新RSS源
+ * 需要在服务器端执行此函数，例如使用Node.js
+ */
+function updateRSS() {
+    const rssPath = path.join(__dirname, 'rss.xml');
+    const blogPosts = [
+        {
+            title: '机器学习解决全球多港口商品流动问题',
+            link: 'https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem',
+            description: '本文讨论了如何使用机器学习算法优化全球多港口的商品流动问题。',
+            pubDate: new Date().toUTCString(),
+            guid: 'https://fzlzjerry.github.io/blog.html#machine-learning-solution-for-global-multi-port-commodities-flow-problem'
+        },
+        // 添加更多博客文章对象
+    ];
+
+    let rssContent = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Morax Cheng's Blog</title>
+        <link>https://fzlzjerry.github.io/</link>
+        <description>最新的博客文章更新</description>
+        <language>zh-cn</language>
+        <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+        `;
+
+    blogPosts.forEach(post => {
+        rssContent += `
+        <item>
+            <title>${post.title}</title>
+            <link>${post.link}</link>
+            <description>${post.description}</description>
+            <pubDate>${post.pubDate}</pubDate>
+            <guid>${post.guid}</guid>
+        </item>
+        `;
+    });
+
+    rssContent += `
+    </channel>
+</rss>`;
+
+    fs.writeFileSync(rssPath, rssContent, 'utf8');
+    console.log('RSS源已更新');
+}
+
+// 如果通过命令行调用，则执行更新
+if (require.main === module) {
+    const args = process.argv.slice(2);
+    if (args.includes('update-rss')) {
+        updateRSS();
+    }
+}
+
+module.exports = { updateRSS };
