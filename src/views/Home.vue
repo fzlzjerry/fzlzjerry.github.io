@@ -193,7 +193,6 @@
         <img src="https://icp.gov.moe/images/ico64.png" alt="萌国ICP备案" width="20">
         <a target="_blank" href="https://icp.gov.moe/?keyword=morax.blog" title="萌ICP备20243112号" style="color: white;">萌ICP备20243112号</a>
         <a href="https://icp.gs/?id=20242988" title="岸号:20242988号" style="color: white;"><img src="https://icp.gs/assets/images/icp.png" alt="岸号:" width="20">岸号:20242988号</a>
-        <a href="https://icp.snzy.cc/?id=2024120000" title="梵AIA盟2024120000号" target="_blank" style="color: white;"><img style="width:20px;height:20px;" src="https://icp.snzy.cc/static/picture/icpba.png">梵AIA盟2024120000号</a>
         <a href="https://icp.n3v.cn/beian/ICP-2024120177.html" title="易AIA盟2024120177号" target="_blank" style="color: white"><img style="width:20px;height:20px;" src="https://icp.n3v.cn/static/picture/icplogoi.png">易AIA盟2024120177号</a>
     </p>
 </footer>
