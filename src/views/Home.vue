@@ -1148,28 +1148,6 @@ section h2::after {
   }
 }
 
-/* GitHub Stats 响应式优化 */
-#github-stats .container {
-  overflow-x: hidden;
-}
-
-#github-stats img {
-  max-width: 100%;
-  height: auto;
-  margin: 10px 0;
-}
-
-@media (max-width: 768px) {
-  #github-stats .container {
-    overflow-x: auto;
-    padding: 0 15px;
-  }
-
-  #github-stats img {
-    max-width: none;
-    height: 120px;
-  }
-}
 
 /* Testimonials 响应式优化 */
 .testimonial-content {
