@@ -80,8 +80,8 @@
     </div>
 </section>
 
-<!-- GitHub Stats Section -->
-<section id="github-stats">
+<!-- Remove GitHub Stats Section -->
+<!-- <section id="github-stats">
     <div class="container text-center">
         <h2 data-aos="fade-up">GitHub Stats</h2>
         <div data-aos="fade-up">
@@ -94,7 +94,7 @@
             </a>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Testimonials Section -->
 <section id="testimonials" data-aos="fade-up">
@@ -591,7 +591,7 @@ section {
   }
 }
 
-/* Global link styles - 修复所��链接颜色 */
+/* Global link styles - 修复所有链接颜色 */
 a {
   color: var(--primary-color);
   text-decoration: none;
