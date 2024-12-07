@@ -17,6 +17,9 @@
           <a href="https://instagram.com/moraxcheng" target="_blank" class="social-icon">
             <i class="fab fa-instagram"></i>
           </a>
+          <a href="https://discord.gg/F2BbkNfh" target="_blank" class="social-icon">
+            <i class="fab fa-discord"></i>
+          </a>
           <a href="mailto:james20081204@gmail.com" class="social-icon">
             <i class="fas fa-envelope"></i>
           </a>

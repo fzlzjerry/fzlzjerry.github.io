@@ -25,6 +25,11 @@ const router = createRouter({
       path: '/igem',
       name: 'IgemPage',
       component: () => import('./views/iGEM.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*', 
+      name: 'NotFound', 
+      component: NotFound
     }
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -44,4 +49,6 @@ app.use(router)
 app.mount('#app')
 
 // Import Bootstrap JS
-import 'bootstrap'
+import 'bootstrap' 
+import NotFound from './views/NotFound.vue'
+
