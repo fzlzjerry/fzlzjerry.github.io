@@ -1,0 +1,189 @@
+:root {
+    --primary-color: #c1a173;
+    --secondary-color: #8c7355;
+    --accent-color: #fbd46d;
+    --background-color: #f8f9fa;
+    --text-color: #2c3e50;
+    --border-color: #e8eaed;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+header {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.8em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+header .date {
+    color: var(--secondary-color);
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+main section {
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+main section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+main h2 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 12px;
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
+main ul, main ol {
+    padding-left: 25px;
+    margin: 20px 0;
+}
+
+main li {
+    margin: 16px 0;
+    color: var(--text-color);
+    font-size: 1.1em;
+    line-height: 1.7;
+    transition: all 0.2s ease;
+    padding: 8px 0;
+    border-radius: 6px;
+}
+
+main li:hover {
+    transform: translateX(8px);
+    color: var(--primary-color);
+    background: var(--border-color);
+    padding-left: 10px;
+}
+
+main li:before {
+    display: none;
+}
+
+main ul li {
+    list-style-type: none;
+    position: relative;
+}
+
+main ul li::before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: -20px;
+}
+
+main ol {
+    counter-reset: item;
+}
+
+main ol li {
+    list-style-type: none;
+    counter-increment: item;
+    position: relative;
+}
+
+main ol li::before {
+    content: counter(item) ".";
+    color: var(--primary-color);
+    font-weight: 600;
+    position: absolute;
+    left: -25px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: var(--accent-color);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease;
+}
+
+footer.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(193, 161, 115, 0.3);
+}
+
+button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(193, 161, 115, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(193, 161, 115, 0.2);
+}
+
+/* 添加暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1a1a1a;
+        --text-color: #e0e0e0;
+        --border-color: #333;
+    }
+
+    .container {
+        background: #2d2d2d;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    main section {
+        background: #2d2d2d;
+        border-color: var(--border-color);
+    }
+
+    main li:hover {
+        background: #333;
+    }
+}
