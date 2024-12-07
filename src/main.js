@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router' // Changed import
 import App from './App.vue'
 
 // Import CSS dependencies
@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 // Create router
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(), // Changed to createWebHashHistory
   routes: [
     { 
       path: '/',
