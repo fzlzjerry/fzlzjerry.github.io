@@ -34,8 +34,29 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
   name: 'App',
+  setup() {
+    useHead({
+      titleTemplate: '%s | Morax\'s Blog',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'author', content: 'Morax Cheng' },
+        { name: 'robots', content: 'index, follow' },
+        { property: 'og:site_name', content: "Morax's Blog" },
+        { property: 'og:locale', content: 'en_US' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:creator', content: '@moraxcheng' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'canonical', href: 'https://morax.blog' }
+      ]
+    })
+  },
   data() {
     return {
       showScrollTop: false

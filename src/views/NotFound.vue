@@ -10,8 +10,19 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
-  name: 'NotFound'
+  name: 'NotFound',
+  setup() {
+    useHead({
+      title: '404 - Page Not Found',
+      meta: [
+        { name: 'description', content: 'The requested page could not be found on Morax\'s Blog.' },
+        { name: 'robots', content: 'noindex, nofollow' }
+      ]
+    })
+  }
 }
 </script>
 

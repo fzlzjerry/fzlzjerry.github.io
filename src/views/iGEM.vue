@@ -31,8 +31,22 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
   name: 'IgemPage',
+  setup() {
+    useHead({
+      title: 'iGEM Weekly Reports - Synthetic Biology Research',
+      meta: [
+        { name: 'description', content: 'Weekly reports documenting progress and insights from iGEM synthetic biology research and competition preparation.' },
+        { name: 'keywords', content: 'iGEM, Synthetic Biology, Research Reports, Weekly Updates, Biology Competition, Student Research' },
+        { property: 'og:title', content: 'iGEM Weekly Reports - Synthetic Biology Research' },
+        { property: 'og:description', content: 'Follow our journey in synthetic biology research and iGEM competition preparation through detailed weekly reports.' },
+        { property: 'og:type', content: 'article' }
+      ]
+    })
+  },
   data() {
     return {
       weeklyReports: [

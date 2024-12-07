@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router' // Changed import
+import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
+import { createHead } from '@vueuse/head'
+import NotFound from './views/NotFound.vue'
 
 // Import CSS dependencies
 import 'bootstrap/dist/css/bootstrap.css'
@@ -9,7 +11,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 // Create router
 const router = createRouter({
-  history: createWebHashHistory(), // Changed to createWebHashHistory
+  history: createWebHashHistory(),
   routes: [
     { 
       path: '/',
@@ -45,10 +47,12 @@ const router = createRouter({
 
 // Create and mount app
 const app = createApp(App)
+const head = createHead()
+
 app.use(router)
+app.use(head)
 app.mount('#app')
 
 // Import Bootstrap JS
-import 'bootstrap' 
-import NotFound from './views/NotFound.vue'
+import 'bootstrap'
 

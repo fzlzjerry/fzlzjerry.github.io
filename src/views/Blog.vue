@@ -40,9 +40,22 @@
 import axios from 'axios'; // For fetching markdown files
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js'; // For code highlighting
+import { useHead } from '@vueuse/head'
 
 export default {
   name: 'BlogPage', 
+  setup() {
+    useHead({
+      title: "Morax's Blog - Technical Articles and Insights",
+      meta: [
+        { name: 'description', content: 'Read technical articles about Python, Machine Learning, and software development. Personal insights and project experiences from Morax Cheng.' },
+        { name: 'keywords', content: 'Technical Blog, Python Tutorial, Machine Learning Guide, Software Development, Programming Tips, Morax Blog' },
+        { property: 'og:title', content: "Morax's Blog - Technical Articles" },
+        { property: 'og:description', content: 'Technical articles and insights about programming, machine learning, and software development.' },
+        { property: 'og:type', content: 'blog' }
+      ]
+    })
+  },
   data() {
     return {
       articles: [
@@ -519,7 +532,7 @@ export default {
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   z-index: 999;
-  cursor: zoom-out; /* 改变鼠标样式提示可以关闭 */
+  cursor: zoom-out; /* 改变鼠标样式提示可以关�� */
 }
 
 /* 响应式调整 */

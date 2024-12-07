@@ -202,9 +202,22 @@
 <script>
 import Typed from 'typed.js'
 import { Carousel } from 'bootstrap' // 添加这行导入
+import { useHead } from '@vueuse/head'
 
 export default {
   name: 'HomePage', // Changed from 'Home' to 'HomePage'
+  setup() {
+    useHead({
+      title: "Morax's Blog - Open Source Developer & AI Enthusiast",
+      meta: [
+        { name: 'description', content: 'Personal website of Morax Cheng, a teenage open-source enthusiast and developer from China. Featuring projects in Python, Machine Learning, and Data Analysis.' },
+        { name: 'keywords', content: 'Morax Cheng, Developer, Open Source, Python, Machine Learning, AI, Data Analysis, Teenage Developer, China' },
+        { property: 'og:title', content: "Morax's Blog - Open Source Developer & AI Enthusiast" },
+        { property: 'og:description', content: 'Personal website of Morax Cheng, featuring projects and insights in software development and AI.' },
+        { property: 'og:type', content: 'website' }
+      ]
+    })
+  },
   data() {
     return {
       friends: [
@@ -920,7 +933,7 @@ section h2::after {
 }
 
 .friend-description {
-  color: var(--text-color);
+  color: var (--text-color);
   font-size: 0.9rem;
   margin-bottom: 15px;
   line-height: 1.4;
