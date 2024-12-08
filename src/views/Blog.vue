@@ -558,19 +558,25 @@ export default {
 }
 
 .article-item:hover {
-  background-color: rgba(0, 123, 255, 0.1);
+  background-color: rgba(193, 161, 115, 0.1); /* 修改为网站主色调的透明版本 */
   transform: translateX(5px);
 }
 
-.article-item.active {
-  background-color: var(--primary-color, #007bff);
-  color: #ffffff;
+.article-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: rgb(193, 161, 115); /* 修改为网站主色调 */
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
-.article-date {
-  font-size: 0.8rem;
-  color: inherit;
-  opacity: 0.8;
+.article-item.active {
+  background-color: rgb(193, 161, 115); /* 修改为网站主色调 */
+  color: #ffffff;
 }
 
 /* 内容区样式 */
@@ -737,7 +743,7 @@ export default {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: var(--primary-color, #007bff);
+  background-color: rgb(193, 161, 115); /* 修改为网站主色调 */
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
