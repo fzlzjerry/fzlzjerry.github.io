@@ -20,7 +20,7 @@
           <a href="https://discord.gg/F2BbkNfh" target="_blank" class="social-icon">
             <i class="fab fa-discord"></i>
           </a>
-          <a href="mailto:james20081204@gmail.com" class="social-icon">
+          <a href="#" class="social-icon" @click.prevent="handleEmailClick">
             <i class="fas fa-envelope"></i>
           </a>
         </div>
@@ -82,22 +82,6 @@
         </div>
     </div>
 </section>
-
-<!-- Remove GitHub Stats Section -->
-<!-- <section id="github-stats">
-    <div class="container text-center">
-        <h2 data-aos="fade-up">GitHub Stats</h2>
-        <div data-aos="fade-up">
-            <img src="https://github-readme-stats.vercel.app/api?username=fzlzjerry&show_icons=true&locale=en&theme=default" alt="GitHub Stats">
-            <img src="https://github-readme-stats.vercel.app/api/top-langs?username=fzlzjerry&show_icons=true&locale=en&layout=compact&theme=default" alt="Top Languages">
-        </div>
-        <div data-aos="fade-up">
-            <a href="https://github.com/ryo-ma/github-profile-trophy" target="_blank">
-                <img src="https://github-profile-trophy.vercel.app/?username=fzlzjerry&theme=flat" alt="GitHub Trophies">
-            </a>
-        </div>
-    </div>
-</section> -->
 
 <!-- Testimonials Section -->
 <section id="testimonials" data-aos="fade-up">
@@ -171,7 +155,7 @@
     <div class="container text-center" data-aos="fade-up">
         <h2>Contact Me</h2>
         <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out!</p>
-        <p>Email: <a href="mailto:james20081204@gmail.com">james20081204@gmail.com</a></p>
+        <p>Email: <a href="#" @click.prevent="handleEmailClick">james20081204@gmail.com</a></p>
     </div>
 </section>
 
@@ -196,6 +180,38 @@
         <a href="https://icp.n3v.cn/beian/ICP-2024120177.html" title="易AIA盟2024120177号" target="_blank" style="color: white"><img style="width:20px;height:20px;" src="https://icp.n3v.cn/static/picture/icplogoi.png">易AIA盟2024120177号</a>
     </p>
 </footer>
+  </div>
+
+  <!-- 自定义对话框组件 -->
+  <div class="custom-dialog" v-if="showDialog" @click.self="closeDialog">
+    <div class="dialog-content" data-aos="fade-up">
+      <div class="dialog-header">
+        <h3><i class="fas fa-envelope"></i> Contact Options</h3>
+        <button class="close-button" @click="closeDialog">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="dialog-body">
+        <p class="success-message">
+          <i class="fas fa-check-circle"></i> Email address copied to clipboard!
+        </p>
+        <div class="options-list">
+          <h4>You can send emails via:</h4>
+          <div class="option-item">
+            <i class="fas fa-copy"></i>
+            <span>Using copied address: {{ email }}</span>
+          </div>
+          <div class="option-item">
+            <i class="fab fa-google"></i>
+            <a href="https://gmail.com" target="_blank" rel="noopener">Open in Gmail</a>
+          </div>
+          <div class="option-item">
+            <i class="fab fa-microsoft"></i>
+            <a href="https://outlook.live.com" target="_blank" rel="noopener">Open in Outlook</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -250,118 +266,164 @@ export default {
           url: "https://culiu-tech.com",
           avatar: "https://static.wixstatic.com/media/f59b07_ab8a29a135e24d4bac6a28f829aba6a0~mv2.png/v1/fill/w_160,h_160,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/50401683122148__pic.png",
           description: "We believe that education is a journey, not just a destination."
+        },
+        {
+          name: "Nathan Chen",
+          url: "https://nathanchen.me",
+          avatar: "https://nathanchen.me/img/icon.png",
+          description: "A high-school developer and designer who loves to create and share."
         }
       ],
       skills: [
+        // Programming Languages
         {
-          name: "Python",
-          link: "https://www.python.org/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
+          name: "C",
+          link: "https://www.open-std.org/jtc1/sc22/wg14/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg",
         },
         {
           name: "C++",
           link: "https://isocpp.org/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
-        },
-        {
-          name: "C",
-          link: "https://www.open-std.org/jtc1/sc22/wg14/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg",
-        },
-        {
-          name: "PyTorch",
-          link: "https://pytorch.org/",
-          imgSrc:
-            "https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg",
-        },
-        {
-          name: "TensorFlow",
-          link: "https://www.tensorflow.org/",
-          imgSrc:
-            "https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg",
-        },
-        {
-          name: "OpenCV",
-          link: "https://opencv.org/",
-          imgSrc:
-            "https://www.vectorlogo.zone/logos/opencv/opencv-icon.svg",
-        },
-        {
-          name: "MySQL",
-          link: "https://www.mysql.com/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg",
-        },
-        {
-          name: "Linux",
-          link: "https://www.linux.org/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
-        },
-        {
-          name: "Docker",
-          link: "https://www.docker.com/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg",
-        },
-        {
-          name: "Git",
-          link: "https://git-scm.com/",
-          imgSrc:
-            "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
-        },
-        {
-          name: "Azure",
-          link: "https://azure.microsoft.com/",
-          imgSrc:
-            "https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg",
-        },
-        {
-          name: "Matlab",
-          link: "https://www.mathworks.com/products/matlab.html",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png",
-        },
-        {
-          name: "Hexo",
-          link: "https://hexo.io/",
-          imgSrc:
-            "https://www.vectorlogo.zone/logos/hexoio/hexoio-icon.svg",
-        },
-        {
-          name: "Pandas",
-          link: "https://pandas.pydata.org/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/pandas/pandas-original.svg",
-        },
-        {
-          name: "Scikit-learn",
-          link: "https://scikit-learn.org/",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg",
-        },
-        {
-          name: "HTML5",
-          link: "https://www.w3.org/html/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg",
-        },
-        {
-          name: "CSS3",
-          link: "https://www.w3schools.com/css/",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
         },
         {
           name: "JavaScript",
           link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-          imgSrc:
-            "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
         },
-      ]
+        {
+          name: "Python",
+          link: "https://www.python.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
+        },
+
+        // Web Technologies
+        {
+          name: "CSS3",
+          link: "https://www.w3schools.com/css/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg",
+        },
+        {
+          name: "HTML5",
+          link: "https://www.w3.org/html/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg",
+        },
+        {
+          name: "Node.js",
+          link: "https://nodejs.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg",
+        },
+        {
+          name: "React",
+          link: "https://reactjs.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg",
+        },
+        {
+          name: "Vue",
+          link: "https://vuejs.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vuejs/vuejs-original-wordmark.svg",
+        },
+
+        // AI/ML & Data Science
+        {
+          name: "NumPy",
+          link: "https://numpy.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/numpy/numpy-original.svg",
+        },
+        {
+          name: "OpenCV",
+          link: "https://opencv.org/",
+          imgSrc: "https://www.vectorlogo.zone/logos/opencv/opencv-icon.svg",
+        },
+        {
+          name: "Pandas",
+          link: "https://pandas.pydata.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/pandas/pandas-original.svg",
+        },
+        {
+          name: "PyTorch",
+          link: "https://pytorch.org/",
+          imgSrc: "https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg",
+        },
+        {
+          name: "Scikit-learn",
+          link: "https://scikit-learn.org/",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg",
+        },
+        {
+          name: "SciPy",
+          link: "https://scipy.org/",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/b/b2/SCIPY_2.svg",
+        },
+        {
+          name: "TensorFlow",
+          link: "https://www.tensorflow.org/",
+          imgSrc: "https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg",
+        },
+
+        // Cloud Platforms
+        {
+          name: "AWS",
+          link: "https://aws.amazon.com/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
+        },
+        {
+          name: "Azure",
+          link: "https://azure.microsoft.com/",
+          imgSrc: "https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg",
+        },
+
+        // Development Tools
+        {
+          name: "Docker",
+          link: "https://www.docker.com/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg",
+        },
+        {
+          name: "Git",
+          link: "https://git-scm.com/",
+          imgSrc: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
+        },
+        {
+          name: "Linux",
+          link: "https://www.linux.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
+        },
+        {
+          name: "Matlab",
+          link: "https://www.mathworks.com/products/matlab.html",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png",
+        },
+        {
+          name: "MySQL",
+          link: "https://www.mysql.com/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg",
+        },
+
+        // CMS & Static Site Generators
+        {
+          name: "Hexo",
+          link: "https://hexo.io/",
+          imgSrc: "https://www.vectorlogo.zone/logos/hexoio/hexoio-icon.svg",
+        },
+        {
+          name: "Hugo",
+          link: "https://gohugo.io/",
+          imgSrc: "https://api.iconify.design/logos-hugo.svg",
+        },
+        {
+          name: "Jekyll",
+          link: "https://jekyllrb.com/",
+          imgSrc: "https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg",
+        },
+        {
+          name: "WordPress",
+          link: "https://wordpress.org/",
+          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/wordpress/wordpress-original.svg",
+        }
+      ],
+      showDialog: false,
+      email: 'james20081204@gmail.com'
     }
   },
   mounted() {
@@ -409,7 +471,83 @@ export default {
     }
   },
   methods: {
-    // Define your component methods here
+    handleEmailClick() {
+      const mailtoUrl = `mailto:${this.email}`;
+      window.open(mailtoUrl, '_self');
+      
+      // 延迟检查mailto是否成功打开
+      setTimeout(() => {
+        // 尝试获取焦点
+        window.focus();
+        
+        // 只有当原始窗口仍然可见时才执行复制和显示对话框
+        if (document.visibilityState === 'visible') {
+          try {
+            // 只在mailto失败时尝试复制
+            const copySuccess = this.copyToClipboard(this.email);
+            if (copySuccess) {
+              this.showDialog = true;
+            }
+          } catch (err) {
+            console.log('Clipboard access not available');
+          }
+        }
+      }, 500);
+    },
+    
+    copyToClipboard(text) {
+      try {
+        if (!document.hasFocus()) {
+          window.focus();
+        }
+        
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text)
+            .then(() => true)
+            .catch(() => {
+              // 如果剪贴板API失败，回退到传统方法
+              return this.fallbackCopyToClipboard(text);
+            });
+          return true;
+        }
+        
+        return this.fallbackCopyToClipboard(text);
+      } catch (err) {
+        return false;
+      }
+    },
+    
+    fallbackCopyToClipboard(text) {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        
+        if (!document.hasFocus()) {
+          window.focus();
+        }
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          textArea.remove();
+          return true;
+        } catch (err) {
+          textArea.remove();
+          return false;
+        }
+      } catch (err) {
+        return false;
+      }
+    },
+
+    closeDialog() {
+      this.showDialog = false;
+    }
   }
 }
 </script>
@@ -993,11 +1131,6 @@ section h2::after {
     padding-top: 100px;
     min-height: 300px;
   }
-
-  .github-stats img {
-    max-width: 100%;
-    height: auto;
-  }
 }
 
 @media (max-width: 992px) {
@@ -1064,23 +1197,6 @@ section h2::after {
 
   .friend-card {
     height: auto;
-  }
-
-  .github-stats {
-    overflow-x: auto;
-    white-space: nowrap;
-    padding-bottom: 15px;
-  }
-
-  .github-stats img {
-    max-width: none;
-    height: 150px;
-    display: inline-block;
-    margin-right: 15px;
-  }
-
-  #github-stats .container {
-    padding: 0;
   }
 }
 
@@ -1161,8 +1277,49 @@ section h2::after {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-}
 
+  .friend-card {
+    padding: 12px;
+  }
+
+  .friend-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .friend-name {
+    font-size: 1rem;
+  }
+
+  .friend-description {
+    font-size: 0.8rem;
+  }
+
+  header {
+    padding-top: 90px;
+    min-height: 300px;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  header h3 {
+    font-size: 1.2rem;
+  }
+
+  #contact h2 {
+    font-size: 1.8rem;
+  }
+
+  #contact p {
+    font-size: 1rem;
+  }
+
+  #contact a {
+    font-size: 1.1rem;
+  }
+}
 
 /* Testimonials 响应式优化 */
 .testimonial-content {
@@ -1470,5 +1627,162 @@ section h2 {
     font-size: 20px;
     margin: 0 10px;
   }
+}
+
+/* 自定义对话框样式 */
+.custom-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.dialog-content {
+  background-color: var(--background-color);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dialog-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.dialog-body {
+  padding: 1.5rem;
+}
+
+.success-message {
+  color: #28a745;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.options-list {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 1.5rem;
+}
+
+.options-list h4 {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.option-item:hover {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.option-item i {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.option-item a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.option-item a:hover {
+  color: var(--primary-color);
+}
+
+/* 动画效果 */
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dialog-content {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+  .dialog-content {
+    width: 95%;
+  }
+  
+  .dialog-header h3 {
+    font-size: 1.2rem;
+  }
+  
+  .dialog-body {
+    padding: 1rem;
+  }
+  
+  .option-item {
+    padding: 0.6rem;
+  }
+}
+
+/* Update dialog styles */
+.option-item i.fab.fa-microsoft {
+  color: #00a4ef;  /* Microsoft blue */
+}
+
+.option-item i.fab.fa-google {
+  color: #ea4335;  /* Google red */
 }
 </style>
