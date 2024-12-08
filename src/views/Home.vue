@@ -363,6 +363,11 @@ export default {
 
         // Cloud Platforms
         {
+          name: "Google Cloud",
+          link: "https://cloud.google.com",
+          imgSrc: "https://www.vectorlogo.zone/logos/google_cloud/google_cloud-icon.svg"
+        },
+        {
           name: "AWS",
           link: "https://aws.amazon.com/",
           imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
@@ -415,11 +420,6 @@ export default {
           name: "Jekyll",
           link: "https://jekyllrb.com/",
           imgSrc: "https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg",
-        },
-        {
-          name: "WordPress",
-          link: "https://wordpress.org/",
-          imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/wordpress/wordpress-original.svg",
         }
       ],
       showDialog: false,
