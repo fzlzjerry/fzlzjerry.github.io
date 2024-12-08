@@ -34,6 +34,26 @@
         
         <!-- 文章内容区 -->
         <div class="content">
+          <!-- 添加文内搜索栏 -->
+          <div v-if="renderedContent" class="content-search">
+            <div class="search-container">
+              <input
+                type="text"
+                v-model="contentSearchQuery"
+                placeholder="Search in article..."
+                class="search-input"
+                @input="handleContentSearch"
+              />
+              <i class="fas fa-search search-icon"></i>
+              <span v-if="searchResultCount > 0" class="search-count">
+                {{ currentSearchIndex + 1 }}/{{ searchResultCount }}
+              </span>
+              <div class="search-controls" v-if="searchResultCount > 0">
+                <button @click="previousSearch"><i class="fas fa-chevron-up"></i></button>
+                <button @click="nextSearch"><i class="fas fa-chevron-down"></i></button>
+              </div>
+            </div>
+          </div>
           <div v-if="!renderedContent" class="welcome-message">
             <i class="fas fa-book-reader welcome-icon"></i>
             <h2>Welcome to My Blog</h2>
@@ -51,6 +71,8 @@ import axios from 'axios'; // For fetching markdown files
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js'; // For code highlighting
 import { useHead } from '@vueuse/head'
+// Add mark.js import
+import Mark from 'mark.js'
 
 export default {
   name: 'BlogPage', 
@@ -88,6 +110,10 @@ export default {
       searchQuery: '',
       // Add articleContents to store markdown content
       articleContents: {},
+      contentSearchQuery: '',
+      searchResults: [],
+      currentSearchIndex: 0,
+      searchResultCount: 0,
     };
   },
   computed: {
@@ -149,6 +175,10 @@ export default {
             window.MathJax.typesetPromise();
           }
         });
+
+        // Clear content search when loading new article
+        this.contentSearchQuery = '';
+        this.clearSearchHighlights();
       } catch (error) {
         console.error('Error fetching markdown file:', error);
       }
@@ -213,6 +243,77 @@ export default {
     handleTurnstileSuccess(token) {
       this.isVerified = true;
       localStorage.setItem('turnstileVerified', 'true');
+    },
+    handleContentSearch() {
+      if (!this.contentSearchQuery) {
+        this.clearSearchHighlights();
+        return;
+      }
+      
+      this.highlightSearchResults();
+    },
+
+    highlightSearchResults() {
+      // Remove existing highlights
+      this.clearSearchHighlights();
+      
+      const content = document.querySelector('.markdown-content');
+      if (!content) return;
+
+      const query = this.contentSearchQuery;
+      const instance = new Mark(content);
+      
+      instance.mark(query, {
+        separateWordSearch: false,
+        done: (count) => {
+          this.searchResultCount = count;
+          this.currentSearchIndex = count > 0 ? 0 : -1;
+          if (count > 0) {
+            this.scrollToCurrentMatch();
+          }
+        }
+      });
+    },
+
+    clearSearchHighlights() {
+      const content = document.querySelector('.markdown-content');
+      if (!content) return;
+      
+      const instance = new Mark(content);
+      instance.unmark();
+      
+      this.searchResultCount = 0;
+      this.currentSearchIndex = -1;
+    },
+
+    scrollToCurrentMatch() {
+      const marks = document.querySelectorAll('mark');
+      if (marks.length === 0) return;
+
+      // Remove active class from all marks
+      marks.forEach(mark => mark.classList.remove('active'));
+
+      // Add active class to current mark
+      const currentMark = marks[this.currentSearchIndex];
+      currentMark.classList.add('active');
+
+      // Scroll the mark into view
+      currentMark.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    },
+
+    nextSearch() {
+      if (this.searchResultCount === 0) return;
+      this.currentSearchIndex = (this.currentSearchIndex + 1) % this.searchResultCount;
+      this.scrollToCurrentMatch();
+    },
+
+    previousSearch() {
+      if (this.searchResultCount === 0) return;
+      this.currentSearchIndex = (this.currentSearchIndex - 1 + this.searchResultCount) % this.searchResultCount;
+      this.scrollToCurrentMatch();
     }
   }
 }
@@ -764,6 +865,83 @@ export default {
   
   .search-icon {
     color: #888;
+  }
+}
+
+/* Content search styles */
+.content-search {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--background-color, #fff);
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.content-search .search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-count {
+  font-size: 0.9rem;
+  color: var(--text-color-light, #666);
+  margin-left: 0.5rem;
+}
+
+.search-controls {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.search-controls button {
+  border: none;
+  background: var(--primary-color, #007bff);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.search-controls button:hover {
+  background: var(--primary-color-dark, #0056b3);
+}
+
+/* Mark.js styles */
+:deep(mark) {
+  background-color: rgba(255, 255, 0, 0.4);
+  padding: 0;
+  color: inherit;
+}
+
+:deep(mark.active) {
+  background-color: rgba(255, 165, 0, 0.6);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .content-search {
+    background: var(--background-color-dark, #2d2d2d);
+    border-bottom-color: var(--border-color-dark, #444);
+  }
+
+  :deep(mark) {
+    background-color: rgba(255, 255, 0, 0.2);
+  }
+
+  :deep(mark.active) {
+    background-color: rgba(255, 165, 0, 0.4);
+  }
+
+  .search-count {
+    color: var(--text-color-light-dark, #aaa);
   }
 }
 </style>
