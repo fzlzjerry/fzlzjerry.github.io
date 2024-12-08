@@ -9,9 +9,19 @@
         <!-- 侧边栏文章菜单 -->
         <div class="sidebar">
           <h3 @click="resetContent" class="articles-title">Articles</h3>
+          <!-- Add search bar -->
+          <div class="search-container">
+            <input
+              type="text"
+              v-model="searchQuery"
+              placeholder="Search articles..."
+              class="search-input"
+            />
+            <i class="fas fa-search search-icon"></i>
+          </div>
           <div class="article-list">
             <div
-              v-for="article in articles"
+              v-for="article in filteredArticles"
               :key="article.filename"
               @click="fetchMarkdown(article.filename)"
               :class="['article-item', currentArticle === article.filename ? 'active' : '']"
@@ -74,8 +84,23 @@ export default {
       renderedContent: '',
       currentArticle: '',
       turnstileSiteKey: '0x4AAAAAAA1t_hLCxNOO7BvT', // Replace with your actual site key
-      isVerified: false
+      isVerified: false,
+      searchQuery: '',
+      // Add articleContents to store markdown content
+      articleContents: {},
     };
+  },
+  computed: {
+    filteredArticles() {
+      const query = this.searchQuery.toLowerCase();
+      if (!query) return this.articles;
+      
+      return this.articles.filter(article => {
+        const titleMatch = article.title.toLowerCase().includes(query);
+        const contentMatch = this.articleContents[article.filename]?.toLowerCase().includes(query);
+        return titleMatch || contentMatch;
+      });
+    }
   },
   mounted() {
     // 移除默认加载第一篇文章的行为
@@ -98,6 +123,8 @@ export default {
       try {
         const response = await axios.get(mdFilePath);
         this.markdownContent = response.data;
+        // Store the content for searching
+        this.articleContents[filename] = response.data;
 
         const md = new MarkdownIt({
           html: true,
@@ -688,5 +715,55 @@ export default {
   padding: 1rem;
   color: var(--primary-color);
   font-weight: 500;
+}
+
+/* Add search styles */
+.search-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem;
+  padding-left: 2.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: var(--text-color);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+/* Dark mode support for search */
+@media (prefers-color-scheme: dark) {
+  .search-input {
+    background-color: #333;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+  
+  .search-input::placeholder {
+    color: #888;
+  }
+  
+  .search-icon {
+    color: #888;
+  }
 }
 </style>
