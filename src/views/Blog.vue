@@ -423,7 +423,7 @@ export default {
       const utterancesScript = document.createElement('script');
       utterancesScript.src = 'https://utteranc.es/client.js';
       utterancesScript.setAttribute('repo', 'fzlzjerry/fzlzjerry.github.io');
-      utterancesScript.setAttribute('issue-term', 'url');
+      utterancesScript.setAttribute('issue-term', 'title');
       utterancesScript.setAttribute('theme', 'github-light');
       utterancesScript.setAttribute('crossorigin', 'anonymous');
       utterancesScript.async = true;
