@@ -72,7 +72,9 @@ export default {
       ],
       markdownContent: '',
       renderedContent: '',
-      currentArticle: ''
+      currentArticle: '',
+      turnstileSiteKey: '0x4AAAAAAA1t_hLCxNOO7BvT', // Replace with your actual site key
+      isVerified: false
     };
   },
   mounted() {
@@ -85,6 +87,9 @@ export default {
       document.body.style.transition = 'opacity 0.3s';
       document.body.style.opacity = '1';
     });
+
+    // Check if user was previously verified
+    this.isVerified = localStorage.getItem('turnstileVerified') === 'true';
   },
   methods: {
     async fetchMarkdown(filename) {
@@ -176,6 +181,11 @@ export default {
     resetContent() {
       this.renderedContent = '';
       this.currentArticle = '';
+    },
+    // eslint-disable-next-line no-unused-vars
+    handleTurnstileSuccess(token) {
+      this.isVerified = true;
+      localStorage.setItem('turnstileVerified', 'true');
     }
   }
 }
@@ -532,7 +542,7 @@ export default {
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   z-index: 999;
-  cursor: zoom-out; /* 改变鼠标样式提示可以关�� */
+  cursor: zoom-out; /* 改变鼠标样式提示可以关闭 */
 }
 
 /* 响应式调整 */
@@ -671,5 +681,12 @@ export default {
 
 .markdown-content :deep(pre:hover .code-toolbar) {
   opacity: 1;
+}
+
+.verification-message {
+  text-align: center;
+  padding: 1rem;
+  color: var(--primary-color);
+  font-weight: 500;
 }
 </style>

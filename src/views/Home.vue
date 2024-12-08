@@ -205,10 +205,10 @@ import { Carousel } from 'bootstrap' // 添加这行导入
 import { useHead } from '@vueuse/head'
 
 export default {
-  name: 'HomePage', // Changed from 'Home' to 'HomePage'
+  name: 'HomePage', // Updated to a multi-word name
   setup() {
     useHead({
-      title: "Morax's Blog - Open Source Developer & AI Enthusiast",
+      title: "Home - Morax's Blog",
       meta: [
         { name: 'description', content: 'Personal website of Morax Cheng, a teenage open-source enthusiast and developer from China. Featuring projects in Python, Machine Learning, and Data Analysis.' },
         { name: 'keywords', content: 'Morax Cheng, Developer, Open Source, Python, Machine Learning, AI, Data Analysis, Teenage Developer, China' },
@@ -407,6 +407,9 @@ export default {
         carousel.prev();
       }
     }
+  },
+  methods: {
+    // Define your component methods here
   }
 }
 </script>

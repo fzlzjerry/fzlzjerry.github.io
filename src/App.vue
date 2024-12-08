@@ -1,5 +1,17 @@
 <template>
   <div id="app">
+    <!-- Add Turnstile Modal -->
+    <div v-if="!isVerified" class="turnstile-modal">
+      <div class="turnstile-content">
+        <h2>Please Verify</h2>
+        <p>Complete the verification to continue</p>
+        <TurnstileWidget 
+          :site-key="turnstileSiteKey"
+          @turnstile-success="handleTurnstileSuccess"
+        />
+      </div>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg fixed-top">
       <div class="container">
@@ -34,10 +46,15 @@
 </template>
 
 <script>
+import TurnstileWidget from '@/components/TurnstileWidget.vue'
 import { useHead } from '@vueuse/head'
+import AOS from 'aos'  // Add this import
 
 export default {
   name: 'App',
+  components: {
+    TurnstileWidget
+  },
   setup() {
     useHead({
       titleTemplate: '%s | Morax\'s Blog',
@@ -59,22 +76,26 @@ export default {
   },
   data() {
     return {
-      showScrollTop: false
+      showScrollTop: false,
+      turnstileSiteKey: '0x4AAAAAAA1t_hLCxNOO7BvT', // Replace with your actual site key
+      isVerified: false
     }
   },
-  methods: {
-    scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
-    handleScroll() {
-      this.showScrollTop = window.scrollY > 500;
+  watch: {
+    isVerified(newVal) {
+      // Toggle body overflow when verification status changes
+      document.body.style.overflow = newVal ? '' : 'hidden';
     }
   },
   mounted() {
+    // Check if user was previously verified
+    this.isVerified = localStorage.getItem('turnstileVerified') === 'true';
+    // Set initial body overflow
+    document.body.style.overflow = this.isVerified ? '' : 'hidden';
+    
     window.addEventListener('scroll', this.handleScroll);
     
     // Initialize AOS
-    const AOS = require('aos');
     AOS.init({
       duration: 1000,
       once: true
@@ -82,6 +103,19 @@ export default {
   },
   beforeUnmount() {  // Changed from beforeDestroy to beforeUnmount
     window.removeEventListener('scroll', this.handleScroll);
+  },
+  methods: {
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    handleScroll() {
+      this.showScrollTop = window.scrollY > 500;
+    },
+    // eslint-disable-next-line no-unused-vars
+    handleTurnstileSuccess(token) {
+      this.isVerified = true;
+      localStorage.setItem('turnstileVerified', 'true');
+    }
   }
 }
 </script>
@@ -227,5 +261,42 @@ html {
   .hover-effect:active {
     transform: scale(0.98);
   }
+}
+
+/* Add Turnstile Modal Styles */
+.turnstile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.turnstile-content {
+  background: var(--background-color);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.turnstile-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.turnstile-content p {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+/* Prevent scrolling when modal is open */
+body.turnstile-active {
+  overflow: hidden;
 }
 </style>
