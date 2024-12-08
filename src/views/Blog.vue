@@ -34,26 +34,34 @@
         
         <!-- 文章内容区 -->
         <div class="content">
-          <!-- 添加文内搜索栏 -->
-          <div v-if="renderedContent" class="content-search">
-            <div class="search-container">
-              <input
-                type="text"
-                v-model="contentSearchQuery"
-                placeholder="Search in article..."
-                class="search-input"
-                @input="handleContentSearch"
-              />
-              <i class="fas fa-search search-icon"></i>
-              <span v-if="searchResultCount > 0" class="search-count">
-                {{ currentSearchIndex + 1 }}/{{ searchResultCount }}
-              </span>
-              <div class="search-controls" v-if="searchResultCount > 0">
-                <button @click="previousSearch"><i class="fas fa-chevron-up"></i></button>
-                <button @click="nextSearch"><i class="fas fa-chevron-down"></i></button>
+          <!-- Update content search div -->
+          <Transition name="search-slide">
+            <div v-if="renderedContent && isSearchVisible" 
+                 class="content-search" 
+                 ref="searchBar"
+                 :class="{ 'search-active': isSearching }">
+              <div class="search-container">
+                <input
+                  type="text"
+                  v-model="contentSearchQuery"
+                  placeholder="Search in article... (Press Esc to close)"
+                  class="search-input"
+                  @input="handleContentSearch"
+                  @blur="handleSearchBlur"
+                  @keydown.esc="hideSearch"
+                  ref="searchInput"
+                />
+                <i class="fas fa-search search-icon"></i>
+                <span v-if="searchResultCount > 0" class="search-count">
+                  {{ currentSearchIndex + 1 }}/{{ searchResultCount }}
+                </span>
+                <div class="search-controls" v-if="searchResultCount > 0">
+                  <button @click="previousSearch"><i class="fas fa-chevron-up"></i></button>
+                  <button @click="nextSearch"><i class="fas fa-chevron-down"></i></button>
+                </div>
               </div>
             </div>
-          </div>
+          </Transition>
           <div v-if="!renderedContent" class="welcome-message">
             <i class="fas fa-book-reader welcome-icon"></i>
             <h2>Welcome to My Blog</h2>
@@ -114,6 +122,8 @@ export default {
       searchResults: [],
       currentSearchIndex: 0,
       searchResultCount: 0,
+      isSearchVisible: false,
+      isSearching: false,
     };
   },
   computed: {
@@ -129,10 +139,11 @@ export default {
     }
   },
   mounted() {
-    // 移除默认加载第一篇文章的行为
+    // Add keyboard shortcut listener
+    document.addEventListener('keydown', this.handleKeyDown);
     this.setupImageHandlers();
     
-    // 添加页面过渡动画
+    // 添加页面过渡动��
     document.body.style.opacity = '0';
     requestAnimationFrame(() => {
       document.body.style.transition = 'opacity 0.3s';
@@ -141,6 +152,10 @@ export default {
 
     // Check if user was previously verified
     this.isVerified = localStorage.getItem('turnstileVerified') === 'true';
+  },
+  beforeUnmount() {
+    // Clean up event listener
+    document.removeEventListener('keydown', this.handleKeyDown);
   },
   methods: {
     async fetchMarkdown(filename) {
@@ -249,7 +264,7 @@ export default {
         this.clearSearchHighlights();
         return;
       }
-      
+      this.isSearching = true;
       this.highlightSearchResults();
     },
 
@@ -314,7 +329,48 @@ export default {
       if (this.searchResultCount === 0) return;
       this.currentSearchIndex = (this.currentSearchIndex - 1 + this.searchResultCount) % this.searchResultCount;
       this.scrollToCurrentMatch();
-    }
+    },
+    // Add new method
+    handleKeyDown(e) {
+      // Check for Cmd+F (Mac) or Ctrl+F (Windows)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+        if (this.renderedContent) {
+          e.preventDefault(); // Prevent default browser search
+          if (this.isSearchVisible) {
+            this.hideSearch(); // Toggle off if already visible
+          } else {
+            this.showSearch(); // Toggle on if hidden
+          }
+        }
+      }
+      // Handle ESC key
+      else if (e.key === 'Escape' && this.isSearchVisible) {
+        e.preventDefault();
+        this.hideSearch();
+      }
+    },
+
+    showSearch() {
+      this.isSearchVisible = true;
+      this.isSearching = true;
+      this.$nextTick(() => {
+        this.$refs.searchInput?.focus();
+      });
+    },
+
+    hideSearch() {
+      this.isSearchVisible = false;
+      this.isSearching = false;
+      this.contentSearchQuery = '';
+      this.clearSearchHighlights();
+    },
+
+    handleSearchBlur() {
+      // Only hide if there's no active search
+      if (!this.contentSearchQuery) {
+        this.isSearching = false;
+      }
+    },
   }
 }
 </script>
@@ -459,6 +515,7 @@ export default {
   flex: 1;
   padding: 1.5rem;      /* 减小内容区内边距 */
   overflow-y: auto;
+  position: relative;
 }
 
 .markdown-content {
@@ -631,7 +688,7 @@ export default {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  margin: 0.8rem 0;    /* 减小图片上下间距 */
+  margin: 0.8rem 0;    /* 减小图片上��间距 */
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -700,7 +757,7 @@ export default {
   white-space: nowrap; /* 不换行，确保公式在一行内显示 */
 }
 
-/* 为长公式添加可见的水平滚动条样式 */
+/* 为长���式添加可见的水平滚动条样式 */
 .markdown-content :deep(.MathJax_Display::-webkit-scrollbar) {
   height: 6px; /* 滚动条高度 */
 }
@@ -868,80 +925,331 @@ export default {
   }
 }
 
-/* Content search styles */
+/* Content search styles - enhanced */
 .content-search {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--background-color, #fff);
-  padding: 0.5rem 0;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color, #eee);
+  position: fixed;
+  top: 120px;
+  left: 2rem;
+  transform: none;
+  z-index: 100;
+  width: 320px; /* Slightly wider */
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .content-search .search-container {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+.content-search .search-input {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 2.8rem;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  margin: 0; /* Remove any margin */
+}
+
+.content-search .search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 1rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
 .search-count {
-  font-size: 0.9rem;
-  color: var(--text-color-light, #666);
-  margin-left: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  min-width: 40px;
+  justify-content: center;
 }
 
 .search-controls {
   display: flex;
-  gap: 0.25rem;
+  gap: 0.4rem;
+  align-items: center;
+  margin: 0; /* Remove margin */
+}
+
+/* Remove any unwanted margins from container */
+.content-search .search-container > * {
+  margin: 0;
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .content-search {
+    background: rgba(35, 35, 35, 0.95);
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .content-search .search-input {
+    background: rgba(45, 45, 45, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .content-search .search-input:focus {
+    background: rgba(50, 50, 50, 0.95);
+    box-shadow: 
+      0 0 0 3px rgba(0, 123, 255, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .search-count {
+    background: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+  }
+
+  .search-controls button {
+    background: rgba(0, 123, 255, 0.8);
+  }
+
+  .search-controls button:hover {
+    background: rgba(0, 123, 255, 1);
+  }
+}
+
+/* Animation refinements */
+.search-slide-enter-active,
+.search-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-slide-enter-from,
+.search-slide-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+/* Mobile refinements */
+@media (max-width: 768px) {
+  .content-search {
+    top: auto;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 3rem);
+    padding: 0.8rem;
+    border-radius: 12px;
+  }
+
+  .search-slide-enter-from,
+  .search-slide-leave-to {
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
+/* Add these new styles */
+.content {
+  position: relative;
+}
+
+.content-search.search-active {
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Mark.js styles - updated */
+:deep(mark) {
+  background: linear-gradient(transparent 0%, rgba(255, 255, 0, 0.3) 0);
+  padding: 0 2px;
+  color: inherit;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+:deep(mark.active) {
+  background: linear-gradient(transparent 0%, rgba(255, 165, 0, 0.4) 0);
+  box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+}
+
+/* Dark mode support - updated */
+@media (prefers-color-scheme: dark) {
+  .content-search {
+    background: rgba(45, 45, 45, 0.8);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .content-search .search-input {
+    background: rgba(45, 45, 45, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .content-search .search-input:focus {
+    background: #333;
+  }
+
+  :deep(mark) {
+    background: linear-gradient(transparent 0%, rgba(255, 255, 0, 0.15) 0);
+  }
+
+  :deep(mark.active) {
+    background: linear-gradient(transparent 0%, rgba(255, 165, 0, 0.25) 0);
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.15);
+  }
+
+  .search-count {
+    color: #aaa;
+  }
+}
+
+/* Animation for search results */
+@keyframes highlight-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+:deep(mark.active) {
+  animation: highlight-pulse 0.5s ease;
+}
+
+/* Update content search styles with warm color scheme */
+.content-search {
+  /* ...existing styles... */
+  background: rgba(193, 161, 115, 0.95);
+  box-shadow: 
+    0 4px 20px rgba(140, 115, 85, 0.15),
+    0 0 0 1px rgba(193, 161, 115, 0.1);
+}
+
+.content-search .search-input {
+  /* ...existing styles... */
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.content-search .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.content-search .search-input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 0 0 3px rgba(193, 161, 115, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-search .search-icon {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.search-count {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Enhanced search controls */
+.search-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .search-controls button {
   border: none;
-  background: var(--primary-color, #007bff);
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  font-size: 1rem;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .search-controls button:hover {
-  background: var(--primary-color-dark, #0056b3);
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Mark.js styles */
+.search-controls button:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .content-search {
+    background: rgba(140, 115, 85, 0.95);
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .search-controls button {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .search-controls button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Highlighted text styles */
 :deep(mark) {
-  background-color: rgba(255, 255, 0, 0.4);
-  padding: 0;
+  background: rgba(193, 161, 115, 0.3);
   color: inherit;
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+  transition: all 0.2s ease;
 }
 
 :deep(mark.active) {
-  background-color: rgba(255, 165, 0, 0.6);
+  background: rgba(193, 161, 115, 0.5);
+  box-shadow: 0 0 0 2px rgba(193, 161, 115, 0.3);
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .content-search {
-    background: var(--background-color-dark, #2d2d2d);
-    border-bottom-color: var(--border-color-dark, #444);
-  }
-
-  :deep(mark) {
-    background-color: rgba(255, 255, 0, 0.2);
-  }
-
-  :deep(mark.active) {
-    background-color: rgba(255, 165, 0, 0.4);
-  }
-
-  .search-count {
-    color: var(--text-color-light-dark, #aaa);
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .search-controls button {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
   }
 }
 </style>
