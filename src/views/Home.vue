@@ -230,7 +230,7 @@ export default {
         {
           name: "BuckDuck",
           url: "https://bugduck.org",
-          avatar: "https://pbs.twimg.com/profile_images/1624404385936834563/J97OPpD6_400x400.jpg",
+          avatar: "https://bugduck.org/assets/logo-D9SokDiu.png",
           description: "A Open-Source Team to Concentrate on Better Codes"
         },
         {
