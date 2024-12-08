@@ -31,6 +31,7 @@
             <li class="nav-item"><router-link class="nav-link" to="/blog">Blog</router-link></li>
             <li class="nav-item"><router-link class="nav-link" to="/igem">iGEM</router-link></li>
             <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
+            <li class="nav-item"><a class="nav-link" href="/rss.xml" target="_blank">RSS</a></li>
           </ul>
         </div>
       </div>
@@ -70,7 +71,8 @@ export default {
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'canonical', href: 'https://morax.blog' }
+        { rel: 'canonical', href: 'https://morax.blog' },
+        { rel: 'alternate', type: 'application/rss+xml', title: "Morax's Blog RSS Feed", href: '/rss.xml' }
       ]
     })
   },

@@ -16,5 +16,5 @@
       "scripthost"
     ]
   },
-  "exclude": ["public", "public/**/*"]
+  "exclude": ["public", "public/**/*", "src/views/RSS.vue"]
 }

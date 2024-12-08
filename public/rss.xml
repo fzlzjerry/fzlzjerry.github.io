@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Morax's Blog</title>
+        <link>https://morax.blog</link>
+        <description>Personal blog of Morax</description>
+        <language>en-us</language>
+        <lastBuildDate>Fri, 9 Aug 2024 00:00:00 GMT</lastBuildDate>
+        
+        <item>
+            <title>Hello World</title>
+            <link>https://morax.blog/#/blog/Hello-World</link>
+            <description>Welcome post showcasing "Hello, World!" in various programming languages.</description>
+            <pubDate>Fri, 9 Aug 2024 00:00:00 GMT</pubDate>
+            <guid>https://morax.blog/#/blog/Hello-World</guid>
+        </item>
+
+        <item>
+            <title>Machine Learning Solution for Global Multi-Port Commodities Flow Problem</title>
+            <link>https://morax.blog/#/blog/Machine-Learning-Solution</link>
+            <description>A comprehensive study on predicting commodity weights at ports using SARIMAX, DNN, and RNN methods.</description>
+            <pubDate>Fri, 9 Aug 2024 00:00:00 GMT</pubDate>
+            <guid>https://morax.blog/#/blog/Machine-Learning-Solution</guid>
+        </item>
+    </channel>
+</rss>
