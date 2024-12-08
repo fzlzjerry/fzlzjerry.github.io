@@ -67,7 +67,11 @@
             <h2>Welcome to My Blog</h2>
             <p>Select an article from the sidebar to start reading.</p>
           </div>
-          <div v-else class="markdown-content" v-html="renderedContent"></div>
+          <div v-else>
+            <div class="markdown-content" v-html="renderedContent"></div>
+            <!-- Add comments container -->
+            <div class="comments-section" ref="utterancesContainer"></div>
+          </div>
         </div>
       </div>
     </Transition>
@@ -192,8 +196,10 @@ export default {
         });
 
         this.renderedContent = md.render(this.markdownContent);
-        // 渲染完成后，通知 MathJax 处理新内容
+        
+        // Load comments after content is rendered
         this.$nextTick(() => {
+          this.loadUtterances();
           if (window.MathJax) {
             window.MathJax.typesetPromise();
           }
@@ -275,6 +281,11 @@ export default {
         this.$router.push('/blog');
       }
       document.title = "Morax's Blog - Technical Articles and Insights";
+      
+      // Clear comments when resetting content
+      if (this.$refs.utterancesContainer) {
+        this.$refs.utterancesContainer.innerHTML = '';
+      }
     },
     // eslint-disable-next-line no-unused-vars
     handleTurnstileSuccess(token) {
@@ -399,6 +410,29 @@ export default {
       const urlParam = encodeURIComponent(filename.replace('.md', ''));
       this.$router.push(`/blog/${urlParam}`);
       this.fetchMarkdown(filename);
+    },
+    // Add new method to load utterances
+    loadUtterances() {
+      // Remove existing script if any
+      const existingScript = document.querySelector('.utterances-frame');
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      // Create new script element
+      const utterancesScript = document.createElement('script');
+      utterancesScript.src = 'https://utteranc.es/client.js';
+      utterancesScript.setAttribute('repo', 'fzlzjerry/fzlzjerry.github.io');
+      utterancesScript.setAttribute('issue-term', 'url');
+      utterancesScript.setAttribute('theme', 'github-light');
+      utterancesScript.setAttribute('crossorigin', 'anonymous');
+      utterancesScript.async = true;
+
+      // Clear and append to container
+      if (this.$refs.utterancesContainer) {
+        this.$refs.utterancesContainer.innerHTML = '';
+        this.$refs.utterancesContainer.appendChild(utterancesScript);
+      }
     },
   }
 }
@@ -717,7 +751,7 @@ export default {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  margin: 0.8rem 0;    /* 减小图片上��间距 */
+  margin: 0.8rem 0;    /* 减小图片上�����距 */
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -1279,6 +1313,20 @@ export default {
     width: 32px;
     height: 32px;
     font-size: 0.9rem;
+  }
+}
+
+/* Add styles for comments section */
+.comments-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color, #eaeaea);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .comments-section {
+    border-top-color: var(--border-color-dark, #333);
   }
 }
 </style>
