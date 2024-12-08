@@ -1,26 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<!-- RSS Feed for Morax's Blog -->
+<rss version="2.0" 
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
+        <!-- Channel Information -->
         <title>Morax's Blog</title>
         <link>https://morax.blog</link>
+        <atom:link href="https://morax.blog/rss.xml" rel="self" type="application/rss+xml" />
         <description>Personal blog of Morax</description>
         <language>en-us</language>
-        <lastBuildDate>Fri, 9 Aug 2024 00:00:00 GMT</lastBuildDate>
+        <copyright>© 2024 Morax. All rights reserved.</copyright>
+        <lastBuildDate>Fri, 09 Aug 2024 00:00:00 GMT</lastBuildDate>
         
+        <!-- Channel Image -->
+        <image>
+            <url>https://morax.blog/logo.png</url>
+            <title>Morax's Blog</title>
+            <link>https://morax.blog</link>
+        </image>
+        
+        <!-- Channel Settings -->
+        <ttl>60</ttl>
+        <docs>https://morax.blog/rss-info</docs>
+        <generator>Morax Blog Engine</generator>
+        
+        <!-- Social Media -->
+        <atom:link href="https://github.com/fzlzjerry" rel="related" title="GitHub" />
+        
+        <!-- Blog Posts -->
+        <!-- Hello World Post -->
         <item>
             <title>Hello World</title>
             <link>https://morax.blog/#/blog/Hello-World</link>
-            <description>Welcome post showcasing "Hello, World!" in various programming languages.</description>
-            <pubDate>Fri, 9 Aug 2024 00:00:00 GMT</pubDate>
-            <guid>https://morax.blog/#/blog/Hello-World</guid>
+            <author>james20081204@gmail.com (Morax)</author>
+            <category>Programming</category>
+            <description><![CDATA[Welcome post showcasing "Hello, World!" in various programming languages.]]></description>
+            <content:encoded><![CDATA[
+                <p>A collection of Hello World examples in different programming languages.</p>
+                <p>Reading time: 2 minutes</p>
+            ]]></content:encoded>
+            <pubDate>Fri, 09 Aug 2024 00:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://morax.blog/#/blog/Hello-World</guid>
+            <dc:creator>Morax</dc:creator>
         </item>
 
+        <!-- Machine Learning Post -->
         <item>
             <title>Machine Learning Solution for Global Multi-Port Commodities Flow Problem</title>
             <link>https://morax.blog/#/blog/Machine-Learning-Solution</link>
-            <description>A comprehensive study on predicting commodity weights at ports using SARIMAX, DNN, and RNN methods.</description>
-            <pubDate>Fri, 9 Aug 2024 00:00:00 GMT</pubDate>
-            <guid>https://morax.blog/#/blog/Machine-Learning-Solution</guid>
+            <author>james20081204@gmail.com (Morax)</author>
+            <category>Machine Learning</category>
+            <category>Data Science</category>
+            <description><![CDATA[A comprehensive study on predicting commodity weights at ports using SARIMAX, DNN, and RNN methods.]]></description>
+            <content:encoded><![CDATA[
+                <p>An in-depth analysis of machine learning approaches to solve global multi-port commodities flow problems.</p>
+                <p>Key topics covered:</p>
+                <ul>
+                    <li>SARIMAX modeling</li>
+                    <li>Deep Neural Networks</li>
+                    <li>Recurrent Neural Networks</li>
+                </ul>
+                <p>Reading time: 15 minutes</p>
+            ]]></content:encoded>
+            <pubDate>Fri, 09 Aug 2024 00:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://morax.blog/#/blog/Machine-Learning-Solution</guid>
+            <dc:creator>Morax</dc:creator>
         </item>
     </channel>
 </rss>
