@@ -23,7 +23,7 @@
             <div
               v-for="article in filteredArticles"
               :key="article.filename"
-              @click="fetchMarkdown(article.filename)"
+              @click="navigateToArticle(article.filename)"
               :class="['article-item', currentArticle === article.filename ? 'active' : '']"
             >
               {{ article.title }}
@@ -138,6 +138,14 @@ export default {
       });
     }
   },
+  created() {
+    // Load article from URL if present
+    const articleParam = this.$route.params.article;
+    if (articleParam) {
+      const decodedFilename = decodeURIComponent(articleParam) + '.md';
+      this.fetchMarkdown(decodedFilename);
+    }
+  },
   mounted() {
     // Add keyboard shortcut listener
     document.addEventListener('keydown', this.handleKeyDown);
@@ -194,8 +202,18 @@ export default {
         // Clear content search when loading new article
         this.contentSearchQuery = '';
         this.clearSearchHighlights();
+
+        // Update page title with article title
+        const article = this.articles.find(a => a.filename === filename);
+        if (article) {
+          document.title = `${article.title} - Morax's Blog`;
+        }
       } catch (error) {
         console.error('Error fetching markdown file:', error);
+        if (this.$route.params.article) {
+          // Redirect to blog home if article not found
+          this.$router.push('/blog');
+        }
       }
     },
     formatArticleTitle(filename) {
@@ -253,6 +271,10 @@ export default {
     resetContent() {
       this.renderedContent = '';
       this.currentArticle = '';
+      if (this.$route.params.article) {
+        this.$router.push('/blog');
+      }
+      document.title = "Morax's Blog - Technical Articles and Insights";
     },
     // eslint-disable-next-line no-unused-vars
     handleTurnstileSuccess(token) {
@@ -370,6 +392,13 @@ export default {
       if (!this.contentSearchQuery) {
         this.isSearching = false;
       }
+    },
+    // Add this new method
+    navigateToArticle(filename) {
+      // Remove .md extension and encode for URL
+      const urlParam = encodeURIComponent(filename.replace('.md', ''));
+      this.$router.push(`/blog/${urlParam}`);
+      this.fetchMarkdown(filename);
     },
   }
 }

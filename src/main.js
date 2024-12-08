@@ -21,7 +21,14 @@ const router = createRouter({
     {
       path: '/blog',
       name: 'BlogPage',
-      component: () => import('./views/Blog.vue')
+      component: () => import('./views/Blog.vue'),
+      children: [
+        {
+          path: ':article',
+          name: 'BlogArticle',
+          component: () => import('./views/Blog.vue')
+        }
+      ]
     },
     {
       path: '/igem',
