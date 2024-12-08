@@ -38,8 +38,38 @@
             <category>Programming</category>
             <description><![CDATA[Welcome post showcasing "Hello, World!" in various programming languages.]]></description>
             <content:encoded><![CDATA[
-                <p>A collection of Hello World examples in different programming languages.</p>
-                <p>Reading time: 2 minutes</p>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Hello World</title>
+                    <meta charset="utf-8">
+                </head>
+                <body>
+                    <article>
+                        <h1>Hello World</h1>
+                        <p>A collection of Hello World examples in different programming languages.</p>
+                        <h2>Examples:</h2>
+                        <pre><code>
+// Python
+print("Hello, World!")
+
+// JavaScript
+console.log("Hello, World!");
+
+// Java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+                        </code></pre>
+                        <footer>
+                            <p>Reading time: 2 minutes</p>
+                            <p>Published on: Fri, 09 Aug 2024</p>
+                        </footer>
+                    </article>
+                </body>
+                </html>
             ]]></content:encoded>
             <pubDate>Fri, 09 Aug 2024 00:00:00 GMT</pubDate>
             <guid isPermaLink="true">https://morax.blog/#/blog/Hello-World</guid>
@@ -55,14 +85,32 @@
             <category>Data Science</category>
             <description><![CDATA[A comprehensive study on predicting commodity weights at ports using SARIMAX, DNN, and RNN methods.]]></description>
             <content:encoded><![CDATA[
-                <p>An in-depth analysis of machine learning approaches to solve global multi-port commodities flow problems.</p>
-                <p>Key topics covered:</p>
-                <ul>
-                    <li>SARIMAX modeling</li>
-                    <li>Deep Neural Networks</li>
-                    <li>Recurrent Neural Networks</li>
-                </ul>
-                <p>Reading time: 15 minutes</p>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Machine Learning Solution</title>
+                    <meta charset="utf-8">
+                </head>
+                <body>
+                    <article>
+                        <h1>Machine Learning Solution for Global Multi-Port Commodities Flow Problem</h1>
+                        <h2>Introduction</h2>
+                        <p>An in-depth analysis of machine learning approaches to solve global multi-port commodities flow problems.</p>
+                        
+                        <h2>Key Topics</h2>
+                        <ul>
+                            <li>SARIMAX modeling for time series prediction</li>
+                            <li>Deep Neural Networks architecture and implementation</li>
+                            <li>Recurrent Neural Networks for sequence modeling</li>
+                        </ul>
+                        
+                        <footer>
+                            <p>Reading time: 15 minutes</p>
+                            <p>Published on: Fri, 09 Aug 2024</p>
+                        </footer>
+                    </article>
+                </body>
+                </html>
             ]]></content:encoded>
             <pubDate>Fri, 09 Aug 2024 00:00:00 GMT</pubDate>
             <guid isPermaLink="true">https://morax.blog/#/blog/Machine-Learning-Solution</guid>
