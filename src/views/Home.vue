@@ -469,6 +469,14 @@ export default {
         carousel.prev();
       }
     }
+
+    // Add section scrolling
+    if (this.$route.meta.section) {
+      const element = document.getElementById(this.$route.meta.section)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
   },
   methods: {
     handleEmailClick() {
@@ -671,7 +679,7 @@ section {
   color: var(--primary-color);
 }
 
-/* Contact section - 增加联系方式的字体大小和可见度 */
+/* Contact section - 增加联系方式的���体大小和可见度 */
 #contact {
   padding: 100px 0; /* 增加上下间距 */
 }

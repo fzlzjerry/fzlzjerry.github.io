@@ -21,6 +21,42 @@ const router = createRouter({
       component: () => import('./views/Home.vue')
     },
     {
+      path: '/about',
+      name: 'About',
+      component: () => import('./views/Home.vue'),
+      meta: { section: 'about' }
+    },
+    {
+      path: '/skills',
+      name: 'Skills',
+      component: () => import('./views/Home.vue'),
+      meta: { section: 'skills' }
+    },
+    {
+      path: '/projects',
+      name: 'Projects',
+      component: () => import('./views/Home.vue'),
+      meta: { section: 'projects' }
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+      component: () => import('./views/Home.vue'),
+      meta: { section: 'contact' }
+    },
+    {
+      path: '/testimonials',
+      name: 'Testimonials',
+      component: () => import('./views/Home.vue'),
+      meta: { section: 'testimonials' }
+    },
+    {
+      path: '/friends',
+      name: 'Friends',
+      component: () => import('./views/Home.vue'),
+      meta: { section: 'friends' }
+    },
+    {
       path: '/blog',
       name: 'BlogPage',
       component: () => import('./views/Blog.vue'),
@@ -44,9 +80,9 @@ const router = createRouter({
     }
   ],
   scrollBehavior(to, from, savedPosition) {
-    if (to.hash) {
+    if (to.meta.section) {
       return {
-        el: to.hash,
+        el: `#${to.meta.section}`,
         behavior: 'smooth'
       }
     }

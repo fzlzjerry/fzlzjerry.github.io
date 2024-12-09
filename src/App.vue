@@ -24,10 +24,10 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item"><router-link class="nav-link" to="/#about">About Me</router-link></li>
-            <li class="nav-item"><router-link class="nav-link" to="/#skills">Skills</router-link></li>
-            <li class="nav-item"><router-link class="nav-link" to="/#projects">Projects</router-link></li>
-            <li class="nav-item"><router-link class="nav-link" to="/#contact">Contact</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/about">About Me</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/skills">Skills</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/projects">Projects</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/contact">Contact</router-link></li>
             <li class="nav-item"><router-link class="nav-link" to="/blog">Blog</router-link></li>
             <li class="nav-item"><router-link class="nav-link" to="/igem">iGEM</router-link></li>
             <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
