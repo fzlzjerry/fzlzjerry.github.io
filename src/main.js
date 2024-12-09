@@ -12,7 +12,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 // Create router
 const router = createRouter({
   history: createWebHistory(process.env.NODE_ENV === 'production' 
-    ? '/fzlzjerry.github.io/'
+    ? '/'  // Change to root path
     : '/'),
   routes: [
     { 
