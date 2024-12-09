@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import { createHead } from '@vueuse/head'
 import NotFound from './views/NotFound.vue'
@@ -11,7 +11,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 // Create router
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.NODE_ENV === 'production' 
+    ? '/fzlzjerry.github.io/'
+    : '/'),
   routes: [
     { 
       path: '/',
