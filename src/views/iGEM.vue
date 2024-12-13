@@ -100,14 +100,14 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-  padding: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+  padding: 1.5rem;
 }
 
 .flip-card {
   background-color: transparent;
-  height: 200px;
+  height: 250px;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -183,12 +183,12 @@ export default {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .cards-container {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
 
   .flip-card {
-    height: 180px;
+    height: 220px;
   }
 
   .flip-card h2 {
