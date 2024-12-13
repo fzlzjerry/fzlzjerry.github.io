@@ -3,36 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Igem Weekly Report</title>
+    <title>iGEM Weekly Report</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="theme-color" content="#c1a173">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fira-code@6.2.0/distr/fira_code.css">
+    <style>
+        /* 添加平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🔥 Weekly Report 🔥</h1>
-            <p class="date">December 7th, 2024 Morax Cheng</p>
+            <h1>
+                <i class="fas fa-dna"></i> 
+                Weekly Report 
+                <i class="fas fa-microscope"></i>
+            </h1>
+            <p class="date"><i class="far fa-calendar-alt"></i> December 7th, 2024 | <i class="far fa-user"></i> Morax Cheng</p>
         </header>
 
         <main>
             <section class="fade-in">
-                <h2>📌 Weekly Achievements</h2>
+                <h2>
+                    <i class="fas fa-check-circle"></i> 
+                    Weekly Achievements
+                </h2>
                 <ul>
-                    <li>Register iGEM account</li>
-                    <li>Study basic biology knowledge</li>
-                    <li>Study iGEM competition rules</li>
+                    <li><i class="fas fa-user-plus"></i> Register iGEM account</li>
+                    <li><i class="fas fa-book"></i> Study basic biology knowledge</li>
+                    <li><i class="fas fa-trophy"></i> Study iGEM competition rules</li>
                 </ul>
             </section>
 
             <section class="fade-in">
-                <h2>🚀 Next Week's Goals</h2>
+                <h2>
+                    <i class="fas fa-rocket"></i> 
+                    Next Week's Goals
+                </h2>
                 <ol>
-                    <li>Study the web development techniques used by previous iGEM teams</li>
-                    <li>Preparing the technical stack for iGEM 2025 project wiki</li>
+                    <li><i class="fas fa-code"></i> Study the web development techniques used by previous iGEM teams</li>
+                    <li><i class="fas fa-tools"></i> Preparing the technical stack for iGEM 2025 project wiki</li>
                 </ol>
             </section>
         </main>
+
+        <footer class="fade-in">
+            <p>
+                <i class="far fa-copyright"></i> 2024 iGEM Team Report |
+                Made with <i class="fas fa-heart" style="color: #ff4d4d;"></i>
+                by <i class="fas fa-code"></i> Morax
+            </p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+        tippy('[data-tippy-content]');
+    </script>
 </body>
 </html>
