@@ -121,9 +121,9 @@ export default {
         {
           id: 1,
           date: '2024-12-15',
-          title: 'Assignment 1',
-          description: 'Details about Assignment 1.',
-          url: '/igem-assignments/assignment1/', // 移除 public 前缀
+          title: 'Assignment 1: iGEM Rules Report',
+          description: 'A comprehensive overview of iGEM competition rules, required deliverables, and award structure for iGEM 2025.',
+          url: '/igem-assignments/assignment1/',
           isHovered: false
         },
         // Add more assignments as needed
