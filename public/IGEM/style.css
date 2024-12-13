@@ -14,7 +14,7 @@
     --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
     --shadow-xl: 0 20px 40px rgba(0,0,0,0.1);
     --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     /* 添加代码相关颜色 */
     --code-bg: rgba(193, 161, 115, 0.1);
@@ -28,7 +28,29 @@
     --hover-bg: rgba(193, 161, 115, 0.1);
     --transition-color: color 0.3s ease, background-color 0.3s ease;
     --transition-transform: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    /* 新增渐变和阴影效果 */
+    --gradient-gold: linear-gradient(135deg, #ffd700, #ffa500);
+    --gradient-silver: linear-gradient(135deg, #c0c0c0, #808080);
+    --gradient-bronze: linear-gradient(135deg, #cd7f32, #a0522d);
+    --glass-effect: rgba(255, 255, 255, 0.1);
+    --frost-effect: blur(10px);
+    --transition-fancy: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --shadow-hover: 0 8px 20px rgba(193, 161, 115, 0.15);
+    --gradient-shine: linear-gradient(45deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    --glow-effect: 0 0 15px rgba(193, 161, 115, 0.3);
+    --shimmer-gradient: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
 }
+
+/* 确保这个文件被放在正确的目录下 */
 
 body {
     margin: 0;
@@ -55,6 +77,7 @@ body {
     position: relative;
     overflow: hidden;
     transition: var(--transition-smooth);
+    animation: slideUp 1s ease-out;
 }
 
 .container::before {
@@ -81,7 +104,7 @@ header h1 {
     font-weight: 700;
     letter-spacing: -0.5px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    animation: none; /* 移除标题下落动画 */
+    animation: float 6s ease-in-out infinite;
     opacity: 0;
     animation: fadeIn 0.8s ease-out forwards; /* 使用渐显替代下落 */
 }
@@ -95,12 +118,8 @@ header .date {
 main section {
     margin-bottom: 25px;
     opacity: 0;
-    transform: translateY(20px);
-    transition: 
-        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-        background-color 0.3s ease;
+    transform: translateY(0);
+    transition: var(--transition-smooth);
     background: var(--section-bg);
     padding: 25px;
     border-radius: 12px;
@@ -111,6 +130,8 @@ main section {
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transform-origin: center;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: var(--frost-effect);
 }
 
 main section::after {
@@ -125,10 +146,15 @@ main section::after {
     );
     transform: translateX(-100%);
     transition: transform 0.5s ease;
+    background-image: var(--shimmer-gradient);
+    animation: shimmer 3s infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 main section:hover::after {
     transform: translateX(100%);
+    opacity: 1;
 }
 
 main section.visible {
@@ -137,8 +163,8 @@ main section.visible {
 }
 
 main section:hover {
-    transform: translateY(-3px) scale(1.005);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
 }
 
 main section:hover::before {
@@ -150,6 +176,18 @@ main section:hover::before {
     border-radius: inherit;
     opacity: 0.5;
     transition: var(--transition-smooth);
+}
+
+main section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: var(--gradient-shine);
+    animation: slideEffect 3s linear infinite;
+    pointer-events: none;
 }
 
 main h2 {
@@ -186,11 +224,7 @@ main li {
     color: var(--text-color);
     font-size: 1.1em;
     line-height: 1.7;
-    transition: 
-        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.3s ease,
-        background-color 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: var(--transition-smooth);
     padding: 12px 16px;
     border-radius: 8px;
     display: flex;
@@ -209,6 +243,9 @@ main li {
     box-shadow: var(--shadow-sm);
     position: relative;
     z-index: 1;
+    border: 1px solid transparent;
+    background-size: 200% 100%;
+    transform-origin: left center;
 }
 
 main li i {
@@ -222,11 +259,16 @@ main li:hover i {
 }
 
 main li:hover {
-    transform: translateX(5px);
+    transform: translateX(8px);
     color: white;
     background-position: -100% 0;
     padding-left: 10px;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-hover), var(--glow-effect);
+    border-color: var(--primary-color);
+    background-position: -100% 0;
+    box-shadow: 
+        0 10px 20px rgba(0,0,0,0.1),
+        inset 0 0 0 1px rgba(255,255,255,0.1);
 }
 
 main li::before {
@@ -302,6 +344,8 @@ button {
     box-shadow: 0 2px 6px rgba(193, 161, 115, 0.3);
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
 }
 
 button:hover {
@@ -313,6 +357,24 @@ button:hover {
 button:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(193, 161, 115, 0.2);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--shimmer-gradient);
+    transform: rotate(30deg);
+    animation: shimmer 3s infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+button:hover::before {
+    opacity: 1;
 }
 
 /* 代码块样式 */
@@ -330,6 +392,54 @@ pre:hover, code:hover {
     background: var(--code-bg);
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+}
+
+/* Back to Top Button Styles */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 20px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: var(--transition-smooth);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.back-to-top:active {
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 16px;
+    }
 }
 
 /* 添加暗色模式支持 */
@@ -351,6 +461,7 @@ pre:hover, code:hover {
             rgba(193, 161, 115, 0.8),
             rgba(251, 212, 109, 0.8)
         );
+        --glass-effect: rgba(255, 255, 255, 0.05);
     }
 
     body {
@@ -379,6 +490,26 @@ pre:hover, code:hover {
     main li:hover {
         background: #333;
     }
+
+    .container {
+        background: rgba(30, 30, 30, 0.95);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    main section {
+        background: rgba(40, 40, 40, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .awards h3 {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    main li:hover {
+        background: var(--gradient-primary);
+        border-color: var(--accent-color);
+    }
 }
 
 @keyframes rotate {
@@ -403,6 +534,39 @@ pre:hover, code:hover {
     to { opacity: 1; }
 }
 
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideEffect {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
 @media (max-width: 768px) {
     .container {
         width: 95%;
@@ -417,4 +581,83 @@ pre:hover, code:hover {
     main section {
         padding: 15px;
     }
+
+    .container {
+        width: 95%;
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    main section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .awards h3 {
+        font-size: 1.3em;
+    }
+}
+
+/* 奖项样式优化 */
+.awards h3 {
+    font-size: 1.5em;
+    margin: 25px 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.awards ul li {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.awards ul li:hover {
+    transform: translateX(10px);
+    background: var(--gradient-primary);
+    color: white;
+}
+
+/* 添加奖牌特效 */
+.awards .medal-criteria li:nth-child(1)::before {
+    background: var(--gradient-gold);
+}
+
+.awards .medal-criteria li:nth-child(2)::before {
+    background: var(--gradient-silver);
+}
+
+.awards .medal-criteria li:nth-child(3)::before {
+    background: var(--gradient-bronze);
+}
+
+/* 添加滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* 添加选中文本样式 */
+::selection {
+    background: var(--primary-color);
+    color: white;
 }

@@ -1,10 +1,22 @@
 <template>
   <div class="igem">
     <div class="weekly-header">
-      <h1>iGEM Weekly Reports</h1>
-      <p>Click the cards to view detailed weekly reports</p>
+      <h1>iGEM Project Updates</h1>
+      <p>Click the cards below to view our weekly reports and assignments</p>
     </div>
-    <div class="cards-container">
+    <div class="tabs">
+      <button 
+        :class="{ active: activeTab === 'weekly' }" 
+        @click="activeTab = 'weekly'">
+        Weekly Reports
+      </button>
+      <button 
+        :class="{ active: activeTab === 'assignments' }" 
+        @click="activeTab = 'assignments'">
+        iGEM Assignments
+      </button>
+    </div>
+    <div class="cards-container" v-if="activeTab === 'weekly'">
       <div 
         v-for="week in weeklyReports" 
         :key="week.id"
@@ -16,12 +28,41 @@
       >
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <h2>Week {{ week.id }}</h2>
+            <div class="card-header">
+              <span class="card-label">Week</span>
+              <h2>{{ week.id }}</h2>
+            </div>
             <div class="date">{{ week.date }}</div>
           </div>
           <div class="flip-card-back">
             <h3>{{ week.title }}</h3>
             <p>{{ week.description }}</p>
+            <span class="view-more">Click to view more</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cards-container" v-else-if="activeTab === 'assignments'">
+      <div 
+        v-for="assignment in assignments" 
+        :key="assignment.id"
+        class="flip-card"
+        :class="{ 'hover': assignment.isHovered }"
+        @mouseover="assignment.isHovered = true"
+        @mouseleave="assignment.isHovered = false"
+        @click="navigateToReport(assignment.url)"
+      >
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div class="card-header">
+              <span class="card-label">Assignment</span>
+              <h2>{{ assignment.id }}</h2>
+            </div>
+            <div class="date">{{ assignment.date }}</div>
+          </div>
+          <div class="flip-card-back">
+            <h3>{{ assignment.title }}</h3>
+            <p>{{ assignment.description }}</p>
             <span class="view-more">Click to view more</span>
           </div>
         </div>
@@ -37,36 +78,55 @@ export default {
   name: 'IgemPage',
   setup() {
     useHead({
-      title: 'iGEM Weekly Reports - Synthetic Biology Research',
+      title: 'iGEM Project Updates - Weekly Reports & Assignments',
       meta: [
-        { name: 'description', content: 'Weekly reports documenting progress and insights from iGEM synthetic biology research and competition preparation.' },
-        { name: 'keywords', content: 'iGEM, Synthetic Biology, Research Reports, Weekly Updates, Biology Competition, Student Research' },
-        { property: 'og:title', content: 'iGEM Weekly Reports - Synthetic Biology Research' },
-        { property: 'og:description', content: 'Follow our journey in synthetic biology research and iGEM competition preparation through detailed weekly reports.' },
+        { name: 'description', content: 'Track our iGEM journey through weekly reports and assignments. Comprehensive documentation of our synthetic biology research and competition preparation.' },
+        { name: 'keywords', content: 'iGEM, Synthetic Biology, Research Reports, Weekly Updates, Biology Competition, Student Research, iGEM Assignments' },
+        { property: 'og:title', content: 'iGEM Project Updates - Weekly Reports & Assignments' },
+        { property: 'og:description', content: 'Explore our iGEM journey through detailed weekly reports and project assignments in synthetic biology research.' },
         { property: 'og:type', content: 'article' }
       ]
     })
   },
   data() {
     return {
+      activeTab: 'weekly',
       weeklyReports: [
         {
           id: 1,
           date: '2024-12-01',
           title: 'Week 1 Report',
           description: 'Added advisors to group chat and planning student recruitment for iGEM 2025.',
-          url: './igem-weekly-report/2024-12-01/index.html',
+          url: '/igem-weekly-report/2024-12-01/', // 移除 public 前缀
           isHovered: false
         },
         {
           id: 2,
-          date: '2024-12-07',
+          date: '2024-12-08',
           title: 'Week 2 Report',
           description: 'Registered iGEM account, studied basic biology knowledge and competition rules.',
-          url: './igem-weekly-report/2024-12-07/index.html',
+          url: '/igem-weekly-report/2024-12-08/', // 移除 public 前缀
           isHovered: false
         },
-        // Add more weekly reports as needed
+        {
+          id: 3,
+          date: '2024-12-15',
+          title: 'Week 3 Report',
+          description: 'Completed iGEM rules report and began project topic research.',
+          url: '/igem-weekly-report/2024-12-15/',
+          isHovered: false
+        }
+      ],
+      assignments: [
+        {
+          id: 1,
+          date: '2024-12-15',
+          title: 'Assignment 1',
+          description: 'Details about Assignment 1.',
+          url: '/igem-assignments/assignment1/', // 移除 public 前缀
+          isHovered: false
+        },
+        // Add more assignments as needed
       ]
     }
   },
@@ -82,18 +142,43 @@ export default {
 <style scoped>
 .igem {
   min-height: 100vh;
-  padding: 80px 20px 40px;
+  padding: 120px 20px 40px; /* 增加顶部 padding 从 80px 到 120px */
 }
 
 .weekly-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem; /* 增加底部 margin 从 3rem 到 4rem */
   color: var(--text-color);
 }
 
 .weekly-header h1 {
   color: var(--primary-color);
   margin-bottom: 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--text-color);
+  border-bottom: 2px solid transparent;
+}
+
+.tabs button.active {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.tabs button:hover {
+  color: var(--primary-color);
 }
 
 .cards-container {
@@ -142,36 +227,63 @@ export default {
 .flip-card-front {
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
+  padding: 2rem;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.card-label {
+  display: block;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.flip-card h2 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.date {
+  font-size: 1rem;
+  opacity: 0.8;
+  text-align: center;
 }
 
 .flip-card-back {
   background-color: var(--accent-color);
   color: var(--text-color);
   transform: rotateY(180deg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.flip-card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-}
-
-.flip-card h3 {
+.flip-card-back h3 {
   font-size: 1.4rem;
   margin-bottom: 1rem;
   color: var(--primary-color);
+  font-weight: 600;
 }
 
-.date {
-  font-size: 1rem;
-  opacity: 0.9;
+.flip-card-back p {
+  flex-grow: 1;
+  margin: 1rem 0;
+  line-height: 1.5;
 }
 
 .view-more {
-  position: absolute;
-  bottom: 1rem;
-  font-size: 0.9rem;
-  color: var(--primary-color);
-  font-weight: 500;
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 /* 添加悬停效果 */

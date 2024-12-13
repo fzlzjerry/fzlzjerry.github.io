@@ -1,9 +1,10 @@
+/* 确保这个文件被放在正确的目录下 */
 document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.fade-in');
     const footer = document.querySelector('footer');
     const backToTopButton = document.createElement('button');
-    backToTopButton.textContent = '⬆ 返回顶部';
-    backToTopButton.style.display = 'none';
+    backToTopButton.className = 'back-to-top';
+    backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>Back to Top';
     document.body.appendChild(backToTopButton);
 
     backToTopButton.addEventListener('click', () => {
@@ -28,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (window.scrollY > 300) {
-            backToTopButton.style.display = 'block';
+            backToTopButton.classList.add('visible');
         } else {
-            backToTopButton.style.display = 'none';
+            backToTopButton.classList.remove('visible');
         }
     });
 
@@ -81,27 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 优化鼠标移动视差效果
-    let rafId = null;
+    // 简化鼠标移动视差效果
     document.addEventListener('mousemove', (e) => {
-        if (rafId) {
-            cancelAnimationFrame(rafId);
-        }
-
-        rafId = requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
             const sections = document.querySelectorAll('section');
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-
-                // 减小移动系数
-                const moveX = (mouseX - centerX) * 0.003;
-                const moveY = (mouseY - centerY) * 0.003;
-
+                const moveX = (e.clientX - rect.left - rect.width/2) * 0.01;
+                const moveY = (e.clientY - rect.top - rect.height/2) * 0.01;
                 section.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
         });
@@ -239,6 +227,112 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('section').forEach(section => {
         section.addEventListener('mouseenter', function() {
             this.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+    });
+
+    // 添加鼠标跟随效果
+    const cursor = document.createElement('div');
+    cursor.className = 'cursor-effect';
+    document.body.appendChild(cursor);
+
+    document.addEventListener('mousemove', (e) => {
+        requestAnimationFrame(() => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+    });
+
+    // 增强hover效果
+    document.querySelectorAll('section, li').forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursor.style.transform = 'scale(2)';
+            cursor.style.opacity = '0.5';
+        });
+
+        element.addEventListener('mouseleave', () => {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.opacity = '1';
+        });
+    });
+
+    // 移除复杂的视差滚动，改为简单的淡入效果
+    const simpleScrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('section').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'var(--transition-smooth)';
+        simpleScrollObserver.observe(section);
+    });
+
+    // 添加鼠标轨迹效果
+    const createTrail = () => {
+        const trail = document.createElement('div');
+        trail.className = 'mouse-trail';
+        document.body.appendChild(trail);
+        setTimeout(() => trail.remove(), 500);
+        return trail;
+    };
+
+    let lastX = 0;
+    let lastY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        if (Math.abs(e.clientX - lastX) + Math.abs(e.clientY - lastY) > 20) {
+            const trail = createTrail();
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            lastX = e.clientX;
+            lastY = e.clientY;
+        }
+    });
+
+    // 添加元素进入视图时的高级动画
+    const advancedObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                const delay = element.dataset.index * 100;
+                
+                element.style.animation = `
+                    fadeInUp 0.6s ${delay}ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
+                    float 4s ${delay + 600}ms ease-in-out infinite
+                `;
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    document.querySelectorAll('section, li').forEach((el, index) => {
+        el.dataset.index = index;
+        advancedObserver.observe(el);
+    });
+
+    // 添加按钮点击波纹效果
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            this.appendChild(ripple);
+
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size/2;
+            const y = e.clientY - rect.top - size/2;
+
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+
+            setTimeout(() => ripple.remove(), 600);
         });
     });
 });
