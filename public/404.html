@@ -1,18 +1,18 @@
-<script>
-    // GitHub Pages 重定向逻辑
-    const redirect = sessionStorage.redirect;
-    delete sessionStorage.redirect;
-    if (redirect && redirect !== location.pathname) {
-        history.replaceState(null, null, redirect);
-    }
-    sessionStorage.redirect = location.pathname;
-    const repo = '/fzlzjerry.github.io/';
-    location.replace(repo);
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+        const segment = 1;
+        const l = window.location;
+        const redirectPath = l.pathname.split('/').slice(0, 1 + segment).join('/');
+        sessionStorage.redirect = l.pathname + l.search + l.hash;
+        l.replace(redirectPath + '/?page=' + encodeURIComponent(l.pathname.slice(1)));
+    </script>
 </head>
 <body>
     <h1>Page Not Found</h1>
-    <div class="message">
-        <p>Redirecting to homepage...</p>
-    </div>
+    <p>Redirecting...</p>
 </body>
+</html>

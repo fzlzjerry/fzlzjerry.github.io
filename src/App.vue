@@ -103,6 +103,14 @@ export default {
       once: true
     });
   },
+  created() {
+    // Handle GitHub Pages redirect
+    const redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    if (redirect && redirect !== location.pathname) {
+      history.replaceState(null, null, redirect);
+    }
+  },
   beforeUnmount() {  // Changed from beforeDestroy to beforeUnmount
     window.removeEventListener('scroll', this.handleScroll);
   },
