@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTopButton = document.createElement('button');
     backToTopButton.className = 'back-to-top';
     backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>Back to Top';
+    backToTopButton.setAttribute('aria-label', 'Back to Top');
     document.body.appendChild(backToTopButton);
 
     backToTopButton.addEventListener('click', () => {
@@ -88,8 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('section');
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
-                const moveX = (e.clientX - rect.left - rect.width/2) * 0.01;
-                const moveY = (e.clientY - rect.top - rect.height/2) * 0.01;
+                const moveX = (e.clientX - rect.left - rect.width/2) * 0.005;
+                const moveY = (e.clientY - rect.top - rect.height/2) * 0.005;
                 section.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
         });
@@ -192,9 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 优化滚动触发
     const scrollTrigger = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards';
+                // 添加延迟，错开动画触发时间
+                setTimeout(() => {
+                    entry.target.style.animation = 'fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards';
+                }, index * 100); // 每个元素错开100ms
             }
         });
     }, {
@@ -333,6 +337,19 @@ document.addEventListener('DOMContentLoaded', () => {
             ripple.style.top = `${y}px`;
 
             setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    // 优化翻转卡片动画
+    document.querySelectorAll('.flip-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            this.classList.add('hover');
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            this.classList.remove('hover');
         });
     });
 });
