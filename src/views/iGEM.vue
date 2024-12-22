@@ -7,13 +7,18 @@
     <div class="tabs">
       <button 
         :class="{ active: activeTab === 'weekly' }" 
-        @click="activeTab = 'weekly'">
+        @click="updateTab('weekly')">
         Weekly Reports
       </button>
       <button 
         :class="{ active: activeTab === 'assignments' }" 
-        @click="activeTab = 'assignments'">
+        @click="updateTab('assignments')">
         iGEM Assignments
+      </button>
+      <button
+        :class="{ active: activeTab === 'experiments'}"
+        @click="updateTab('experiments')">
+        iGEM Experiments
       </button>
     </div>
     <div class="cards-container" v-if="activeTab === 'weekly'">
@@ -63,6 +68,32 @@
           <div class="flip-card-back">
             <h3>{{ assignment.title }}</h3>
             <p>{{ assignment.description }}</p>
+            <span class="view-more">Click to view more</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cards-container" v-else-if="activeTab === 'experiments'">
+      <div 
+        v-for="experiment in experiments" 
+        :key="experiment.id"
+        class="flip-card"
+        :class="{ 'hover': experiment.isHovered }"
+        @mouseover="experiment.isHovered = true"
+        @mouseleave="experiment.isHovered = false"
+        @click="navigateToReport(experiment.url)"
+      >
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div class="card-header">
+              <span class="card-label">Experiment</span>
+              <h2>{{ experiment.id }}</h2>
+            </div>
+            <div class="date">{{ experiment.date }}</div>
+          </div>
+          <div class="flip-card-back">
+            <h3>{{ experiment.title }}</h3>
+            <p>{{ experiment.description }}</p>
             <span class="view-more">Click to view more</span>
           </div>
         </div>
@@ -135,13 +166,34 @@ export default {
           isHovered: false
         },
         // Add more assignments as needed
+      ],
+      experiments: [
+        {
+          id: 1,
+          date: '2024-12-22',
+          title: 'Experiment 1: Pipette Medium',
+          description: 'Experimental Notes for Pipette Medium',
+          url: '/igem-experiments/experiment1/',
+          isHovered: false
+        }
       ]
+    }
+  },
+  created() {
+    const tab = new URLSearchParams(window.location.search).get('tab');
+    if (['weekly', 'assignments', 'experiments'].includes(tab)) {
+      this.activeTab = tab;
     }
   },
   methods: {
     navigateToReport(url) {
-      // 使用 window.open 打开外部链接
       window.open(url, '_blank');
+    },
+    updateTab(tab) {
+      this.activeTab = tab;
+      const url = new URL(window.location);
+      url.searchParams.set('tab', tab);
+      window.history.pushState({}, '', url);
     }
   }
 }
