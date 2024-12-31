@@ -100,8 +100,45 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
   name: 'CertificatePage',
+  setup() {
+    useHead({
+      title: 'Certificates',
+      meta: [
+        {
+          name: 'description',
+          content: 'Explore Morax Cheng\'s academic and professional achievements, including awards, certifications, and honors from various competitions and organizations.'
+        },
+        {
+          name: 'keywords',
+          content: 'Morax Cheng, achievements, honors, certificates, awards, academic accomplishments, NEC, National Economics Challenge'
+        },
+        {
+          property: 'og:title',
+          content: 'Achievements & Honors | Morax Cheng'
+        },
+        {
+          property: 'og:description',
+          content: 'Explore Morax Cheng\'s academic and professional achievements, including awards, certifications, and honors from various competitions and organizations.'
+        },
+        {
+          property: 'og:type',
+          content: 'website'
+        },
+        {
+          name: 'twitter:title',
+          content: 'Achievements & Honors | Morax Cheng'
+        },
+        {
+          name: 'twitter:description',
+          content: 'Explore Morax Cheng\'s academic and professional achievements, including awards, certifications, and honors from various competitions and organizations.'
+        }
+      ]
+    })
+  },
   data() {
     return {
       selectedCertificate: null,
