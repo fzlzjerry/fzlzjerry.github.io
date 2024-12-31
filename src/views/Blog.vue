@@ -68,13 +68,36 @@
             <p>Select an article from the sidebar to start reading.</p>
           </div>
           <div v-else>
-            <div class="markdown-content" v-html="renderedContent"></div>
+            <div class="article-meta">
+              <span class="reading-time">
+                <i class="fas fa-clock"></i>
+                {{ readingTime }}
+              </span>
+            </div>
+            <div class="markdown-content" v-html="renderedContent" ref="articleContent"></div>
+            <div class="article-nav" v-if="headings.length > 0" ref="articleNav">
+              <div class="article-nav-title">Article Catalog</div>
+              <ul class="article-nav-items">
+                <li
+                  v-for="(heading, index) in headings"
+                  :key="index"
+                  :class="['article-nav-item', { active: currentHeadingIndex === index }]"
+                  :style="{ paddingLeft: heading.level * 0.8 + 'rem' }"
+                  @click="scrollToHeading(heading.element)"
+                >
+                  {{ heading.text }}
+                </li>
+              </ul>
+            </div>
             <!-- Add comments container -->
             <div class="comments-section" ref="utterancesContainer"></div>
           </div>
         </div>
       </div>
     </Transition>
+    <div class="reading-progress">
+      <div class="reading-progress-bar" ref="progressBar"></div>
+    </div>
   </div>
 </template>
 
@@ -128,6 +151,10 @@ export default {
       searchResultCount: 0,
       isSearchVisible: false,
       isSearching: false,
+      headings: [],
+      currentHeadingIndex: 0,
+      observer: null,
+      readingTime: null, // 添加阅读时间状态
     };
   },
   computed: {
@@ -155,7 +182,10 @@ export default {
     document.addEventListener('keydown', this.handleKeyDown);
     this.setupImageHandlers();
     
-    // 添加页面过渡动��
+    // 添加代码复制事件监听
+    document.addEventListener('click', this.handleCodeCopy);
+    
+    // 添加页面过渡动画
     document.body.style.opacity = '0';
     requestAnimationFrame(() => {
       document.body.style.transition = 'opacity 0.3s';
@@ -164,12 +194,62 @@ export default {
 
     // Check if user was previously verified
     this.isVerified = localStorage.getItem('turnstileVerified') === 'true';
+    window.addEventListener('scroll', this.handleScroll);
   },
   beforeUnmount() {
-    // Clean up event listener
+    // Clean up event listeners
     document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('click', this.handleCodeCopy);
+    window.removeEventListener('scroll', this.handleScroll);
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  },
+  watch: {
+    renderedContent: {
+      handler() {
+        this.$nextTick(() => {
+          this.initializeArticleNav();
+          this.setupIntersectionObserver();
+        });
+      }
+    }
   },
   methods: {
+    // 添加计算阅读时间的方法
+    calculateReadingTime(content) {
+      // 移除 HTML 标签
+      const text = content.replace(/<[^>]*>/g, '');
+      
+      // 计算字数（英文按空格分词，中文每个字符都算一个词）
+      const words = text.trim().split(/\s+/).length;
+      const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+      
+      // 估算阅读时间（英文 200 词/分钟，中文 300 字/分钟）
+      const englishTime = (words - chineseChars) / 200;
+      const chineseTime = chineseChars / 300;
+      
+      // 考虑代码块和图片的额外阅读时间
+      const codeBlocks = (content.match(/<pre[^>]*>/g) || []).length;
+      const images = (content.match(/<img[^>]*>/g) || []).length;
+      
+      const codeTime = codeBlocks * 0.5; // 每个代码块额外 30 秒
+      const imageTime = images * 0.2;    // 每张图片额外 12 秒
+      
+      // 总时间（分钟）
+      const totalMinutes = englishTime + chineseTime + codeTime + imageTime;
+      
+      // 格式化时间
+      if (totalMinutes < 1) {
+        return '< 1 min read';
+      } else if (totalMinutes < 60) {
+        return `${Math.ceil(totalMinutes)} min read`;
+      } else {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = Math.ceil(totalMinutes % 60);
+        return `${hours} hr ${minutes} min read`;
+      }
+    },
     async fetchMarkdown(filename) {
       this.currentArticle = filename;
       const mdFilePath = `/md/${filename}`;
@@ -184,9 +264,17 @@ export default {
           highlight: function (str, lang) {
             if (lang && hljs.getLanguage(lang)) {
               try {
-                return '<pre class="hljs"><code>' +
-                  hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
-                  '</code></pre>';
+                const highlighted = hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
+                // 修改复制按钮实现
+                return `<div class="code-block">
+                  <div class="code-header">
+                    <span class="code-lang">${lang}</span>
+                    <button class="copy-button" data-code="${encodeURIComponent(str)}">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </div>
+                  <pre class="hljs"><code>${highlighted}</code></pre>
+                </div>`;
               } catch (__) {
                 // Handle highlighting error
               }
@@ -196,6 +284,9 @@ export default {
         });
 
         this.renderedContent = md.render(this.markdownContent);
+        
+        // 计算并设置阅读时间
+        this.readingTime = this.calculateReadingTime(this.renderedContent);
         
         // Load comments after content is rendered
         this.$nextTick(() => {
@@ -434,12 +525,106 @@ export default {
         this.$refs.utterancesContainer.appendChild(utterancesScript);
       }
     },
+    initializeArticleNav() {
+      if (!this.$refs.articleContent) return;
+      
+      // 获取所有标题元素
+      const headingElements = this.$refs.articleContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      this.headings = Array.from(headingElements).map(el => ({
+        text: el.textContent,
+        element: el,
+        level: parseInt(el.tagName.charAt(1)),
+      }));
+    },
+
+    setupIntersectionObserver() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+
+      const options = {
+        rootMargin: '-100px 0px -66%',
+        threshold: 1.0
+      };
+
+      this.observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = this.headings.findIndex(h => h.element === entry.target);
+            if (index !== -1) {
+              this.currentHeadingIndex = index;
+              this.updateArticleNav();
+            }
+          }
+        });
+      }, options);
+
+      this.headings.forEach(heading => {
+        this.observer.observe(heading.element);
+      });
+    },
+
+    updateArticleNav() {
+      if (!this.$refs.articleNav) return;
+      
+      const activeItem = this.$refs.articleNav.querySelector('.article-nav-item.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
+      }
+    },
+
+    scrollToHeading(element) {
+      const offset = 80; // 考虑固定导航栏的高度
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    },
+
+    handleScroll() {
+      if (!this.$refs.progressBar || !this.$refs.articleContent) return;
+
+      const windowHeight = window.innerHeight;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      const articleTop = this.$refs.articleContent.offsetTop;
+      const articleHeight = this.$refs.articleContent.offsetHeight;
+      
+      // 计算阅读进度
+      const progress = Math.max(0, Math.min(1, (scrollTop - articleTop) / (articleHeight - windowHeight)));
+      this.$refs.progressBar.style.width = `${progress * 100}%`;
+    },
+
+    // 添加代码复制处理方法
+    handleCodeCopy(event) {
+      const button = event.target.closest('.copy-button');
+      if (!button) return;
+
+      const code = decodeURIComponent(button.dataset.code);
+      navigator.clipboard.writeText(code).then(() => {
+        // 可以添加复制成功的视觉反馈
+        const icon = button.querySelector('i');
+        icon.classList.remove('fa-copy');
+        icon.classList.add('fa-check');
+        setTimeout(() => {
+          icon.classList.remove('fa-check');
+          icon.classList.add('fa-copy');
+        }, 2000);
+      });
+    },
   }
 }
 </script>
 
 <style scoped>
-@import "~highlight.js/styles/default.css";
+/* 移除默认的highlight.js样式导入 */
+/* @import "~highlight.js/styles/default.css"; */
 
 .blog {
   min-height: 100vh;
@@ -588,17 +773,258 @@ export default {
 }
 
 .markdown-content {
-  line-height: 1.6;
-  color: #212529;
-  animation: fadeIn 0.4s var(--transition-timing);
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: var(--text-color, #2c3e50);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+.markdown-content :deep(h1),
+.markdown-content :deep(h2),
+.markdown-content :deep(h3),
+.markdown-content :deep(h4),
+.markdown-content :deep(h5),
+.markdown-content :deep(h6) {
+  margin: 2.5rem 0 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--heading-color, #1a1a1a);
+}
+
+.markdown-content :deep(h1) {
+  font-size: 2.2rem;
+  border-bottom: 2px solid var(--border-color, #eaecef);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-content :deep(h2) {
+  font-size: 1.8rem;
+  border-bottom: 1px solid var(--border-color, #eaecef);
+  padding-bottom: 0.4rem;
+}
+
+.markdown-content :deep(h3) { font-size: 1.5rem; }
+.markdown-content :deep(h4) { font-size: 1.3rem; }
+.markdown-content :deep(h5) { font-size: 1.2rem; }
+.markdown-content :deep(h6) { font-size: 1.1rem; }
+
+.markdown-content :deep(p) {
+  margin: 1.2rem 0;
+  text-align: justify;
+}
+
+.markdown-content :deep(strong) {
+  font-weight: 600;
+  color: var(--strong-color, #2c3e50);
+}
+
+.markdown-content :deep(blockquote) {
+  margin: 2rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--primary-color, rgb(193, 161, 115));
+  background-color: var(--blockquote-bg, rgba(193, 161, 115, 0.1));
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.markdown-content :deep(blockquote p) {
+  margin: 0;
+  color: var(--blockquote-color, #666);
+}
+
+/* 优化列表样式 */
+.markdown-content :deep(ul),
+.markdown-content :deep(ol) {
+  padding-left: 1.5rem;
+  margin: 1.2rem 0;
+}
+
+.markdown-content :deep(li) {
+  margin: 0.5rem 0;
+  line-height: 1.7;
+}
+
+.markdown-content :deep(li::marker) {
+  color: var(--primary-color, rgb(193, 161, 115));
+}
+
+/* 优化链接样式 */
+.markdown-content :deep(a) {
+  color: var(--primary-color, rgb(193, 161, 115));
+  text-decoration: none;
+  border-bottom: 1px dashed var(--primary-color, rgb(193, 161, 115));
+  transition: all 0.3s ease;
+}
+
+.markdown-content :deep(a:hover) {
+  color: var(--primary-color-dark, rgb(163, 131, 85));
+  border-bottom-style: solid;
+}
+
+/* 优化代码块样式 */
+.markdown-content :deep(pre) {
+  background-color: var(--code-bg, #ffffff);
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-content :deep(pre code) {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+.markdown-content :deep(code):not(pre code) {
+  background-color: var(--inline-code-bg, rgba(193, 161, 115, 0.1));
+  color: var(--primary-color, rgb(193, 161, 115));
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* 优化表格样式 */
+.markdown-content :deep(table) {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border-color, #eaecef);
+}
+
+.markdown-content :deep(th),
+.markdown-content :deep(td) {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color, #eaecef);
+  text-align: left;
+}
+
+.markdown-content :deep(th) {
+  background-color: var(--th-bg, rgba(193, 161, 115, 0.1));
+  font-weight: 600;
+}
+
+.markdown-content :deep(tr:nth-child(even)) {
+  background-color: var(--tr-even-bg, rgba(0, 0, 0, 0.02));
+}
+
+/* 添加文章导航 */
+.article-nav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--nav-bg, rgba(255, 255, 255, 0.9));
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  .article-nav {
+    display: block;
   }
-  to {
-    opacity: 1;
+}
+
+.article-nav-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: var(--text-color, #2c3e50);
+}
+
+.article-nav-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-nav-item {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  margin: 0.2rem 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.article-nav-item:hover {
+  background-color: var(--nav-hover-bg, rgba(193, 161, 115, 0.1));
+}
+
+.article-nav-item.active {
+  background-color: var(--primary-color, rgb(193, 161, 115));
+  color: white;
+}
+
+/* 添加阅读进度条 */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--progress-bg, rgba(193, 161, 115, 0.2));
+  z-index: 1000;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  background: var(--primary-color, rgb(193, 161, 115));
+  width: 0;
+  transition: width 0.1s ease;
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .markdown-content {
+    color: var(--text-color-dark, #e0e0e0);
+  }
+
+  .markdown-content :deep(h1),
+  .markdown-content :deep(h2),
+  .markdown-content :deep(h3),
+  .markdown-content :deep(h4),
+  .markdown-content :deep(h5),
+  .markdown-content :deep(h6) {
+    color: var(--heading-color-dark, #fff);
+  }
+
+  .markdown-content :deep(blockquote) {
+    background-color: var(--blockquote-bg-dark, rgba(193, 161, 115, 0.05));
+  }
+
+  .markdown-content :deep(blockquote p) {
+    color: var(--blockquote-color-dark, #bbb);
+  }
+
+  .markdown-content :deep(pre) {
+    background-color: var(--code-bg-dark, #1a1a1a);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .markdown-content :deep(code):not(pre code) {
+    background-color: var(--inline-code-bg-dark, rgba(193, 161, 115, 0.15));
+  }
+
+  .article-nav {
+    background: var(--nav-bg-dark, rgba(45, 45, 45, 0.9));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .article-nav-item:hover {
+    background-color: var(--nav-hover-bg-dark, rgba(193, 161, 115, 0.15));
   }
 }
 
@@ -757,7 +1183,7 @@ export default {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  margin: 0.8rem 0;    /* 减小图片上�����距 */
+  margin: 0.8rem 0;    /* 减小图片上下间距 */
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -826,7 +1252,7 @@ export default {
   white-space: nowrap; /* 不换行，确保公式在一行内显示 */
 }
 
-/* 为长���式添加可见的水平滚动条样式 */
+/* 为长公式添加可见的水平滚动条样式 */
 .markdown-content :deep(.MathJax_Display::-webkit-scrollbar) {
   height: 6px; /* 滚动条高度 */
 }
@@ -1333,6 +1759,283 @@ export default {
 @media (prefers-color-scheme: dark) {
   .comments-section {
     border-top-color: var(--border-color-dark, #333);
+  }
+}
+
+/* 代码块样式优化 */
+.markdown-content :deep(.code-block) {
+  margin: 1.5rem 0;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(193, 161, 115, 0.1);
+  border: 1px solid rgba(193, 161, 115, 0.2);
+}
+
+.markdown-content :deep(.code-header) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background: rgba(193, 161, 115, 0.05);
+  border-bottom: 1px solid rgba(193, 161, 115, 0.1);
+}
+
+.markdown-content :deep(.code-lang) {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #c19161;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.markdown-content :deep(.copy-button) {
+  background: transparent;
+  border: 1px solid rgba(193, 161, 115, 0.3);
+  color: #c19161;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.markdown-content :deep(.copy-button:hover) {
+  background: rgba(193, 161, 115, 0.1);
+  border-color: #c19161;
+}
+
+.markdown-content :deep(.copy-button:active) {
+  transform: scale(0.98);
+}
+
+.markdown-content :deep(pre.hljs) {
+  margin: 0;
+  padding: 1.2rem;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+.markdown-content :deep(code) {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #2c2520;
+}
+
+/* 代码高亮配色方案 - 金色系 */
+.markdown-content :deep(.hljs-keyword) {
+  color: #c19161; /* 主金色 */
+  font-weight: bold;
+}
+
+.markdown-content :deep(.hljs-built_in) {
+  color: #b8860b; /* 暗金色 */
+}
+
+.markdown-content :deep(.hljs-type) {
+  color: #daa520; /* 金菊色 */
+}
+
+.markdown-content :deep(.hljs-literal) {
+  color: #cd853f; /* 秘鲁色 */
+}
+
+.markdown-content :deep(.hljs-number) {
+  color: #b8860b; /* 暗金色 */
+}
+
+.markdown-content :deep(.hljs-regexp) {
+  color: #d4af37; /* 金色 */
+}
+
+.markdown-content :deep(.hljs-string) {
+  color: #cd853f; /* 秘鲁色 */
+}
+
+.markdown-content :deep(.hljs-comment) {
+  color: #999999; /* 灰色 */
+  font-style: italic;
+}
+
+.markdown-content :deep(.hljs-doctag) {
+  color: #c19161;
+}
+
+.markdown-content :deep(.hljs-meta) {
+  color: #b8860b;
+}
+
+.markdown-content :deep(.hljs-tag) {
+  color: #daa520;
+}
+
+.markdown-content :deep(.hljs-attr) {
+  color: #cd853f;
+}
+
+.markdown-content :deep(.hljs-attribute) {
+  color: #d4af37;
+}
+
+.markdown-content :deep(.hljs-name) {
+  color: #c19161;
+}
+
+.markdown-content :deep(.hljs-bullet) {
+  color: #b8860b;
+}
+
+.markdown-content :deep(.hljs-code) {
+  color: #daa520;
+}
+
+.markdown-content :deep(.hljs-emphasis) {
+  color: #cd853f;
+  font-style: italic;
+}
+
+.markdown-content :deep(.hljs-strong) {
+  color: #c19161;
+  font-weight: bold;
+}
+
+.markdown-content :deep(.hljs-formula) {
+  color: #b8860b;
+}
+
+.markdown-content :deep(.hljs-link) {
+  color: #daa520;
+  text-decoration: underline;
+}
+
+.markdown-content :deep(.hljs-quote) {
+  color: #999999;
+  font-style: italic;
+}
+
+.markdown-content :deep(.hljs-selector-tag) {
+  color: #c19161;
+}
+
+.markdown-content :deep(.hljs-selector-id) {
+  color: #b8860b;
+}
+
+.markdown-content :deep(.hljs-selector-class) {
+  color: #daa520;
+}
+
+.markdown-content :deep(.hljs-selector-attr) {
+  color: #cd853f;
+}
+
+.markdown-content :deep(.hljs-selector-pseudo) {
+  color: #d4af37;
+}
+
+.markdown-content :deep(.hljs-template-tag) {
+  color: #c19161;
+}
+
+.markdown-content :deep(.hljs-template-variable) {
+  color: #b8860b;
+}
+
+.markdown-content :deep(.hljs-addition) {
+  color: #2fa245;
+  background: rgba(47, 162, 69, 0.1);
+}
+
+.markdown-content :deep(.hljs-deletion) {
+  color: #d73a49;
+  background: rgba(215, 58, 73, 0.1);
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .markdown-content :deep(.code-block) {
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .markdown-content :deep(.code-header) {
+    background: rgba(193, 161, 115, 0.15);
+    border-bottom-color: rgba(193, 161, 115, 0.25);
+  }
+
+  .markdown-content :deep(pre.hljs) {
+    background: #ffffff;
+  }
+
+  .markdown-content :deep(code) {
+    color: #2c2520;
+  }
+}
+
+/* 行内代码样式 */
+.markdown-content :deep(:not(pre) > code) {
+  background: rgba(193, 161, 115, 0.1);
+  color: #c19161;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9em;
+  border: 1px solid rgba(193, 161, 115, 0.2);
+}
+
+/* 代码块滚动条样式 */
+.markdown-content :deep(pre.hljs::-webkit-scrollbar) {
+  height: 8px;
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+.markdown-content :deep(pre.hljs::-webkit-scrollbar-thumb) {
+  background: rgba(193, 161, 115, 0.2);
+  border-radius: 4px;
+  border: 2px solid #ffffff;
+}
+
+.markdown-content :deep(pre.hljs::-webkit-scrollbar-thumb:hover) {
+  background: rgba(193, 161, 115, 0.3);
+}
+
+/* 添加阅读时间样式 */
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(193, 161, 115, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(193, 161, 115, 0.1);
+}
+
+.reading-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c19161;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.reading-time i {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .article-meta {
+    background: rgba(193, 161, 115, 0.1);
+    border-color: rgba(193, 161, 115, 0.2);
   }
 }
 </style>
