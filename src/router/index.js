@@ -63,6 +63,11 @@ const router = createRouter({
       component: () => import('@/views/iGEM.vue')
     },
     {
+      path: '/certificate',
+      name: 'CertificatePage',
+      component: () => import('@/views/Certificate.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: NotFound

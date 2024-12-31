@@ -30,6 +30,7 @@
             <li class="nav-item"><router-link class="nav-link" to="/contact">Contact</router-link></li>
             <li class="nav-item"><router-link class="nav-link" to="/blog">Blog</router-link></li>
             <li class="nav-item"><router-link class="nav-link" to="/igem">iGEM</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/certificate">Certificates</router-link></li>
             <li class="nav-item"><a class="nav-link" href="https://morax.blog/WeatherApp/" target="_blank">Weather</a></li>
             <li class="nav-item"><a class="nav-link" href="/rss.xml" target="_blank">RSS</a></li>
           </ul>
