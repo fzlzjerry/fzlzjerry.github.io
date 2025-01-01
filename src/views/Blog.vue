@@ -82,10 +82,11 @@
                   v-for="(heading, index) in headings"
                   :key="index"
                   :class="['article-nav-item', { active: currentHeadingIndex === index }]"
-                  :style="{ paddingLeft: heading.level * 0.8 + 'rem' }"
+                  :style="{ '--level': heading.level }"
                   @click="scrollToHeading(heading.element)"
+                  :title="heading.text"
                 >
-                  {{ heading.text }}
+                  <span>{{ heading.text }}</span>
                 </li>
               </ul>
             </div>
@@ -543,17 +544,45 @@ export default {
       }
 
       const options = {
-        rootMargin: '-100px 0px -66%',
-        threshold: 1.0
+        rootMargin: '-100px 0px -85%',
+        threshold: [0, 0.2, 0.5, 0.8, 1.0]
       };
+
+      let lastMainHeadingIndex = 0;
 
       this.observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const index = this.headings.findIndex(h => h.element === entry.target);
-            if (index !== -1) {
+          const index = this.headings.findIndex(h => h.element === entry.target);
+          if (index === -1) return;
+
+          const heading = this.headings[index];
+          
+          // 如果是主标题（h1或h2）且正在进入视图
+          if (heading.level <= 2 && entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            lastMainHeadingIndex = index;
+            this.currentHeadingIndex = index;
+            this.updateArticleNav();
+          }
+          // 如果是子标题且在视图中占比较高
+          else if (heading.level > 2 && entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+            // 检查这个子标题是否属于当前主标题
+            let currentMainHeading = this.headings[lastMainHeadingIndex];
+            if (currentMainHeading && heading.level > currentMainHeading.level) {
               this.currentHeadingIndex = index;
               this.updateArticleNav();
+            }
+          }
+          // 如果标题离开视图，回到其父标题
+          else if (!entry.isIntersecting && this.currentHeadingIndex === index) {
+            // 向上查找最近的可见主标题
+            for (let i = index - 1; i >= 0; i--) {
+              const element = this.headings[i].element;
+              const rect = element.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
+                this.currentHeadingIndex = i;
+                this.updateArticleNav();
+                break;
+              }
             }
           }
         });
@@ -577,7 +606,7 @@ export default {
     },
 
     scrollToHeading(element) {
-      const offset = 80; // 考虑固定导航栏的高度
+      const offset = 120; // 增加偏移量
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -920,15 +949,40 @@ export default {
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 200px;
-  max-height: 80vh;
+  width: 280px;
+  max-height: 75vh;
   overflow-y: auto;
-  background: var(--nav-bg, rgba(255, 255, 255, 0.9));
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 
+    0 4px 24px rgba(193, 161, 115, 0.15),
+    0 1px 2px rgba(193, 161, 115, 0.1);
+  padding: 1.5rem 1rem;
   display: none;
+  border: 1px solid rgba(193, 161, 115, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(193, 161, 115, 0.3) transparent;
+  z-index: 100;
+}
+
+.article-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.article-nav::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0.5rem;
+}
+
+.article-nav::-webkit-scrollbar-thumb {
+  background-color: rgba(193, 161, 115, 0.3);
+  border-radius: 4px;
+}
+
+.article-nav::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(193, 161, 115, 0.5);
 }
 
 @media (min-width: 1400px) {
@@ -938,34 +992,125 @@ export default {
 }
 
 .article-nav-title {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  margin-bottom: 0.8rem;
-  color: var(--text-color, #2c3e50);
+  margin-bottom: 1.2rem;
+  color: rgb(193, 161, 115);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(193, 161, 115, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.article-nav-title::before {
+  content: '☰';
+  font-size: 1rem;
+  opacity: 0.8;
 }
 
 .article-nav-items {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .article-nav-item {
   font-size: 0.85rem;
-  padding: 0.4rem 0.8rem;
-  margin: 0.2rem 0;
-  border-radius: 6px;
+  padding: 0.6rem;
+  margin: 0.1rem 0;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #666;
+  position: relative;
+  border: 1px solid transparent;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+.article-nav-item span {
+  display: block;
+  padding-left: calc(0.8rem * var(--level, 1));
   transition: all 0.3s ease;
 }
 
 .article-nav-item:hover {
-  background-color: var(--nav-hover-bg, rgba(193, 161, 115, 0.1));
+  background-color: rgba(193, 161, 115, 0.06);
+  color: rgb(193, 161, 115);
+  border-color: rgba(193, 161, 115, 0.1);
+}
+
+.article-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: rgb(193, 161, 115);
+  border-radius: 0 2px 2px 0;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  transform-origin: top;
+}
+
+.article-nav-item:hover::before {
+  transform: scaleY(1);
 }
 
 .article-nav-item.active {
-  background-color: var(--primary-color, rgb(193, 161, 115));
-  color: white;
+  background-color: rgba(193, 161, 115, 0.1);
+  color: rgb(193, 161, 115);
+  font-weight: 500;
+  border-color: rgba(193, 161, 115, 0.2);
+}
+
+.article-nav-item.active::before {
+  transform: scaleY(1);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .article-nav {
+    background: rgba(28, 28, 28, 0.95);
+    border-color: rgba(193, 161, 115, 0.2);
+    box-shadow: 
+      0 4px 24px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(193, 161, 115, 0.15);
+  }
+  
+  .article-nav:hover {
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 2px 4px rgba(193, 161, 115, 0.2);
+  }
+  
+  .article-nav-title {
+    color: rgb(213, 181, 135);
+    border-bottom-color: rgba(193, 161, 115, 0.25);
+  }
+  
+  .article-nav-item {
+    color: #bbb;
+  }
+  
+  .article-nav-item:hover {
+    background-color: rgba(193, 161, 115, 0.15);
+    color: rgb(213, 181, 135);
+    border-color: rgba(193, 161, 115, 0.25);
+  }
+  
+  .article-nav-item.active {
+    background-color: rgba(193, 161, 115, 0.2);
+    color: rgb(213, 181, 135);
+    border-color: rgba(193, 161, 115, 0.3);
+  }
 }
 
 /* 添加阅读进度条 */
