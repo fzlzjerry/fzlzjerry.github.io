@@ -154,6 +154,22 @@ export default {
           description: 'Read the iGEM 2024 TOP 10 Project',
           url: '/igem-weekly-report/2024-12-22/',
           isHovered: false
+        },
+        {
+          id: 5,
+          date: '2024-12-29',
+          title: 'Week 5 Report',
+          description: 'Join the iGEM 2025 Simulation Camp',
+          url: '/igem-weekly-report/2024-12-29/',
+          isHovered: false
+        },
+        {
+          id: 6,
+          date: '2025-01-05',
+          title: 'Week 6 Report',
+          description: 'Work on the iGEM 2025 Wiki Website',
+          url: '/igem-weekly-report/2025-01-05/',
+          isHovered: false
         }
       ],
       assignments: [
