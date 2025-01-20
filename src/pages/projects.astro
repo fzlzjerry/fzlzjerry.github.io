@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    title: 'Windows 12 Web',
+    description: 'A web-based Windows 12 concept UI implementation with modern web technologies. Features a realistic Windows-like interface, multiple windows management, and various system apps.',
+    tech: ['Vue', 'TypeScript', 'Vite'],
+    github: 'https://github.com/tjy-gitnub/win12',
+    image: '/projects/win12.png',
+    featured: true
+  },
+  {
+    title: 'Graphing Calculator',
+    description: 'A powerful graphing calculator built with Python and Qt, featuring intuitive UI and advanced mathematical functions.',
+    tech: ['Python', 'Qt'],
+    github: 'https://github.com/fzlzjerry/graphing_calculator',
+    image: '/projects/calculator.png',
+    featured: false
+  }
+];
+---
+
+<Layout title="Projects - Morax Cheng">
+  <div class="space-y-8">
+    <h1 class="text-3xl font-bold">My Projects</h1>
+  
+    <div class="grid gap-8">
+      {projects.map(project => (
+        <div class={`border dark:border-gray-800 rounded-lg p-6 ${project.featured ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}>
+          <div class="flex justify-between items-start mb-4">
+            <h2 class="text-xl font-bold">{project.title}</h2>
+            {project.featured && (
+              <span class="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100 text-xs rounded-full">
+                Featured
+              </span>
+            )}
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            {project.tech.map(tech => (
+              <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm">
+                {tech}
+              </span>
+            ))}
+          </div>
+          <a 
+            href={project.github}
+            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on GitHub 
+            <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>

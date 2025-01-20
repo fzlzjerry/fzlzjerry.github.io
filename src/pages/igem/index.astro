@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const sections = [
+  {
+    title: 'Weekly Reports',
+    description: 'Documentation of our weekly progress and achievements',
+    link: '/igem/weekly-reports',
+    icon: 'fa-file-lines'
+  },
+  {
+    title: 'Assignments',
+    description: 'Project tasks and assignments for team members',
+    link: '/igem/assignments',
+    icon: 'fa-tasks'
+  }
+];
+---
+
+<Layout title="iGEM - Morax Cheng">
+  <div class="space-y-12">
+    <header class="text-center">
+      <h1 class="text-4xl font-bold mb-4">iGEM Team</h1>
+      <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        International Genetically Engineered Machine Competition - BASIS International School Park Lane Harbour Team
+      </p>
+    </header>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      {sections.map(section => (
+        <a
+          href={section.link}
+          class="block p-6 border dark:border-gray-800 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 hover:-translate-y-1"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
+              <i class={`fas ${section.icon} text-xl text-blue-600 dark:text-blue-400`}></i>
+            </div>
+            <h2 class="text-xl font-bold">{section.title}</h2>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300">{section.description}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Add Font Awesome
+  if (!document.querySelector('link[href*="font-awesome"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+    document.head.appendChild(link);
+  }
+</script>

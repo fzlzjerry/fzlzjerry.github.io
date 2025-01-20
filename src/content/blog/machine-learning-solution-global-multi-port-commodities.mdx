@@ -1,0 +1,236 @@
+---
+title: "Machine Learning Solution for Global Multi-Port Commodities Flow Problem"
+date: "2024-08-09"
+category: "Technology"
+tags: ["Machine Learning", "Data Science", "Supply Chain", "Research"]
+authors: ["Jinyuan Huang", "Yixuan Cheng", "Ziming Dai", "Leo Yang", "Yuxuan Wu"]
+professor: "WuYu"
+institution: "Massachusetts Institute of Technology (MIT)"
+department: "Transportation & Logistics"
+excerpt: "A comprehensive study on predicting port commodity weights using SARIMAX, DNN, and RNN methods, with enhanced data preprocessing and throughput feature implementation."
+---
+
+## Abstract
+
+Forecasting is a critical component of supply chain management, as accurate predictions can significantly simplify many operational tasks. This study aims to predict the weight of commodities arriving at specific ports in the upcoming month using three methods: Seasonal ARIMA with Exogenous Variables (SARIMAX), Deep Neural Networks (DNN), and Recurrent Neural Networks (RNN). We enhanced our data preprocessing by introducing a "throughput" feature, which increases the model's versatility and effectiveness even with limited historical data for certain ports. For the LR approach, we accounted for key time series factors, namely trend and seasonality, improving its accuracy over standard LR models. In the DNN and RNN methods, we applied hyperparameter tuning to optimize model performance. Our results demonstrate that incorporating these techniques yields more precise and reliable forecasts, contributing to a more efficient supply chain process.
+
+## 1. Introduction
+
+### 1.1 Background and Motivation
+
+Nowadays, people living in the United States require diverse commodities. Due to the relatively low cost and higher equipment capacity of waterway transportation showcased in society, a tremendous proportion of these commodities are imported into the United States by waterway transportation. In this situation, reinforcing the resilience and sophistication of the nationwide supply chain network is critical. Consequently, various port-related data, including categories, values, weights, and routing information are utilized to analyze the proportions and significance of goods flowing through the United States ocean ports. By coding and training several models with this data, we believe that our project can be capable of assisting stakeholders in optimizing supply chain management.
+
+### 1.2 Approach of the Project
+
+The project's approach focuses on anticipating the number of commodities anticipated for arrival at specific ports in the following months. Key data points in the paper will enhance the analytical findings. The program's primary goal is to ascertain the weight of commodities upon arrival at the designated port. To implement this strategy, a wide range of machine learning models, including SARIMAX, DNN, and RNN, were employed. These sophisticated models have demonstrated an impressive capacity to provide accurate projections for the weight of incoming commodities at the port. However, when the datasets contain some extreme data changing at a certain time, these models tend to be unable to keep pace with the changes in realistic data.
+
+### 1.3 Significance and Contribution
+
+This project can contribute to the marketplace by predicting the quantity of particular items arriving at the port in the coming months, facilitating merchants to better plan their product purchases. Forecasting the amount of goods arriving also aids in the organization of imports. Furthermore, the outcomes of this forecast contribute to boosting the effectiveness of supply chain network iteration.
+
+## 2. Foundational Dimension Experiment
+
+### 2.1 Data Preprocessing
+
+Upon receiving the data file, which contains the import record of 9 major ports in the US, an initial mistake in data was discovered by us during our concentration on the data's title. Then, the optimization of data was derived, especially replenishing the data.
+
+To begin with, we deleted some columns that are designed to explain the data to humans. These data are useless to machines. After the deletion, we now have six columns: **'Time'**, **'SWT'**, **'Value'**, **'Commodity'**, **'Port'**, **'Coast'**. We choose to predict the **'SWT'**, but it is the same to predict **'Value'**. We decided to improve the input categories:
+
+- **'Time'** is split into **'year'** and **'month'** to make the seasonality more obvious.
+- **'Commodity'** is removed; we will train models for each of the categories. That is because each commodity has its own features. For example, meat is needed all year round, but we only have ice cream in summer. So the weight of imported meat is basically stable all year, but the imported sugar may peak in summer.
+- **'Coast'** is converted into one-hot vectors as mentioned in the "Data Preprocessing" part. Using a one-hot vector can enhance the discrimination of coast.
+- **'Port'** is converted into **'port_throughput'** to show the port size. For example, LA is the biggest port in the US, so its **'port_throughput'** is the largest (*9,911,158 TEUs* in 2022). New York is the second (*9,493,664 TEUs* in 2022).
+
+As shown above, these categories were chosen to be the inputs. In the data completion part, we first tended to fill the missing data with an average value due to a misconception that utilization of the average can always be helpful. However, filling "0" in those data gaps is the sole effective method after experiments because this helps identify missing data later, and the demand for some commodities has dramatic fluctuations over time. Inserting average numbers may cause computers to learn erroneous traits (e.g., the demand for ice cream in June is much higher than it is in May).
+
+The following is a concrete instance of a class called "03_Bos." That is data on seafood goods imported per month at the Port of Boston. The blue line represents variations in SWT data, whereas the orange line represents changes in total value.
+
+![Fig1: Cleaned data for 03_Bos](https://ice.frostsky.com/2024/11/29/8ea16eb0b812d2bcffc6a0eb6ab3c60a.png)
+
+### 2.2 SARIMAX Solution
+
+#### [1] Combination of Functions
+
+Time series contain two main factors: *Trend* and *Seasonality*. Therefore, a trigonometric function and linear equation were involved to represent the trend and seasonality factors, respectively.
+
+The trigonometric function is a *sine* function, which typically contains a seasonal feature. The second one is a simple linear function, which simulates the trend.
+
+Then, we add up two functions:
+
+
+$$
+f(x) = a \sin(wx)
+$$
+
+$$
+g(x) = kx + b
+$$
+
+$$
+h(x) = f(x) + g(x) = a \sin(wx) + kx + b
+$$
+
+***Where***
+$$
+f(x) = a \sin(wx) \quad \text{(simulates the seasonality)}
+$$
+
+$$
+g(x) = kx + b \quad \text{(simulates the trend)}
+$$
+
+$$
+h(x) = f(x) + g(x) = a \sin(wx) + kx + b \quad \text{(final result of the entire linear regression)}
+$$
+
+
+The parameters were adjusted using historical data. After the training process, the curve-like function was executed, providing the project with a universal model.
+
+![Fig 2: Linear regression prediction for 03_Sea](https://ice.frostsky.com/2024/11/12/2866817939a97eab9bab75bf986d674e.png)
+
+![Fig 3: The actual function for predicting 03_Sea](https://ice.frostsky.com/2024/11/12/3f936f38064061ca3b4042fd7a51ec2c.png)
+
+The actual function of our prediction is as shown in *Figure 3*. The wavelength of the sine function is not an integer. So for x (an integer), it looks like messy lines.
+
+Besides this, this linear regression model also has another limitation: if you are trying to make it more universal, but the data has extreme fluctuations (which is very usual), we cannot align the result correctly.
+
+For example, the Port of Los Angeles is the biggest in the US, and the Port of Boston is small. In this case, we cannot use our curve-like linear regression model since it performs badly in both of these cases.
+
+![Fig 4a: 03_Los](https://ice.frostsky.com/2024/11/12/85f8d40aaed960231853e9e164869fc2.png)
+
+![Fig 4b: 02_Bos](https://ice.frostsky.com/2024/11/12/8bfb6564c0255eb503574170fe86354c.png)
+
+**Fig 4**: 03_Los (top), 02_Bos (bottom)
+
+#### [2] Result of SARIMAX Prediction
+
+Consequently, another classical model—the SARIMAX model—was involved to reinforce the prediction performance because of the more comprehensive factors it considers.
+
+**Formula of SARIMAX:**
+
+$$
+\begin{align*}
+& (1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p)(1 - B)^d (1 - \Phi_1 B^s - \Phi_2 B^{2s} - \cdots - \Phi_P B^{Ps})(1 - B^s)^D y_t \\
+&= (1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q)(1 + \Theta_1 B^s + \Theta_2 B^{2s} + \cdots + \Theta_Q B^{Qs}) \epsilon_t + \beta X_t + \epsilon_t
+\end{align*}
+$$
+
+The SARIMAX model is utilized for time series forecasting, incorporating both seasonal and non-seasonal components along with external regressors. It accounts for autocorrelations, seasonal effects, and external influences, making it suitable for complex time series data such as sales, weather patterns, or economic indicators. By modeling these factors, SARIMAX provides accurate and comprehensive predictions.
+
+During this process, data from two ports showcased distinctive prediction performance: "19_Hou" in *Figure 5* and "09_Bos" in *Figure 6*. In the case of "19_Hou," the trend and seasonality predicted by the model approximate the realistic data. In contrast, "09_Bos" showed an obvious mismatch with realistic seasonal fluctuations.
+
+Based on the results above, we can see that the SARIMAX model has great performance when dealing with seasonal data but not very good with random data.
+
+This is very common for sequence-predict models (which means the model only uses the historical sequence to predict itself, without adding extra dimensions). We will discuss it in our second experiment (3. Expanded Dimension Experiment).
+
+![Fig 5: SARIMAX prediction of 19_Hou](https://ice.frostsky.com/2024/11/12/92d1ec803d9e3b9701b875a0e96cd768.png)
+
+![Fig 6: SARIMAX prediction for 09_Bos](https://ice.frostsky.com/2024/11/12/47772ba8b28931bde05d956cb1e049e7.png)
+
+### 2.3 DNN Solution
+
+Due to the limited advance brought by the SARIMAX model, we decided to introduce another model, the traditional DNN model, for its universality and positive responses from scholars. Deep neural networks have been widespread and frequently applied in multiple fields, such as computer vision, natural language processing, and robotics. The successful applications of DNNs in these fields have broadened the path for further research and reinforcement in artificial intelligence, with its potential to forecast port data successfully. Moreover, *Hyperparameter Tuning* was used to figure out the best architecture for our DNN. Here is our prediction:
+
+![Fig 7: DNN training result](https://ice.frostsky.com/2024/11/12/60fc052aadb26e87a0b69760465e901b.png)
+
+The error showcased in the figure leads us to assert it is because we tried to train a universal model that can be used on many ports, even if they don't have historical data. We introduced a new feature called **'port_throughput'** (as mentioned in data preprocessing). Since **'port_throughput'** is a large number, and the values of different ports have huge differences, it is difficult to handle. In theory, the DNN model positively impacts forecasting. However, a very deep network is required, which may not be so efficient.
+
+### 2.4 RNN Solution
+
+Based on the attempt with the DNN model, we sought a more suitable model—the RNN model. The RNN holds crucial advantages over the DNN in time series forecasting tasks due to its ability to capture temporal dependencies through recurrent connections. This unique structure allows RNNs to memorize and utilize information from previous time steps, making them precise and effective in modeling sequential data. Unlike DNNs, which struggle with time dependencies and require fixed input lengths, RNNs can handle variable-length sequences and retain long-term information. Variants like Long Short-Term Memory (LSTM) further enhance these capabilities, offering superior performance in tasks with complex temporal patterns and time-based correlations.
+
+![RNN Model](https://ice.frostsky.com/2024/11/12/a8a62c20b146eaeab0d41b9afbc7569d.png)
+
+We used a simple LSTM model containing 2 LSTM layers and 2 dense layers; we also added 3 dropout layers and a batch normalization layer to prevent exploding gradients and overfitting.
+
+The result of the RNN model has brought out a common problem of all sequence-predict models. We will discuss it in the next section.
+
+### 2.5 Common Problem: Delayed Forecasting
+
+You can see the RNN's prediction in *Figure 8*. It's a bit messy and doesn't look very good. However, if we just move the prediction graph 1 month earlier on the x-axis (as in *Figure 9*), the result is amazing.
+
+![Fig 8: RNN prediction](https://ice.frostsky.com/2024/11/12/616d4229917685bee23674b289a6668b.png)
+
+![Fig 9: RNN prediction 1 month earlier](https://ice.frostsky.com/2024/11/12/16839aa73dfa904947ab926eb9807ca0.png)
+
+So a critical hypothesis is brought out. What causes this hypothesis?
+
+We can take another graph as an example to explain that.
+
+![Fig 10: Delayed sudden peak](https://ice.frostsky.com/2024/11/12/f31a4d1620ddcfa35dfc5c0661b05dc5.png)
+
+**Fig 10: Delayed sudden peak**
+
+Apart from the data quality, you can clearly see the delay of the sudden peak.
+
+The model simply uses last month's data as this month's prediction. This kind of "prediction" is completely meaningless. But what causes that?
+
+We think the reason for the delay is that we don't have much historical data—more precisely, historical data that are seasonal.
+
+When the peak happens, the model doesn't know it because the omen is too small to be detected. However, the model realizes the sudden increment in the next month, so it predicts that in the third month, the value will continuously increase. But in the third month, the value suddenly drops. There's no time for the model to correct itself!
+
+The data in *Figure 8* and *Figure 10* are very random, so the model has no idea how to predict the next month. But in *Figure 5*, you can see that in earlier times, the model is delayed, but in later times when it has more seasonal data as history, it is better.
+
+To sum up, the lack of seasonal data has caused the meaningless delay of the sequence-predict model. And this is unsolvable unless we break the limitation of the sequence-predict model—we added extra dimensions to the data in the next experiment (3. Expanded Dimension Experiment).
+
+#### Analysis for Improvement
+
+To pursue a more accurate forecasting result, an analysis of all three models was conducted. First, the fact that all three models cannot provide a precise enough prediction reminded us that the error may be triggered by the data processing. Then, fortunately, we discovered a similarity in the error range of the three models due to the limited dimensions of the dataset. Consequently, we firmly assert that extra types of data are capable of reinforcing the prediction results.
+
+## 3. Expanded Dimension Experiment
+
+### 3.1 Introduction
+
+Why do we need extra dimensions? As we have said above, the sequence-predict model cannot deal with data that doesn't have obvious seasonalities.
+
+To explain this, we can take ice cream as an example.
+
+With global warming, the climate today is not stable. We often suffer from the alternation of cold and heat. In this situation, the demand for ice cream is not stable either—who wants to eat ice cream on an extremely cold day? So the demand for ice cream will be "random data" and cannot be predicted by a sequence-predict model as we have discussed before.
+
+But the demand for ice cream is relevant to the temperature. If we have a hot day, the temperature and the demand for ice cream will increase simultaneously. As a result, we can use other factors, such as temperature, to make our prediction more accurate.
+
+We generated a random sequence of temperature and ice cream demand and applied the SARIMAX model on these random data.
+
+![Fig 11: SARIMAX prediction of ice-cream example](https://ice.frostsky.com/2024/11/12/f3c8a6def459aa6946e56e7b7c78f0b0.png)
+
+The result is pretty good. For a maximum demand of 1000, the maximum error is ±20, and the MAPE metric is about 0.1078.
+
+The conclusion is that we can try to use extra dimensions to make the prediction better.
+
+### 3.2 Introduction of Stocks
+
+In our study, many factors may not aid forecasting due to instability or regional restriction. For instance, if we select climate as a variable, there may be distinctive weather conditions across the United States. This means that the demand for a specific state in the United States may decline due to catastrophic climate events while another state has a prosperous commodity demand. Therefore, it is critical to concentrate on a more stable and non-local parameter to assist the prediction.
+
+Investment is a main component of a country's GDP that represents a country's economic conditions. This means if the investment condition is vigorous, a country's economic level tends to be better. Citizens will be more confident in deciding whether they should invest and be willing to buy commodities, raising the demand for certain goods. Finally, a critical parameter prevailing in the economic dimension was ascertained.
+
+So we tried to add three major financial indexes into our model as extra dimensions: the **NASDAQ Index** (IXIC), the **S&P 500 Index** (SPX), and the **Dow Jones Industrial Average** (DJI).
+
+We tried all combinations of these three indexes, and the result shows that using IXIC and SPX as two extra dimensions has a huge improvement on the result:
+
+![Fig 12a: Result using indexes with SARIMAX on 02_Hou](https://ice.frostsky.com/2024/11/12/ead13e60594ab5d558a7a06b29af7130.png)
+
+![Fig 12b: Result without indexes](https://ice.frostsky.com/2024/11/12/a7cd70fd147dd94cb887b01f2a96ecf1.png)
+
+**Fig 12**: The result of using indexes using SARIMAX on 02_Hou
+
+As you can see above, *Figure 12* shows that the result using financial indexes is better than not using them.
+
+Although it's still not very good, and the MAPE is about 0.1329, we can see the significant improvement compared to the original data. So we believe that if we add more financial data/extra dimensions in the future, our model will be better and better.
+
+## 4. Conclusion
+
+To sum up, we built three models to predict the weight of imported commodities at specified ports after multiple attempts: SARIMAX, DNN, and RNN (LSTM). After preprocessing our data, we directly applied it to the models. During this process, we missed the comprehensive functions the SARIMAX model contained because we were not aware of its capability to aid forecasting by introducing extra data dimensions when we first attempted to change our regression model into the SARIMAX model. Subsequent tests with ice cream helped us recognize the significance of the SARIMAX we had previously ignored. Consequently, we added stock-related data into the SARIMAX model and achieved more accurate predictions. However, while the trend was predicted correctly, the model cannot perfectly fit the fluctuation even with the assistance of stock data.
+
+### 4.1 Discussion
+
+**Our Contributions to the Field**
+
+1. Nowadays, the demand for water transportation is increasing, and everyone across the globe sees its importance. From the perspective of the port company, our model can help in managing the carriers and providing temporary warehouses for the commodities. From the perspective of customs, they can plan for customs checks for imports earlier so that the process can be faster and more efficient. This also means that the commodity can arrive to the customer earlier, making for a better shopping experience.
+2. The data we received is not sufficient for our model to make great predictions. We found that we need to add more data to make our model produce more appropriate results.
+3. In the regression model stage, training functions from certain ports behaved grotesquely due to the distinctive amounts of commodities. We noticed that scaling should be implemented before running the model because it is extremely difficult to create an omnipotent model that can fit all of the ports if people utilize a regression model.
+4. We connected our model to the stock market, establishing a brand-new system of connecting supply chain, machine learning, and global commodity flow to make forecasts about commodity flow.
+
+**Our Future Work**
+
+1. We will continue to work on the second experiment—adding extra dimensions to the data and trying to use the financial data.
+2. We have already developed a method: go through all the US financial indicators, compare their historical data to the data of the port, and choose those with high correlation coefficients as extra dimensions. If they have higher correlation coefficients, it means that they are more likely to rise together and drop together. So it's useful for our task. This is waiting to be implemented.

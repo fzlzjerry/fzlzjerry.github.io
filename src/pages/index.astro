@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const latestPost = allPosts.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+)[0];
+
+const projects = [
+  {
+    title: 'Windows 12 Web',
+    description: 'A web-based Windows 12 concept UI implementation with modern web technologies. Features a realistic Windows-like interface, multiple windows management, and various system apps.',
+    tech: ['Vue', 'TypeScript', 'Vite'],
+    github: 'https://github.com/tjy-gitnub/win12',
+    image: '/projects/win12.png',
+    featured: true
+  },
+  {
+    title: 'Graphing Calculator',
+    description: 'A powerful graphing calculator built with Python and Qt, featuring intuitive UI and advanced mathematical functions.',
+    tech: ['Python', 'Qt'],
+    github: 'https://github.com/fzlzjerry/graphing_calculator',
+    image: '/projects/calculator.png',
+    featured: false
+  }
+];
+const latestProject = projects[0];
+---
+
+<Layout title="Morax Cheng - Student Developer & Economics Enthusiast">
+  <section class="py-20 text-center">
+    <h1 class="text-4xl font-bold mb-4">
+      Hi, I'm Morax 👋
+    </h1>
+    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+      8th Grade Student Developer & Economics Enthusiast
+    </p>
+    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+      Currently studying at BASIS International School Park Lane Harbour.
+      Passionate about programming, economics, and continuous learning.
+    </p>
+  </section>
+
+  <section class="py-10">
+    <h2 class="text-2xl font-bold mb-6">Latest Updates</h2>
+    <div class="grid gap-6">
+      {latestProject && (
+        <a href="/projects" class="block border dark:border-gray-800 rounded-lg p-6 hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold">Latest Project: {latestProject.title}</h3>
+            <div class="flex gap-2">
+              {latestProject.tech.map(tech => (
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300">
+            {latestProject.description}
+          </p>
+        </a>
+      )}
+      {latestPost && (
+        <a href={`/blog/${latestPost.slug}`} class="block border dark:border-gray-800 rounded-lg p-6 hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold">Latest Blog Post: {latestPost.data.title}</h3>
+            <time datetime={latestPost.data.date} class="text-sm text-gray-500">
+              {new Date(latestPost.data.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+          </div>
+          {latestPost.data.excerpt && (
+            <p class="text-gray-600 dark:text-gray-300">
+              {latestPost.data.excerpt}
+            </p>
+          )}
+          {latestPost.data.tags && (
+            <div class="flex flex-wrap gap-2 mt-4">
+              {latestPost.data.tags.map(tag => (
+                <span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 rounded-full">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </a>
+      )}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,57 @@
+---
+const links = [
+  { href: '/', text: 'Home' },
+  { href: '/projects', text: 'Projects' },
+  { href: '/blog', text: 'Blog' },
+  { href: '/awards', text: 'Awards' },
+  { href: '/igem', text: 'iGEM' },
+  { href: '/about', text: 'About' },
+];
+---
+
+<header class="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50">
+  <nav class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between relative">
+    <a href="/" class="text-xl font-bold">Morax</a>
+    
+    <!-- Mobile menu button -->
+    <button 
+      id="menu-toggle"
+      class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      aria-label="Toggle menu"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    
+    <!-- Desktop menu -->
+    <ul class="hidden md:flex gap-6">
+      {links.map(link => (
+        <li>
+          <a 
+            href={link.href}
+            class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
+            {link.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+    
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden bg-white dark:bg-gray-900 shadow-lg md:hidden">
+      <ul class="py-2">
+        {links.map(link => (
+          <li>
+            <a 
+              href={link.href}
+              class="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              {link.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>

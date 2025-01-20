@@ -1,0 +1,49 @@
+---
+const currentYear = new Date().getFullYear();
+
+const socialLinks = [
+  { href: "https://x.com/moraxcheng", icon: "fa-twitter", label: "Twitter" },
+  { href: "https://fb.com/moraxcheng", icon: "fa-facebook", label: "Facebook" },
+  { href: "https://instagram.com/moraxcheng", icon: "fa-instagram", label: "Instagram" },
+  { href: "https://discord.gg/F2BbkNfh", icon: "fa-discord", label: "Discord" },
+  { href: "https://github.com/fzlzjerry", icon: "fa-github", label: "GitHub" }
+];
+---
+
+<footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex flex-col items-center gap-6">
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+        {socialLinks.map(link => (
+          <a
+            href={link.href}
+            class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.label}
+          >
+            <i class={`fab ${link.icon} text-xl`}></i>
+          </a>
+        ))}
+        <button
+          class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          onclick="window.location.href='mailto:james20081204@gmail.com'"
+          aria-label="Email"
+        >
+          <i class="fas fa-envelope text-xl"></i>
+        </button>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 text-center px-4">
+        © {currentYear} Morax Cheng. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Add Font Awesome
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+  document.head.appendChild(link);
+</script>

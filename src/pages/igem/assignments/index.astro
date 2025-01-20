@@ -1,0 +1,46 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { assignments } from '../../../data/assignments';
+---
+
+<Layout title="Assignments - iGEM - Morax Cheng">
+  <div class="space-y-8">
+    <header class="space-y-4">
+      <a href="/igem" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i>
+        Back to iGEM
+      </a>
+      <h1 class="text-3xl font-bold">Assignments</h1>
+    </header>
+
+    <div class="grid gap-4">
+      {assignments.map(assignment => (
+        <a
+          href={`/igem/assignments/${assignment.id}`}
+          class="block p-4 border dark:border-gray-800 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+        >
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <i class="fas fa-book text-blue-500"></i>
+              <div>
+                <h2 class="font-medium">{assignment.title}</h2>
+                <time class="text-sm text-gray-500">{assignment.date}</time>
+              </div>
+            </div>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Add Font Awesome if not already added
+  if (!document.querySelector('link[href*="font-awesome"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+    document.head.appendChild(link);
+  }
+</script>

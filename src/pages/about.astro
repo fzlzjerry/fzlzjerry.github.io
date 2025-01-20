@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const skills = [
+  // Programming Languages
+  { name: "C", link: "https://www.open-std.org/jtc1/sc22/wg14/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" },
+  { name: "C++", link: "https://isocpp.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" },
+  { name: "JavaScript", link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" },
+  { name: "Python", link: "https://www.python.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" },
+  { name: "Rust", link: "https://www.rust-lang.org/", imgSrc: "https://www.rust-lang.org/static/images/rust-logo-blk.svg" },
+  
+  // Web Technologies
+  { name: "CSS3", link: "https://www.w3schools.com/css/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" },
+  { name: "HTML5", link: "https://www.w3.org/html/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" },
+  { name: "Node.js", link: "https://nodejs.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" },
+  { name: "React", link: "https://reactjs.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" },
+  { name: "Vue", link: "https://vuejs.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vuejs/vuejs-original-wordmark.svg" },
+  
+  // AI/ML & Data Science
+  { name: "NumPy", link: "https://numpy.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/numpy/numpy-original.svg" },
+  { name: "OpenCV", link: "https://opencv.org/", imgSrc: "https://www.vectorlogo.zone/logos/opencv/opencv-icon.svg" },
+  { name: "Pandas", link: "https://pandas.pydata.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/pandas/pandas-original.svg" },
+  { name: "PyTorch", link: "https://pytorch.org/", imgSrc: "https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg" },
+  { name: "Scikit-learn", link: "https://scikit-learn.org/", imgSrc: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" },
+  { name: "SciPy", link: "https://scipy.org/", imgSrc: "https://upload.wikimedia.org/wikipedia/commons/b/b2/SCIPY_2.svg" },
+  { name: "TensorFlow", link: "https://www.tensorflow.org/", imgSrc: "https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" },
+  
+  // Cloud Platforms
+  { name: "Google Cloud", link: "https://cloud.google.com", imgSrc: "https://www.vectorlogo.zone/logos/google_cloud/google_cloud-icon.svg" },
+  { name: "AWS", link: "https://aws.amazon.com/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+  { name: "Azure", link: "https://azure.microsoft.com/", imgSrc: "https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg" },
+  
+  // Development Tools
+  { name: "Docker", link: "https://www.docker.com/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" },
+  { name: "Git", link: "https://git-scm.com/", imgSrc: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" },
+  { name: "Linux", link: "https://www.linux.org/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" },
+  { name: "Matlab", link: "https://www.mathworks.com/products/matlab.html", imgSrc: "https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png" },
+  { name: "MySQL", link: "https://www.mysql.com/", imgSrc: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" },
+  
+  // CMS & Static Site Generators
+  { name: "Hexo", link: "https://hexo.io/", imgSrc: "https://www.vectorlogo.zone/logos/hexoio/hexoio-icon.svg" },
+  { name: "Hugo", link: "https://gohugo.io/", imgSrc: "https://api.iconify.design/logos-hugo.svg" },
+  { name: "Jekyll", link: "https://jekyllrb.com/", imgSrc: "https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg" }
+];
+---
+
+<Layout title="About - Morax Cheng">
+  <div class="space-y-12">
+    <section class="text-center">
+      <h1 class="text-4xl font-bold mb-4">Welcome to Morax's Profile</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300">
+        A teenage open-source enthusiast and developer from China
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-6">About Me</h2>
+      <div class="space-y-4 text-gray-600 dark:text-gray-300">
+        <p>Hello! I'm Morax Cheng, a teenage open-source enthusiast and developer based in China. I have a strong passion for coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.</p>
+        <p>I'm currently working on <a href="https://github.com/tjy-gitnub/win12" class="text-blue-600 dark:text-blue-400 hover:underline">Windows 12 Web</a></p>
+        <p>I'm currently learning <strong>Matlab</strong> and diving deeper into machine learning algorithms.</p>
+        <p>I'm looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" class="text-blue-600 dark:text-blue-400 hover:underline">bili2text</a> and other exciting open-source projects.</p>
+        <p>Ask me about <strong>Python, C++, Machine Learning, and Data Analysis</strong></p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-8">Languages and Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+        {skills.map(skill => (
+          <a
+            href={skill.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 hover:-translate-y-1"
+          >
+            <div class="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+              <img 
+                src={skill.imgSrc} 
+                alt={skill.name} 
+                class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                loading="lazy"
+              />
+            </div>
+            <span class="text-xs sm:text-sm text-center text-gray-600 dark:text-gray-300 line-clamp-2">
+              {skill.name}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Ensure smooth transitions */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Prevent layout shift during hover animations */
+  .grid {
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 100%;
+  }
+  
+  /* Ensure consistent height for grid items */
+  .grid a {
+    min-height: 100px;
+  }
+</style>

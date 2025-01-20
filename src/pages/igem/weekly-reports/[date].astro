@@ -1,0 +1,78 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { reports } from '../../../data/reports';
+
+export function getStaticPaths() {
+  return reports.map(report => ({
+    params: { date: report.date.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
+    props: { report }
+  }));
+}
+
+const { report } = Astro.props;
+---
+
+<Layout title={`Weekly Report ${report.date} - iGEM - Morax Cheng`}>
+  <div class="space-y-8">
+    <header class="space-y-4">
+      <a href="/igem/weekly-reports" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i>
+        Back to Weekly Reports
+      </a>
+    </header>
+
+    <article class="border dark:border-gray-800 rounded-lg overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
+        <div class="flex items-center gap-4">
+          <i class="fas fa-file-lines text-2xl"></i>
+          <div>
+            <time class="text-blue-100">{report.date}</time>
+            <p class="text-sm">By {report.author}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <section>
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i class="fas fa-check-circle text-green-500"></i>
+            Weekly Achievements
+          </h2>
+          <ul class="space-y-2">
+            {report.achievements.map(achievement => (
+              <li class="flex items-start gap-2">
+                <i class="fas fa-circle-check text-green-500 mt-1"></i>
+                <span>{achievement}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i class="fas fa-rocket text-blue-500"></i>
+            Next Week's Goals
+          </h2>
+          <ul class="space-y-2">
+            {report.nextWeekGoals.map(goal => (
+              <li class="flex items-start gap-2">
+                <i class="fas fa-arrow-right text-blue-500 mt-1"></i>
+                <span>{goal}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<script>
+  // Add Font Awesome if not already added
+  if (!document.querySelector('link[href*="font-awesome"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+    document.head.appendChild(link);
+  }
+</script>

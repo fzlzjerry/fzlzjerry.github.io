@@ -1,0 +1,45 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div
+  id={id}
+  class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4"
+  onclick="this.classList.add('hidden'); this.classList.remove('flex');"
+>
+  <div class="max-w-4xl w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl">
+    <div class="relative">
+      <button
+        onclick="this.closest('.modal').classList.add('hidden'); this.closest('.modal').classList.remove('flex');"
+        class="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <img
+        src=""
+        alt="Certificate"
+        class="w-full h-auto"
+        id={`${id}-image`}
+      />
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ id }}>
+document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    const modal = document.getElementById(id);
+    const modalImg = document.getElementById(`${id}-image`);
+    modalImg.src = trigger.getAttribute('href');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  });
+});
+</script>
