@@ -2,11 +2,10 @@
 const currentYear = new Date().getFullYear();
 
 const socialLinks = [
-  { href: "https://x.com/moraxcheng", icon: "fa-twitter", label: "Twitter" },
-  { href: "https://fb.com/moraxcheng", icon: "fa-facebook", label: "Facebook" },
-  { href: "https://instagram.com/moraxcheng", icon: "fa-instagram", label: "Instagram" },
-  { href: "https://discord.gg/F2BbkNfh", icon: "fa-discord", label: "Discord" },
-  { href: "https://github.com/fzlzjerry", icon: "fa-github", label: "GitHub" }
+  { href: "https://x.com/moraxcheng", icon: "fa-brands fa-x-twitter", label: "X (Twitter)" },
+  { href: "https://fb.com/moraxcheng", icon: "fa-brands fa-facebook", label: "Facebook" },
+  { href: "https://instagram.com/moraxcheng", icon: "fa-brands fa-instagram", label: "Instagram" },
+  { href: "https://github.com/fzlzjerry", icon: "fa-brands fa-github", label: "GitHub" }
 ];
 ---
 
@@ -22,15 +21,15 @@ const socialLinks = [
             rel="noopener noreferrer"
             aria-label={link.label}
           >
-            <i class={`fab ${link.icon} text-xl`}></i>
+            <i class={`${link.icon} text-xl`}></i>
           </a>
         ))}
         <button
-          class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2"
           onclick="window.location.href='mailto:james20081204@gmail.com'"
           aria-label="Email"
         >
-          <i class="fas fa-envelope text-xl"></i>
+          <i class="fa-regular fa-envelope text-xl"></i>
         </button>
       </div>
       <p class="text-sm text-gray-600 dark:text-gray-400 text-center px-4">
@@ -44,6 +43,6 @@ const socialLinks = [
   // Add Font Awesome
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
   document.head.appendChild(link);
 </script>
