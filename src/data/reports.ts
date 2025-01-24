@@ -1,5 +1,44 @@
 export const reports = [
   {
+    date: 'January 26th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Research on synthetic biology applications in environmental remediation',
+      'Study successful iGEM projects focused on environmental solutions',
+      'Work on the iGEM 2025 Wiki Website'
+    ],
+    nextWeekGoals: [
+      'Refine project ideas based on research findings',
+      'Continue developing the wiki platform'
+    ]
+  },
+  {
+    date: 'January 19th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Analyzed potential environmental applications of synthetic biology',
+      'Reviewed iGEM safety and security guidelines',
+      'Enhanced wiki website functionality'
+    ],
+    nextWeekGoals: [
+      'Research specific environmental challenges that could be addressed',
+      'Continue work on the wiki platform'
+    ]
+  },
+  {
+    date: 'January 12th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Explored potential project directions focusing on environmental issues',
+      'Studied previous iGEM projects with environmental impact',
+      'Continued development of the wiki website'
+    ],
+    nextWeekGoals: [
+      'Deep dive into specific environmental applications',
+      'Further wiki development'
+    ]
+  },
+  {
     date: 'January 5th, 2025',
     author: 'Morax Cheng',
     achievements: [
