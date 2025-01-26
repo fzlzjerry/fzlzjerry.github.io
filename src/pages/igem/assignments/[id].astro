@@ -69,7 +69,7 @@ const { assignment } = Astro.props;
                     <p class="text-gray-600 dark:text-gray-300">{subsection.description}</p>
                   )}
                   <ul class="space-y-3">
-                    {subsection.items.map(item => (
+                    {subsection.items && subsection.items.map(item => (
                       <li class="flex items-start gap-3">
                         {key === 'medals' ? (
                           <>
