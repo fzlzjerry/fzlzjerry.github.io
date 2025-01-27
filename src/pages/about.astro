@@ -45,17 +45,16 @@ const skills = [
 ---
 
 <Layout title="About - Morax Cheng">
-  <div class="space-y-12">
+  <div class="space-y-8 md:space-y-12">
     <section class="text-center">
-      <h1 class="text-4xl font-bold mb-4">About Me</h1>
-      <p class="text-xl text-gray-600 dark:text-gray-300">
+      <h1 class="text-3xl md:text-4xl font-bold mb-3 md:mb-4">About Me</h1>
+      <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300">
         A teenage open-source enthusiast and developer from China
       </p>
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold mb-6">About Me</h2>
-      <div class="space-y-4 text-gray-600 dark:text-gray-300">
+      <div class="space-y-4 text-base md:text-lg text-gray-600 dark:text-gray-300">
         <p>Hello! I'm Morax Cheng, a teenage open-source enthusiast and developer based in China. I have a strong passion for coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.</p>
         <p>I'm currently working on <a href="https://github.com/tjy-gitnub/win12" class="text-blue-600 dark:text-blue-400 hover:underline">Windows 12 Web</a></p>
         <p>I'm currently learning <strong>Matlab</strong> and diving deeper into machine learning algorithms.</p>
@@ -65,16 +64,16 @@ const skills = [
     </section>
 
     <section>
-      <h2 class="text-2xl font-bold mb-8">Languages and Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+      <h2 class="text-2xl md:text-2xl font-bold mb-6 md:mb-8">Languages and Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {skills.map(skill => (
           <a
             href={skill.link}
             target="_blank"
             rel="noopener noreferrer"
-            class="group flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 hover:-translate-y-1"
+            class="group flex flex-col items-center gap-3 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 hover:-translate-y-1"
           >
-            <div class="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+            <div class="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
               <img 
                 src={skill.imgSrc} 
                 alt={skill.name} 
@@ -82,7 +81,7 @@ const skills = [
                 loading="lazy"
               />
             </div>
-            <span class="text-xs sm:text-sm text-center text-gray-600 dark:text-gray-300 line-clamp-2">
+            <span class="text-sm md:text-base text-center text-gray-600 dark:text-gray-300 line-clamp-2">
               {skill.name}
             </span>
           </a>
@@ -108,6 +107,12 @@ const skills = [
   
   /* Ensure consistent height for grid items */
   .grid a {
-    min-height: 100px;
+    min-height: 110px;
+  }
+  
+  @media (max-width: 640px) {
+    .grid a {
+      min-height: 100px;
+    }
   }
 </style>
