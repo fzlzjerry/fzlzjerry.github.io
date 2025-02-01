@@ -57,32 +57,19 @@ The trigonometric function is a *sine* function, which typically contains a seas
 
 Then, we add up two functions:
 
+$f(x) = a \sin(wx)$
 
-$$
-f(x) = a \sin(wx)
-$$
+$g(x) = kx + b$
 
-$$
-g(x) = kx + b
-$$
-
-$$
-h(x) = f(x) + g(x) = a \sin(wx) + kx + b
-$$
+$h(x) = f(x) + g(x) = a \sin(wx) + kx + b$
 
 ***Where***
-$$
-f(x) = a \sin(wx) \quad \text{(simulates the seasonality)}
-$$
 
-$$
-g(x) = kx + b \quad \text{(simulates the trend)}
-$$
+$f(x) = a \sin(wx)$ (simulates the seasonality)
 
-$$
-h(x) = f(x) + g(x) = a \sin(wx) + kx + b \quad \text{(final result of the entire linear regression)}
-$$
+$g(x) = kx + b$ (simulates the trend)
 
+$h(x) = f(x) + g(x) = a \sin(wx) + kx + b$ (final result of the entire linear regression)
 
 The parameters were adjusted using historical data. After the training process, the curve-like function was executed, providing the project with a universal model.
 
@@ -109,10 +96,10 @@ Consequently, another classical model—the SARIMAX model—was involved to rein
 **Formula of SARIMAX:**
 
 $$
-\begin{align*}
+\begin{aligned}
 & (1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p)(1 - B)^d (1 - \Phi_1 B^s - \Phi_2 B^{2s} - \cdots - \Phi_P B^{Ps})(1 - B^s)^D y_t \\
 &= (1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q)(1 + \Theta_1 B^s + \Theta_2 B^{2s} + \cdots + \Theta_Q B^{Qs}) \epsilon_t + \beta X_t + \epsilon_t
-\end{align*}
+\end{aligned}
 $$
 
 The SARIMAX model is utilized for time series forecasting, incorporating both seasonal and non-seasonal components along with external regressors. It accounts for autocorrelations, seasonal effects, and external influences, making it suitable for complex time series data such as sales, weather patterns, or economic indicators. By modeling these factors, SARIMAX provides accurate and comprehensive predictions.

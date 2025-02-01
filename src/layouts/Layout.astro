@@ -27,20 +27,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <style is:global>
       /* KaTeX color contrast fixes */
+      :root {
+        --katex-color: inherit;
+      }
       .katex {
-        color: inherit;
+        font: inherit;
+        color: var(--katex-color);
       }
-      .katex .mop {
-        color: #233146;
-      }
-      .dark .katex .mop {
-        color: #001e37;
-      }
-      .katex .mord {
-        color: #233146;
-      }
-      .dark .katex .mord {
-        color: #001e37;
+      .dark .katex {
+        --katex-color: #e5e7eb;
       }
       
       /* Hide scrollbar for Chrome, Safari and Opera */

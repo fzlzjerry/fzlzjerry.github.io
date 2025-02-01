@@ -10,7 +10,14 @@ export default defineConfig({
     tailwind(),
     mdx({
       remarkPlugins: [remarkMath],
-      rehypePlugins: [rehypeKatex]
+      rehypePlugins: [[rehypeKatex, {
+        macros: {
+          "\\eqref": "\\href{###1}{(\\text{#1})}",
+        },
+        trust: true,
+        strict: false,
+        output: 'mathml'
+      }]]
     })
   ],
   markdown: {
@@ -19,6 +26,13 @@ export default defineConfig({
       wrap: true
     },
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex]
+    rehypePlugins: [[rehypeKatex, {
+      macros: {
+        "\\eqref": "\\href{###1}{(\\text{#1})}",
+      },
+      trust: true,
+      strict: false,
+      output: 'mathml'
+    }]]
   }
 });
