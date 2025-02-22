@@ -1,15 +1,67 @@
 export const reports = [
   {
+    date: 'February 23th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Implemented responsive design for team member profiles page',
+      'Added interactive data visualization components for project results',
+      'Set up automated deployment pipeline for wiki updates'
+    ],
+    nextWeekGoals: [
+      'Integrate content management system for easier updates',
+      'Optimize website performance and loading times'
+    ]
+  },
+  {
+    date: 'February 16th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Created dynamic project timeline component',
+      'Implemented accessibility improvements across the wiki',
+      'Set up analytics tracking for user engagement'
+    ],
+    nextWeekGoals: [
+      'Develop team members profile page',
+      'Implement data visualization components'
+    ]
+  },
+  {
+    date: 'February 9th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Developed laboratory notebook integration feature',
+      'Enhanced mobile responsiveness of the wiki',
+      'Created interactive project description sections'
+    ],
+    nextWeekGoals: [
+      'Add dynamic timeline component',
+      'Implement accessibility features'
+    ]
+  },
+  {
+    date: 'February 2th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Set up project documentation structure',
+      'Implemented navigation system with search functionality',
+      'Created reusable components for experiment results'
+    ],
+    nextWeekGoals: [
+      'Develop laboratory notebook feature',
+      'Enhance mobile user experience'
+    ]
+  },
+  {
     date: 'January 26th, 2025',
     author: 'Morax Cheng',
     achievements: [
-      'Research on synthetic biology applications in environmental remediation',
-      'Study successful iGEM projects focused on environmental solutions',
-      'Work on the iGEM 2025 Wiki Website'
+      'Established wiki development environment',
+      'Created initial page layouts and design system',
+      'Set up version control and collaboration workflow'
     ],
     nextWeekGoals: [
-      'Refine project ideas based on research findings',
-      'Continue developing the wiki platform'
+      'Implement navigation and search features',
+      'Create documentation structure'
     ]
   },
   {
