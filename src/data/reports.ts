@@ -1,5 +1,18 @@
 export const reports = [
   {
+    date: 'March 2nd, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Learned about design language principles and best practices',
+      'Applied design language concepts to improve UI consistency',
+      'Researched design systems used by successful websites'
+    ],
+    nextWeekGoals: [
+      'Implement design language guidelines across the project',
+      'Create a design system documentation for the team'
+    ]
+  },
+  {
     date: 'February 23th, 2025',
     author: 'Morax Cheng',
     achievements: [
