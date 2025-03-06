@@ -1,5 +1,21 @@
 export const reports = [
   {
+    date: 'March 9th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Researched environmental impacts and degradation methods of PFAS (Per- and Polyfluoroalkyl Substances)',
+      'Compiled PFAS-related scientific literature to provide evidence for our project',
+      'Redesigned Wiki page layouts to enhance user experience and visual appeal',
+      'Optimized Wiki content structure, improving navigation systems and information architecture'
+    ],
+    nextWeekGoals: [
+      'Further investigate the migration and transformation processes of PFAS in the environment',
+      'Design experimental protocols for biological degradation of PFAS',
+      'Perfect responsive design of the Wiki to ensure optimal display across various devices',
+      'Add more interactive elements to increase Wiki engagement'
+    ]
+  },
+  {
     date: 'March 2nd, 2025',
     author: 'Morax Cheng',
     achievements: [
