@@ -1,3 +1,63 @@
+# robots.txt for https://moraxcheng.me
+
+# Allow all regular crawlers
 User-agent: *
 Allow: /
-Sitemap: https://moraxcheng.me/sitemap.xml 
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Specific rules for Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# Block AI Crawlers
+
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Disallow: /
+User-agent: Claude-Web
+Disallow: /
+
+# Common Crawl
+User-agent: CCBot
+Disallow: /
+
+# Google AI
+User-agent: Googlebot-Extended
+Disallow: /
+
+# Apple AI
+User-agent: Applebot-Extended
+Disallow: /
+
+# Meta/Facebook AI
+User-agent: Facebookbot
+Disallow: /
+User-agent: Meta-ExternalAgent
+Disallow: /
+User-agent: Meta-ExternalFetcher
+Disallow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Disallow: /
+
+# ByteDance (TikTok)
+User-agent: Bytespider
+Disallow: /
+
+# Site map
+Sitemap: https://moraxcheng.me/sitemap.xml

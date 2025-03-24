@@ -2,47 +2,94 @@
 import Layout from '../layouts/Layout.astro';
 import ImageModal from '../components/ImageModal.astro';
 
-const awards = [
+const awardCategories = [
   {
-    title: 'Regional Overall Team Silver Award',
-    date: 'December 2025',
-    category: 'Team Achievement',
-    certificateId: '202503100579',
-    achievement: 'Regional Overall Team Silver Award',
-    division: 'Pre Division (Entry-Level Division)',
-    level: 'NEC Preliminary Level 2025',
-    teamMembers: [
-      { name: 'Yixuan Cheng', role: 'Team Leader' },
-      { name: 'Jacky Xiao', role: 'Team Member' },
-      { name: 'Jerry Liu', role: 'Team Member' },
-      { name: 'Candy Gond', role: 'Team Member' }
-    ]
-  },
-  {
-    title: 'National Top Scoring Individual Gold Award',
-    date: 'December 2025',
-    category: 'Individual Achievement',
-    certificateId: '202503200667',
-    achievement: 'National Top Scoring Individual Gold Award',
-    division: 'Pre Division (Entry-Level Division)',
-    level: 'NEC Preliminary Level 2025',
-    score: '330/360'
-  },
-  {
-    title: 'Macroeconomics Hall of Fame',
-    date: 'December 2025',
-    category: 'Special Recognition',
-    certificateId: '202503200703',
-    achievement: 'Macroeconomics Hall of Fame',
-    division: 'Pre Division (Entry-Level Division)',
-    level: 'NEC Preliminary Level 2025',
-    criteria: [
-      'Outstanding academic performance in macroeconomics',
-      'Innovative research contributions',
-      'Leadership in economic projects'
+    id: 'cnec2025',
+    name: 'CNEC2025 Pre division',
+    description: 'Achievements in the National Economics Challenge (CNEC) Pre Division 2025',
+    awards: [
+      {
+        title: 'Regional Overall Team Silver Award',
+        date: 'December 2025',
+        category: 'Team Achievement',
+        certificateId: '202503100579',
+        achievement: 'Regional Overall Team Silver Award',
+        division: 'Pre Division (Entry-Level Division)',
+        level: 'NEC Preliminary Level 2025',
+        teamMembers: [
+          { name: 'Yixuan Cheng', role: 'Team Leader' },
+          { name: 'Jacky Xiao', role: 'Team Member' },
+          { name: 'Jerry Liu', role: 'Team Member' },
+          { name: 'Candy Gond', role: 'Team Member' }
+        ]
+      },
+      {
+        title: 'National Top Scoring Individual Gold Award',
+        date: 'December 2025',
+        category: 'Individual Achievement',
+        certificateId: '202503200667',
+        achievement: 'National Top Scoring Individual Gold Award',
+        division: 'Pre Division (Entry-Level Division)',
+        level: 'NEC Preliminary Level 2025',
+        score: '330/360'
+      },
+      {
+        title: 'Macroeconomics Hall of Fame',
+        date: 'December 2025',
+        category: 'Special Recognition',
+        certificateId: '202503200703',
+        achievement: 'Macroeconomics Hall of Fame',
+        division: 'Pre Division (Entry-Level Division)',
+        level: 'NEC Preliminary Level 2025',
+        criteria: [
+          'Outstanding academic performance in macroeconomics',
+          'Innovative research contributions',
+          'Leadership in economic projects'
+        ]
+      }
     ]
   }
 ];
+
+// Client-side JavaScript for folder interaction
+const folderScript = `
+document.addEventListener('DOMContentLoaded', () => {
+  // Get all folder elements
+  const folders = document.querySelectorAll('.award-folder');
+  const backButtons = document.querySelectorAll('.back-to-folders');
+  const folderContainer = document.getElementById('folder-container');
+  const awardContainers = document.querySelectorAll('.award-container');
+
+  // Add click event to each folder
+  folders.forEach(folder => {
+    folder.addEventListener('click', () => {
+      const folderId = folder.getAttribute('data-folder-id');
+      
+      // Hide all folders
+      folderContainer.classList.add('hidden');
+      
+      // Show the selected award container
+      const selectedContainer = document.getElementById('awards-' + folderId);
+      if (selectedContainer) {
+        selectedContainer.classList.remove('hidden');
+      }
+    });
+  });
+
+  // Add click event to back buttons
+  backButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Hide all award containers
+      awardContainers.forEach(container => {
+        container.classList.add('hidden');
+      });
+      
+      // Show the folder container
+      folderContainer.classList.remove('hidden');
+    });
+  });
+});
+`;
 ---
 
 <Layout title="Awards - Morax Cheng">
@@ -50,100 +97,143 @@ const awards = [
     <header class="text-center">
       <h1 class="text-3xl font-bold mb-4">Academic Achievements</h1>
       <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-        Recognitions from the National Economics Challenge (CNEC), showcasing excellence in economics and leadership.
+        Click on a folder to view awards and recognitions from various competitions and challenges.
       </p>
     </header>
 
-    <div class="grid gap-8 md:gap-12">
-      {awards.map((award, index) => (
-        <div class="border dark:border-gray-800 rounded-lg overflow-hidden">
-          <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
-            <div class="flex justify-between items-start">
-              <h2 class="text-2xl font-bold">{award.title}</h2>
-              <span class="px-3 py-1 bg-white/20 rounded-full text-sm">
-                {award.category}
-              </span>
+    <!-- Folder View (Main View) -->
+    <div id="folder-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div 
+          class="award-folder p-6 border dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all cursor-pointer bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 group"
+          data-folder-id="cnec2025"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
             </div>
-            <time class="text-blue-100 text-sm mt-2 block">{award.date}</time>
+            <div>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{awardCategories[0].name}</h2>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{awardCategories[0].awards.length} awards</p>
+            </div>
           </div>
-
-          <div class="p-6 space-y-6">
-            <div class="grid grid-cols-[1fr_200px] gap-6">
-              <div class="grid gap-4">
-              <div>
-                <h3 class="font-semibold text-gray-900 dark:text-gray-100">Achievement Details</h3>
-                <p class="text-gray-600 dark:text-gray-300">{award.achievement}</p>
-              </div>
-              <div>
-                <h3 class="font-semibold text-gray-900 dark:text-gray-100">Division & Level</h3>
-                <p class="text-gray-600 dark:text-gray-300">{award.division} • {award.level}</p>
-              </div>
-              <div>
-                <h3 class="font-semibold text-gray-900 dark:text-gray-100">Certificate ID</h3>
-                <p class="text-gray-600 dark:text-gray-300">{award.certificateId}</p>
-              </div>
-
-              {award.teamMembers && (
-                <div>
-                  <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Team Members</h3>
-                  <ul class="grid gap-2">
-                    {award.teamMembers.map(member => (
-                      <li class="flex items-center gap-2">
-                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                        <span class="font-medium">{member.name}</span>
-                        <span class="text-gray-500 dark:text-gray-400">• {member.role}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {award.score && (
-                <div>
-                  <h3 class="font-semibold text-gray-900 dark:text-gray-100">Performance</h3>
-                  <p class="text-gray-600 dark:text-gray-300">Score: {award.score}</p>
-                </div>
-              )}
-
-              {award.criteria && (
-                <div>
-                  <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Achievement Criteria</h3>
-                  <ul class="space-y-2">
-                    {award.criteria.map(criterion => (
-                      <li class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-gray-600 dark:text-gray-300">{criterion}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              </div>
-              <a
-                href={`/certificates/cnec-${index + 1}.jpg`}
-                data-modal="certificate-modal"
-                class="block hover:opacity-90 transition-opacity p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg h-[200px]"
-              >
-                <img
-                  src={`/certificates/cnec-${index + 1}.jpg`}
-                  alt={`${award.title} Certificate`}
-                  class="w-full h-full object-contain"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-
-            <div class="pt-4 border-t dark:border-gray-800">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                Awarded by CEE, based on the relevant regulations and final results of CNEC National Round through GP21
-              </p>
-            </div>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">{awardCategories[0].description}</p>
+          <div class="mt-4 flex justify-end">
+            <span class="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:underline">
+              View Awards
+              <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
           </div>
         </div>
-      ))}
     </div>
+
+    <!-- Individual Award Category Views -->
+    <div id="awards-cnec2025" class="award-container hidden space-y-8">
+        <div class="flex items-center justify-between mb-8">
+          <button class="back-to-folders flex items-center text-blue-600 dark:text-blue-400 hover:underline">
+            <svg class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to All Categories
+          </button>
+          <h2 class="text-2xl font-bold text-blue-700 dark:text-blue-400">{awardCategories[0].name}</h2>
+        </div>
+        
+        <div class="grid gap-8 md:gap-12">
+          {awardCategories[0].awards.map((award, index) => (
+            <div class="border dark:border-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+              <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
+                <div class="flex justify-between items-start">
+                  <h3 class="text-xl font-bold">{award.title}</h3>
+                  <span class="px-3 py-1 bg-white/20 rounded-full text-sm">
+                    {award.category}
+                  </span>
+                </div>
+                <time class="text-blue-100 text-sm mt-2 block">{award.date}</time>
+              </div>
+
+              <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-6">
+                  <div class="grid gap-4">
+                    <div>
+                      <h4 class="font-semibold text-gray-900 dark:text-gray-100">Achievement Details</h4>
+                      <p class="text-gray-600 dark:text-gray-300">{award.achievement}</p>
+                    </div>
+                                      <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-gray-100">Division & Level</h4>
+                        <p class="text-gray-600 dark:text-gray-300">{award.division} • {award.level}</p>
+                      </div>
+                    <div>
+                      <h4 class="font-semibold text-gray-900 dark:text-gray-100">Certificate ID</h4>
+                      <p class="text-gray-600 dark:text-gray-300">{award.certificateId}</p>
+                    </div>
+
+                    {award.teamMembers && (
+                      <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Team Members</h4>
+                        <ul class="grid gap-2">
+                          {award.teamMembers.map(member => (
+                            <li class="flex items-center gap-2">
+                              <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                              <span class="font-medium">{member.name}</span>
+                              <span class="text-gray-500 dark:text-gray-400">• {member.role}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {award.score && (
+                      <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-gray-100">Performance</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Score: {award.score}</p>
+                      </div>
+                    )}
+
+                    {award.criteria && (
+                      <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Achievement Criteria</h4>
+                        <ul class="space-y-2">
+                          {award.criteria.map(criterion => (
+                            <li class="flex items-center gap-2">
+                              <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                              </svg>
+                              <span class="text-gray-600 dark:text-gray-300">{criterion}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                  <a
+                    href={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
+                    data-modal="certificate-modal"
+                    class="block hover:opacity-90 transition-opacity p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg h-[200px]"
+                  >
+                    <img
+                      src={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
+                      alt={`${award.title} Certificate`}
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </a>
+                </div>
+
+                <div class="pt-4 border-t dark:border-gray-800">
+                  <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Awarded by CEE, based on the relevant regulations and final results of CNEC National Round through GP21
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
   </div>
   <ImageModal id="certificate-modal" />
+  <script set:html={folderScript}></script>
 </Layout>

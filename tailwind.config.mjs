@@ -8,6 +8,7 @@ export default {
         DEFAULT: {
           css: {
             maxWidth: '100ch',
+            fontFamily: '"Times New Roman", Times, serif',
           },
         },
       },
