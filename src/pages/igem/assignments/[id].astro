@@ -15,7 +15,7 @@ const { assignment } = Astro.props;
 <Layout title={`${assignment.title} - iGEM - Morax Cheng`}>
   <div class="space-y-8">
     <header class="space-y-4">
-      <a href="/igem/assignments" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-2">
+      <a href="/igem/assignments" class="hover:underline inline-flex items-center gap-2">
         <i class="fas fa-arrow-left"></i>
         Back to Assignments
       </a>
@@ -42,7 +42,7 @@ const { assignment } = Astro.props;
                        section.title.toLowerCase().includes('deliverables') ? 'tasks' :
                        section.title.toLowerCase().includes('awards') ? 'trophy' :
                        section.title.toLowerCase().includes('notes') ? 'exclamation-circle' : 'info-circle'} 
-                       ${section.title.toLowerCase().includes('notes') ? 'text-red-500' : 'text-blue-500'}`}></i>
+                       ${section.title.toLowerCase().includes('notes') ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} font-icon`}></i>
             {section.title}
           </h2>
 
@@ -50,7 +50,7 @@ const { assignment } = Astro.props;
             <ul class="space-y-4">
               {section.items.map(item => (
                 <li class="flex items-start gap-3">
-                  <i class={`fas fa-${item.icon} ${section.title.toLowerCase().includes('notes') ? 'text-red-500' : 'text-blue-500'} mt-1 w-5`}></i>
+                  <i class={`fas fa-${item.icon} ${section.title.toLowerCase().includes('notes') ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} mt-1 w-5 font-icon`}></i>
                   <span>{item.text}</span>
                 </li>
               ))}
@@ -62,18 +62,19 @@ const { assignment } = Astro.props;
               {Object.entries(section.subsections).map(([key, subsection]) => (
                 <div class="space-y-4">
                   <h3 class="text-xl font-semibold flex items-center gap-2">
-                    <i class={`fas fa-${key === 'medals' ? 'medal' : 'trophy'} ${key === 'medals' ? 'text-yellow-500' : 'text-blue-500'}`}></i>
+                    <i class={`fas fa-${key === 'medals' ? 'medal' : 'trophy'} ${key === 'medals' ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} font-icon`}></i>
                     {subsection.title}
                   </h3>
-                  {subsection.description && (
+                  {'description' in subsection && subsection.description && (
                     <p class="text-gray-600 dark:text-gray-300">{subsection.description}</p>
                   )}
-                  <ul class="space-y-3">
-                    {subsection.items && subsection.items.map(item => (
+                  {'items' in subsection && subsection.items && (
+                    <ul class="space-y-3">
+                      {subsection.items.map(item => (
                       <li class="flex items-start gap-3">
                         {key === 'medals' ? (
                           <>
-                            <i class={`fas fa-medal text-${item.level.toLowerCase() === 'gold' ? 'yellow' : item.level.toLowerCase() === 'silver' ? 'gray' : 'orange'}-500 mt-1`}></i>
+                            <i class={`fas fa-medal text-gray-600 dark:text-gray-400 mt-1 font-icon`}></i>
                             <div>
                               <strong>{item.level}:</strong>
                               <span class="text-gray-600 dark:text-gray-300 ml-1">{item.criteria}</span>
@@ -81,13 +82,14 @@ const { assignment } = Astro.props;
                           </>
                         ) : (
                           <>
-                            <i class={`fas fa-${item.icon} text-blue-500 w-5`}></i>
+                            <i class={`fas fa-${item.icon} text-gray-600 dark:text-gray-400 w-5 font-icon`}></i>
                             <span>{item.name}</span>
                           </>
                         )}
                       </li>
                     ))}
-                  </ul>
+                    </ul>
+                  )}
                 </div>
               ))}
             </div>

@@ -104,23 +104,23 @@ document.addEventListener('DOMContentLoaded', () => {
     <!-- Folder View (Main View) -->
     <div id="folder-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           <div 
-          class="award-folder p-6 border dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all cursor-pointer bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 group"
+          class="award-folder p-6 border dark:border-gray-700 rounded-lg shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800 interactive-element group"
           data-folder-id="cnec2025"
         >
           <div class="flex items-center gap-4 mb-4">
-            <div class="w-16 h-16 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+            <div class="w-16 h-16 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
             </div>
             <div>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{awardCategories[0].name}</h2>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white transition-colors">{awardCategories[0].name}</h2>
               <p class="text-sm text-gray-500 dark:text-gray-400">{awardCategories[0].awards.length} awards</p>
             </div>
           </div>
           <p class="text-gray-600 dark:text-gray-300 text-sm">{awardCategories[0].description}</p>
           <div class="mt-4 flex justify-end">
-            <span class="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:underline">
+            <span class="inline-flex items-center text-sm font-medium group-hover:underline">
               View Awards
               <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -133,31 +133,31 @@ document.addEventListener('DOMContentLoaded', () => {
     <!-- Individual Award Category Views -->
     <div id="awards-cnec2025" class="award-container hidden space-y-8">
         <div class="flex items-center justify-between mb-8">
-          <button class="back-to-folders flex items-center text-blue-600 dark:text-blue-400 hover:underline">
+          <button class="back-to-folders flex items-center hover:underline">
             <svg class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
             Back to All Categories
           </button>
-          <h2 class="text-2xl font-bold text-blue-700 dark:text-blue-400">{awardCategories[0].name}</h2>
+          <h2 class="text-2xl font-bold">{awardCategories[0].name}</h2>
         </div>
         
         <div class="grid gap-8 md:gap-12">
           {awardCategories[0].awards.map((award, index) => (
-            <div class="border dark:border-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-              <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
+            <div class="border dark:border-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-white dark:bg-gray-800">
+              <div class="bg-gray-200 dark:bg-gray-700 p-6">
                 <div class="flex justify-between items-start">
                   <h3 class="text-xl font-bold">{award.title}</h3>
-                  <span class="px-3 py-1 bg-white/20 rounded-full text-sm">
+                  <span class="unified-tag">
                     {award.category}
                   </span>
                 </div>
-                <time class="text-blue-100 text-sm mt-2 block">{award.date}</time>
+                <time class="text-gray-600 dark:text-gray-400 text-sm mt-2 block">{award.date}</time>
               </div>
 
-              <div class="p-6 space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-6">
-                  <div class="grid gap-4">
+              <div class="p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-8">
+                  <div class="grid gap-6">
                     <div>
                       <h4 class="font-semibold text-gray-900 dark:text-gray-100">Achievement Details</h4>
                       <p class="text-gray-600 dark:text-gray-300">{award.achievement}</p>
@@ -174,10 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     {award.teamMembers && (
                       <div>
                         <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Team Members</h4>
-                        <ul class="grid gap-2">
+                        <ul class="grid gap-3">
                           {award.teamMembers.map(member => (
                             <li class="flex items-center gap-2">
-                              <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                              <span class="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full"></span>
                               <span class="font-medium">{member.name}</span>
                               <span class="text-gray-500 dark:text-gray-400">• {member.role}</span>
                             </li>

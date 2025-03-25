@@ -8,7 +8,7 @@ const assignment = assignments[0]; // We only have one assignment currently
 <Layout title="Assignments - iGEM - Morax Cheng">
   <div class="space-y-8">
     <header class="space-y-4">
-      <a href="/igem" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-2">
+      <a href="/igem" class="hover:underline inline-flex items-center gap-2">
         <i class="fas fa-arrow-left"></i>
         Back to iGEM
       </a>
@@ -19,11 +19,11 @@ const assignment = assignments[0]; // We only have one assignment currently
       {assignments.map(assignment => (
         <a
           href={`/igem/assignments/${assignment.id}`}
-          class="block p-4 border dark:border-gray-800 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+          class="block p-4 border dark:border-gray-800 rounded-lg interactive-element transition-all"
         >
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-3">
-              <i class="fas fa-book text-blue-500"></i>
+              <i class="fas fa-book text-gray-600 dark:text-gray-400 font-icon"></i>
               <div>
                 <h2 class="font-medium">{assignment.title}</h2>
                 <time class="text-sm text-gray-500">{assignment.date}</time>

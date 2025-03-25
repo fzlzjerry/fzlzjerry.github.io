@@ -6,7 +6,7 @@ import { reports } from '../../../data/reports';
 <Layout title="Weekly Reports - iGEM - Morax Cheng">
   <div class="space-y-8">
     <header class="space-y-4">
-      <a href="/igem" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-2">
+      <a href="/igem" class="hover:underline inline-flex items-center gap-2">
         <i class="fas fa-arrow-left"></i>
         Back to iGEM
       </a>
@@ -17,11 +17,11 @@ import { reports } from '../../../data/reports';
       {reports.map(report => (
         <a
           href={`/igem/weekly-reports/${report.date.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-          class="block p-4 border dark:border-gray-800 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+          class="block p-4 border dark:border-gray-800 rounded-lg interactive-element transition-all"
         >
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-3">
-              <i class="fas fa-file-lines text-blue-500"></i>
+              <i class="fas fa-file-lines text-gray-600 dark:text-gray-400"></i>
               <time class="font-medium">{report.date}</time>
             </div>
             <i class="fas fa-chevron-right text-gray-400"></i>

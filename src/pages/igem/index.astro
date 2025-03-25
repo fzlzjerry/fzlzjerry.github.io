@@ -30,11 +30,11 @@ const sections = [
       {sections.map(section => (
         <a
           href={section.link}
-          class="block p-6 border dark:border-gray-800 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 hover:-translate-y-1"
+          class="block p-6 border dark:border-gray-800 rounded-lg transition-all duration-300 interactive-element"
         >
           <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-              <i class={`fas ${section.icon} text-xl text-blue-600 dark:text-blue-400`}></i>
+            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
+              <i class={`fas ${section.icon} text-xl font-icon`}></i>
             </div>
             <h2 class="text-xl font-bold">{section.title}</h2>
           </div>

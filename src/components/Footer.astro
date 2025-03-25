@@ -21,7 +21,7 @@ const socialLinks = [
             rel="noopener noreferrer"
             aria-label={link.label}
           >
-            <i class={`${link.icon} text-xl`}></i>
+            <i class={`${link.icon} text-xl font-icon`}></i>
           </a>
         ))}
         <button
@@ -29,7 +29,7 @@ const socialLinks = [
           onclick="window.location.href='mailto:james20081204@gmail.com'"
           aria-label="Email"
         >
-          <i class="fa-regular fa-envelope text-xl"></i>
+          <i class="fa-regular fa-envelope text-xl font-icon"></i>
         </button>
       </div>
       <p class="text-sm text-gray-600 dark:text-gray-400 text-center px-4">
@@ -38,6 +38,14 @@ const socialLinks = [
     </div>
   </div>
 </footer>
+
+<style>
+  .font-icon {
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif !important;
+    /* 增加特异性和优先级，确保图标字体不被全局字体覆盖 */
+    font-weight: 900 !important;
+  }
+</style>
 
 <script>
   // Add Font Awesome
