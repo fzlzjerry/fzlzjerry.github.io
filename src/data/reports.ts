@@ -1,5 +1,53 @@
 export const reports = [
   {
+    date: 'April 6th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Initiated preliminary PFAS biodegradation experiments with three different bacterial strains.',
+      'Collected and analyzed first-week data from biodegradation experiments showing promising results.',
+      'Completed user testing for Wiki UI improvements with 2 team members.',
+      'Created content plan for the Human Practices section of our project documentation.'
+    ],
+    nextWeekGoals: [
+      'Optimize bacterial culture conditions based on preliminary results.',
+      'Begin second phase of biodegradation experiments with modified parameters.',
+      'Implement feedback from UI testing to enhance Wiki user experience.',
+      'Start drafting Human Practices content following approved content plan.'
+    ]
+  },
+  {
+    date: 'March 23rd, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Finalized detailed experimental protocols for PFAS biodegradation, including control groups and measurement parameters.',
+      'Set up laboratory equipment and prepared necessary reagents for PFAS degradation experiments.',
+      'Identified and fixed several UI bugs on the Wiki, improving cross-browser compatibility and visual consistency.', // Based on your input
+      'Enhanced Wiki navigation and added tooltips for better usability.'
+    ],
+    nextWeekGoals: [ // Goals leading up to March 29th
+      'Initiate preliminary PFAS biodegradation experiments.',
+      'Monitor and document initial results from biodegradation experiments.',
+      'Conduct user testing for recent Wiki UI improvements.',
+      'Plan content updates for the next phase of the project.'
+    ]
+  },
+  {
+    date: 'March 16th, 2025',
+    author: 'Morax Cheng',
+    achievements: [ // Based on March 9th goals
+      'Investigated the migration and transformation pathways of PFAS in different environmental matrices.',
+      'Drafted initial experimental designs for PFAS bioremediation using candidate microorganisms.',
+      'Refined Wiki responsive design, addressing layout issues on mobile and tablet devices.',
+      'Implemented new interactive elements to enhance user engagement on the Wiki.'
+    ],
+    nextWeekGoals: [
+      'Finalize experimental protocols for PFAS biodegradation studies.',
+      'Begin laboratory setup for PFAS degradation experiments.',
+      'Identify and fix UI bugs reported across different browsers/devices.', // Preparing for next week's task
+      'Continue improving Wiki interactivity and content presentation.'
+    ]
+  },
+  {
     date: 'March 9th, 2025',
     author: 'Morax Cheng',
     achievements: [
