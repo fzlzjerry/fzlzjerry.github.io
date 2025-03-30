@@ -10,9 +10,12 @@ export function getStaticPaths() {
 }
 
 const { report } = Astro.props;
+
+// Generate a description for SEO
+const description = `Weekly report for ${report.date} from the BASIS iGEM team. Achievements include: ${report.achievements[0]}...`;
 ---
 
-<Layout title={`Weekly Report ${report.date} - iGEM - Morax Cheng`}>
+<Layout title={`Weekly Report ${report.date} - iGEM - Morax Cheng`} description={description}>
   <div class="space-y-8">
     <header class="space-y-4">
       <a href="/igem/weekly-reports" class="hover:underline inline-flex items-center gap-2">
