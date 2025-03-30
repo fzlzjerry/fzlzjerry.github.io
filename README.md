@@ -1,54 +1,62 @@
-# Astro Starter Kit: Basics
+# Morax Cheng's Personal Website ✨
 
-```sh
-npm create astro@latest -- --template basics
-```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+This is the repository for my personal website ([moraxcheng.me](https://moraxcheng.me/)), built with [Astro](https://astro.build/) and styled with [Tailwind CSS](https://tailwindcss.com/). It showcases my profile, projects, blog posts, awards, and iGEM related work.
 
 ## 🚀 Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+The project follows a standard Astro project layout:
 
 ```text
 /
-├── public/
+├── public/             # Static assets (images, fonts, certificates, etc.)
 │   └── favicon.svg
+│   └── Morax.JPG
+│   └── certificates/
+│   └── ...
 ├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/     # Reusable Astro components (.astro)
+│   ├── content/        # Content collections (e.g., blog posts in .mdx)
+│   │   └── blog/
+│   ├── data/           # Data files (e.g., assignments.ts, reports.ts)
+│   ├── layouts/        # Base page layouts (.astro)
+│   └── pages/          # Site pages and routes (.astro, .mdx)
+│       ├── about.astro
+│       ├── projects.astro
+│       ├── awards.astro
+│       ├── blog/
+│       └── igem/       # iGEM specific pages
+├── astro.config.mjs    # Astro configuration
+├── tailwind.config.mjs # Tailwind CSS configuration
+├── tsconfig.json       # TypeScript configuration
+└── package.json        # Project dependencies and scripts
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
+-   **`src/pages/`**: Contains all the pages for the site. Each `.astro` or `.mdx` file becomes a page route.
+-   **`src/components/`**: Reusable UI components used across different pages.
+-   **`src/layouts/`**: Defines the basic HTML structure and layout for pages.
+-   **`src/content/`**: Manages content collections, like blog posts written in MDX.
+-   **`src/data/`**: Stores structured data used within the site (e.g., for iGEM assignments/reports).
+-   **`public/`**: Stores static assets like images, favicons, certificates etc., directly accessible via the root URL.
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+All commands should be run from the root of the project in your terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| Command           | Action                                         |
+| :---------------- | :--------------------------------------------- |
+| `npm install`     | Installs project dependencies (use `pnpm install` if you prefer pnpm) |
+| `npm run dev`     | Starts the local development server (`localhost:4321` by default) |
+| `npm run build`   | Builds the production-ready site to `./dist/`  |
+| `npm run preview` | Serves the production build locally for preview |
 
-## 👀 Want to learn more?
+## ✨ Tech Stack
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+-   Framework: [Astro](https://astro.build/)
+-   Styling: [Tailwind CSS](https://tailwindcss.com/)
+-   Content: [MDX](https://mdxjs.com/)
+-   Language: [TypeScript](https://www.typescriptlang.org/)
+-   Package Manager: npm (or pnpm as indicated by `pnpm-lock.yaml`)
+
+## 👀 Want to learn more about Astro?
+
+Check out the [Astro documentation](https://docs.astro.build) or join the [Astro Discord community](https://astro.build/chat).
