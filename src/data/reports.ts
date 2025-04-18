@@ -1,5 +1,59 @@
 export const reports = [
   {
+    date: 'April 20th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Enhanced the team wiki layout with better mobile responsiveness',
+      'Implemented dark mode toggle for improved user experience',
+      'Updated project documentation with recent experimental results',
+      'Fixed cross-browser compatibility issues in the navigation menu',
+      'Added interactive timeline feature to showcase project milestones'
+    ],
+    nextWeekGoals: [
+      'Integrate analytics tracking for user engagement metrics',
+      'Create data visualization components for experimental results',
+      'Improve SEO optimization for better project visibility',
+      'Implement accessibility features for screen readers',
+      'Review and refactor CSS for better performance'
+    ]
+  },
+  {
+    date: 'April 13th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Created reusable components for displaying team member profiles',
+      'Improved page load times by optimizing image assets',
+      'Added content to the Human Practices section of the Wiki',
+      'Fixed responsive design issues on tablet devices',
+      'Integrated social media sharing functionality'
+    ],
+    nextWeekGoals: [
+      'Enhance mobile responsiveness of all wiki pages',
+      'Implement dark mode functionality',
+      'Update documentation with latest project information',
+      'Fix browser compatibility issues',
+      'Add interactive timeline component'
+    ]
+  },
+  {
+    date: 'April 6th, 2025',
+    author: 'Morax Cheng',
+    achievements: [
+      'Redesigned the project homepage for better user experience',
+      'Added animation effects to improve visual engagement',
+      'Created documentation for the tech stack used in the wiki',
+      'Resolved navigation issues reported in user testing',
+      'Implemented lazy loading for better performance'
+    ],
+    nextWeekGoals: [
+      'Create reusable components for team profiles',
+      'Optimize image loading for faster page rendering',
+      'Add content to Human Practices section',
+      'Fix responsive design issues on tablets',
+      'Implement social media integration'
+    ]
+  },
+  {
     date: 'March 30th, 2025',
     author: 'Morax Cheng',
     achievements: [
