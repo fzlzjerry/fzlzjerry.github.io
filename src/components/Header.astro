@@ -10,7 +10,7 @@ const links = [
 ---
 
 <header class="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50">
-  <nav class="max-w-4xl mx-auto px-4 py-3 flex items-start justify-between relative">
+  <nav class="max-w-4xl mx-auto px-4 flex items-center justify-between relative h-16">
     <div>
       <a href="/" class="text-xl font-bold inline-block">Morax</a>
     </div>
@@ -28,13 +28,12 @@ const links = [
     </button>
     
     <!-- Desktop menu -->
-    <ul class="hidden md:flex gap-6" style="margin-top: -10px;">
+    <ul class="hidden md:flex gap-6 h-full">
       {links.map(link => (
-        <li>
+        <li class="h-full flex items-center">
           <a 
             href={link.href}
-            class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors inline-block" 
-            
+            class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors h-full flex items-center" 
           >
             {link.text}
           </a>
@@ -58,3 +57,4 @@ const links = [
       </ul>
     </div>
   </nav>
+</header>
