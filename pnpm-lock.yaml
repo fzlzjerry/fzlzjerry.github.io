@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+packageExtensionsChecksum: sha256-2AQresRgcXNJ4W53wiFqPO5qadK4wPdYqqybp1BDHOE=
+
 importers:
 
   .:
@@ -38,6 +40,9 @@ importers:
       remark-math:
         specifier: ^6.0.0
         version: 6.0.0
+      string-width:
+        specifier: ^5.1.2
+        version: 5.1.2
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17

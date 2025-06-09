@@ -36,5 +36,10 @@ export default defineConfig({
       strict: false,
       output: 'mathml'
     }]]
+  },
+  vite: {
+    server: {
+      allowedHosts: ['code.moraxcheng.me']
+    }
   }
 });
