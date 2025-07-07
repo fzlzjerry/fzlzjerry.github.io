@@ -9,14 +9,15 @@ const socialLinks = [
 ];
 ---
 
-<footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+<footer class="border-t" style="background-color: var(--primary-light); border-color: var(--border-light);">
   <div class="max-w-4xl mx-auto px-4 py-12">
     <div class="flex flex-col items-center gap-6">
       <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
         {socialLinks.map(link => (
           <a
             href={link.href}
-            class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2"
+            class="transition-colors p-2"
+            style="color: var(--text-muted-light);"
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
@@ -25,14 +26,15 @@ const socialLinks = [
           </a>
         ))}
         <button
-          class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2"
+          class="transition-colors p-2"
+          style="color: var(--text-muted-light);"
           onclick="window.location.href='mailto:james20081204@gmail.com'"
           aria-label="Email"
         >
           <i class="fa-regular fa-envelope text-xl font-icon"></i>
         </button>
       </div>
-      <p class="text-sm text-gray-600 dark:text-gray-400 text-center px-4">
+      <p class="text-sm text-center px-4" style="color: var(--text-muted-light); font-style: italic;">
         © {currentYear} Morax Cheng. All rights reserved.
       </p>
     </div>
@@ -45,12 +47,11 @@ const socialLinks = [
     /* 增加特异性和优先级，确保图标字体不被全局字体覆盖 */
     font-weight: 900 !important;
   }
+  
+  
+  footer a:hover, footer button:hover {
+    color: var(--text-light) !important;
+  }
+  
 </style>
 
-<script>
-  // Add Font Awesome
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
-  document.head.appendChild(link);
-</script>

@@ -7,27 +7,29 @@ import { reports } from '../../../data/reports';
   title="Weekly Reports - iGEM - Morax Cheng"
   description="Browse the weekly progress reports from the BASIS International School Park Lane Harbour iGEM team. Stay updated on their latest developments and achievements in the International Genetically Engineered Machine competition project."
 >
-  <div class="space-y-8">
+  <div class="max-w-4xl mx-auto space-y-8">
     <header class="space-y-4">
-      <a href="/igem" class="hover:underline inline-flex items-center gap-2">
-        <i class="fas fa-arrow-left"></i>
+      <a href="/igem" class="inline-flex items-center gap-2" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
         Back to iGEM
       </a>
-      <h1 class="text-3xl font-bold">Weekly Reports</h1>
+      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Weekly Reports</h1>
     </header>
 
-    <div class="grid gap-4">
+    <div class="grid gap-6">
       {reports.map(report => (
         <a
           href={`/igem/weekly-reports/${report.date.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-          class="block p-4 border dark:border-gray-800 rounded-lg interactive-element transition-all"
+          class="block border rounded p-6 interactive-element hover:shadow-md transition-all duration-200"
+          style="border-color: var(--border-light);"
         >
           <div class="flex justify-between items-center">
-            <div class="flex items-center gap-3">
-              <i class="fas fa-file-lines text-gray-600 dark:text-gray-400"></i>
-              <time class="font-medium">{report.date}</time>
-            </div>
-            <i class="fas fa-chevron-right text-gray-400"></i>
+            <time class="text-xl" style="font-weight: 400; letter-spacing: 0.02em;">{report.date}</time>
+            <svg class="w-5 h-5" style="color: var(--text-muted-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
           </div>
         </a>
       ))}
@@ -35,12 +37,10 @@ import { reports } from '../../../data/reports';
   </div>
 </Layout>
 
-<script>
-  // Add Font Awesome if not already added
-  if (!document.querySelector('link[href*="font-awesome"]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-    document.head.appendChild(link);
+<style>
+  /* Ensure smooth transitions */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-</script>
+</style>

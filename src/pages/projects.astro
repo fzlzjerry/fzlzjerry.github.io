@@ -26,20 +26,20 @@ const projects = [
   description="Explore the projects developed by Morax Cheng, including 'Windows 12 Web' (HTML, CSS, JS) and a 'Graphing Calculator' (Python, Qt). View code on GitHub and see his development skills in action."
 >
   <div class="space-y-8">
-    <h1 class="text-3xl font-bold">My Projects</h1>
+    <h1 class="text-3xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">My Projects</h1>
   
     <div class="grid gap-8">
       {projects.map(project => (
-        <div class={`border dark:border-gray-800 rounded-lg p-6 ${project.featured ? 'bg-gray-100 dark:bg-gray-800/50' : ''}`}>
+        <div class={`border rounded p-6 ${project.featured ? '' : ''}`} style={`border-color: var(--border-light); ${project.featured ? 'background-color: var(--accent-light);' : ''}`}>
           <div class="flex justify-between items-start mb-4">
-            <h2 class="text-xl font-bold">{project.title}</h2>
+            <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.03em;">{project.title}</h2>
             {project.featured && (
               <span class="unified-tag text-xs">
                 Featured
               </span>
             )}
           </div>
-          <p class="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
+          <p class="mb-4" style="color: var(--text-muted-light); text-align: left;">{project.description}</p>
           <div class="flex flex-wrap gap-2 mb-4">
             {project.tech.map(tech => (
               <span class="unified-tag">
@@ -49,9 +49,10 @@ const projects = [
           </div>
           <a 
             href={project.github}
-            class="inline-flex items-center hover:underline"
+            class="inline-flex items-center"
             target="_blank"
             rel="noopener noreferrer"
+            style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;"
           >
             View on GitHub 
             <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -65,3 +66,6 @@ const projects = [
     </div>
   </div>
 </Layout>
+
+<style>
+</style>

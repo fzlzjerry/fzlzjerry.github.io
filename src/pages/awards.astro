@@ -96,147 +96,176 @@ document.addEventListener('DOMContentLoaded', () => {
   title="Awards - Morax Cheng"
   description="View Morax Cheng's academic achievements and awards, including recognitions from the National Economics Challenge (CNEC) 2025 Pre Division like the Regional Team Silver Award and National Individual Gold Award."
 >
-  <div class="space-y-12">
-    <header class="text-center">
-      <h1 class="text-3xl font-bold mb-4">Academic Achievements</h1>
-      <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-        Click on a folder to view awards and recognitions from various competitions and challenges.
+  <div class="max-w-4xl mx-auto space-y-8">
+    <header>
+      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Academic Achievements</h1>
+      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
+        Explore my academic awards and recognitions from various competitions.
       </p>
     </header>
 
     <!-- Folder View (Main View) -->
-    <div id="folder-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <div 
-          class="award-folder p-6 border dark:border-gray-700 rounded-lg shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800 interactive-element group"
-          data-folder-id="cnec2025"
-        >
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-16 h-16 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-              </svg>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white transition-colors">{awardCategories[0].name}</h2>
-              <p class="text-sm text-gray-500 dark:text-gray-400">{awardCategories[0].awards.length} awards</p>
-            </div>
-          </div>
-          <p class="text-gray-600 dark:text-gray-300 text-sm">{awardCategories[0].description}</p>
-          <div class="mt-4 flex justify-end">
-            <span class="inline-flex items-center text-sm font-medium group-hover:underline">
-              View Awards
-              <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </div>
+    <div id="folder-container" class="grid gap-6">
+      <div 
+        class="award-folder border rounded p-6 cursor-pointer interactive-element hover:shadow-md transition-all duration-200 group"
+        style="border-color: var(--border-light);"
+        data-folder-id="cnec2025"
+      >
+        <div class="flex justify-between items-start mb-4">
+          <h2 class="text-xl md:text-2xl" style="font-weight: 400; letter-spacing: 0.02em;">{awardCategories[0].name}</h2>
+          <span class="unified-tag">
+            {awardCategories[0].awards.length} Awards
+          </span>
         </div>
+        <p class="mb-4" style="color: var(--text-muted-light); text-align: left;">{awardCategories[0].description}</p>
+        <div class="inline-flex items-center text-sm group-hover:underline" style="color: var(--text-muted-light);">
+          View Details
+          <svg class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
     </div>
 
     <!-- Individual Award Category Views -->
     <div id="awards-cnec2025" class="award-container hidden space-y-8">
-        <div class="flex items-center justify-between mb-8">
-          <button class="back-to-folders flex items-center hover:underline">
+        <div class="mb-6">
+          <button class="back-to-folders flex items-center mb-4" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
             <svg class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-            Back to All Categories
+            Back to Categories
           </button>
-          <h2 class="text-2xl font-bold">{awardCategories[0].name}</h2>
+          <h2 class="text-2xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">{awardCategories[0].name}</h2>
         </div>
         
-        <div class="grid gap-8 md:gap-12">
+        <div class="grid gap-8">
           {awardCategories[0].awards.map((award, index) => (
-            <div class="border dark:border-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-white dark:bg-gray-800">
-              <div class="bg-gray-200 dark:bg-gray-700 p-6">
-                <div class="flex justify-between items-start">
-                  <h3 class="text-xl font-bold">{award.title}</h3>
-                  <span class="unified-tag">
-                    {award.category}
-                  </span>
+            <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border-light);">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <h3 class="text-xl md:text-2xl mb-2" style="font-weight: 400; letter-spacing: 0.02em;">{award.title}</h3>
+                  <div class="flex flex-wrap gap-4 text-sm" style="color: var(--text-muted-light);">
+                    <time datetime={award.date} class="inline-flex items-center">
+                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {award.date}
+                    </time>
+                    <span class="inline-flex items-center">
+                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                      </svg>
+                      {award.category}
+                    </span>
+                  </div>
                 </div>
-                <time class="text-gray-600 dark:text-gray-400 text-sm mt-2 block">{award.date}</time>
               </div>
 
-              <div class="p-8 space-y-8">
-                <div class="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-8">
-                  <div class="grid gap-6">
+              <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-4">
                     <div>
-                      <h4 class="font-semibold text-gray-900 dark:text-gray-100">Achievement Details</h4>
-                      <p class="text-gray-600 dark:text-gray-300">{award.achievement}</p>
+                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Achievement</h4>
+                      <p style="color: var(--text-muted-light); text-align: left;">{award.achievement}</p>
                     </div>
-                                      <div>
-                        <h4 class="font-semibold text-gray-900 dark:text-gray-100">Division & Level</h4>
-                        <p class="text-gray-600 dark:text-gray-300">{award.division} • {award.level}</p>
-                      </div>
                     <div>
-                      <h4 class="font-semibold text-gray-900 dark:text-gray-100">Certificate ID</h4>
-                      <p class="text-gray-600 dark:text-gray-300">{award.certificateId}</p>
+                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Division</h4>
+                      <p style="color: var(--text-muted-light);">{award.division}</p>
+                    </div>
+                    <div>
+                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Level</h4>
+                      <p style="color: var(--text-muted-light);">{award.level}</p>
+                    </div>
+                    <div>
+                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Certificate ID</h4>
+                      <code class="text-sm" style="color: var(--text-muted-light); font-family: monospace;">{award.certificateId}</code>
                     </div>
 
                     {award.teamMembers && (
                       <div>
-                        <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Team Members</h4>
-                        <ul class="grid gap-3">
+                        <h4 class="text-sm mb-3" style="color: var(--text-light); font-weight: 500;">Team Members</h4>
+                        <div class="space-y-2">
                           {award.teamMembers.map(member => (
-                            <li class="flex items-center gap-2">
-                              <span class="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full"></span>
-                              <span class="font-medium">{member.name}</span>
-                              <span class="text-gray-500 dark:text-gray-400">• {member.role}</span>
-                            </li>
+                            <div class="text-sm">
+                              <span style="font-weight: 500;">{member.name}</span>
+                              <span style="color: var(--text-muted-light);"> · {member.role}</span>
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     )}
 
                     {award.score && (
                       <div>
-                        <h4 class="font-semibold text-gray-900 dark:text-gray-100">Performance</h4>
-                        <p class="text-gray-600 dark:text-gray-300">Score: {award.score}</p>
+                        <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Performance Score</h4>
+                        <p class="text-lg" style="font-weight: 500;">{award.score}</p>
                       </div>
                     )}
 
                     {award.criteria && (
                       <div>
-                        <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Achievement Criteria</h4>
-                        <ul class="space-y-2">
+                        <h4 class="text-sm mb-3" style="color: var(--text-light); font-weight: 500;">Achievement Criteria</h4>
+                        <ul class="space-y-1 text-sm" style="color: var(--text-muted-light);">
                           {award.criteria.map(criterion => (
-                            <li class="flex items-center gap-2">
-                              <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                              </svg>
-                              <span class="text-gray-600 dark:text-gray-300">{criterion}</span>
+                            <li class="flex items-start gap-2">
+                              <span style="color: var(--text-light);">•</span>
+                              <span>{criterion}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
                     )}
                   </div>
-                  <a
-                    href={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
-                    data-modal="certificate-modal"
-                    class="block hover:opacity-90 transition-opacity p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg h-[200px]"
-                  >
-                    <img
-                      src={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
-                      alt={`${award.title} Certificate`}
-                      class="w-full h-full object-contain"
-                      loading="lazy"
-                    />
-                  </a>
+                  <div>
+                    <h4 class="text-sm mb-3" style="color: var(--text-light); font-weight: 500;">Certificate</h4>
+                    <a
+                      href={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
+                      data-modal="certificate-modal"
+                      class="block p-4 rounded border hover:shadow-md transition-all"
+                      style="background-color: var(--accent-light); border-color: var(--border-light);"
+                    >
+                      <img
+                        src={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
+                        alt={`${award.title} Certificate`}
+                        class="w-full h-auto object-contain"
+                        loading="lazy"
+                        style="max-height: 200px;"
+                      />
+                    </a>
+                    <p class="text-center mt-2 text-xs" style="color: var(--text-muted-light);">Click to view full size</p>
+                  </div>
                 </div>
 
-                <div class="pt-4 border-t dark:border-gray-800">
-                  <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Awarded by CEE, based on the relevant regulations and final results of CNEC National Round through GP21
-                  </p>
+                <div class="mt-6 pt-4 border-t text-sm" style="border-color: var(--border-light); color: var(--text-muted-light);">
+                  Awarded by CEE, based on the relevant regulations and final results of CNEC National Round through GP21
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
   </div>
   <ImageModal id="certificate-modal" />
   <script set:html={folderScript}></script>
+  
 </Layout>
+
+<style>
+  /* Ensure smooth transitions */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Prevent layout shift during hover animations */
+  article {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Certificate hover effect */
+  a[data-modal="certificate-modal"]:hover {
+    transform: translateY(-2px);
+  }
+</style>

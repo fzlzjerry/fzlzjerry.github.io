@@ -21,39 +21,39 @@ const sections = [
   title="iGEM - Morax Cheng"
   description="Learn about the progress of the BASIS International School Park Lane Harbour iGEM team. Find weekly reports, assignments, and Morax Cheng's contributions to the International Genetically Engineered Machine competition."
 >
-  <div class="space-y-12">
-    <header class="text-center">
-      <h1 class="text-4xl font-bold mb-4">iGEM Team</h1>
-      <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+  <div class="max-w-4xl mx-auto space-y-8">
+    <header>
+      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">iGEM Team</h1>
+      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
         International Genetically Engineered Machine Competition - BASIS International School Park Lane Harbour Team
       </p>
     </header>
 
-    <div class="grid md:grid-cols-2 gap-8">
+    <div class="grid md:grid-cols-2 gap-6">
       {sections.map(section => (
         <a
           href={section.link}
-          class="block p-6 border dark:border-gray-800 rounded-lg transition-all duration-300 interactive-element"
+          class="block border rounded p-6 interactive-element hover:shadow-md transition-all duration-200"
+          style="border-color: var(--border-light);"
         >
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
-              <i class={`fas ${section.icon} text-xl font-icon`}></i>
-            </div>
-            <h2 class="text-xl font-bold">{section.title}</h2>
+          <div class="flex justify-between items-start mb-4">
+            <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.02em;">{section.title}</h2>
+            <svg class="w-5 h-5" style="color: var(--text-muted-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
           </div>
-          <p class="text-gray-600 dark:text-gray-300">{section.description}</p>
+          <p style="color: var(--text-muted-light); text-align: left;">{section.description}</p>
         </a>
       ))}
     </div>
   </div>
 </Layout>
 
-<script>
-  // Add Font Awesome
-  if (!document.querySelector('link[href*="font-awesome"]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-    document.head.appendChild(link);
+<style>
+  /* Ensure smooth transitions */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-</script>
+</style>
+

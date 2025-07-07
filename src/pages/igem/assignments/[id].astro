@@ -15,13 +15,13 @@ const { assignment } = Astro.props;
 <Layout title={`${assignment.title} - iGEM - Morax Cheng`} description={assignment.description}>
   <div class="space-y-8">
     <header class="space-y-4">
-      <a href="/igem/assignments" class="hover:underline inline-flex items-center gap-2">
+      <a href="/igem/assignments" class="inline-flex items-center gap-2" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
         <i class="fas fa-arrow-left"></i>
         Back to Assignments
       </a>
       <div>
-        <h1 class="text-3xl font-bold mb-2">{assignment.title}</h1>
-        <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400">
+        <h1 class="text-3xl mb-2" style="font-weight: 300; letter-spacing: 0.05em;">{assignment.title}</h1>
+        <div class="flex items-center gap-4" style="color: var(--text-muted-light); padding-bottom: 1rem; border-bottom: 1px solid var(--border-light);">
           <time datetime={assignment.date}>
             <i class="far fa-calendar-alt mr-1"></i>
             {assignment.date}
@@ -36,13 +36,13 @@ const { assignment } = Astro.props;
 
     <div class="space-y-8">
       {assignment.sections.map(section => (
-        <div class="border dark:border-gray-800 rounded-lg p-6">
-          <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <div class="border rounded p-6" style="border-color: var(--border-light); background-color: var(--primary-light);">
+          <h2 class="text-2xl mb-6 flex items-center gap-2" style="font-weight: 400; letter-spacing: 0.03em;">
             <i class={`fas fa-${section.title.toLowerCase().includes('overview') ? 'book' : 
                        section.title.toLowerCase().includes('deliverables') ? 'tasks' :
                        section.title.toLowerCase().includes('awards') ? 'trophy' :
                        section.title.toLowerCase().includes('notes') ? 'exclamation-circle' : 'info-circle'} 
-                       ${section.title.toLowerCase().includes('notes') ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} font-icon`}></i>
+                       font-icon`} style="color: var(--text-muted-light);"></i>
             {section.title}
           </h2>
 
@@ -50,7 +50,7 @@ const { assignment } = Astro.props;
             <ul class="space-y-4">
               {section.items.map(item => (
                 <li class="flex items-start gap-3">
-                  <i class={`fas fa-${item.icon} ${section.title.toLowerCase().includes('notes') ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} mt-1 w-5 font-icon`}></i>
+                  <i class={`fas fa-${item.icon} mt-1 w-5 font-icon`} style="color: var(--text-muted-light);"></i>
                   <span>{item.text}</span>
                 </li>
               ))}
@@ -61,12 +61,12 @@ const { assignment } = Astro.props;
             <div class="space-y-8">
               {Object.entries(section.subsections).map(([key, subsection]) => (
                 <div class="space-y-4">
-                  <h3 class="text-xl font-semibold flex items-center gap-2">
-                    <i class={`fas fa-${key === 'medals' ? 'medal' : 'trophy'} ${key === 'medals' ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} font-icon`}></i>
+                  <h3 class="text-xl flex items-center gap-2" style="font-weight: 500; letter-spacing: 0.02em;">
+                    <i class={`fas fa-${key === 'medals' ? 'medal' : 'trophy'} font-icon`} style="color: var(--text-muted-light);"></i>
                     {subsection.title}
                   </h3>
                   {'description' in subsection && subsection.description && (
-                    <p class="text-gray-600 dark:text-gray-300">{subsection.description}</p>
+                    <p style="color: var(--text-muted-light); text-align: left;">{subsection.description}</p>
                   )}
                   {'items' in subsection && subsection.items && (
                     <ul class="space-y-3">
@@ -74,15 +74,15 @@ const { assignment } = Astro.props;
                       <li class="flex items-start gap-3">
                         {key === 'medals' ? (
                           <>
-                            <i class={`fas fa-medal text-gray-600 dark:text-gray-400 mt-1 font-icon`}></i>
+                            <i class={`fas fa-medal mt-1 font-icon`} style="color: var(--text-muted-light);"></i>
                             <div>
-                              <strong>{item.level}:</strong>
-                              <span class="text-gray-600 dark:text-gray-300 ml-1">{item.criteria}</span>
+                              <strong style="font-weight: 500;">{item.level}:</strong>
+                              <span class="ml-1" style="color: var(--text-muted-light);">{item.criteria}</span>
                             </div>
                           </>
                         ) : (
                           <>
-                            <i class={`fas fa-${item.icon} text-gray-600 dark:text-gray-400 w-5 font-icon`}></i>
+                            <i class={`fas fa-${item.icon} w-5 font-icon`} style="color: var(--text-muted-light);"></i>
                             <span>{item.name}</span>
                           </>
                         )}
@@ -99,6 +99,9 @@ const { assignment } = Astro.props;
     </div>
   </div>
 </Layout>
+
+<style>
+</style>
 
 <script>
   // Add Font Awesome if not already added

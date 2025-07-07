@@ -9,16 +9,17 @@ const links = [
 ];
 ---
 
-<header class="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50">
+<header class="border-b sticky top-0 z-50 backdrop-blur-sm bg-opacity-95" style="background-color: var(--primary-light); border-color: var(--border-light);">
   <nav class="max-w-4xl mx-auto px-4 flex items-center justify-between relative h-16">
-    <div>
-      <a href="/" class="text-xl font-bold inline-block">Morax</a>
+    <div class="flex items-center">
+      <a href="/" class="text-xl" style="font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; display: inline-flex; align-items: center; height: 2rem;">Morax</a>
     </div>
     
     <!-- Mobile menu button -->
     <button 
       id="menu-toggle"
-      class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      class="md:hidden p-2 rounded transition-colors"
+      style="border: 1px solid var(--border-light);"
       aria-label="Toggle menu"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,12 +29,13 @@ const links = [
     </button>
     
     <!-- Desktop menu -->
-    <ul class="hidden md:flex gap-6 h-full">
+    <ul class="hidden md:flex gap-6 items-center" style="margin-top: 0.875rem;">
       {links.map(link => (
-        <li class="h-full flex items-center">
+        <li>
           <a 
             href={link.href}
-            class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors h-full flex items-center" 
+            class="transition-colors"
+            style="color: var(--text-muted-light); font-size: 0.9rem; letter-spacing: 0.05em; display: inline-flex; align-items: center; height: 2rem;" 
           >
             {link.text}
           </a>
@@ -42,13 +44,16 @@ const links = [
     </ul>
     
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden bg-white dark:bg-gray-900 shadow-lg md:hidden">
+    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden shadow-lg md:hidden" style="background-color: var(--primary-light); border: 1px solid var(--border-light); border-top: none;">
       <ul class="py-2">
         {links.map(link => (
           <li>
             <a 
               href={link.href}
-              class="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              class="block px-4 py-2 transition-colors"
+              style="color: var(--text-muted-light); font-size: 0.9rem; letter-spacing: 0.05em;"
+              onmouseover="this.style.backgroundColor = 'var(--accent-light)'"
+              onmouseout="this.style.backgroundColor = 'transparent'"
             >
               {link.text}
             </a>
@@ -58,3 +63,22 @@ const links = [
     </div>
   </nav>
 </header>
+
+<style>
+  nav a:hover {
+    color: var(--text-light) !important;
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuOpen = menuToggle?.querySelector('.menu-open');
+  const menuClose = menuToggle?.querySelector('.menu-close');
+
+  menuToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    menuOpen?.classList.toggle('hidden');
+    menuClose?.classList.toggle('hidden');
+  });
+</script>

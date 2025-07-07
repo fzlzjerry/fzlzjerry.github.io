@@ -22,3 +22,46 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# yarn berry
+.yarn/
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# local env files
+.env.local
+.env.*.local
+
+# typescript
+*.tsbuildinfo
+
+# misc
+.cache
+.temp
+.tmp
+
+# coverage
+coverage/
+.nyc_output/
+
+# OS files
+Thumbs.db
+*.log
+
+.claude/
+
+# Optional: Astro telemetry
+.astro-telemetry/

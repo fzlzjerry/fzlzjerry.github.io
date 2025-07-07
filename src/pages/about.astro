@@ -33,35 +33,59 @@ const skillCategories = [
   title="About - Morax Cheng"
   description="Learn more about Morax Cheng, a teenage open-source enthusiast and developer from China. Discover his skills in programming (Python, C++, Rust), AI/ML, web technologies, and his passion for learning."
 >
-  <div class="space-y-8 md:space-y-12">
+  <div class="max-w-4xl mx-auto space-y-8">
     <section class="text-center">
       <div class="flex justify-center mb-6">
-        <img src="/Morax.JPG" alt="Morax Cheng" class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transition-all hover:scale-105" />
+        <img src="/Morax.JPG" alt="Morax Cheng" class="w-32 h-32 rounded-full object-cover border shadow-lg transition-all hover:scale-105" style="border-color: var(--border-light);" />
       </div>
-      <h1 class="text-3xl md:text-4xl font-bold mb-3 md:mb-4">About Me</h1>
-      <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300">
+      <h1 class="text-3xl mb-4" style="font-weight: 300; letter-spacing: 0.05em;">About Me</h1>
+      <p class="text-lg text-center" style="color: var(--text-muted-light);">
         A teenage open-source enthusiast and developer from China
       </p>
     </section>
 
-    <section>
-      <div class="space-y-4 text-base md:text-lg text-gray-600 dark:text-gray-300">
+    <section class="prose max-w-none">
+      <div class="space-y-4" style="color: var(--text-muted-light); line-height: 1.8;">
         <p>Hello! I'm Morax Cheng, a teenage open-source enthusiast and developer based in China. I have a strong passion for coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.</p>
-        <p>I'm currently working on <a href="https://github.com/tjy-gitnub/win12" class="hover:underline">Windows 12 Web</a></p>
-        <p>I'm currently learning <strong>Matlab</strong> and diving deeper into machine learning algorithms.</p>
-        <p>I'm looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" class="hover:underline">bili2text</a> and other exciting open-source projects.</p>
-        <p>Ask me about <strong>Python, C++, Machine Learning, and Data Analysis</strong></p>
+        
+        <div class="grid md:grid-cols-2 gap-6 my-8">
+          <div class="p-4 border rounded" style="border-color: var(--border-light); background-color: var(--accent-light);">
+            <h3 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Currently Working On</h3>
+            <a href="https://github.com/tjy-gitnub/win12" class="inline-flex items-center gap-2 hover:underline" style="color: var(--text-light);">
+              Windows 12 Web
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="p-4 border rounded" style="border-color: var(--border-light); background-color: var(--accent-light);">
+            <h3 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Currently Learning</h3>
+            <p style="color: var(--text-light);">Matlab & Machine Learning Algorithms</p>
+          </div>
+        </div>
+        
+        <p>I'm looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" style="color: var(--text-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">bili2text</a> and other exciting open-source projects.</p>
+        
+        <div class="p-4 border rounded mt-6" style="border-color: var(--border-light);">
+          <span class="text-sm" style="color: var(--text-light); font-weight: 500;">Ask me about:</span>
+          <span class="ml-2">Python, C++, Machine Learning, and Data Analysis</span>
+        </div>
       </div>
     </section>
 
     <section>
-      <h2 class="text-2xl md:text-2xl font-bold mb-6">Skills</h2>
-      <div class="space-y-6">
+      <h2 class="text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Technical Skills</h2>
+      <div class="grid gap-6">
         {skillCategories.map(category => (
-          <div class="space-y-2">
-            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">{category.category}</h3>
-            <div class="text-gray-600 dark:text-gray-400">
-              {category.skills.join(' • ')}
+          <div class="border rounded p-4" style="border-color: var(--border-light);">
+            <h3 class="text-sm mb-3" style="font-weight: 500; color: var(--text-light); letter-spacing: 0.02em;">{category.category}</h3>
+            <div class="flex flex-wrap gap-2">
+              {category.skills.map(skill => (
+                <span class="unified-tag">
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
         ))}
@@ -76,4 +100,5 @@ const skillCategories = [
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
+  
 </style>
