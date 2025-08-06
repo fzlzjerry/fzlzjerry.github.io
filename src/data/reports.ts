@@ -131,7 +131,7 @@ export const reports = [
     ]
   },
   {
-    date: 'February 23th, 2025',
+    date: 'February 23rd, 2025',
     author: 'Morax Cheng',
     achievements: [
       'Implemented responsive design for team member profiles page',
@@ -170,7 +170,7 @@ export const reports = [
     ]
   },
   {
-    date: 'February 2th, 2025',
+    date: 'February 2nd, 2025',
     author: 'Morax Cheng',
     achievements: [
       'Set up project documentation structure',
