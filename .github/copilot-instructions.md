@@ -7,7 +7,7 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Bootstrap and Dependencies
-- Install Node.js 20+ (current system version: v20.19.4)
+- Install Node.js 20+ or latest LTS version
 - **CRITICAL**: Install pnpm globally first: `npm install -g pnpm`
 - Install dependencies using your preferred package manager:
   - `pnpm install --no-frozen-lockfile` (recommended, takes ~86 seconds)
