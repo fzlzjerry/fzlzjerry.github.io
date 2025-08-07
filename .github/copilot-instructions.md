@@ -10,7 +10,7 @@ Always reference these instructions first and fallback to search or bash command
 - Install Node.js 20+ or latest LTS version
 - **CRITICAL**: Install pnpm globally first: `npm install -g pnpm`
 - Install dependencies using your preferred package manager:
-  - `pnpm install --no-frozen-lockfile` (recommended, takes ~86 seconds)
+  - `pnpm install --no-frozen-lockfile` (recommended, takes 80-90 seconds)
   - `npm install` (alternative, takes ~80 seconds) 
   - `yarn install` (also works)
 - **NEVER CANCEL**: Dependency installation takes 80-90 seconds. Allow sufficient time for this process to complete, especially in CI or automated environments where timeouts may occur (recommend at least 180 seconds).
