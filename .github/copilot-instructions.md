@@ -13,7 +13,7 @@ Always reference these instructions first and fallback to search or bash command
   - `pnpm install --no-frozen-lockfile` (recommended, takes 80-90 seconds)
   - `npm install` (alternative, takes ~80 seconds) 
   - `yarn install` (also works)
-- **NEVER CANCEL**: Dependency installation takes 80-90 seconds. Allow sufficient time for this process to complete, especially in CI or automated environments where timeouts may occur (recommend at least 180 seconds).
+- **NEVER CANCEL**: Dependency installation takes 80-90 seconds. Allow sufficient time for this process to complete, especially in CI or automated environments where timeouts may occur (recommend a timeout of 120-150 seconds).
 
 ### Build and Development
 - Build the site: `npm run build` or `pnpm run build`
