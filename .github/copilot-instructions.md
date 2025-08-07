@@ -30,9 +30,9 @@ Always reference these instructions first and fallback to search or bash command
   - Serves the built static files from `./dist/`
 
 ### Package Manager Notes
-- Repository includes pnpm-lock.yaml (preferred), yarn.lock, and package-lock.json
-- If pnpm fails with frozen lockfile error, use `pnpm install --no-frozen-lockfile`
-- All three package managers work identically for this project
+- **Preferred Package Manager:** This repository uses `pnpm` as the official and supported package manager for all workflows. The `pnpm-lock.yaml` file is always kept up-to-date and should be used for installing dependencies and running scripts.
+- **Why Multiple Lockfiles Exist:** `yarn.lock` and `package-lock.json` are included for compatibility with legacy tooling and contributors who may use alternative package managers. However, these lockfiles are not actively maintained and may become outdated. Only `pnpm-lock.yaml` is guaranteed to reflect the current dependency tree.
+- **Contributor Guidance:** Always use `pnpm` for installing dependencies and running scripts unless you have a specific reason to use another package manager. Using `npm` or `yarn` may result in dependency drift or unexpected issues. If you encounter a frozen lockfile error with pnpm, use `pnpm install --no-frozen-lockfile`.
 
 ## Validation
 
