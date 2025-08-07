@@ -19,7 +19,7 @@ Always reference these instructions first and fallback to search or bash command
 - Build the site: `npm run build` or `pnpm run build`
   - **TIMING**: Build takes ~5 seconds. Very fast, no timeout concerns.
   - Outputs to `./dist/` directory
-  - Generates 43+ static pages including blog posts and dynamic routes
+  - Generates multiple static pages including blog posts and dynamic routes
 - Start development server: `npm run dev` or `pnpm run dev`
   - **TIMING**: Starts in <1 second
   - Runs on `http://localhost:4321/`
