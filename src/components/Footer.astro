@@ -9,7 +9,7 @@ const socialLinks = [
 ];
 ---
 
-<footer class="border-t" style="background-color: var(--primary-light); border-color: var(--border-light);">
+<footer class="border-t" style="background-color: var(--bg); border-color: var(--border);">
   <div class="max-w-4xl mx-auto px-4 py-12">
     <div class="flex flex-col items-center gap-6">
       <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
@@ -17,7 +17,7 @@ const socialLinks = [
           <a
             href={link.href}
             class="transition-colors p-2"
-            style="color: var(--text-muted-light);"
+            style="color: var(--text-muted);"
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
@@ -27,14 +27,14 @@ const socialLinks = [
         ))}
         <button
           class="transition-colors p-2"
-          style="color: var(--text-muted-light);"
+          style="color: var(--text-muted);"
           onclick="window.location.href='mailto:james20081204@gmail.com'"
           aria-label="Email"
         >
           <i class="fa-regular fa-envelope text-xl font-icon"></i>
         </button>
       </div>
-      <p class="text-sm text-center px-4" style="color: var(--text-muted-light); font-style: italic;">
+      <p class="text-sm text-center px-4" style="color: var(--text-muted); font-style: italic;">
         © {currentYear} Morax Cheng. All rights reserved.
       </p>
     </div>
@@ -50,7 +50,7 @@ const socialLinks = [
   
   
   footer a:hover, footer button:hover {
-    color: var(--text-light) !important;
+    color: var(--text) !important;
   }
   
 </style>

@@ -24,19 +24,19 @@ const sortedPosts = posts.sort((a, b) =>
 <Layout title={`#${tag} - Blog Tag - Morax Cheng`}>
   <div class="space-y-8">
     <div class="space-y-2">
-      <a href="/blog" class="hover:underline" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">&larr; Back to Blog</a>
-      <h1 class="text-3xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Tag: #{tag}</h1>
+      <a href="/blog" class="hover:underline" style="color: var(--text-muted); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">&larr; Back to Blog</a>
+      <h1 class="text-3xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Tag: #{tag}</h1>
     </div>
 
     <div class="grid gap-8">
       {sortedPosts.map(post => (
-        <article class="border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
+        <article class="border rounded p-6 interactive-element transition-all" style="border-color: var(--border);">
           <h2 class="text-xl mb-2" style="font-weight: 400; letter-spacing: 0.02em;">
             <a href={`/blog/${post.slug}`} style="text-decoration: none; color: inherit;">
               {post.data.title}
             </a>
           </h2>
-          <div class="flex gap-4 text-sm mb-4" style="color: var(--text-muted-light);">
+          <div class="flex gap-4 text-sm mb-4" style="color: var(--text-muted);">
             <time datetime={post.data.date} style="font-style: italic;">
               {new Date(post.data.date).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -66,7 +66,7 @@ const sortedPosts = posts.sort((a, b) =>
             </div>
           )}
           {post.data.excerpt && (
-            <p style="color: var(--text-muted-light); text-align: left;">
+            <p style="color: var(--text-muted); text-align: left;">
               {post.data.excerpt}
             </p>
           )}

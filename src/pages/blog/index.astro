@@ -16,7 +16,7 @@ const sortedPosts = allPosts.sort((a, b) =>
   description="Browse Morax Cheng's blog for articles on programming, technology, economics, and personal reflections. Discover new insights and project updates."
 >
   <div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Blog</h1>
+    <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Blog</h1>
 
     <div class="space-y-6">
       <section class="space-y-4">
@@ -50,7 +50,7 @@ const sortedPosts = allPosts.sort((a, b) =>
 
     <section class="grid gap-8">
       {sortedPosts.map(post => (
-        <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border-light);">
+        <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border);">
           <h2 class="text-xl md:text-2xl mb-3" style="font-weight: 400; letter-spacing: 0.02em;">
             <a 
               href={`/blog/${post.slug}`} 
@@ -61,7 +61,7 @@ const sortedPosts = allPosts.sort((a, b) =>
             </a>
           </h2>
           
-          <div class="flex flex-wrap gap-4 text-sm mb-4" style="color: var(--text-muted-light);">
+          <div class="flex flex-wrap gap-4 text-sm mb-4" style="color: var(--text-muted);">
             <time datetime={post.data.date} class="inline-flex items-center">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -101,7 +101,7 @@ const sortedPosts = allPosts.sort((a, b) =>
           )}
           
           {post.data.excerpt && (
-            <p class="line-clamp-3" style="color: var(--text-muted-light); text-align: left;">
+            <p class="line-clamp-3" style="color: var(--text-muted); text-align: left;">
               {post.data.excerpt}
             </p>
           )}

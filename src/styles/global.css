@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens: light/dark and legacy var names for compatibility */
+:root {
+  /* New tokens */
+  --bg: #faf8f5;           /* page background */
+  --surface: #ffffff;      /* cards, surfaces */
+  --surface-2: #f5f2ed;    /* subtle surfaces */
+  --text: #2c2926;         /* primary text */
+  --text-muted: #5a544d;   /* secondary text */
+  --border: #e8e2d8;       /* borders/dividers */
+  --accent: #8b5e34;       /* accent color (warm brown) */
+  --focus: 34 98% 40%;     /* HSL focus ring fallback */
+
+  /* Accent gradient used by some cards */
+  --accent-gradient: linear-gradient(
+    90deg,
+    rgba(139, 94, 52, 0.25) 0%,
+    rgba(139, 94, 52, 0.12) 50%,
+    rgba(139, 94, 52, 0.0) 100%
+  );
+
+  /* Back-compat with existing variables used inline */
+  --primary-light: var(--bg);
+  --accent-light: #f5f2ed; /* pale surface for hover/backgrounds */
+  --accent-rgb: 139, 94, 52; /* RGB triplet for rgb(var(--accent-rgb)) usage */
+  --text-light: var(--text);
+  --text-muted-light: var(--text-muted);
+  --border-light: var(--border);
+}
+
+.dark {
+  --bg: #131210;           
+  --surface: #1a1917;      
+  --surface-2: #23211f;    
+  --text: #f3efe9;         
+  --text-muted: #b8b0a6;   
+  --border: #3a3532;       
+  --accent: #d3a675;       
+  --focus: 34 92% 62%;
+
+  /* Back-compat dark tokens */
+  --primary-dark: var(--bg);
+  --accent-dark: var(--surface-2);
+  --text-dark: var(--text);
+  --text-muted-dark: var(--text-muted);
+  --border-dark: var(--border);
+}
+
+/* Base layer: normalize + typography + color application */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  @media (max-width: 768px) {
+    html { font-size: 16px; }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    width: 100%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  /* Links */
+  a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: all 0.2s ease;
+  }
+  a:hover { text-decoration-thickness: 2px; }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px hsl(var(--focus) / 0.35);
+    border-radius: 4px;
+  }
+
+  /* Images and tables */
+  img { max-width: 100%; height: auto; display: block; }
+  .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Typography niceties */
+  p, li { line-height: 1.8; margin-bottom: 1.25rem; text-align: justify; hyphens: auto; }
+  article > p:first-of-type::first-letter {
+    font-size: 3.5rem; float: left; line-height: 1; margin: 0.05em 0.1em 0 0; font-weight: 400;
+  }
+
+  /* KaTeX inherit theme */
+  .katex { font: inherit; color: inherit; }
+
+  /* Ensure icon fonts and emoji are preserved */
+  .fa, .fas, .far, .fal, .fab, .fa-brands, .fa-solid, .fa-regular, .fa-light, i[class*="fa-"] {
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif !important;
+  }
+  .emoji, .emoji-container {
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif !important;
+  }
+}
+
+/* Components/utilities layer */
+@layer components {
+  .interactive-element {
+    transition: all 0.25s ease;
+    border-color: var(--border);
+  }
+  .interactive-element:hover {
+    background-color: var(--surface-2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .unified-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .unified-tag:hover {
+    background-color: var(--surface-2);
+    border-color: color-mix(in oklab, var(--border), var(--text-muted) 25%);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}

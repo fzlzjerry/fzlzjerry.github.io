@@ -23,8 +23,8 @@ const sections = [
 >
   <div class="max-w-4xl mx-auto space-y-8">
     <header>
-      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">iGEM Team</h1>
-      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
+      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">iGEM Team</h1>
+      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted);">
         International Genetically Engineered Machine Competition - BASIS International School Park Lane Harbour Team
       </p>
     </header>
@@ -34,15 +34,15 @@ const sections = [
         <a
           href={section.link}
           class="block border rounded p-6 interactive-element hover:shadow-md transition-all duration-200"
-          style="border-color: var(--border-light);"
+          style="border-color: var(--border);"
         >
           <div class="flex justify-between items-start mb-4">
             <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.02em;">{section.title}</h2>
-            <svg class="w-5 h-5" style="color: var(--text-muted-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" style="color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>
-          <p style="color: var(--text-muted-light); text-align: left;">{section.description}</p>
+          <p style="color: var(--text-muted); text-align: left;">{section.description}</p>
         </a>
       ))}
     </div>
