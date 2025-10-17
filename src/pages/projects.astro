@@ -26,46 +26,116 @@ const projects = [
   description="Explore the projects developed by Morax Cheng, including 'Windows 12 Web' (HTML, CSS, JS) and a 'Graphing Calculator' (Python, Qt). View code on GitHub and see his development skills in action."
 >
   <div class="space-y-8">
-    <h1 class="text-3xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">My Projects</h1>
+    <div class="page-header">
+      <h1 class="text-4xl md:text-5xl mb-4" style="font-weight: 300; letter-spacing: 0.05em;">My Projects</h1>
+      <div class="border-b-2 mb-8" style="border-color: var(--border-light); width: 80px;"></div>
+      <p class="text-lg mb-8" style="color: var(--text-muted-light);">Explore my latest work in web development, software engineering, and creative problem-solving.</p>
+    </div>
   
-    <div class="grid gap-8">
-      {projects.map(project => (
-        <div class={`border rounded p-6 ${project.featured ? '' : ''}`} style={`border-color: var(--border-light); ${project.featured ? 'background-color: var(--accent-light);' : ''}`}>
-          <div class="flex justify-between items-start mb-4">
-            <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.03em;">{project.title}</h2>
-            {project.featured && (
-              <span class="unified-tag text-xs">
-                Featured
-              </span>
-            )}
+    <div class="grid gap-8 md:gap-10">
+      {projects.map((project, index) => (
+        <article class={`project-card border-2 rounded-xl p-8 md:p-10 interactive-element transition-all ${project.featured ? 'featured-project' : ''}`} style={`border-color: var(--border-light); ${project.featured ? 'background: linear-gradient(135deg, var(--accent-light) 0%, var(--primary-light) 100%);' : ''}`}>
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="project-number" style="color: var(--text-muted-light); font-size: 2rem; font-weight: 300; opacity: 0.5;">0{index + 1}</div>
+                {project.featured && (
+                  <span class="unified-tag text-xs px-3 py-1" style="background-color: var(--text-light); color: var(--primary-light); border-color: var(--text-light);">
+                    ★ Featured
+                  </span>
+                )}
+              </div>
+              <h2 class="text-2xl md:text-3xl mb-2" style="font-weight: 400; letter-spacing: 0.03em;">{project.title}</h2>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              {project.tech.map(tech => (
+                <span class="unified-tag">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
-          <p class="mb-4" style="color: var(--text-muted-light); text-align: left;">{project.description}</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            {project.tech.map(tech => (
-              <span class="unified-tag">
-                {tech}
-              </span>
-            ))}
-          </div>
+          <p class="mb-6 text-base md:text-lg leading-relaxed" style="color: var(--text-muted-light); text-align: left;">{project.description}</p>
           <a 
             href={project.github}
-            class="inline-flex items-center"
+            class="inline-flex items-center gap-2 px-4 py-2 border rounded-lg transition-all github-link"
             target="_blank"
             rel="noopener noreferrer"
-            style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;"
+            style="color: var(--text-light); border-color: var(--border-light); text-decoration: none;"
           >
+            <i class="fa-brands fa-github"></i>
             View on GitHub 
-            <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <svg class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
           </a>
-        </div>
+        </article>
       ))}
     </div>
   </div>
 </Layout>
 
 <style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .page-header {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .project-card {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .project-card:hover::before {
+    left: 100%;
+  }
+  
+  .featured-project {
+    border-color: var(--text-muted-light) !important;
+  }
+  
+  .github-link {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .github-link:hover {
+    background-color: var(--text-light);
+    color: var(--primary-light) !important;
+    border-color: var(--text-light);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .github-link:hover svg {
+    transform: translateX(3px);
+  }
+  
+  .project-number {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    line-height: 1;
+  }
 </style>

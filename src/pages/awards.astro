@@ -97,9 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
   description="View Morax Cheng's academic achievements and awards, including recognitions from the National Economics Challenge (CNEC) 2025 Pre Division like the Regional Team Silver Award and National Individual Gold Award."
 >
   <div class="max-w-4xl mx-auto space-y-8">
-    <header>
-      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Academic Achievements</h1>
-      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
+    <header class="awards-header">
+      <h1 class="text-4xl md:text-5xl mb-4 text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em;">Academic Achievements</h1>
+      <div class="border-b-2 mb-6" style="border-color: var(--border-light); width: 120px;"></div>
+      <p class="text-lg md:text-xl text-center md:text-left" style="color: var(--text-muted-light);">
         Explore my academic awards and recognitions from various competitions.
       </p>
     </header>
@@ -107,20 +108,25 @@ document.addEventListener('DOMContentLoaded', () => {
     <!-- Folder View (Main View) -->
     <div id="folder-container" class="grid gap-6">
       <div 
-        class="award-folder border rounded p-6 cursor-pointer interactive-element hover:shadow-md transition-all duration-200 group"
-        style="border-color: var(--border-light);"
+        class="award-folder border-2 rounded-xl p-8 md:p-10 cursor-pointer interactive-element hover:shadow-lg transition-all duration-300 group"
+        style="border-color: var(--border-light); background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-light) 100%);"
         data-folder-id="cnec2025"
       >
-        <div class="flex justify-between items-start mb-4">
-          <h2 class="text-xl md:text-2xl" style="font-weight: 400; letter-spacing: 0.02em;">{awardCategories[0].name}</h2>
-          <span class="unified-tag">
-            {awardCategories[0].awards.length} Awards
-          </span>
+        <div class="flex items-center gap-4 mb-6">
+          <div class="folder-icon" style="font-size: 2.5rem; opacity: 0.7;">📁</div>
+          <div class="flex-1">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3">
+              <h2 class="text-2xl md:text-3xl" style="font-weight: 400; letter-spacing: 0.02em;">{awardCategories[0].name}</h2>
+              <span class="unified-tag">
+                {awardCategories[0].awards.length} Awards
+              </span>
+            </div>
+          </div>
         </div>
-        <p class="mb-4" style="color: var(--text-muted-light); text-align: left;">{awardCategories[0].description}</p>
-        <div class="inline-flex items-center text-sm group-hover:underline" style="color: var(--text-muted-light);">
+        <p class="mb-6 text-lg" style="color: var(--text-muted-light); text-align: left; line-height: 1.7;">{awardCategories[0].description}</p>
+        <div class="inline-flex items-center text-base group-hover:underline view-details-btn" style="color: var(--text-muted-light); font-weight: 500;">
           View Details
-          <svg class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="ml-2 w-5 h-5 transition-transform group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </div>
@@ -129,20 +135,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- Individual Award Category Views -->
     <div id="awards-cnec2025" class="award-container hidden space-y-8">
-        <div class="mb-6">
-          <button class="back-to-folders flex items-center mb-4" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
-            <svg class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="mb-8">
+          <button class="back-to-folders flex items-center gap-2 mb-6 px-4 py-2 border rounded-lg transition-all" style="color: var(--text-light); border-color: var(--border-light); text-decoration: none;">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
             Back to Categories
           </button>
-          <h2 class="text-2xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">{awardCategories[0].name}</h2>
+          <h2 class="text-3xl md:text-4xl mb-4" style="font-weight: 300; letter-spacing: 0.05em;">{awardCategories[0].name}</h2>
+          <div class="border-b-2" style="border-color: var(--border-light); width: 100px;"></div>
         </div>
         
         <div class="grid gap-8">
           {awardCategories[0].awards.map((award, index) => (
-            <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border-light);">
-              <div class="flex justify-between items-start mb-4">
+            <article class="award-detail border-2 rounded-xl p-8 md:p-10 interactive-element hover:shadow-lg transition-all duration-300" style="border-color: var(--border-light); background: linear-gradient(to bottom right, var(--primary-light), var(--accent-light));">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="award-badge" style="font-size: 2rem;">🏆</div>
+                <div class="award-number" style="color: var(--text-muted-light); font-size: 1.5rem; font-weight: 300; opacity: 0.5;">0{index + 1}</div>
+              </div>
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
                 <div>
                   <h3 class="text-xl md:text-2xl mb-2" style="font-weight: 400; letter-spacing: 0.02em;">{award.title}</h3>
                   <div class="flex flex-wrap gap-4 text-sm" style="color: var(--text-muted-light);">
@@ -252,20 +263,130 @@ document.addEventListener('DOMContentLoaded', () => {
 </Layout>
 
 <style>
-  /* Ensure smooth transitions */
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  
+  .awards-header {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .award-folder {
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+  }
+  
+  .award-folder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .award-folder:hover::before {
+    left: 100%;
+  }
+  
+  .award-folder:hover {
+    border-color: var(--text-muted-light) !important;
+    transform: translateY(-5px);
+  }
+  
+  .folder-icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .award-folder:hover .folder-icon {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  
+  .view-details-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .award-detail {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .award-detail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .award-detail:hover::before {
+    left: 100%;
+  }
+  
+  .award-detail:hover {
+    border-color: var(--text-muted-light);
+  }
+  
+  .award-badge {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  .award-number {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    line-height: 1;
+  }
+  
+  .back-to-folders {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .back-to-folders:hover {
+    background-color: var(--text-light);
+    color: var(--primary-light) !important;
+    border-color: var(--text-light);
+    transform: translateX(-5px);
+  }
+  
+  .back-to-folders:hover svg {
+    transform: translateX(-3px);
+  }
+  
+  /* Certificate hover effect */
+  a[data-modal="certificate-modal"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  a[data-modal="certificate-modal"]:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
   }
   
   /* Prevent layout shift during hover animations */
   article {
     transform: translateZ(0);
     backface-visibility: hidden;
-  }
-  
-  /* Certificate hover effect */
-  a[data-modal="certificate-modal"]:hover {
-    transform: translateY(-2px);
   }
 </style>
