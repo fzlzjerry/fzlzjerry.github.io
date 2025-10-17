@@ -96,33 +96,42 @@ document.addEventListener('DOMContentLoaded', () => {
   title="Awards - Morax Cheng"
   description="View Morax Cheng's academic achievements and awards, including recognitions from the National Economics Challenge (CNEC) 2025 Pre Division like the Regional Team Silver Award and National Individual Gold Award."
 >
-  <div class="max-w-4xl mx-auto space-y-8">
-    <header>
-      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Academic Achievements</h1>
-      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
-        Explore my academic awards and recognitions from various competitions.
+  <div class="max-w-5xl mx-auto space-y-10 animate-fade-up">
+    <header class="text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        Academic Achievements
+      </h1>
+      <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+        Explore my academic awards and recognitions from various competitions
       </p>
     </header>
 
     <!-- Folder View (Main View) -->
     <div id="folder-container" class="grid gap-6">
       <div 
-        class="award-folder border rounded p-6 cursor-pointer interactive-element hover:shadow-md transition-all duration-200 group"
-        style="border-color: var(--border-light);"
+        class="award-folder group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden"
         data-folder-id="cnec2025"
       >
-        <div class="flex justify-between items-start mb-4">
-          <h2 class="text-xl md:text-2xl" style="font-weight: 400; letter-spacing: 0.02em;">{awardCategories[0].name}</h2>
-          <span class="unified-tag">
-            {awardCategories[0].awards.length} Awards
-          </span>
-        </div>
-        <p class="mb-4" style="color: var(--text-muted-light); text-align: left;">{awardCategories[0].description}</p>
-        <div class="inline-flex items-center text-sm group-hover:underline" style="color: var(--text-muted-light);">
-          View Details
-          <svg class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
+        <!-- Animated gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-indigo-600/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        
+        <!-- Shimmer effect -->
+        <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        
+        <div class="relative z-10">
+          <div class="flex justify-between items-start mb-4">
+            <h2 class="text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">{awardCategories[0].name}</h2>
+            <span class="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-indigo-600/10 text-gray-700 rounded-full text-sm font-medium">
+              {awardCategories[0].awards.length} Awards
+            </span>
+          </div>
+          <p class="text-gray-600 mb-6 leading-relaxed">{awardCategories[0].description}</p>
+          <div class="inline-flex items-center text-blue-600 font-medium group-hover:gap-2 transition-all duration-300">
+            View Details
+            <svg class="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -252,20 +261,45 @@ document.addEventListener('DOMContentLoaded', () => {
 </Layout>
 
 <style>
-  /* Ensure smooth transitions */
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
-  /* Prevent layout shift during hover animations */
-  article {
-    transform: translateZ(0);
-    backface-visibility: hidden;
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
   }
   
   /* Certificate hover effect */
-  a[data-modal="certificate-modal"]:hover {
-    transform: translateY(-2px);
+  a[data-modal="certificate-modal"] {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  a[data-modal="certificate-modal"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  a[data-modal="certificate-modal"]:hover::before {
+    opacity: 1;
+  }
+  
+  a[data-modal="certificate-modal"]:hover img {
+    transform: scale(1.05);
+  }
+  
+  a[data-modal="certificate-modal"] img {
+    transition: transform 0.3s;
   }
 </style>

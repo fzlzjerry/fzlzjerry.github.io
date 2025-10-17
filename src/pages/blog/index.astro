@@ -15,17 +15,29 @@ const sortedPosts = allPosts.sort((a, b) =>
   title="Blog - Morax Cheng"
   description="Browse Morax Cheng's blog for articles on programming, technology, economics, and personal reflections. Discover new insights and project updates."
 >
-  <div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Blog</h1>
+  <div class="max-w-5xl mx-auto space-y-10 animate-fade-up">
+    <div class="text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        Blog
+      </h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Thoughts on technology, programming, and the digital future
+      </p>
+    </div>
 
-    <div class="space-y-6">
-      <section class="space-y-4">
-        <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.03em;">Categories</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <section class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+          </svg>
+          Categories
+        </h2>
         <div class="flex flex-wrap gap-2">
           {categories.map(category => (
             <a
               href={`/blog/category/${category?.toLowerCase()}`}
-              class="unified-tag"
+              class="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-indigo-600/10 text-gray-700 rounded-full text-sm font-medium hover:from-blue-500/20 hover:to-indigo-600/20 hover:scale-105 transform transition-all duration-300"
             >
               {category}
             </a>
@@ -33,13 +45,18 @@ const sortedPosts = allPosts.sort((a, b) =>
         </div>
       </section>
 
-      <section class="space-y-4">
-        <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.03em;">Tags</h2>
+      <section class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+          </svg>
+          Popular Tags
+        </h2>
         <div class="flex flex-wrap gap-2">
           {tags.map(tag => (
             <a
               href={`/blog/tag/${tag?.toLowerCase()}`}
-              class="unified-tag"
+              class="px-4 py-2 bg-gradient-to-r from-indigo-500/10 to-purple-600/10 text-gray-700 rounded-full text-sm font-medium hover:from-indigo-500/20 hover:to-purple-600/20 hover:scale-105 transform transition-all duration-300"
             >
               #{tag}
             </a>
@@ -48,63 +65,76 @@ const sortedPosts = allPosts.sort((a, b) =>
       </section>
     </div>
 
-    <section class="grid gap-8">
-      {sortedPosts.map(post => (
-        <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border-light);">
-          <h2 class="text-xl md:text-2xl mb-3" style="font-weight: 400; letter-spacing: 0.02em;">
-            <a 
-              href={`/blog/${post.slug}`} 
-              class="transition-colors duration-200"
-              style="text-decoration: none; color: inherit;"
-            >
-              {post.data.title}
-            </a>
-          </h2>
+    <section class="grid gap-6">
+      {sortedPosts.map((post, index) => (
+        <article 
+          class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
+          style={`animation: fadeUp 0.6s ease-out ${index * 0.1}s forwards; opacity: 0`}
+        >
+          <!-- Animated gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
-          <div class="flex flex-wrap gap-4 text-sm mb-4" style="color: var(--text-muted-light);">
-            <time datetime={post.data.date} class="inline-flex items-center">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              {new Date(post.data.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </time>
-            
-            {post.data.category && (
+          <div class="relative z-10">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
               <a 
-                href={`/blog/category/${post.data.category.toLowerCase()}`}
-                class="inline-flex items-center transition-colors duration-200"
-                style="text-decoration: none; color: inherit;"
+                href={`/blog/${post.slug}`} 
+                class="hover:underline decoration-2 decoration-blue-500/30 underline-offset-4"
               >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg>
-                {post.data.category}
+                {post.data.title}
               </a>
-            )}
-          </div>
+            </h2>
           
-          {post.data.tags && (
-            <div class="flex flex-wrap gap-2 mb-4">
-              {post.data.tags.map(tag => (
-                <a
-                  href={`/blog/tag/${tag.toLowerCase()}`}
-                  class="unified-tag"
+            <div class="flex flex-wrap gap-4 text-sm mb-4 text-gray-500">
+              <time datetime={post.data.date} class="inline-flex items-center font-medium">
+                <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {new Date(post.data.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+              
+              {post.data.category && (
+                <a 
+                  href={`/blog/category/${post.data.category.toLowerCase()}`}
+                  class="inline-flex items-center font-medium hover:text-indigo-600 transition-colors duration-200"
                 >
-                  #{tag}
+                  <svg class="w-4 h-4 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
+                  {post.data.category}
                 </a>
-              ))}
+              )}
             </div>
-          )}
           
-          {post.data.excerpt && (
-            <p class="line-clamp-3" style="color: var(--text-muted-light); text-align: left;">
-              {post.data.excerpt}
-            </p>
-          )}
+            {post.data.tags && (
+              <div class="flex flex-wrap gap-2 mb-4">
+                {post.data.tags.map(tag => (
+                  <a
+                    href={`/blog/tag/${tag.toLowerCase()}`}
+                    class="px-3 py-1 bg-gradient-to-r from-purple-500/10 to-pink-600/10 text-gray-700 rounded-full text-xs font-medium hover:from-purple-500/20 hover:to-pink-600/20 hover:scale-105 transform transition-all duration-300"
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            )}
+            
+            {post.data.excerpt && (
+              <p class="text-gray-600 leading-relaxed line-clamp-3 mb-4">
+                {post.data.excerpt}
+              </p>
+            )}
+            
+            <div class="inline-flex items-center text-blue-600 font-medium group-hover:gap-2 transition-all duration-300">
+              Read More
+              <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
         </article>
       ))}
     </section>
@@ -112,26 +142,22 @@ const sortedPosts = allPosts.sort((a, b) =>
 </Layout>
 
 <style>
-  /* Ensure smooth transitions */
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
-  /* Override default touch target sizes for blog tags */
-  .blog-tag {
-    min-height: unset !important;
-    min-width: unset !important;
-    padding: 0.375rem 0.75rem !important;
-    display: inline-flex;
-    align-items: center;
-    line-height: 1;
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
   }
   
-  /* Prevent layout shift during hover animations */
-  article {
-    transform: translateZ(0);
-    backface-visibility: hidden;
+  /* Line clamp utilities */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  
 </style>

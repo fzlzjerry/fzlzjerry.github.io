@@ -32,65 +32,123 @@ const latestProject = projects[0];
   title="Morax Cheng - Student Developer & Economics Enthusiast"
   description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a 9th-grade student developer passionate about programming and economics."
 >
-  <section class="py-20 text-center">
-    <h1 class="text-4xl mb-6" style="font-weight: 300; letter-spacing: 0.08em;">
-      Hi, I'm Morax <span class="emoji">👋</span>
-    </h1>
-    <p class="text-xl mb-8 text-center" style="color: var(--text-muted-light); font-style: italic;">
-      9th Grade Student Developer & Economics Enthusiast
-    </p>
-    <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-muted-light); line-height: 1.8;">
-      Currently studying at BASIS International School Park Lane Harbour.
-      Passionate about programming, economics, and continuous learning.
-    </p>
+  <section class="py-24 text-center relative">
+    <!-- Animated background particles -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute -top-10 -right-10 w-72 h-72 bg-gradient-to-br from-blue-400/20 to-indigo-600/20 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
+    </div>
+    
+    <div class="relative z-10 animate-fade-up">
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 bg-clip-text text-transparent animate-gradient bg-300% leading-tight">
+        Hi, I'm Morax <span class="inline-block animate-bounce-light">👋</span>
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 text-gray-700 font-medium animate-fade-up" style="animation-delay: 0.2s">
+        9th Grade Student Developer & Economics Enthusiast
+      </p>
+      <p class="text-lg max-w-2xl mx-auto text-gray-600 leading-relaxed animate-fade-up" style="animation-delay: 0.4s">
+        Currently studying at <span class="font-semibold text-gray-800">BASIS International School Park Lane Harbour</span>.
+        Passionate about programming, economics, and continuous learning.
+      </p>
+      
+      <!-- Call to action buttons -->
+      <div class="flex gap-4 justify-center mt-8 animate-fade-up" style="animation-delay: 0.6s">
+        <a href="/projects" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-full hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+          View Projects
+        </a>
+        <a href="/about" class="px-6 py-3 bg-white text-gray-700 font-medium rounded-full border border-gray-200 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+          About Me
+        </a>
+      </div>
+    </div>
   </section>
 
-  <section class="py-10">
-    <h2 class="text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Latest Updates</h2>
-    <div class="grid gap-6">
+  <section class="py-16">
+    <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+      Latest Updates
+    </h2>
+    <div class="grid gap-6 max-w-5xl mx-auto">
       {latestProject && (
-        <a href="/projects" class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-semibold">Latest Project: {latestProject.title}</h3>
-            <div class="flex gap-2">
-              {latestProject.tech.map(tech => (
-                <span class="unified-tag">
-                  {tech}
-                </span>
-              ))}
+        <a href="/projects" class="group block relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+          <!-- Gradient border effect -->
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-indigo-600/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <!-- Animated shimmer effect -->
+          <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          
+          <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+              <div>
+                <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Featured Project</span>
+                <h3 class="text-xl font-bold text-gray-800 mt-1 group-hover:text-blue-600 transition-colors duration-300">
+                  {latestProject.title}
+                </h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                {latestProject.tech.map(tech => (
+                  <span class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-500/10 to-indigo-600/10 text-gray-700 rounded-full">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <p class="text-gray-600 leading-relaxed">
+              {latestProject.description}
+            </p>
+            <div class="mt-4 inline-flex items-center text-blue-600 font-medium group-hover:gap-2 transition-all duration-300">
+              View Project
+              <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
             </div>
           </div>
-          <p style="color: var(--text-muted-light); text-align: left;">
-            {latestProject.description}
-          </p>
         </a>
       )}
       {latestPost && (
-        <a href={`/blog/${latestPost.slug}`} class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-semibold">Latest Blog Post: {latestPost.data.title}</h3>
-            <time datetime={latestPost.data.date} class="text-sm" style="color: var(--text-muted-light); font-style: italic;">
-              {new Date(latestPost.data.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </time>
-          </div>
-          {latestPost.data.excerpt && (
-            <p style="color: var(--text-muted-light); text-align: left;">
-              {latestPost.data.excerpt}
-            </p>
-          )}
-          {latestPost.data.tags && (
-            <div class="flex flex-wrap gap-2 mt-4">
-              {latestPost.data.tags.map(tag => (
-                <span class="unified-tag text-xs">
-                  #{tag}
-                </span>
-              ))}
+        <a href={`/blog/${latestPost.slug}`} class="group block relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+          <!-- Gradient border effect -->
+          <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-600/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <!-- Animated shimmer effect -->
+          <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          
+          <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+              <div>
+                <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">Latest Article</span>
+                <h3 class="text-xl font-bold text-gray-800 mt-1 group-hover:text-indigo-600 transition-colors duration-300">
+                  {latestPost.data.title}
+                </h3>
+              </div>
+              <time datetime={latestPost.data.date} class="text-sm text-gray-500 font-medium">
+                {new Date(latestPost.data.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
             </div>
-          )}
+            {latestPost.data.excerpt && (
+              <p class="text-gray-600 leading-relaxed mb-4">
+                {latestPost.data.excerpt}
+              </p>
+            )}
+            {latestPost.data.tags && (
+              <div class="flex flex-wrap gap-2 mb-4">
+                {latestPost.data.tags.map(tag => (
+                  <span class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-indigo-500/10 to-purple-600/10 text-gray-700 rounded-full">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div class="inline-flex items-center text-indigo-600 font-medium group-hover:gap-2 transition-all duration-300">
+              Read Article
+              <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
         </a>
       )}
     </div>
@@ -98,4 +156,38 @@ const latestProject = projects[0];
 </Layout>
 
 <style>
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .bg-300\% {
+    background-size: 300% 300%;
+  }
+  
+  .animate-gradient {
+    animation: gradient 8s ease infinite;
+  }
+  
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+  
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>
