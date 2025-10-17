@@ -34,55 +34,79 @@ const skillCategories = [
   description="Learn more about Morax Cheng, a teenage open-source enthusiast and developer from China. Discover his skills in programming (Python, C++, Rust), AI/ML, web technologies, and his passion for learning."
 >
   <div class="max-w-4xl mx-auto space-y-8">
-    <section class="text-center">
-      <div class="flex justify-center mb-6">
-        <img src="/Morax.JPG" alt="Morax Cheng" class="w-32 h-32 rounded-full object-cover border shadow-lg transition-all hover:scale-105" style="border-color: var(--border-light);" />
+    <section class="text-center about-hero">
+      <div class="flex justify-center mb-8">
+        <div class="profile-image-wrapper">
+          <img src="/Morax.JPG" alt="Morax Cheng" class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 shadow-xl transition-all" style="border-color: var(--border-light);" />
+        </div>
       </div>
-      <h1 class="text-3xl mb-4" style="font-weight: 300; letter-spacing: 0.05em;">About Me</h1>
-      <p class="text-lg text-center" style="color: var(--text-muted-light);">
+      <h1 class="text-4xl md:text-5xl mb-6" style="font-weight: 300; letter-spacing: 0.05em;">About Me</h1>
+      <div class="border-b-2 mx-auto mb-8" style="border-color: var(--border-light); width: 100px;"></div>
+      <p class="text-xl md:text-2xl text-center" style="color: var(--text-muted-light); font-style: italic;">
         A teenage open-source enthusiast and developer from China
       </p>
     </section>
 
-    <section class="prose max-w-none">
-      <div class="space-y-4" style="color: var(--text-muted-light); line-height: 1.8;">
-        <p>Hello! I'm Morax Cheng, a teenage open-source enthusiast and developer based in China. I have a strong passion for coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.</p>
+    <section class="prose max-w-none bio-section">
+      <div class="space-y-6" style="color: var(--text-muted-light); line-height: 1.8;">
+        <p class="text-lg md:text-xl leading-relaxed">Hello! I'm Morax Cheng, a teenage open-source enthusiast and developer based in China. I have a strong passion for coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.</p>
         
-        <div class="grid md:grid-cols-2 gap-6 my-8">
-          <div class="p-4 border rounded" style="border-color: var(--border-light); background-color: var(--accent-light);">
-            <h3 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Currently Working On</h3>
-            <a href="https://github.com/tjy-gitnub/win12" class="inline-flex items-center gap-2 hover:underline" style="color: var(--text-light);">
+        <div class="grid md:grid-cols-2 gap-6 my-10">
+          <div class="p-6 border-2 rounded-xl info-card transition-all" style="border-color: var(--border-light); background: linear-gradient(135deg, var(--accent-light) 0%, var(--primary-light) 100%);">
+            <div class="flex items-center gap-2 mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+              <h3 class="text-base" style="color: var(--text-light); font-weight: 600; letter-spacing: 0.02em;">Currently Working On</h3>
+            </div>
+            <a href="https://github.com/tjy-gitnub/win12" class="inline-flex items-center gap-2 text-lg hover:underline" style="color: var(--text-light);">
               Windows 12 Web
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
               </svg>
             </a>
           </div>
           
-          <div class="p-4 border rounded" style="border-color: var(--border-light); background-color: var(--accent-light);">
-            <h3 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Currently Learning</h3>
-            <p style="color: var(--text-light);">Matlab & Machine Learning Algorithms</p>
+          <div class="p-6 border-2 rounded-xl info-card transition-all" style="border-color: var(--border-light); background: linear-gradient(135deg, var(--accent-light) 0%, var(--primary-light) 100%);">
+            <div class="flex items-center gap-2 mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+              <h3 class="text-base" style="color: var(--text-light); font-weight: 600; letter-spacing: 0.02em;">Currently Learning</h3>
+            </div>
+            <p class="text-lg" style="color: var(--text-light);">Matlab & Machine Learning Algorithms</p>
           </div>
         </div>
         
-        <p>I'm looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" style="color: var(--text-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">bili2text</a> and other exciting open-source projects.</p>
+        <p class="text-lg leading-relaxed">I'm looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" style="color: var(--text-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">bili2text</a> and other exciting open-source projects.</p>
         
-        <div class="p-4 border rounded mt-6" style="border-color: var(--border-light);">
-          <span class="text-sm" style="color: var(--text-light); font-weight: 500;">Ask me about:</span>
-          <span class="ml-2">Python, C++, Machine Learning, and Data Analysis</span>
+        <div class="p-6 border-2 rounded-xl mt-8 collaboration-card" style="border-color: var(--border-light); background-color: var(--accent-light);">
+          <div class="flex items-start gap-3">
+            <svg class="w-6 h-6 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <span class="text-base block mb-2" style="color: var(--text-light); font-weight: 600;">Ask me about:</span>
+              <span class="text-lg">Python, C++, Machine Learning, and Data Analysis</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2 class="text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Technical Skills</h2>
-      <div class="grid gap-6">
-        {skillCategories.map(category => (
-          <div class="border rounded p-4" style="border-color: var(--border-light);">
-            <h3 class="text-sm mb-3" style="font-weight: 500; color: var(--text-light); letter-spacing: 0.02em;">{category.category}</h3>
-            <div class="flex flex-wrap gap-2">
+    <section class="skills-section">
+      <h2 class="text-3xl md:text-4xl mb-4" style="font-weight: 300; letter-spacing: 0.05em;">Technical Skills</h2>
+      <div class="border-b-2 mb-10" style="border-color: var(--border-light); width: 100px;"></div>
+      <div class="grid gap-8">
+        {skillCategories.map((category, index) => (
+          <div class="skill-category border-2 rounded-xl p-6 md:p-8 transition-all" style="border-color: var(--border-light); animation-delay: {index * 0.1}s;">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="skill-number" style="color: var(--text-muted-light); font-size: 1.5rem; font-weight: 300; opacity: 0.5;">0{index + 1}</div>
+              <h3 class="text-lg md:text-xl" style="font-weight: 600; color: var(--text-light); letter-spacing: 0.02em;">{category.category}</h3>
+            </div>
+            <div class="flex flex-wrap gap-3">
               {category.skills.map(skill => (
-                <span class="unified-tag">
+                <span class="unified-tag skill-tag">
                   {skill}
                 </span>
               ))}
@@ -95,10 +119,97 @@ const skillCategories = [
 </Layout>
 
 <style>
-  /* Ensure smooth transitions */
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .about-hero {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .profile-image-wrapper {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .profile-image-wrapper img {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .profile-image-wrapper:hover img {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .bio-section {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+  }
+  
+  .info-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--text-muted-light);
+  }
+  
+  .info-card a:hover svg {
+    transform: translate(3px, -3px);
+  }
+  
+  .collaboration-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .collaboration-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .skills-section {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards;
+  }
+  
+  .skill-category {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .skill-category:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--text-muted-light);
+  }
+  
+  .skill-tag {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .skill-tag:hover {
+    background-color: var(--text-light);
+    color: var(--primary-light);
+    border-color: var(--text-light);
+  }
+  
+  .skill-number {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    line-height: 1;
+  }
 </style>

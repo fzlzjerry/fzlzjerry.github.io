@@ -48,10 +48,34 @@ const socialLinks = [
     font-weight: 900 !important;
   }
   
+  footer a, footer button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
   
   footer a:hover, footer button:hover {
     color: var(--text-light) !important;
+    transform: translateY(-2px) scale(1.1);
   }
   
+  footer a:active, footer button:active {
+    transform: translateY(0) scale(1);
+  }
+  
+  footer a::before, footer button::before {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--text-light);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  footer a:hover::before, footer button:hover::before {
+    width: 100%;
+    left: 0;
+  }
 </style>
 
