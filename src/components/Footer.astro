@@ -9,49 +9,84 @@ const socialLinks = [
 ];
 ---
 
-<footer class="border-t" style="background-color: var(--primary-light); border-color: var(--border-light);">
-  <div class="max-w-4xl mx-auto px-4 py-12">
-    <div class="flex flex-col items-center gap-6">
-      <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-        {socialLinks.map(link => (
+<footer class="relative mt-20 border-t border-gray-200/50 bg-gradient-to-b from-white to-gray-50/50">
+  <div class="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-indigo-600/5 to-purple-500/5"></div>
+  <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="flex flex-col items-center gap-8">
+      <!-- Animated gradient line -->
+      <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full animate-gradient"></div>
+      
+      <!-- Social links with enhanced hover effects -->
+      <div class="flex flex-wrap justify-center gap-4">
+        {socialLinks.map((link, index) => (
           <a
             href={link.href}
-            class="transition-colors p-2"
-            style="color: var(--text-muted-light);"
+            class="social-link group relative p-3 rounded-full bg-white shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            style={`animation-delay: ${index * 0.1}s`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
           >
-            <i class={`${link.icon} text-xl font-icon`}></i>
+            <span class="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <i class={`${link.icon} text-xl relative z-10 text-gray-600 group-hover:text-white transition-colors duration-300`}></i>
           </a>
         ))}
         <button
-          class="transition-colors p-2"
-          style="color: var(--text-muted-light);"
+          class="social-link group relative p-3 rounded-full bg-white shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+          style="animation-delay: 0.4s"
           onclick="window.location.href='mailto:james20081204@gmail.com'"
           aria-label="Email"
         >
-          <i class="fa-regular fa-envelope text-xl font-icon"></i>
+          <span class="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          <i class="fa-regular fa-envelope text-xl relative z-10 text-gray-600 group-hover:text-white transition-colors duration-300"></i>
         </button>
       </div>
-      <p class="text-sm text-center px-4" style="color: var(--text-muted-light); font-style: italic;">
-        © {currentYear} Morax Cheng. All rights reserved.
-      </p>
+      
+      <!-- Copyright with pulse animation -->
+      <div class="text-center">
+        <p class="text-sm text-gray-600 font-medium">
+          Made with <span class="inline-block animate-bounce-light text-red-500">❤️</span> by Morax Cheng
+        </p>
+        <p class="text-xs text-gray-500 mt-2">
+          © {currentYear} All rights reserved.
+        </p>
+      </div>
+      
+      <!-- Decorative gradient orbs -->
+      <div class="absolute top-0 left-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-indigo-600/20 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full blur-3xl"></div>
     </div>
   </div>
 </footer>
 
 <style>
-  .font-icon {
-    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif !important;
-    /* 增加特异性和优先级，确保图标字体不被全局字体覆盖 */
-    font-weight: 900 !important;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
-  
-  footer a:hover, footer button:hover {
-    color: var(--text-light) !important;
+  .social-link {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
   }
   
+  @keyframes gradient {
+    0%, 100% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .animate-gradient {
+    animation: gradient 3s ease infinite;
+  }
 </style>
 

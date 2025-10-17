@@ -21,67 +21,113 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>{title}</title>
     <style is:global>
-      /* 全局颜色变量 - 书本风格 */
+      /* Modern color palette with enhanced contrast */
       :root {
-        --primary-light: #faf8f5;
-        --primary-dark: #2c2926;
-        --accent-light: #f5f2ed;
-        --accent-dark: #3a3532;
-        --text-light: #2c2926;
-        --text-dark: #faf8f5;
-        --text-muted-light: #5a544d;
-        --text-muted-dark: #b8b0a6;
-        --border-light: #e8e2d8;
-        --border-dark: #3a3532;
+        --primary-light: #ffffff;
+        --primary-dark: #0f172a;
+        --accent-light: #f0f9ff;
+        --accent-dark: #0369a1;
+        --text-light: #0f172a;
+        --text-dark: #f8fafc;
+        --text-muted-light: #64748b;
+        --text-muted-dark: #cbd5e1;
+        --border-light: #e2e8f0;
+        --border-dark: #334155;
+        --gradient-start: #0ea5e9;
+        --gradient-end: #6366f1;
+        --shadow-color: rgba(0, 0, 0, 0.1);
       }
       
-      /* Global font family setting - Book typography */
-      html, body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, li, ul, ol, table, tr, td, th {
-        font-family: "Georgia", "Times New Roman", Times, serif !important;
+      /* Modern typography system */
+      html, body {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         font-weight: 400;
-        letter-spacing: 0.01em;
+        letter-spacing: -0.011em;
+        font-feature-settings: "cv11", "ss01", "ss03";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      
-      /* Headings with classic book styling */
+
+      p, li, td, th {
+        font-family: 'Lora', Georgia, serif;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
       h1, h2, h3, h4, h5, h6 {
-        font-weight: 400;
-        letter-spacing: 0.02em;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-top: 2.5rem;
+        margin-bottom: 1.25rem;
+        line-height: 1.2;
       }
       
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.5rem; }
-      h3 { font-size: 1.25rem; }
+      h1 { 
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+      h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
       
-      /* 确保图标字体不受影响 */
+      /* Icon and emoji font preservation */
       .fa, .fas, .far, .fal, .fab, .fa-brands, .fa-solid, .fa-regular, .fa-light, i[class*="fa-"] {
         font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
       }
       
-      /* 确保表情符号正常显示 */
       .emoji, .emoji-container {
         font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
       }
       
-      /* KaTeX color */
+      /* KaTeX styling */
       .katex {
         font: inherit;
         color: inherit;
       }
       
-      /* Hide scrollbar for Chrome, Safari and Opera */
+      /* Custom scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: var(--border-light);
+        border-radius: 10px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: var(--text-muted-light);
+        border-radius: 10px;
+        border: 2px solid var(--border-light);
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-light);
+      }
+      
+      /* Hide scrollbar utility classes */
       .scrollbar-hide::-webkit-scrollbar {
         display: none;
       }
-      /* Hide scrollbar for IE, Edge and Firefox */
       .scrollbar-hide {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
       
       /* Responsive table styles */
@@ -98,24 +144,31 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         display: block;
       }
       
-      /* Base font sizes and touch targets */
+      /* Responsive base font sizes */
       html {
-        font-size: 17px;
+        font-size: clamp(16px, 2.5vw, 18px);
         -webkit-text-size-adjust: 100%;
-        line-height: 1.7;
+        line-height: 1.6;
       }
       
+      @media (max-width: 640px) {
+        h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+        h2 { font-size: clamp(1.25rem, 4vw, 1.75rem); }
+        h3 { font-size: clamp(1.1rem, 3vw, 1.5rem); }
+      }
+      
+      /* Mobile-first touch targets */
       @media (max-width: 768px) {
-        html {
-          font-size: 16px;
+        a, button, input, select, textarea {
+          min-height: 48px;
+          min-width: 48px;
+          padding: 0.75rem;
         }
-      }
-      
-      /* Ensure minimum touch target sizes */
-      a, button, input, select, textarea {
-        min-height: 44px;
-        min-width: 44px;
-        padding: 0.5rem;
+        
+        .unified-tag {
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+        }
       }
       
       /* Fix horizontal scroll issues */
@@ -124,84 +177,203 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         width: 100%;
       }
       
-      /* Improve text readability - Book style */
+      /* Modern text readability */
       p, li {
-        line-height: 1.8;
-        margin-bottom: 1.25rem;
-        text-align: justify;
-        hyphens: auto;
+        line-height: 1.75;
+        margin-bottom: 1.5rem;
+        color: var(--text-muted-light);
       }
       
-      /* First letter styling for articles */
+      /* Fancy first letter for articles */
       article > p:first-of-type::first-letter {
-        font-size: 3.5rem;
+        font-size: 4rem;
         float: left;
         line-height: 1;
-        margin: 0.05em 0.1em 0 0;
-        font-weight: 400;
+        margin: 0.05em 0.15em 0 0;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
       
-      /* 统一的交互元素样式 - 书本风格 */
+      /* Modern interactive elements */
       .interactive-element {
-        transition: all 0.3s ease;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border-color: var(--border-light);
+        overflow: hidden;
+      }
+      
+      .interactive-element::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+        transition: left 0.5s;
       }
       
       .interactive-element:hover {
-        background-color: var(--accent-light);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        border-color: var(--accent-dark);
+      }
+      
+      .interactive-element:hover::before {
+        left: 100%;
       }
       
       
-      /* 统一的标签样式 - 书签风格 */
+      /* Modern tag design */
       .unified-tag {
         display: inline-flex;
         align-items: center;
-        padding: 0.25rem 0.75rem;
-        border-radius: 2px;
+        padding: 0.375rem 0.875rem;
+        border-radius: 9999px;
         font-size: 0.8rem;
         line-height: 1.2;
-        background-color: transparent;
-        border: 1px solid var(--border-light);
-        transition: all 0.3s ease;
-        font-style: italic;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        background: linear-gradient(135deg, var(--accent-light), rgba(14, 165, 233, 0.1));
+        border: 1px solid transparent;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
       }
       
       .unified-tag:hover {
-        background-color: var(--accent-light);
-        border-color: var(--text-muted-light);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: white;
       }
       
-      
-      /* Page styling */
+      /* Modern page styling with subtle gradient */
       body {
-        background-color: var(--primary-light);
+        background: linear-gradient(180deg, var(--primary-light) 0%, #f8fafc 100%);
         color: var(--text-light);
+        min-height: 100vh;
+        position: relative;
       }
       
-      /* Links with underline */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        background-image: 
+          radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+      }
+      
+      /* Modern link styling */
       a {
         color: var(--text-light);
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 0.2em;
-        transition: all 0.3s ease;
-      }
-      
-      a:hover {
-        text-decoration-thickness: 2px;
-      }
-      
-      
-      /* Remove underline from navigation */
-      nav a, .unified-tag {
         text-decoration: none;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      a:hover::after {
+        width: 100%;
+      }
+      
+      /* Navigation links without underline */
+      nav a::after, .unified-tag::after {
+        display: none;
+      }
+      
+      /* Smooth page transitions */
+      * {
+        scroll-behavior: smooth;
+      }
+      
+      /* Selection styling */
+      ::selection {
+        background: rgba(14, 165, 233, 0.2);
+        color: var(--text-light);
+      }
+      
+      /* Responsive utilities */
+      @media (max-width: 640px) {
+        .container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        
+        /* Stack layouts on mobile */
+        .sm\:flex-col {
+          flex-direction: column !important;
+        }
+        
+        /* Adjust spacing on mobile */
+        section {
+          padding-top: 2rem;
+          padding-bottom: 2rem;
+        }
+        
+        /* Mobile-optimized cards */
+        .rounded-2xl {
+          border-radius: 1rem;
+        }
+        
+        /* Reduce animation distance on mobile */
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      }
+      
+      /* Tablet optimizations */
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .container {
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+        }
+      }
+      
+      /* Ensure content doesn't overflow on small screens */
+      @media (max-width: 480px) {
+        body {
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+        
+        pre, code {
+          max-width: 100%;
+          overflow-x: auto;
+        }
       }
     </style>
   </head>
   <body class="min-h-screen antialiased">
     <Header />
-    <main class="max-w-4xl mx-auto px-4 py-8 md:py-12 min-h-[calc(100vh-64px-180px)]">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 min-h-[calc(100vh-64px-180px)]">
       <slot />
     </main>
     <Footer />

@@ -3,30 +3,84 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="404 Not Found">
-  <main class="flex flex-col items-center justify-start pt-10 pb-4 min-h-[75vh]" style="background-color: var(--primary-light);">
-    <div class="w-full max-w-3xl">
-      <video 
-        class="w-full h-auto"
-        autoplay
-        loop
-        muted
-        playsinline
-      >
-        <source src="/404.webm" type="video/webm">
-        Your browser does not support the video tag.
-      </video>
+  <main class="flex flex-col items-center justify-center min-h-[75vh] relative">
+    <!-- Animated background particles -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-20 left-20 w-72 h-72 bg-gradient-to-br from-blue-400/10 to-indigo-600/10 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-20 w-72 h-72 bg-gradient-to-br from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
     </div>
-    <div class="text-center mt-2">
-      <h1 class="text-5xl mb-8" style="font-weight: 300; letter-spacing: 0.08em; color: var(--text-light);">Page Not Found</h1>
-      <a href="/" class="inline-flex items-center px-6 py-3 text-sm transition-all duration-300 ease-in-out transform hover:scale-105" style="color: var(--text-light); border: 1px solid var(--border-light); background-color: var(--accent-light); text-decoration: none; letter-spacing: 0.05em;">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
-        Return to Home
-      </a>
+    
+    <div class="relative z-10 text-center animate-fade-up">
+      <div class="w-full max-w-3xl mx-auto mb-8">
+        <video 
+          class="w-full h-auto rounded-2xl shadow-2xl"
+          autoplay
+          loop
+          muted
+          playsinline
+        >
+          <source src="/404.webm" type="video/webm">
+          <div class="text-9xl font-bold bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 bg-clip-text text-transparent animate-gradient bg-300%">
+            404
+          </div>
+        </video>
+      </div>
+      
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        Page Not Found
+      </h1>
+      <p class="text-xl text-gray-600 mb-8 max-w-md mx-auto">
+        Oops! The page you're looking for seems to have wandered off into the digital void.
+      </p>
+      
+      <div class="flex gap-4 justify-center">
+        <a href="/" class="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-full hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+          <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Return to Home
+        </a>
+        <button onclick="history.back()" class="inline-flex items-center px-6 py-3 bg-white text-gray-700 font-medium rounded-full border border-gray-200 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+          Go Back
+        </button>
+      </div>
     </div>
   </main>
 </Layout>
 
 <style>
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .bg-300\% {
+    background-size: 300% 300%;
+  }
+  
+  .animate-gradient {
+    animation: gradient 8s ease infinite;
+  }
+  
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+  
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style> 
