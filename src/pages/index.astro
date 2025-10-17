@@ -36,20 +36,20 @@ const latestProject = projects[0];
     <h1 class="text-4xl mb-6" style="font-weight: 300; letter-spacing: 0.08em;">
       Hi, I'm Morax <span class="emoji">👋</span>
     </h1>
-    <p class="text-xl mb-8 text-center" style="color: var(--text-muted-light); font-style: italic;">
+    <p class="text-xl mb-8 text-center" style="color: var(--text-muted); font-style: italic;">
       9th Grade Student Developer & Economics Enthusiast
     </p>
-    <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-muted-light); line-height: 1.8;">
+    <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-muted); line-height: 1.8;">
       Currently studying at BASIS International School Park Lane Harbour.
       Passionate about programming, economics, and continuous learning.
     </p>
   </section>
 
   <section class="py-10">
-    <h2 class="text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Latest Updates</h2>
+    <h2 class="text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Latest Updates</h2>
     <div class="grid gap-6">
       {latestProject && (
-        <a href="/projects" class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
+        <a href="/projects" class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border); text-decoration: none;">
           <div class="flex justify-between items-start mb-2">
             <h3 class="font-semibold">Latest Project: {latestProject.title}</h3>
             <div class="flex gap-2">
@@ -60,16 +60,16 @@ const latestProject = projects[0];
               ))}
             </div>
           </div>
-          <p style="color: var(--text-muted-light); text-align: left;">
+          <p style="color: var(--text-muted); text-align: left;">
             {latestProject.description}
           </p>
         </a>
       )}
       {latestPost && (
-        <a href={`/blog/${latestPost.slug}`} class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
+        <a href={`/blog/${latestPost.slug}`} class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border); text-decoration: none;">
           <div class="flex justify-between items-start mb-2">
             <h3 class="font-semibold">Latest Blog Post: {latestPost.data.title}</h3>
-            <time datetime={latestPost.data.date} class="text-sm" style="color: var(--text-muted-light); font-style: italic;">
+            <time datetime={latestPost.data.date} class="text-sm" style="color: var(--text-muted); font-style: italic;">
               {new Date(latestPost.data.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -78,7 +78,7 @@ const latestProject = projects[0];
             </time>
           </div>
           {latestPost.data.excerpt && (
-            <p style="color: var(--text-muted-light); text-align: left;">
+            <p style="color: var(--text-muted); text-align: left;">
               {latestPost.data.excerpt}
             </p>
           )}

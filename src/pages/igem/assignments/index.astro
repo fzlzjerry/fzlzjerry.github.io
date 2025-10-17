@@ -11,13 +11,13 @@ const assignment = assignments[0]; // We only have one assignment currently
 >
   <div class="max-w-4xl mx-auto space-y-8">
     <header class="space-y-4">
-      <a href="/igem" class="inline-flex items-center gap-2" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
+      <a href="/igem" class="inline-flex items-center gap-2" style="color: var(--text-muted); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Back to iGEM
       </a>
-      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Assignments</h1>
+      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Assignments</h1>
     </header>
 
     <div class="grid gap-6">
@@ -25,14 +25,14 @@ const assignment = assignments[0]; // We only have one assignment currently
         <a
           href={`/igem/assignments/${assignment.id}`}
           class="block border rounded p-6 interactive-element hover:shadow-md transition-all duration-200"
-          style="border-color: var(--border-light);"
+          style="border-color: var(--border);"
         >
           <div class="flex justify-between items-start">
             <div>
               <h2 class="text-xl mb-2" style="font-weight: 400; letter-spacing: 0.02em;">{assignment.title}</h2>
-              <time class="text-sm" style="color: var(--text-muted-light);">{assignment.date}</time>
+              <time class="text-sm" style="color: var(--text-muted);">{assignment.date}</time>
             </div>
-            <svg class="w-5 h-5 flex-shrink-0" style="color: var(--text-muted-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 flex-shrink-0" style="color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>

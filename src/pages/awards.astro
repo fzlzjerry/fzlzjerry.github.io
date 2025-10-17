@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
 >
   <div class="max-w-4xl mx-auto space-y-8">
     <header>
-      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Academic Achievements</h1>
-      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
+      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Academic Achievements</h1>
+      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted);">
         Explore my academic awards and recognitions from various competitions.
       </p>
     </header>
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div id="folder-container" class="grid gap-6">
       <div 
         class="award-folder border rounded p-6 cursor-pointer interactive-element hover:shadow-md transition-all duration-200 group"
-        style="border-color: var(--border-light);"
+        style="border-color: var(--border);"
         data-folder-id="cnec2025"
       >
         <div class="flex justify-between items-start mb-4">
@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
             {awardCategories[0].awards.length} Awards
           </span>
         </div>
-        <p class="mb-4" style="color: var(--text-muted-light); text-align: left;">{awardCategories[0].description}</p>
-        <div class="inline-flex items-center text-sm group-hover:underline" style="color: var(--text-muted-light);">
+        <p class="mb-4" style="color: var(--text-muted); text-align: left;">{awardCategories[0].description}</p>
+        <div class="inline-flex items-center text-sm group-hover:underline" style="color: var(--text-muted);">
           View Details
           <svg class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -130,22 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
     <!-- Individual Award Category Views -->
     <div id="awards-cnec2025" class="award-container hidden space-y-8">
         <div class="mb-6">
-          <button class="back-to-folders flex items-center mb-4" style="color: var(--text-muted-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
+          <button class="back-to-folders flex items-center mb-4" style="color: var(--text-muted); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;">
             <svg class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
             Back to Categories
           </button>
-          <h2 class="text-2xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">{awardCategories[0].name}</h2>
+          <h2 class="text-2xl" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">{awardCategories[0].name}</h2>
         </div>
         
         <div class="grid gap-8">
           {awardCategories[0].awards.map((award, index) => (
-            <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border-light);">
+            <article class="border rounded p-6 interactive-element hover:shadow-md transition-all duration-200" style="border-color: var(--border);">
               <div class="flex justify-between items-start mb-4">
                 <div>
                   <h3 class="text-xl md:text-2xl mb-2" style="font-weight: 400; letter-spacing: 0.02em;">{award.title}</h3>
-                  <div class="flex flex-wrap gap-4 text-sm" style="color: var(--text-muted-light);">
+                  <div class="flex flex-wrap gap-4 text-sm" style="color: var(--text-muted);">
                     <time datetime={award.date} class="inline-flex items-center">
                       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -166,30 +166,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="space-y-4">
                     <div>
-                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Achievement</h4>
-                      <p style="color: var(--text-muted-light); text-align: left;">{award.achievement}</p>
+                      <h4 class="text-sm mb-2" style="color: var(--text); font-weight: 500;">Achievement</h4>
+                      <p style="color: var(--text-muted); text-align: left;">{award.achievement}</p>
                     </div>
                     <div>
-                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Division</h4>
-                      <p style="color: var(--text-muted-light);">{award.division}</p>
+                      <h4 class="text-sm mb-2" style="color: var(--text); font-weight: 500;">Division</h4>
+                      <p style="color: var(--text-muted);">{award.division}</p>
                     </div>
                     <div>
-                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Level</h4>
-                      <p style="color: var(--text-muted-light);">{award.level}</p>
+                      <h4 class="text-sm mb-2" style="color: var(--text); font-weight: 500;">Level</h4>
+                      <p style="color: var(--text-muted);">{award.level}</p>
                     </div>
                     <div>
-                      <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Certificate ID</h4>
-                      <code class="text-sm" style="color: var(--text-muted-light); font-family: monospace;">{award.certificateId}</code>
+                      <h4 class="text-sm mb-2" style="color: var(--text); font-weight: 500;">Certificate ID</h4>
+                      <code class="text-sm" style="color: var(--text-muted); font-family: monospace;">{award.certificateId}</code>
                     </div>
 
                     {award.teamMembers && (
                       <div>
-                        <h4 class="text-sm mb-3" style="color: var(--text-light); font-weight: 500;">Team Members</h4>
+                        <h4 class="text-sm mb-3" style="color: var(--text); font-weight: 500;">Team Members</h4>
                         <div class="space-y-2">
                           {award.teamMembers.map(member => (
                             <div class="text-sm">
                               <span style="font-weight: 500;">{member.name}</span>
-                              <span style="color: var(--text-muted-light);"> · {member.role}</span>
+                              <span style="color: var(--text-muted);"> · {member.role}</span>
                             </div>
                           ))}
                         </div>
@@ -198,18 +198,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     {award.score && (
                       <div>
-                        <h4 class="text-sm mb-2" style="color: var(--text-light); font-weight: 500;">Performance Score</h4>
+                        <h4 class="text-sm mb-2" style="color: var(--text); font-weight: 500;">Performance Score</h4>
                         <p class="text-lg" style="font-weight: 500;">{award.score}</p>
                       </div>
                     )}
 
                     {award.criteria && (
                       <div>
-                        <h4 class="text-sm mb-3" style="color: var(--text-light); font-weight: 500;">Achievement Criteria</h4>
-                        <ul class="space-y-1 text-sm" style="color: var(--text-muted-light);">
+                        <h4 class="text-sm mb-3" style="color: var(--text); font-weight: 500;">Achievement Criteria</h4>
+                        <ul class="space-y-1 text-sm" style="color: var(--text-muted);">
                           {award.criteria.map(criterion => (
                             <li class="flex items-start gap-2">
-                              <span style="color: var(--text-light);">•</span>
+                              <span style="color: var(--text);">•</span>
                               <span>{criterion}</span>
                             </li>
                           ))}
@@ -218,12 +218,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     )}
                   </div>
                   <div>
-                    <h4 class="text-sm mb-3" style="color: var(--text-light); font-weight: 500;">Certificate</h4>
+                    <h4 class="text-sm mb-3" style="color: var(--text); font-weight: 500;">Certificate</h4>
                     <a
                       href={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
                       data-modal="certificate-modal"
                       class="block p-4 rounded border hover:shadow-md transition-all"
-                      style="background-color: var(--accent-light); border-color: var(--border-light);"
+                      style="background-color: var(--accent-light); border-color: var(--border);"
                     >
                       <img
                         src={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
@@ -233,11 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         style="max-height: 200px;"
                       />
                     </a>
-                    <p class="text-center mt-2 text-xs" style="color: var(--text-muted-light);">Click to view full size</p>
+                    <p class="text-center mt-2 text-xs" style="color: var(--text-muted);">Click to view full size</p>
                   </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t text-sm" style="border-color: var(--border-light); color: var(--text-muted-light);">
+                <div class="mt-6 pt-4 border-t text-sm" style="border-color: var(--border); color: var(--text-muted);">
                   Awarded by CEE, based on the relevant regulations and final results of CNEC National Round through GP21
                 </div>
               </div>
