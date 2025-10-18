@@ -32,44 +32,44 @@ const latestProject = projects[0];
   title="Morax Cheng - Student Developer & Economics Enthusiast"
   description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a 9th-grade student developer passionate about programming and economics."
 >
-  <section class="py-20 text-center">
-    <h1 class="text-4xl mb-6" style="font-weight: 300; letter-spacing: 0.08em;">
+  <section class="py-12 md:py-20 text-center fade-in">
+    <h1 class="text-3xl md:text-4xl mb-6" style="font-weight: 300; letter-spacing: 0.08em;">
       Hi, I'm Morax <span class="emoji">👋</span>
     </h1>
-    <p class="text-xl mb-8 text-center" style="color: var(--text-muted-light); font-style: italic;">
+    <p class="text-lg md:text-xl mb-6 md:mb-8 text-center px-4" style="color: var(--text-muted-light); font-style: italic;">
       9th Grade Student Developer & Economics Enthusiast
     </p>
-    <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-muted-light); line-height: 1.8;">
+    <p class="text-base md:text-lg max-w-2xl mx-auto px-4" style="color: var(--text-muted-light); line-height: 1.8;">
       Currently studying at BASIS International School Park Lane Harbour.
       Passionate about programming, economics, and continuous learning.
     </p>
   </section>
 
-  <section class="py-10">
-    <h2 class="text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Latest Updates</h2>
+  <section class="py-6 md:py-10">
+    <h2 class="text-xl md:text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Latest Updates</h2>
     <div class="grid gap-6">
       {latestProject && (
-        <a href="/projects" class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-semibold">Latest Project: {latestProject.title}</h3>
-            <div class="flex gap-2">
+        <a href="/projects" class="block border rounded p-4 md:p-6 interactive-element transition-all" style="border-color: var(--border-light); text-decoration: none;">
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-3">
+            <h3 class="font-semibold text-base md:text-lg" style="color: var(--text-light);">Latest Project: {latestProject.title}</h3>
+            <div class="flex flex-wrap gap-2">
               {latestProject.tech.map(tech => (
-                <span class="unified-tag">
+                <span class="unified-tag text-xs">
                   {tech}
                 </span>
               ))}
             </div>
           </div>
-          <p style="color: var(--text-muted-light); text-align: left;">
+          <p class="text-sm md:text-base" style="color: var(--text-muted-light); text-align: left;">
             {latestProject.description}
           </p>
         </a>
       )}
       {latestPost && (
-        <a href={`/blog/${latestPost.slug}`} class="block border rounded p-6 interactive-element transition-all" style="border-color: var(--border-light);">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-semibold">Latest Blog Post: {latestPost.data.title}</h3>
-            <time datetime={latestPost.data.date} class="text-sm" style="color: var(--text-muted-light); font-style: italic;">
+        <a href={`/blog/${latestPost.slug}`} class="block border rounded p-4 md:p-6 interactive-element transition-all" style="border-color: var(--border-light); text-decoration: none;">
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-3">
+            <h3 class="font-semibold text-base md:text-lg" style="color: var(--text-light);">Latest Blog Post: {latestPost.data.title}</h3>
+            <time datetime={latestPost.data.date} class="text-xs md:text-sm whitespace-nowrap" style="color: var(--text-muted-light); font-style: italic;">
               {new Date(latestPost.data.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -78,12 +78,12 @@ const latestProject = projects[0];
             </time>
           </div>
           {latestPost.data.excerpt && (
-            <p style="color: var(--text-muted-light); text-align: left;">
+            <p class="text-sm md:text-base mb-3" style="color: var(--text-muted-light); text-align: left;">
               {latestPost.data.excerpt}
             </p>
           )}
           {latestPost.data.tags && (
-            <div class="flex flex-wrap gap-2 mt-4">
+            <div class="flex flex-wrap gap-2 mt-3">
               {latestPost.data.tags.map(tag => (
                 <span class="unified-tag text-xs">
                   #{tag}

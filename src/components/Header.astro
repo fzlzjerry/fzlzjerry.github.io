@@ -7,6 +7,13 @@ const links = [
   { href: '/igem', text: 'iGEM' },
   { href: '/about', text: 'About' },
 ];
+
+// 获取当前路径用于高亮
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+};
 ---
 
 <header class="border-b sticky top-0 z-50 backdrop-blur-sm bg-opacity-95" style="background-color: var(--primary-light); border-color: var(--border-light);">
@@ -34,8 +41,9 @@ const links = [
         <li>
           <a 
             href={link.href}
-            class="transition-colors"
+            class={`nav-link transition-colors ${isActive(link.href) ? 'active' : ''}`}
             style="color: var(--text-muted-light); font-size: 0.9rem; letter-spacing: 0.05em; display: inline-flex; align-items: center; height: 2rem;" 
+            aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.text}
           </a>
@@ -44,16 +52,15 @@ const links = [
     </ul>
     
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden shadow-lg md:hidden" style="background-color: var(--primary-light); border: 1px solid var(--border-light); border-top: none;">
+    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden md:hidden" style="background-color: var(--primary-light); border: 1px solid var(--border-light); border-top: none; box-shadow: var(--shadow-lg);">
       <ul class="py-2">
         {links.map(link => (
           <li>
             <a 
               href={link.href}
-              class="block px-4 py-2 transition-colors"
+              class={`mobile-nav-link block px-4 py-3 transition-all ${isActive(link.href) ? 'active' : ''}`}
               style="color: var(--text-muted-light); font-size: 0.9rem; letter-spacing: 0.05em;"
-              onmouseover="this.style.backgroundColor = 'var(--accent-light)'"
-              onmouseout="this.style.backgroundColor = 'transparent'"
+              aria-current={isActive(link.href) ? 'page' : undefined}
             >
               {link.text}
             </a>
@@ -65,8 +72,62 @@ const links = [
 </header>
 
 <style>
-  nav a:hover {
+  /* 导航链接hover效果 */
+  .nav-link:hover,
+  .mobile-nav-link:hover {
     color: var(--text-light) !important;
+  }
+  
+  /* 活动状态样式 */
+  .nav-link.active {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--text-light);
+    animation: slideIn var(--transition-base) ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  
+  .mobile-nav-link.active {
+    background-color: var(--accent-light);
+    color: var(--text-light) !important;
+    font-weight: 500;
+    border-left: 3px solid var(--text-light);
+  }
+  
+  .mobile-nav-link:hover {
+    background-color: var(--accent-light);
+  }
+  
+  /* 移动菜单按钮hover效果 */
+  #menu-toggle {
+    transition: all var(--transition-base);
+  }
+  
+  #menu-toggle:hover {
+    background-color: var(--accent-light);
+  }
+  
+  /* 移动菜单滑动动画 */
+  #mobile-menu:not(.hidden) {
+    animation: slideDown var(--transition-base) ease-out;
   }
 </style>
 

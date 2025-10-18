@@ -16,7 +16,7 @@ const socialLinks = [
         {socialLinks.map(link => (
           <a
             href={link.href}
-            class="transition-colors p-2"
+            class="social-link transition-all p-2 rounded"
             style="color: var(--text-muted-light);"
             target="_blank"
             rel="noopener noreferrer"
@@ -26,8 +26,8 @@ const socialLinks = [
           </a>
         ))}
         <button
-          class="transition-colors p-2"
-          style="color: var(--text-muted-light);"
+          class="social-link transition-all p-2 rounded"
+          style="color: var(--text-muted-light); background: transparent; border: none; cursor: pointer;"
           onclick="window.location.href='mailto:james20081204@gmail.com'"
           aria-label="Email"
         >
@@ -48,10 +48,32 @@ const socialLinks = [
     font-weight: 900 !important;
   }
   
-  
-  footer a:hover, footer button:hover {
-    color: var(--text-light) !important;
+  /* 社交图标hover效果 */
+  .social-link {
+    transition: all var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   
+  .social-link:hover {
+    color: var(--text-light) !important;
+    background-color: var(--accent-light);
+    transform: translateY(-2px);
+  }
+  
+  .social-link:focus-visible {
+    outline: 2px solid var(--text-light);
+    outline-offset: 2px;
+  }
+  
+  /* 图标旋转动画 */
+  .social-link i {
+    transition: transform var(--transition-base);
+  }
+  
+  .social-link:hover i {
+    transform: scale(1.1);
+  }
 </style>
 
