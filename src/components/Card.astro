@@ -8,77 +8,18 @@ interface Props {
 const { href, title, body } = Astro.props;
 ---
 
-<li class="link-card">
-	<a href={href}>
-		<h2>
-			{title}
-			<span class="arrow">&rarr;</span>
-		</h2>
-		<p>
+<li class="group list-none">
+	<a href={href} class="block h-full p-6 bg-white border border-zinc-200 rounded-xl transition-all duration-300 hover:border-zinc-300 hover:shadow-lg hover:-translate-y-1">
+		<div class="flex items-center justify-between mb-2">
+			<h2 class="text-lg font-semibold text-zinc-900 group-hover:text-zinc-700 transition-colors font-display">
+				{title}
+			</h2>
+			<span class="text-zinc-400 group-hover:translate-x-1 transition-transform duration-300">
+				&rarr;
+			</span>
+		</div>
+		<p class="text-sm text-zinc-600 leading-relaxed">
 			{body}
 		</p>
 	</a>
 </li>
-<style>
-	.link-card {
-		list-style: none;
-		display: flex;
-		padding: 0;
-		border: 1px solid var(--border-light);
-		border-radius: 2px;
-		background-color: var(--primary-light);
-		transition: all var(--transition-base);
-		overflow: hidden;
-	}
-	
-	.link-card > a {
-		width: 100%;
-		text-decoration: none;
-		line-height: 1.6;
-		padding: 1.5rem;
-		color: var(--text-light);
-		background-color: transparent;
-		transition: all var(--transition-base);
-		display: block;
-	}
-	
-	h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		font-weight: 400;
-		letter-spacing: 0.02em;
-		color: var(--text-light);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		transition: all var(--transition-base);
-	}
-	
-	.arrow {
-		transition: transform var(--transition-base);
-		display: inline-block;
-	}
-	
-	p {
-		margin-top: 0.75rem;
-		margin-bottom: 0;
-		color: var(--text-muted-light);
-		text-align: left;
-	}
-	
-	.link-card:hover {
-		background-color: var(--accent-light);
-		box-shadow: var(--shadow-md);
-		transform: translateY(-2px);
-		border-color: var(--text-muted-light);
-	}
-	
-	.link-card:hover .arrow {
-		transform: translateX(4px);
-	}
-	
-	.link-card:focus-within {
-		background-color: var(--accent-light);
-		box-shadow: var(--shadow-md);
-	}
-</style>

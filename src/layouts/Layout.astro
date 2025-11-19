@@ -12,7 +12,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -21,297 +21,150 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <title>{title}</title>
     <style is:global>
-      /* 全局颜色变量 - 书本风格 */
       :root {
-        --primary-light: #faf8f5;
-        --primary-dark: #2c2926;
-        --accent-light: #f5f2ed;
-        --accent-dark: #3a3532;
-        --text-light: #2c2926;
-        --text-dark: #faf8f5;
-        --text-muted-light: #5a544d;
-        --text-muted-dark: #b8b0a6;
-        --border-light: #e8e2d8;
-        --border-dark: #3a3532;
+        /* Base Palette - Zinc */
+        --bg-body: #ffffff;
+        --bg-subtle: #fafafa; /* zinc-50 */
+        --bg-card: #ffffff;
+        --bg-hover: #f4f4f5; /* zinc-100 */
         
-        /* 动画和过渡变量 */
+        --text-main: #18181b; /* zinc-900 */
+        --text-secondary: #52525b; /* zinc-600 */
+        --text-muted: #a1a1aa; /* zinc-400 */
+        
+        --border-light: #e4e4e7; /* zinc-200 */
+        --border-medium: #d4d4d8; /* zinc-300 */
+        
+        --accent-primary: #18181b;
+        --accent-secondary: #52525b;
+        
+        /* Functional Colors */
+        --primary-light: #ffffff;
+        --accent-light: #f4f4f5;
+        --text-light: #18181b;
+        --text-muted-light: #71717a;
+        
+        /* Effects */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        
         --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-        --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-        --ease-book: cubic-bezier(0.4, 0, 0.2, 1);
-        
-        /* 阴影变量 */
-        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
-        --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.1);
+        --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
       }
       
-      /* Global font family setting - Book typography */
-      html, body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, li, ul, ol, table, tr, td, th {
-        font-family: "Georgia", "Times New Roman", Times, serif !important;
-        font-weight: 400;
-        letter-spacing: 0.01em;
+      html {
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-main);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       
-      /* Headings with classic book styling */
+      /* Typography Enhancements */
       h1, h2, h3, h4, h5, h6 {
-        font-weight: 400;
-        letter-spacing: 0.02em;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-family: 'Playfair Display', serif;
+        color: var(--text-main);
+        line-height: 1.2;
+        font-weight: 600;
       }
       
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.5rem; }
-      h3 { font-size: 1.25rem; }
+      h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
+      h2 { font-size: 2rem; letter-spacing: -0.01em; }
+      h3 { font-size: 1.5rem; }
       
-      /* 确保图标字体不受影响 */
-      .fa, .fas, .far, .fal, .fab, .fa-brands, .fa-solid, .fa-regular, .fa-light, i[class*="fa-"] {
-        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
+      p {
+        line-height: 1.75;
+        color: var(--text-secondary);
       }
+
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* Selection */
+      ::selection {
+        background-color: var(--text-main);
+        color: white;
+      }
+
+      /* Utilities */
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       
-      /* 确保表情符号正常显示 */
-      .emoji, .emoji-container {
-        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
-      }
-      
-      /* KaTeX color */
-      .katex {
-        font: inherit;
-        color: inherit;
-      }
-      
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-      }
-      /* Hide scrollbar for IE, Edge and Firefox */
-      .scrollbar-hide {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-      }
-      
-      /* Responsive table styles */
       .table-container {
         width: 100%;
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        margin: 2rem 0;
+        border: 1px solid var(--border-light);
+        border-radius: 0.5rem;
       }
-      
-      /* Responsive images */
+
       img {
         max-width: 100%;
         height: auto;
-        display: block;
+        border-radius: 0.75rem;
       }
-      
-      /* Base font sizes and touch targets */
-      html {
-        font-size: 17px;
-        -webkit-text-size-adjust: 100%;
-        line-height: 1.7;
-      }
-      
-      @media (max-width: 768px) {
-        html {
-          font-size: 16px;
-        }
-      }
-      
-      /* 优化touch target尺寸 - 更灵活的方案 */
-      button, input[type="submit"], input[type="button"] {
-        min-height: 44px;
-        padding: 0.5rem 1rem;
-      }
-      
-      /* 导航链接和标签不强制最小尺寸 */
-      nav a, .unified-tag {
-        min-height: unset;
-        min-width: unset;
-      }
-      
-      /* Fix horizontal scroll issues */
-      body {
-        overflow-x: hidden;
-        width: 100%;
-      }
-      
-      /* Improve text readability - Book style */
-      p, li {
-        line-height: 1.8;
-        margin-bottom: 1.25rem;
-        text-align: justify;
-        hyphens: auto;
-      }
-      
-      /* First letter styling for articles */
-      article > p:first-of-type::first-letter {
-        font-size: 3.5rem;
-        float: left;
-        line-height: 1;
-        margin: 0.05em 0.1em 0 0;
-        font-weight: 400;
-      }
-      
-      /* 统一的交互元素样式 - 书本风格 */
-      .interactive-element {
-        transition: all var(--transition-base);
-        border-color: var(--border-light);
-      }
-      
-      .interactive-element:hover {
-        background-color: var(--accent-light);
-        box-shadow: var(--shadow-md);
-        transform: translateY(-2px);
-      }
-      
-      /* Focus-visible 样式 - 键盘导航高亮 */
-      a:focus-visible, 
-      button:focus-visible, 
-      input:focus-visible, 
-      select:focus-visible, 
-      textarea:focus-visible,
-      [tabindex]:focus-visible {
-        outline: 2px solid var(--text-light);
-        outline-offset: 2px;
-        border-radius: 2px;
-      }
-      
-      /* 移除默认focus样式 */
-      a:focus, 
-      button:focus, 
-      input:focus, 
-      select:focus, 
-      textarea:focus {
-        outline: none;
-      }
-      
-      
-      /* 统一的标签样式 - 书签风格 */
-      .unified-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.25rem 0.75rem;
-        border-radius: 2px;
-        font-size: 0.8rem;
-        line-height: 1.2;
-        background-color: transparent;
-        border: 1px solid var(--border-light);
-        transition: all var(--transition-base);
-        font-style: italic;
-      }
-      
-      .unified-tag:hover {
-        background-color: var(--accent-light);
-        border-color: var(--text-muted-light);
-      }
-      
-      /* Skeleton Loading 占位符 */
-      .skeleton {
-        background: linear-gradient(
-          90deg,
-          var(--accent-light) 0%,
-          var(--border-light) 50%,
-          var(--accent-light) 100%
-        );
-        background-size: 200% 100%;
-        animation: skeleton-loading 1.5s ease-in-out infinite;
-        border-radius: 2px;
-      }
-      
-      @keyframes skeleton-loading {
-        0% {
-          background-position: 200% 0;
-        }
-        100% {
-          background-position: -200% 0;
-        }
-      }
-      
-      /* 图片加载动画 */
-      img {
-        opacity: 0;
-        transition: opacity var(--transition-base);
-      }
-      
-      img.loaded,
-      img[loading="lazy"] {
-        opacity: 1;
-      }
-      
-      /* 页面内容淡入效果 */
+
+      /* Animation Utilities */
       .fade-in {
-        animation: fadeIn var(--transition-slow) ease-in;
+        animation: fadeIn var(--transition-smooth) forwards;
+        opacity: 0;
+        transform: translateY(10px);
       }
       
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-      
-      /* 页面过渡动画 */
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+
+      .hover-lift {
+        transition: transform var(--transition-base), box-shadow var(--transition-base);
       }
       
-      .slide-down {
-        animation: slideDown var(--transition-base) ease-out;
+      .hover-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
       }
-      
-      
-      /* Page styling */
-      body {
-        background-color: var(--primary-light);
-        color: var(--text-light);
+
+      /* Font Awesome & Emoji overrides */
+      .fa, .fas, .far, .fal, .fab, .fa-brands, .fa-solid, .fa-regular, .fa-light {
+        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
       }
-      
-      /* Links with underline */
-      a {
-        color: var(--text-light);
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 0.2em;
-        transition: all var(--transition-base);
-      }
-      
-      a:hover {
-        text-decoration-thickness: 2px;
-        color: var(--text-light);
-      }
-      
-      
-      /* Remove underline from navigation */
-      nav a, .unified-tag {
-        text-decoration: none;
+      .emoji {
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
       }
     </style>
   </head>
-  <body class="min-h-screen antialiased">
+  <body class="min-h-screen flex flex-col bg-white">
     <Header />
-    <main class="max-w-4xl mx-auto px-4 py-8 md:py-12 min-h-[calc(100vh-64px-180px)]">
+    <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-12 selection:bg-zinc-900 selection:text-white">
       <slot />
     </main>
     <Footer />
     
     <script>
-      // Mobile menu toggle
+      // Mobile menu logic
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
       const menuOpenIcon = document.querySelector('.menu-open');
@@ -324,7 +177,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           menuCloseIcon.classList.toggle('hidden');
         });
       }
-      
+
       // Close mobile menu when clicking outside
       document.addEventListener('click', (e) => {
         if (mobileMenu && !mobileMenu.contains(e.target as Node) && !menuToggle?.contains(e.target as Node)) {
@@ -334,46 +187,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         }
       });
       
-      // Close mobile menu with Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-          menuOpenIcon?.classList.remove('hidden');
-          menuCloseIcon?.classList.add('hidden');
-        }
-      });
-      
-      // Handle table responsiveness
-      document.querySelectorAll('table').forEach(table => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'table-container scrollbar-hide';
-        table.parentNode.insertBefore(wrapper, table);
-        wrapper.appendChild(table);
-      });
-      
-      // 图片加载优化
-      document.addEventListener('DOMContentLoaded', () => {
-        // 为所有图片添加加载事件
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-          if (img.complete) {
-            img.classList.add('loaded');
-          } else {
-            img.addEventListener('load', () => {
-              img.classList.add('loaded');
-            });
-            img.addEventListener('error', () => {
-              img.classList.add('loaded'); // 即使失败也显示，避免空白
-            });
+      // Animation trigger
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
           }
         });
-        
-        // 页面内容淡入
-        const main = document.querySelector('main');
-        if (main) {
-          main.classList.add('fade-in');
-        }
-      });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('section, .animate-on-scroll').forEach(el => observer.observe(el));
     </script>
   </body>
 </html>

@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="404 Not Found">
-  <main class="flex flex-col items-center justify-start pt-6 md:pt-10 pb-4 min-h-[75vh] fade-in px-4" style="background-color: var(--primary-light);">
-    <div class="w-full max-w-2xl md:max-w-3xl">
+  <main class="flex flex-col items-center justify-center min-h-[60vh] px-4 animate-on-scroll">
+    <div class="w-full max-w-2xl mb-8">
       <video 
-        class="w-full h-auto rounded"
+        class="w-full h-auto rounded-xl shadow-sm"
         autoplay
         loop
         muted
@@ -17,14 +17,17 @@ import Layout from '../layouts/Layout.astro';
         Your browser does not support the video tag.
       </video>
     </div>
-    <div class="text-center mt-4 md:mt-6">
-      <h1 class="text-3xl md:text-4xl lg:text-5xl mb-6 md:mb-8" style="font-weight: 300; letter-spacing: 0.08em; color: var(--text-light);">Page Not Found</h1>
+    
+    <div class="text-center space-y-6">
+      <h1 class="text-4xl md:text-5xl font-serif font-medium text-zinc-900 tracking-tight">
+        Page Not Found
+      </h1>
+      
       <a 
         href="/" 
-        class="return-home-btn inline-flex items-center px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base transition-all rounded"
-        style="color: var(--text-light); border: 1px solid var(--border-light); background-color: var(--accent-light); text-decoration: none; letter-spacing: 0.05em;"
+        class="inline-flex items-center px-6 py-3 text-sm font-medium text-zinc-900 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 hover:border-zinc-300 transition-all hover:shadow-sm"
       >
-        <svg class="w-3 h-3 md:w-4 md:h-4 mr-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
         Return to Home
@@ -32,54 +35,3 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </main>
 </Layout>
-
-<style>
-  /* Video fade-in animation */
-  video {
-    opacity: 0;
-    animation: fadeIn var(--transition-slow) ease-in forwards;
-  }
-  
-  /* Return button hover effect */
-  .return-home-btn {
-    transition: all var(--transition-base);
-  }
-  
-  .return-home-btn:hover {
-    background-color: var(--text-light);
-    color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .return-home-btn:hover svg {
-    transform: translateX(-2px);
-  }
-  
-  .return-home-btn:focus-visible {
-    outline: 2px solid var(--text-light);
-    outline-offset: 2px;
-  }
-  
-  /* Stagger animation for content */
-  h1 {
-    animation: fadeIn var(--transition-slow) 0.2s ease-in forwards;
-    opacity: 0;
-  }
-  
-  .return-home-btn {
-    animation: fadeIn var(--transition-slow) 0.4s ease-in forwards;
-    opacity: 0;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style> 

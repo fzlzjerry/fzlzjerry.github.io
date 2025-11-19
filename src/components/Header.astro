@@ -8,7 +8,6 @@ const links = [
   { href: '/about', text: 'About' },
 ];
 
-// 获取当前路径用于高亮
 const currentPath = Astro.url.pathname;
 const isActive = (href: string) => {
   if (href === '/') return currentPath === '/';
@@ -16,34 +15,24 @@ const isActive = (href: string) => {
 };
 ---
 
-<header class="border-b sticky top-0 z-50 backdrop-blur-sm bg-opacity-95" style="background-color: var(--primary-light); border-color: var(--border-light);">
-  <nav class="max-w-4xl mx-auto px-4 flex items-center justify-between relative h-16">
+<header class="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 border-b border-zinc-100 transition-all duration-300">
+  <nav class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <!-- Logo -->
     <div class="flex items-center">
-      <a href="/" class="text-xl" style="font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; display: inline-flex; align-items: center; height: 2rem;">Morax</a>
+      <a href="/" class="text-lg font-serif font-semibold tracking-tight hover:text-zinc-600 transition-colors">
+        Morax Cheng
+      </a>
     </div>
     
-    <!-- Mobile menu button -->
-    <button 
-      id="menu-toggle"
-      class="md:hidden p-2 rounded transition-colors"
-      style="border: 1px solid var(--border-light);"
-      aria-label="Toggle menu"
-    >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
-    
-    <!-- Desktop menu -->
-    <ul class="hidden md:flex gap-6 items-center" style="margin-top: 0.875rem;">
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex gap-8 items-center">
       {links.map(link => (
         <li>
           <a 
             href={link.href}
-            class={`nav-link transition-colors ${isActive(link.href) ? 'active' : ''}`}
-            style="color: var(--text-muted-light); font-size: 0.9rem; letter-spacing: 0.05em; display: inline-flex; align-items: center; height: 2rem;" 
-            aria-current={isActive(link.href) ? 'page' : undefined}
+            class={`text-sm font-medium transition-colors hover:text-zinc-900 ${
+              isActive(link.href) ? 'text-zinc-900' : 'text-zinc-500'
+            }`}
           >
             {link.text}
           </a>
@@ -51,16 +40,30 @@ const isActive = (href: string) => {
       ))}
     </ul>
     
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden md:hidden" style="background-color: var(--primary-light); border: 1px solid var(--border-light); border-top: none; box-shadow: var(--shadow-lg);">
-      <ul class="py-2">
+    <!-- Mobile Menu Button -->
+    <button 
+      id="menu-toggle"
+      class="md:hidden p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-200"
+      aria-label="Toggle menu"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="absolute top-full left-0 right-0 hidden md:hidden bg-white border-b border-zinc-100 shadow-lg">
+      <ul class="py-2 px-4 flex flex-col gap-1">
         {links.map(link => (
           <li>
             <a 
               href={link.href}
-              class={`mobile-nav-link block px-4 py-3 transition-all ${isActive(link.href) ? 'active' : ''}`}
-              style="color: var(--text-muted-light); font-size: 0.9rem; letter-spacing: 0.05em;"
-              aria-current={isActive(link.href) ? 'page' : undefined}
+              class={`block px-4 py-3 text-sm rounded-md transition-colors ${
+                isActive(link.href) 
+                  ? 'bg-zinc-50 text-zinc-900 font-medium' 
+                  : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+              }`}
             >
               {link.text}
             </a>
@@ -72,74 +75,20 @@ const isActive = (href: string) => {
 </header>
 
 <style>
-  /* 导航链接hover效果 */
-  .nav-link:hover,
-  .mobile-nav-link:hover {
-    color: var(--text-light) !important;
+  /* Optional: Add a subtle animation to the mobile menu */
+  #mobile-menu:not(.hidden) {
+    animation: slideDown 0.2s ease-out forwards;
+    transform-origin: top;
   }
-  
-  /* 活动状态样式 */
-  .nav-link.active {
-    color: var(--text-light) !important;
-    font-weight: 500;
-    position: relative;
-  }
-  
-  .nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: var(--text-light);
-    animation: slideIn var(--transition-base) ease-out;
-  }
-  
-  @keyframes slideIn {
+
+  @keyframes slideDown {
     from {
-      transform: scaleX(0);
+      opacity: 0;
+      transform: scaleY(0.95) translateY(-10px);
     }
     to {
-      transform: scaleX(1);
+      opacity: 1;
+      transform: scaleY(1) translateY(0);
     }
   }
-  
-  .mobile-nav-link.active {
-    background-color: var(--accent-light);
-    color: var(--text-light) !important;
-    font-weight: 500;
-    border-left: 3px solid var(--text-light);
-  }
-  
-  .mobile-nav-link:hover {
-    background-color: var(--accent-light);
-  }
-  
-  /* 移动菜单按钮hover效果 */
-  #menu-toggle {
-    transition: all var(--transition-base);
-  }
-  
-  #menu-toggle:hover {
-    background-color: var(--accent-light);
-  }
-  
-  /* 移动菜单滑动动画 */
-  #mobile-menu:not(.hidden) {
-    animation: slideDown var(--transition-base) ease-out;
-  }
 </style>
-
-<script>
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuOpen = menuToggle?.querySelector('.menu-open');
-  const menuClose = menuToggle?.querySelector('.menu-close');
-
-  menuToggle?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-    menuOpen?.classList.toggle('hidden');
-    menuClose?.classList.toggle('hidden');
-  });
-</script>

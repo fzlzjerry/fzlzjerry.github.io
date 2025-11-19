@@ -32,65 +32,101 @@ const latestProject = projects[0];
   title="Morax Cheng - Student Developer & Economics Enthusiast"
   description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a 9th-grade student developer passionate about programming and economics."
 >
-  <section class="py-12 md:py-20 text-center fade-in">
-    <h1 class="text-3xl md:text-4xl mb-6" style="font-weight: 300; letter-spacing: 0.08em;">
-      Hi, I'm Morax <span class="emoji">👋</span>
+  <!-- Hero Section -->
+  <section class="py-16 md:py-24 text-center animate-on-scroll">
+    <div class="inline-block mb-4 px-3 py-1 rounded-full bg-zinc-100 text-zinc-600 text-sm font-medium tracking-wide">
+      Student Developer & Economics Enthusiast
+    </div>
+    <h1 class="text-4xl md:text-6xl font-serif font-medium text-zinc-900 mb-6 tracking-tight">
+      Hi, I'm Morax <span class="inline-block animate-wave origin-bottom-right">👋</span>
     </h1>
-    <p class="text-lg md:text-xl mb-6 md:mb-8 text-center px-4" style="color: var(--text-muted-light); font-style: italic;">
-      9th Grade Student Developer & Economics Enthusiast
+    <p class="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed mb-8">
+      Currently studying at <span class="text-zinc-800 font-medium">BASIS International School Park Lane Harbour</span>.
+      <br class="hidden md:block" />
+      Passionate about building software, exploring economic theories, and continuous learning.
     </p>
-    <p class="text-base md:text-lg max-w-2xl mx-auto px-4" style="color: var(--text-muted-light); line-height: 1.8;">
-      Currently studying at BASIS International School Park Lane Harbour.
-      Passionate about programming, economics, and continuous learning.
-    </p>
+    
+    <div class="flex justify-center gap-4">
+      <a href="/projects" class="px-6 py-3 bg-zinc-900 text-white rounded-lg font-medium hover:bg-zinc-800 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+        View Projects
+      </a>
+      <a href="/about" class="px-6 py-3 bg-white border border-zinc-200 text-zinc-700 rounded-lg font-medium hover:bg-zinc-50 hover:border-zinc-300 transition-all">
+        More About Me
+      </a>
+    </div>
   </section>
 
-  <section class="py-6 md:py-10">
-    <h2 class="text-xl md:text-2xl mb-6" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">Latest Updates</h2>
-    <div class="grid gap-6">
+  <!-- Latest Updates -->
+  <section class="py-12 border-t border-zinc-100 animate-on-scroll">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-serif font-medium text-zinc-900">Latest Updates</h2>
+      <a href="/blog" class="text-sm text-zinc-500 hover:text-zinc-900 font-medium transition-colors flex items-center gap-1">
+        View Archive <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-6">
       {latestProject && (
-        <a href="/projects" class="block border rounded p-4 md:p-6 interactive-element transition-all" style="border-color: var(--border-light); text-decoration: none;">
-          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-3">
-            <h3 class="font-semibold text-base md:text-lg" style="color: var(--text-light);">Latest Project: {latestProject.title}</h3>
-            <div class="flex flex-wrap gap-2">
+        <a href="/projects" class="group block p-6 bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
+          <div class="flex flex-col h-full">
+            <div class="flex justify-between items-start mb-4">
+              <span class="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Project</span>
+              <span class="text-zinc-400 group-hover:translate-x-1 transition-transform duration-300">&rarr;</span>
+            </div>
+            
+            <h3 class="text-xl font-medium text-zinc-900 mb-2 group-hover:text-zinc-700 transition-colors">
+              {latestProject.title}
+            </h3>
+            
+            <p class="text-zinc-600 text-sm mb-4 flex-grow leading-relaxed">
+              {latestProject.description}
+            </p>
+            
+            <div class="flex flex-wrap gap-2 mt-auto">
               {latestProject.tech.map(tech => (
-                <span class="unified-tag text-xs">
+                <span class="px-2.5 py-1 bg-zinc-100 text-zinc-600 text-xs rounded-full font-medium border border-zinc-200/50">
                   {tech}
                 </span>
               ))}
             </div>
           </div>
-          <p class="text-sm md:text-base" style="color: var(--text-muted-light); text-align: left;">
-            {latestProject.description}
-          </p>
         </a>
       )}
+      
       {latestPost && (
-        <a href={`/blog/${latestPost.slug}`} class="block border rounded p-4 md:p-6 interactive-element transition-all" style="border-color: var(--border-light); text-decoration: none;">
-          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-3">
-            <h3 class="font-semibold text-base md:text-lg" style="color: var(--text-light);">Latest Blog Post: {latestPost.data.title}</h3>
-            <time datetime={latestPost.data.date} class="text-xs md:text-sm whitespace-nowrap" style="color: var(--text-muted-light); font-style: italic;">
-              {new Date(latestPost.data.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </time>
-          </div>
-          {latestPost.data.excerpt && (
-            <p class="text-sm md:text-base mb-3" style="color: var(--text-muted-light); text-align: left;">
-              {latestPost.data.excerpt}
-            </p>
-          )}
-          {latestPost.data.tags && (
-            <div class="flex flex-wrap gap-2 mt-3">
-              {latestPost.data.tags.map(tag => (
-                <span class="unified-tag text-xs">
-                  #{tag}
-                </span>
-              ))}
+        <a href={`/blog/${latestPost.slug}`} class="group block p-6 bg-white border border-zinc-200 rounded-xl hover:border-zinc-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
+          <div class="flex flex-col h-full">
+            <div class="flex justify-between items-start mb-4">
+              <span class="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Blog</span>
+              <time datetime={latestPost.data.date} class="text-xs text-zinc-400">
+                {new Date(latestPost.data.date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </time>
             </div>
-          )}
+            
+            <h3 class="text-xl font-medium text-zinc-900 mb-2 group-hover:text-zinc-700 transition-colors">
+              {latestPost.data.title}
+            </h3>
+            
+            {latestPost.data.excerpt && (
+              <p class="text-zinc-600 text-sm mb-4 flex-grow leading-relaxed">
+                {latestPost.data.excerpt}
+              </p>
+            )}
+            
+            {latestPost.data.tags && (
+              <div class="flex flex-wrap gap-2 mt-auto">
+                {latestPost.data.tags.slice(0, 3).map(tag => (
+                  <span class="px-2.5 py-1 bg-zinc-100 text-zinc-600 text-xs rounded-full font-medium border border-zinc-200/50">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </a>
       )}
     </div>
@@ -98,4 +134,18 @@ const latestProject = projects[0];
 </Layout>
 
 <style>
+  @keyframes wave {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+    60% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .animate-wave:hover {
+    animation: wave 2.5s infinite;
+  }
 </style>

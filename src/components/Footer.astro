@@ -9,71 +9,34 @@ const socialLinks = [
 ];
 ---
 
-<footer class="border-t" style="background-color: var(--primary-light); border-color: var(--border-light);">
-  <div class="max-w-4xl mx-auto px-4 py-12">
-    <div class="flex flex-col items-center gap-6">
-      <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-        {socialLinks.map(link => (
-          <a
-            href={link.href}
-            class="social-link transition-all p-2 rounded"
-            style="color: var(--text-muted-light);"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={link.label}
-          >
-            <i class={`${link.icon} text-xl font-icon`}></i>
-          </a>
-        ))}
-        <button
-          class="social-link transition-all p-2 rounded"
-          style="color: var(--text-muted-light); background: transparent; border: none; cursor: pointer;"
-          onclick="window.location.href='mailto:james20081204@gmail.com'"
-          aria-label="Email"
+<footer class="border-t border-zinc-100 bg-white py-12 mt-auto">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center gap-6">
+    
+    <!-- Social Links -->
+    <div class="flex items-center gap-4">
+      {socialLinks.map(link => (
+        <a
+          href={link.href}
+          class="group p-2 text-zinc-400 hover:text-zinc-900 transition-colors duration-200"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={link.label}
         >
-          <i class="fa-regular fa-envelope text-xl font-icon"></i>
-        </button>
-      </div>
-      <p class="text-sm text-center px-4" style="color: var(--text-muted-light); font-style: italic;">
-        © {currentYear} Morax Cheng. All rights reserved.
-      </p>
+          <i class={`${link.icon} text-xl transform transition-transform duration-200 group-hover:scale-110`}></i>
+        </a>
+      ))}
+      <button
+        class="group p-2 text-zinc-400 hover:text-zinc-900 transition-colors duration-200 bg-transparent border-none cursor-pointer"
+        onclick="window.location.href='mailto:james20081204@gmail.com'"
+        aria-label="Email"
+      >
+        <i class="fa-regular fa-envelope text-xl transform transition-transform duration-200 group-hover:scale-110"></i>
+      </button>
     </div>
+
+    <!-- Copyright -->
+    <p class="text-sm text-zinc-400 font-medium">
+      © {currentYear} Morax Cheng. All rights reserved.
+    </p>
   </div>
 </footer>
-
-<style>
-  .font-icon {
-    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif !important;
-    /* 增加特异性和优先级，确保图标字体不被全局字体覆盖 */
-    font-weight: 900 !important;
-  }
-  
-  /* 社交图标hover效果 */
-  .social-link {
-    transition: all var(--transition-base);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .social-link:hover {
-    color: var(--text-light) !important;
-    background-color: var(--accent-light);
-    transform: translateY(-2px);
-  }
-  
-  .social-link:focus-visible {
-    outline: 2px solid var(--text-light);
-    outline-offset: 2px;
-  }
-  
-  /* 图标旋转动画 */
-  .social-link i {
-    transition: transform var(--transition-base);
-  }
-  
-  .social-link:hover i {
-    transform: scale(1.1);
-  }
-</style>
-

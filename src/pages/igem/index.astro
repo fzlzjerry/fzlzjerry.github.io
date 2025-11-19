@@ -21,10 +21,10 @@ const sections = [
   title="iGEM - Morax Cheng"
   description="Learn about the progress of the BASIS International School Park Lane Harbour iGEM team. Find weekly reports, assignments, and Morax Cheng's contributions to the International Genetically Engineered Machine competition."
 >
-  <div class="max-w-4xl mx-auto space-y-8">
-    <header>
-      <h1 class="text-3xl text-center md:text-left" style="font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">iGEM Team</h1>
-      <p class="mt-4 text-center md:text-left" style="color: var(--text-muted-light);">
+  <div class="max-w-3xl mx-auto space-y-12 animate-on-scroll">
+    <header class="text-center max-w-2xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-serif font-medium text-zinc-900 mb-4">iGEM Team</h1>
+      <p class="text-zinc-500 text-lg leading-relaxed">
         International Genetically Engineered Machine Competition - BASIS International School Park Lane Harbour Team
       </p>
     </header>
@@ -33,27 +33,21 @@ const sections = [
       {sections.map(section => (
         <a
           href={section.link}
-          class="block border rounded p-6 interactive-element hover:shadow-md transition-all duration-200"
-          style="border-color: var(--border-light);"
+          class="group block p-6 bg-white border border-zinc-200 rounded-2xl hover:border-zinc-300 hover:shadow-sm transition-all"
         >
           <div class="flex justify-between items-start mb-4">
-            <h2 class="text-xl" style="font-weight: 400; letter-spacing: 0.02em;">{section.title}</h2>
-            <svg class="w-5 h-5" style="color: var(--text-muted-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h2 class="text-xl font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors">
+              {section.title}
+            </h2>
+            <svg class="w-5 h-5 text-zinc-400 group-hover:text-zinc-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>
-          <p style="color: var(--text-muted-light); text-align: left;">{section.description}</p>
+          <p class="text-zinc-500 text-sm leading-relaxed">
+            {section.description}
+          </p>
         </a>
       ))}
     </div>
   </div>
 </Layout>
-
-<style>
-  /* Ensure smooth transitions */
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-</style>
-
