@@ -1,6 +1,9 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -21,6 +24,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    <ClientRouter />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,45 +162,107 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body class="min-h-screen flex flex-col bg-white">
     <Header />
+    <CommandPalette />
     <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-12 selection:bg-zinc-900 selection:text-white">
       <slot />
     </main>
     <Footer />
     
     <script>
-      // Mobile menu logic
-      const menuToggle = document.getElementById('menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const menuOpenIcon = document.querySelector('.menu-open');
-      const menuCloseIcon = document.querySelector('.menu-close');
-      
-      if (menuToggle && mobileMenu && menuOpenIcon && menuCloseIcon) {
-        menuToggle.addEventListener('click', () => {
-          mobileMenu.classList.toggle('hidden');
-          menuOpenIcon.classList.toggle('hidden');
-          menuCloseIcon.classList.toggle('hidden');
-        });
-      }
-
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (mobileMenu && !mobileMenu.contains(e.target as Node) && !menuToggle?.contains(e.target as Node)) {
-          mobileMenu.classList.add('hidden');
-          menuOpenIcon?.classList.remove('hidden');
-          menuCloseIcon?.classList.add('hidden');
-        }
-      });
-      
-      // Animation trigger
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
+      const setup = () => {
+        // Mobile menu logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOpenIcon = document.querySelector('.menu-open');
+        const menuCloseIcon = document.querySelector('.menu-close');
+        
+        if (menuToggle && mobileMenu && menuOpenIcon && menuCloseIcon) {
+          // Remove old listeners if any (though elements are likely new)
+          const newToggle = menuToggle.cloneNode(true);
+          if (menuToggle.parentNode) {
+            menuToggle.parentNode.replaceChild(newToggle, menuToggle);
           }
+          
+          newToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuOpenIcon.classList.toggle('hidden');
+            menuCloseIcon.classList.toggle('hidden');
+          });
+        }
+
+        // Close mobile menu when clicking outside
+        const handleOutsideClick = (e: Event) => {
+          const mobileMenu = document.getElementById('mobile-menu');
+          const menuToggle = document.getElementById('menu-toggle');
+          const menuOpenIcon = document.querySelector('.menu-open');
+          const menuCloseIcon = document.querySelector('.menu-close');
+
+          if (mobileMenu && !mobileMenu.contains(e.target as Node) && !menuToggle?.contains(e.target as Node)) {
+            mobileMenu.classList.add('hidden');
+            menuOpenIcon?.classList.remove('hidden');
+            menuCloseIcon?.classList.add('hidden');
+          }
+        };
+        
+        document.removeEventListener('click', handleOutsideClick);
+        document.addEventListener('click', handleOutsideClick);
+        
+        // Animation trigger
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('fade-in');
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('section, .animate-on-scroll').forEach(el => observer.observe(el));
+        
+        // Copy Code Button Logic
+        document.querySelectorAll('pre').forEach(pre => {
+          // Check if already has button
+          if (pre.querySelector('.copy-btn')) return;
+
+          // Ensure pre is relative for positioning
+          // We add 'group' for hover effects
+          pre.classList.add('group', 'relative');
+          
+          const btn = document.createElement('button');
+          // Style: hidden by default, shown on group hover
+          // Note: using !important classes or inline styles might be safer if Tailwind conflict, but standard utility classes work
+          btn.className = 'copy-btn absolute top-3 right-3 text-zinc-500 hover:text-zinc-300 bg-zinc-800/40 hover:bg-zinc-800 backdrop-blur rounded-md px-2 py-1 text-xs transition-all opacity-0 group-hover:opacity-100 focus:opacity-100';
+          btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+          btn.setAttribute('aria-label', 'Copy code');
+          
+          btn.addEventListener('click', async () => {
+            const code = pre.querySelector('code')?.innerText || pre.innerText;
+            try {
+              await navigator.clipboard.writeText(code);
+              
+              // Feedback
+              btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+              btn.classList.add('text-emerald-400', 'text-zinc-300');
+              btn.classList.remove('text-zinc-500');
+              
+              setTimeout(() => {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+                btn.classList.remove('text-emerald-400', 'text-zinc-300');
+                btn.classList.add('text-zinc-500');
+              }, 2000);
+            } catch (err) {
+              console.error('Failed to copy:', err);
+            }
+          });
+          
+          pre.appendChild(btn);
         });
-      }, { threshold: 0.1 });
-      
-      document.querySelectorAll('section, .animate-on-scroll').forEach(el => observer.observe(el));
+      };
+
+      // Run on initial load
+      setup();
+
+      // Run on view transitions navigation
+      document.addEventListener('astro:page-load', setup);
     </script>
   </body>
 </html>

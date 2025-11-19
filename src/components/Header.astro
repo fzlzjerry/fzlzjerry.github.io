@@ -38,6 +38,17 @@ const isActive = (href: string) => {
           </a>
         </li>
       ))}
+      
+      <!-- Search Trigger -->
+      <li>
+        <button
+          aria-label="Search"
+          class="text-zinc-500 hover:text-zinc-900 transition-colors p-1"
+          onclick="document.dispatchEvent(new CustomEvent('open-command-palette'))"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </li>
     </ul>
     
     <!-- Mobile Menu Button -->
@@ -69,6 +80,14 @@ const isActive = (href: string) => {
             </a>
           </li>
         ))}
+        <li>
+           <button 
+             class="w-full text-left block px-4 py-3 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-md transition-colors"
+             onclick="document.dispatchEvent(new CustomEvent('open-command-palette')); document.getElementById('mobile-menu').classList.add('hidden');"
+           >
+             <i class="fa-solid fa-magnifying-glass mr-2"></i> Search
+           </button>
+        </li>
       </ul>
     </div>
   </nav>

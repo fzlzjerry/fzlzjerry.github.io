@@ -52,66 +52,7 @@ const awardCategories = [
 ];
 
 // Client-side JavaScript for folder interaction with keyboard support
-const folderScript = `
-document.addEventListener('DOMContentLoaded', () => {
-  // Get all folder elements
-  const folders = document.querySelectorAll('.award-folder');
-  const backButtons = document.querySelectorAll('.back-to-folders');
-  const folderContainer = document.getElementById('folder-container');
-  const awardContainers = document.querySelectorAll('.award-container');
-
-  // Function to open folder
-  const openFolder = (folderId) => {
-    folderContainer.classList.add('hidden');
-    const selectedContainer = document.getElementById('awards-' + folderId);
-    if (selectedContainer) {
-      selectedContainer.classList.remove('hidden');
-      selectedContainer.classList.add('fade-in');
-      // Scroll to top smoothly
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  // Function to close folder
-  const closeFolder = () => {
-    awardContainers.forEach(container => {
-      container.classList.add('hidden');
-    });
-    folderContainer.classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Add click event to each folder
-  folders.forEach(folder => {
-    folder.addEventListener('click', () => {
-      const folderId = folder.getAttribute('data-folder-id');
-      openFolder(folderId);
-    });
-    
-    // Add keyboard support
-    folder.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const folderId = folder.getAttribute('data-folder-id');
-        openFolder(folderId);
-      }
-    });
-  });
-
-  // Add click event to back buttons
-  backButtons.forEach(button => {
-    button.addEventListener('click', closeFolder);
-    
-    // Add keyboard support
-    button.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        closeFolder();
-      }
-    });
-  });
-});
-`;
+// Removed to use inline script for View Transitions compatibility
 ---
 
 <Layout
@@ -285,5 +226,78 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
   </div>
   <ImageModal id="certificate-modal" />
-  <script set:html={folderScript}></script>
+  
+  <script>
+    function setupAwards() {
+      // Get all folder elements
+      const folders = document.querySelectorAll('.award-folder');
+      const backButtons = document.querySelectorAll('.back-to-folders');
+      const folderContainer = document.getElementById('folder-container');
+      const awardContainers = document.querySelectorAll('.award-container');
+
+      // Function to open folder
+      const openFolder = (folderId) => {
+        folderContainer.classList.add('hidden');
+        const selectedContainer = document.getElementById('awards-' + folderId);
+        if (selectedContainer) {
+          selectedContainer.classList.remove('hidden');
+          selectedContainer.classList.add('fade-in');
+          // Scroll to top smoothly
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+
+      // Function to close folder
+      const closeFolder = () => {
+        awardContainers.forEach(container => {
+          container.classList.add('hidden');
+        });
+        folderContainer.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      // Add click event to each folder
+      folders.forEach(folder => {
+        // Clean up old listener if needed, but cloning is safer to wipe them
+        const newFolder = folder.cloneNode(true);
+        folder.parentNode.replaceChild(newFolder, folder);
+        
+        newFolder.addEventListener('click', () => {
+          const folderId = newFolder.getAttribute('data-folder-id');
+          openFolder(folderId);
+        });
+        
+        // Add keyboard support
+        newFolder.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const folderId = newFolder.getAttribute('data-folder-id');
+            openFolder(folderId);
+          }
+        });
+      });
+
+      // Add click event to back buttons
+      backButtons.forEach(button => {
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', closeFolder);
+        
+        // Add keyboard support
+        newButton.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            closeFolder();
+          }
+        });
+      });
+    }
+
+    // Initial load
+    setupAwards();
+
+    // View Transitions
+    document.addEventListener('astro:page-load', setupAwards);
+  </script>
 </Layout>

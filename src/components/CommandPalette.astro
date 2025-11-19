@@ -1,0 +1,284 @@
+---
+import { getCollection } from 'astro:content';
+
+// Fetch content for indexing
+const posts = await getCollection('blog');
+const searchItems = [
+  // Pages
+  { title: 'Home', href: '/', type: 'Page', icon: 'fa-home' },
+  { title: 'Projects', href: '/projects', type: 'Page', icon: 'fa-code' },
+  { title: 'Blog', href: '/blog', type: 'Page', icon: 'fa-pen-nib' },
+  { title: 'Awards', href: '/awards', type: 'Page', icon: 'fa-trophy' },
+  { title: 'iGEM', href: '/igem', type: 'Page', icon: 'fa-flask' },
+  { title: 'About', href: '/about', type: 'Page', icon: 'fa-user' },
+  // Blog Posts
+  ...posts.map(post => ({
+    title: post.data.title,
+    href: `/blog/${post.slug}`,
+    type: 'Blog',
+    description: post.data.excerpt,
+    icon: 'fa-article'
+  }))
+];
+---
+
+<div id="command-palette-container" class="hidden relative z-[100]" role="dialog" aria-modal="true">
+  <!-- Backdrop -->
+  <div id="palette-backdrop" class="fixed inset-0 bg-zinc-900/20 backdrop-blur-sm transition-opacity opacity-0"></div>
+  
+  <!-- Modal Positioner -->
+  <div class="fixed inset-0 z-[100] overflow-y-auto p-4 sm:p-6 md:p-20">
+    <!-- Modal Panel -->
+    <div 
+      id="palette-panel"
+      class="mx-auto max-w-xl transform divide-y divide-zinc-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all scale-95 opacity-0"
+    >
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute top-3.5 left-4 h-5 w-5 text-zinc-400"></i>
+        <input 
+          type="text" 
+          id="palette-input"
+          class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-zinc-900 placeholder:text-zinc-400 focus:ring-0 sm:text-sm" 
+          placeholder="Search posts, pages, and more..." 
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="palette-results"
+        />
+        <div class="absolute top-3.5 right-4 flex items-center gap-1">
+           <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs text-zinc-400 border border-zinc-200 rounded font-mono">ESC</kbd>
+        </div>
+      </div>
+
+      <ul 
+        id="palette-results" 
+        class="max-h-80 scroll-py-2 overflow-y-auto p-2"
+        role="listbox"
+      >
+        <!-- Results injected here -->
+      </ul>
+      
+      <div id="palette-empty" class="hidden py-14 px-6 text-center text-sm sm:px-14">
+        <i class="fa-regular fa-face-sad-tear text-2xl text-zinc-400 mx-auto mb-4"></i>
+        <p class="mt-4 font-semibold text-zinc-900">No results found</p>
+        <p class="mt-2 text-zinc-500">We couldn't find anything with that term. Please try again.</p>
+      </div>
+      
+      <div class="py-2.5 px-4 bg-zinc-50 border-t border-zinc-100 text-xs text-zinc-500 flex items-center justify-between">
+        <div class="flex gap-3">
+          <span class="flex items-center gap-1"><kbd class="font-mono bg-white border border-zinc-200 rounded px-1">↑</kbd> <kbd class="font-mono bg-white border border-zinc-200 rounded px-1">↓</kbd> to navigate</span>
+          <span class="flex items-center gap-1"><kbd class="font-mono bg-white border border-zinc-200 rounded px-1">↵</kbd> to select</span>
+        </div>
+        <span class="flex items-center gap-1">Search by <span class="font-semibold text-zinc-700">Morax</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ searchItems }}>
+  // Core Logic
+  let isOpen = false;
+  let query = '';
+  let selectedIndex = 0;
+  let filteredItems = searchItems || [];
+  
+  // Helpers
+  function getElements() {
+    return {
+      container: document.getElementById('command-palette-container'),
+      backdrop: document.getElementById('palette-backdrop'),
+      panel: document.getElementById('palette-panel'),
+      input: document.getElementById('palette-input'),
+      resultsList: document.getElementById('palette-results'),
+      emptyState: document.getElementById('palette-empty')
+    };
+  }
+
+  function isPaletteOpen() {
+    const { container } = getElements();
+    return container && !container.classList.contains('hidden');
+  }
+
+  function openPalette() {
+    const { container, backdrop, panel, input } = getElements();
+    if (!container || isPaletteOpen()) return;
+    
+    container.classList.remove('hidden');
+    
+    requestAnimationFrame(() => {
+      backdrop.classList.remove('opacity-0');
+      panel.classList.remove('scale-95', 'opacity-0');
+    });
+    
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+    query = '';
+    filterItems('');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePalette() {
+    const { container, backdrop, panel } = getElements();
+    if (!container || !isPaletteOpen()) return;
+    
+    backdrop.classList.add('opacity-0');
+    panel.classList.add('scale-95', 'opacity-0');
+    
+    setTimeout(() => {
+      container.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, 200);
+  }
+
+  function filterItems(q) {
+    query = q ? q.toLowerCase() : '';
+    if (!query) {
+      filteredItems = searchItems.slice(0, 8); 
+    } else {
+      filteredItems = searchItems.filter(item => 
+        item.title.toLowerCase().includes(query) || 
+        (item.description && item.description.toLowerCase().includes(query))
+      ).slice(0, 10);
+    }
+    
+    selectedIndex = 0;
+    renderResults();
+  }
+
+  function renderResults() {
+    const { resultsList, emptyState } = getElements();
+    if (!resultsList) return;
+
+    resultsList.innerHTML = '';
+    
+    if (!filteredItems || filteredItems.length === 0) {
+      resultsList.classList.add('hidden');
+      if (emptyState) emptyState.classList.remove('hidden');
+      return;
+    }
+    
+    resultsList.classList.remove('hidden');
+    if (emptyState) emptyState.classList.add('hidden');
+    
+    filteredItems.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.role = 'option';
+      li.className = `group flex cursor-default select-none items-center rounded-md px-3 py-2 ${index === selectedIndex ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900'}`;
+      li.innerHTML = `
+        <div class="flex h-8 w-8 flex-none items-center justify-center rounded-md border border-zinc-200 bg-white ${index === selectedIndex ? 'text-zinc-900' : 'text-zinc-400'}">
+          <i class="fa-solid ${item.icon || 'fa-file'}"></i>
+        </div>
+        <div class="ml-3 flex-auto truncate">
+          <div class="text-sm font-medium ${index === selectedIndex ? 'text-zinc-900' : 'text-zinc-700'}">${item.title}</div>
+          ${item.description ? `<div class="text-xs text-zinc-500 truncate">${item.description}</div>` : `<div class="text-xs text-zinc-400">${item.type}</div>`}
+        </div>
+      `;
+      
+      li.addEventListener('click', () => {
+        window.location.href = item.href;
+        closePalette();
+      });
+      
+      li.addEventListener('mouseenter', () => {
+        selectedIndex = index;
+        updateSelection(); 
+      });
+      
+      resultsList.appendChild(li);
+    });
+  }
+
+  function updateSelection() {
+    const { resultsList } = getElements();
+    if (!resultsList) return;
+    
+    const items = resultsList.children;
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const isSelected = i === selectedIndex;
+        if (isSelected) {
+            item.className = 'group flex cursor-default select-none items-center rounded-md px-3 py-2 bg-zinc-100 text-zinc-900';
+            item.children[0].className = 'flex h-8 w-8 flex-none items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-900';
+            item.children[1].children[0].className = 'text-sm font-medium text-zinc-900';
+        } else {
+            item.className = 'group flex cursor-default select-none items-center rounded-md px-3 py-2 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900';
+            item.children[0].className = 'flex h-8 w-8 flex-none items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400';
+            item.children[1].children[0].className = 'text-sm font-medium text-zinc-700';
+        }
+    }
+  }
+
+  function handleKeydown(e) {
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      if (isPaletteOpen()) closePalette();
+      else openPalette();
+    }
+    
+    if (e.key === 'Escape') {
+      closePalette();
+    }
+
+    if (!isPaletteOpen()) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % filteredItems.length;
+      updateSelection();
+      scrollSelectedIntoView();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + filteredItems.length) % filteredItems.length;
+      updateSelection();
+      scrollSelectedIntoView();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredItems[selectedIndex]) {
+        window.location.href = filteredItems[selectedIndex].href;
+        closePalette();
+      }
+    }
+  }
+  
+  function scrollSelectedIntoView() {
+    const { resultsList } = getElements();
+    if (!resultsList) return;
+    const selectedEl = resultsList.children[selectedIndex];
+    if (selectedEl) {
+      selectedEl.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  // Robust Setup using global handler tracking
+  document.addEventListener('astro:page-load', () => {
+    // Debug: Check if searchItems exists
+    if (!searchItems || searchItems.length === 0) {
+      console.error('Command Palette: No search items found.');
+    }
+
+    // 1. Clean up previous listeners
+    if (window.__cmdPaletteOpen) {
+      document.removeEventListener('open-command-palette', window.__cmdPaletteOpen);
+    }
+    if (window.__cmdPaletteKey) {
+      document.removeEventListener('keydown', window.__cmdPaletteKey);
+    }
+
+    // 2. Assign new handlers
+    window.__cmdPaletteOpen = openPalette;
+    window.__cmdPaletteKey = handleKeydown;
+
+    // 3. Attach new listeners
+    document.addEventListener('open-command-palette', window.__cmdPaletteOpen);
+    document.addEventListener('keydown', window.__cmdPaletteKey);
+    
+    // 4. Attach local element listeners
+    const { input, backdrop } = getElements();
+    if (input) input.oninput = (e) => filterItems(e.target.value);
+    if (backdrop) backdrop.onclick = closePalette;
+
+    // 5. Reset state
+    isOpen = false;
+  });
+</script>

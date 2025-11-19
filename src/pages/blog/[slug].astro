@@ -21,6 +21,11 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
 ---
 
 <Layout title={`${post.data.title} - Morax Cheng`} description={post.data.excerpt}>
+  <!-- Reading Progress Bar -->
+  <div id="progress-container" class="fixed top-0 left-0 w-full h-1 z-[100] bg-transparent">
+    <div id="progress-bar" class="h-full bg-zinc-900 w-0 transition-all duration-100 ease-out origin-left"></div>
+  </div>
+
   <article class="max-w-3xl mx-auto animate-on-scroll">
     <header class="mb-12 text-center">
       <div class="flex items-center justify-center gap-2 text-sm text-zinc-500 mb-6">
@@ -75,4 +80,27 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
       </div>
     )}
   </article>
+
+  <script>
+    function updateProgress() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const progressBar = document.getElementById("progress-bar");
+      if (progressBar) {
+        progressBar.style.width = scrolled + "%";
+      }
+    }
+
+    document.addEventListener('scroll', updateProgress);
+    // View Transitions cleanup is handled automatically for inline scripts in Astro components? 
+    // Actually no, if this script re-runs, it adds another listener.
+    // We should probably clean up or use a named function with check.
+    
+    // Better:
+    document.addEventListener('astro:page-load', () => {
+      document.removeEventListener('scroll', updateProgress);
+      document.addEventListener('scroll', updateProgress);
+    });
+  </script>
 </Layout>
