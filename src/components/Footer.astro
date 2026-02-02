@@ -2,37 +2,43 @@
 const currentYear = new Date().getFullYear();
 
 const socialLinks = [
-  { href: "https://x.com/moraxcheng", icon: "fa-brands fa-x-twitter", label: "X (Twitter)" },
-  { href: "https://fb.com/moraxcheng", icon: "fa-brands fa-facebook", label: "Facebook" },
-  { href: "https://instagram.com/moraxcheng", icon: "fa-brands fa-instagram", label: "Instagram" },
-  { href: "https://github.com/fzlzjerry", icon: "fa-brands fa-github", label: "GitHub" }
+  { href: "https://x.com/moraxcheng", icon: "fa-brands fa-x-twitter", label: "Follow on X (Twitter)" },
+  { href: "https://fb.com/moraxcheng", icon: "fa-brands fa-facebook", label: "Follow on Facebook" },
+  { href: "https://instagram.com/moraxcheng", icon: "fa-brands fa-instagram", label: "Follow on Instagram" },
+  { href: "https://github.com/fzlzjerry", icon: "fa-brands fa-github", label: "View GitHub profile" }
 ];
 ---
 
-<footer class="border-t border-zinc-100 bg-white py-12 mt-auto">
+<footer class="border-t border-zinc-100 bg-white py-12 mt-auto" role="contentinfo">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center gap-6">
     
     <!-- Social Links -->
-    <div class="flex items-center gap-4">
-      {socialLinks.map(link => (
-        <a
-          href={link.href}
-          class="group p-2 text-zinc-400 hover:text-zinc-900 transition-colors duration-200"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={link.label}
-        >
-          <i class={`${link.icon} text-xl transform transition-transform duration-200 group-hover:scale-110`}></i>
-        </a>
-      ))}
-      <button
-        class="group p-2 text-zinc-400 hover:text-zinc-900 transition-colors duration-200 bg-transparent border-none cursor-pointer"
-        onclick="window.location.href='mailto:james20081204@gmail.com'"
-        aria-label="Email"
-      >
-        <i class="fa-regular fa-envelope text-xl transform transition-transform duration-200 group-hover:scale-110"></i>
-      </button>
-    </div>
+    <nav aria-label="Social media links">
+      <ul class="flex items-center gap-2" role="list">
+        {socialLinks.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class="group flex items-center justify-center w-10 h-10 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.label}
+            >
+              <i class={`${link.icon} text-lg transition-transform duration-fast group-hover:scale-110`} aria-hidden="true"></i>
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="mailto:james20081204@gmail.com"
+            class="group flex items-center justify-center w-10 h-10 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+            aria-label="Send email"
+          >
+            <i class="fa-regular fa-envelope text-lg transition-transform duration-fast group-hover:scale-110" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
     <!-- Copyright -->
     <p class="text-sm text-zinc-400 font-medium">
