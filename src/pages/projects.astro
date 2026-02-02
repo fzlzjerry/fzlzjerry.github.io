@@ -27,35 +27,37 @@ const projects = [
 >
   <div class="space-y-12 animate-on-scroll">
     <header class="text-center max-w-2xl mx-auto">
-      <h1 class="text-3xl md:text-4xl font-serif font-medium text-zinc-900 mb-4">My Projects</h1>
-      <p class="text-zinc-500 text-lg leading-relaxed">
+      <h1 class="text-3xl md:text-4xl font-serif font-medium text-zinc-900 mb-4 text-balance">My Projects</h1>
+      <p class="text-zinc-500 text-lg leading-relaxed text-pretty">
         A collection of open-source projects and experiments. From web applications to desktop software.
       </p>
     </header>
   
     <div class="grid gap-6 md:grid-cols-2">
       {projects.map(project => (
-        <div class={`group relative flex flex-col h-full bg-white border rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${project.featured ? 'border-zinc-300 ring-1 ring-zinc-100' : 'border-zinc-200'}`}>
+        <article 
+          class={`group relative flex flex-col h-full bg-white border rounded-card transition-all duration-base hover:shadow-card-hover hover:-translate-y-0.5 ${project.featured ? 'border-zinc-300 ring-1 ring-zinc-100' : 'border-zinc-200 hover:border-zinc-300'}`}
+        >
           <div class="p-6 flex-1 flex flex-col">
-            <div class="flex justify-between items-start mb-4">
-              <h2 class="text-xl font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors">
+            <div class="flex justify-between items-start gap-3 mb-4">
+              <h2 class="text-xl font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors duration-fast font-serif">
                 {project.title}
               </h2>
               {project.featured && (
-                <span class="px-2 py-1 text-xs font-medium text-amber-700 bg-amber-50 rounded-full border border-amber-100">
+                <span class="shrink-0 inline-flex items-center px-2.5 py-1 text-xs font-medium text-amber-700 bg-amber-50 rounded-full border border-amber-100">
                   Featured
                 </span>
               )}
             </div>
             
-            <p class="text-zinc-600 mb-6 leading-relaxed flex-grow">
+            <p class="text-zinc-600 mb-6 leading-relaxed flex-grow line-clamp-4">
               {project.description}
             </p>
             
-            <div class="flex items-center justify-between mt-auto pt-6 border-t border-zinc-100">
-              <div class="flex flex-wrap gap-2">
+            <div class="flex items-center justify-between gap-4 mt-auto pt-5 border-t border-zinc-100">
+              <div class="flex flex-wrap gap-1.5">
                 {project.tech.map(tech => (
-                  <span class="px-2.5 py-1 bg-zinc-50 text-zinc-600 text-xs rounded-md font-medium border border-zinc-100">
+                  <span class="inline-flex items-center px-2 py-0.5 bg-zinc-50 text-zinc-500 text-xs rounded-full font-medium border border-zinc-100/50">
                     {tech}
                   </span>
                 ))}
@@ -63,12 +65,12 @@ const projects = [
               
               <a 
                 href={project.github}
-                class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 rounded-sm"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub 
-                <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <span>GitHub</span>
+                <svg class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                   <polyline points="15 3 21 3 21 9"></polyline>
                   <line x1="10" y1="14" x2="21" y2="3"></line>
@@ -76,7 +78,7 @@ const projects = [
               </a>
             </div>
           </div>
-        </div>
+        </article>
       ))}
     </div>
   </div>
