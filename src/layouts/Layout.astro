@@ -458,10 +458,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             menuToggle.parentNode.replaceChild(newToggle, menuToggle);
           }
 
+          // Re-query icons from the cloned button, since the originals are now detached
+          const newMenuOpenIcon = newToggle.querySelector('.menu-open');
+          const newMenuCloseIcon = newToggle.querySelector('.menu-close');
+
           newToggle.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
-            menuOpenIcon.classList.toggle('hidden');
-            menuCloseIcon.classList.toggle('hidden');
+            newMenuOpenIcon?.classList.toggle('hidden');
+            newMenuCloseIcon?.classList.toggle('hidden');
           });
         }
 
