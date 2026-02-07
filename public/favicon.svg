@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <!-- Letter M - Times New Roman Style -->
-  <path 
+  <path
     d="
       M 40 160
       L 40 40
@@ -17,7 +17,7 @@
       L 60 160
       Z
     "
-    fill="#000000"
+    fill="#F5F5F0"
     stroke="none"
   />
 </svg>

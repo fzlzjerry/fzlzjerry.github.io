@@ -25,47 +25,50 @@ const projects = [
   title="Projects - Morax Cheng"
   description="Explore the projects developed by Morax Cheng, including 'Windows 12 Web' (HTML, CSS, JS) and a 'Graphing Calculator' (Python, Qt). View code on GitHub and see his development skills in action."
 >
-  <div class="space-y-12 animate-on-scroll">
-    <header class="text-center max-w-2xl mx-auto">
-      <h1 class="text-3xl md:text-4xl font-serif font-medium text-zinc-900 mb-4 text-balance">My Projects</h1>
-      <p class="text-zinc-500 text-lg leading-relaxed text-pretty">
+  <div class="space-y-12 animate-on-scroll relative">
+    <header class="max-w-2xl">
+      <h1 class="text-3xl md:text-4xl font-display text-[#F5F5F0] mb-4 text-balance">My Projects</h1>
+      <p class="text-[#A8A8A0] text-lg leading-relaxed text-pretty">
         A collection of open-source projects and experiments. From web applications to desktop software.
       </p>
     </header>
-  
-    <div class="grid gap-6 md:grid-cols-2">
+
+    <div class="grid gap-6 md:grid-cols-2 relative">
+      <!-- Dot grid background -->
+      <div class="absolute inset-0 -z-10 dot-pattern rounded-2xl opacity-50" aria-hidden="true"></div>
+
       {projects.map(project => (
-        <article 
-          class={`group relative flex flex-col h-full bg-white border rounded-card transition-all duration-base hover:shadow-card-hover hover:-translate-y-0.5 ${project.featured ? 'border-zinc-300 ring-1 ring-zinc-100' : 'border-zinc-200 hover:border-zinc-300'}`}
+        <article
+          class={`group relative flex flex-col h-full bg-[#1C1C1F] border rounded-card transition-all duration-base hover:-translate-y-1 hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] ${project.featured ? 'border-white/[0.06] border-t-2 border-t-[#E8A838]' : 'border-white/[0.06] hover:border-[rgba(232,168,56,0.3)]'}`}
         >
           <div class="p-6 flex-1 flex flex-col">
             <div class="flex justify-between items-start gap-3 mb-4">
-              <h2 class="text-xl font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors duration-fast font-serif">
+              <h2 class="text-xl font-medium text-[#F5F5F0] group-hover:text-[#E8A838] transition-colors duration-fast font-display">
                 {project.title}
               </h2>
               {project.featured && (
-                <span class="shrink-0 inline-flex items-center px-2.5 py-1 text-xs font-medium text-amber-700 bg-amber-50 rounded-full border border-amber-100">
+                <span class="shrink-0 inline-flex items-center px-2.5 py-1 text-xs font-grotesk font-medium text-[#E8A838] bg-[rgba(232,168,56,0.08)] rounded-full border border-[rgba(232,168,56,0.2)]">
                   Featured
                 </span>
               )}
             </div>
-            
-            <p class="text-zinc-600 mb-6 leading-relaxed flex-grow line-clamp-4">
+
+            <p class="text-[#A8A8A0] mb-6 leading-relaxed flex-grow line-clamp-4">
               {project.description}
             </p>
-            
-            <div class="flex items-center justify-between gap-4 mt-auto pt-5 border-t border-zinc-100">
+
+            <div class="flex items-center justify-between gap-4 mt-auto pt-5 border-t border-white/[0.06]">
               <div class="flex flex-wrap gap-1.5">
                 {project.tech.map(tech => (
-                  <span class="inline-flex items-center px-2 py-0.5 bg-zinc-50 text-zinc-500 text-xs rounded-full font-medium border border-zinc-100/50">
+                  <span class="inline-flex items-center px-2 py-0.5 bg-white/[0.05] text-[#6B6B65] text-xs rounded-full font-medium border border-white/[0.10]">
                     {tech}
                   </span>
                 ))}
               </div>
-              
-              <a 
+
+              <a
                 href={project.github}
-                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 rounded-sm"
+                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] rounded-sm"
                 target="_blank"
                 rel="noopener noreferrer"
               >

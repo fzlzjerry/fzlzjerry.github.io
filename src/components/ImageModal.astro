@@ -9,22 +9,21 @@ const { id } = Astro.props;
 <div
   id={id}
   class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"
-  style="background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);"
+  style="background-color: rgba(0, 0, 0, 0.80); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);"
   onclick="if (event.target === this) { this.classList.add('hidden'); this.classList.remove('flex'); }"
   role="dialog"
   aria-modal="true"
   aria-labelledby={`${id}-title`}
 >
-  <div class="max-w-4xl w-full rounded overflow-hidden modal-content" style="background-color: var(--primary-light); border: 2px solid var(--border-light); box-shadow: var(--shadow-lg);">
+  <div class="max-w-4xl w-full rounded-xl overflow-hidden modal-content border border-white/[0.10] shadow-2xl">
     <div class="relative">
       <button
         onclick="this.closest('.modal').classList.add('hidden'); this.closest('.modal').classList.remove('flex');"
-        class="close-btn absolute top-4 right-4 rounded-full p-2 transition-all z-10"
-        style="background-color: var(--accent-light); color: var(--text-light); border: 1px solid var(--border-light);"
+        class="close-btn absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-full z-10 bg-white/[0.05] backdrop-blur-xl border border-white/[0.10] text-[#A8A8A0] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] transition-all"
         aria-label="Close modal"
         tabindex="0"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
@@ -43,11 +42,11 @@ const { id } = Astro.props;
   .modal {
     animation: fadeIn var(--transition-base) ease-out;
   }
-  
+
   .modal-content {
-    animation: scaleIn var(--transition-base) ease-out;
+    animation: scaleIn 300ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  
+
   @keyframes scaleIn {
     from {
       transform: scale(0.95);
@@ -58,21 +57,14 @@ const { id } = Astro.props;
       opacity: 1;
     }
   }
-  
-  .close-btn:hover {
-    background-color: var(--text-light);
-    color: var(--primary-light);
-    transform: scale(1.1);
-  }
-  
+
   .close-btn:focus-visible {
-    outline: 2px solid var(--text-light);
+    outline: 2px solid #E8A838;
     outline-offset: 2px;
   }
 </style>
 
 <script define:vars={{ id }}>
-// 打开模态框
 document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
   trigger.addEventListener('click', (e) => {
     e.preventDefault();
@@ -81,16 +73,13 @@ document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
     modalImg.src = trigger.getAttribute('href');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
-    
-    // 设置焦点trap
+
     const focusableElements = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
-    
-    // 聚焦到关闭按钮
+
     setTimeout(() => firstElement?.focus(), 100);
-    
-    // 键盘trap处理
+
     const trapFocus = (e) => {
       if (e.key === 'Tab') {
         if (e.shiftKey) {
@@ -106,13 +95,12 @@ document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
         }
       }
     };
-    
+
     modal.addEventListener('keydown', trapFocus);
-    modal._trapFocus = trapFocus; // 保存引用以便后续移除
+    modal._trapFocus = trapFocus;
   });
 });
 
-// ESC键关闭模态框
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const modal = document.getElementById(id);
