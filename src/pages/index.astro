@@ -13,7 +13,6 @@ const projects = [
     description: 'A web-based Windows 12 concept UI implementation with modern web technologies. Features a realistic Windows-like interface, multiple windows management, and various system apps.',
     tech: ['Html', 'CSS', 'JS'],
     github: 'https://github.com/tjy-gitnub/win12',
-    image: '/projects/win12.png',
     featured: true
   },
   {
@@ -21,139 +20,691 @@ const projects = [
     description: 'A powerful graphing calculator built with Python and Qt, featuring intuitive UI and advanced mathematical functions.',
     tech: ['Python', 'Qt'],
     github: 'https://github.com/fzlzjerry/graphing_calculator',
-    image: '/projects/calculator.png',
     featured: false
   }
 ];
-const latestProject = projects[0];
+
+const stats = [
+  { value: '330', suffix: '/360', label: 'NEC Score' },
+  { value: '4', suffix: '+', label: 'Awards' },
+  { value: '6', suffix: '+', label: 'Languages' },
+  { value: '2', suffix: '', label: 'Projects' },
+];
+
+const awards = [
+  { title: 'National Top Scoring Individual Gold', event: 'CNEC 2025 Pre Division', icon: 'fa-trophy' },
+  { title: 'Macroeconomics Hall of Fame', event: 'CNEC 2025 Pre Division', icon: 'fa-star' },
+  { title: 'Regional Team Silver Award', event: 'CNEC 2025 Pre Division', icon: 'fa-medal' },
+  { title: 'Meritorious Award', event: 'HiMCM 2025', icon: 'fa-award' },
+];
+
+const socialLinks = [
+  { href: "https://github.com/fzlzjerry", icon: "fa-brands fa-github", label: "GitHub" },
+  { href: "https://www.linkedin.com/in/morax-cheng-1ab88633a/", icon: "fa-brands fa-linkedin-in", label: "LinkedIn" },
+];
 ---
 
 <Layout
   title="Morax Cheng - Student Developer & Economics Enthusiast"
-  description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a 9th-grade student developer passionate about programming and economics."
+  description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a student developer passionate about programming and economics."
+  fullWidth={true}
 >
-  <!-- Hero Section -->
-  <section class="relative py-20 md:py-32 text-center animate-on-scroll overflow-hidden">
-    <!-- Ambient gradient mesh -->
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Side Navigation Dots -->
+  <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-3" aria-label="Section navigation" id="side-nav">
+    {['hero','identity','projects','achievements','blog','connect'].map((id, i) => (
+      <a href={`#${id}`} class="side-dot group relative flex items-center justify-end" data-section={id} aria-label={`Go to section ${i+1}`}>
+        <span class="opacity-0 group-hover:opacity-100 mr-3 text-[10px] font-grotesk uppercase tracking-widest text-[#6B6B65] transition-opacity duration-200 whitespace-nowrap pointer-events-none">{id === 'hero' ? 'Top' : id === 'identity' ? 'About' : id === 'achievements' ? 'Awards' : id.charAt(0).toUpperCase() + id.slice(1)}</span>
+        <span class="block w-2 h-2 rounded-full bg-[#4A4A45]/60 transition-all duration-300 group-hover:bg-[#E8A838] group-hover:scale-125"></span>
+      </a>
+    ))}
+  </nav>
+
+  <!-- ============================================
+       SECTION 1: CINEMATIC HERO
+       ============================================ -->
+  <section class="story-section relative min-h-screen flex items-center justify-center" id="hero">
+    <!-- Ambient gradient meshes — parallax layers -->
     <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.12)_0%,transparent_70%)] blur-3xl"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[700px] bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.12)_0%,transparent_55%)] blur-3xl parallax-bg" data-speed="0.15"></div>
+      <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(232,168,56,0.07)_0%,transparent_65%)] blur-2xl parallax-bg" data-speed="-0.1"></div>
+      <div class="absolute bottom-1/4 left-1/3 w-[350px] h-[350px] bg-[radial-gradient(circle,rgba(96,165,250,0.05)_0%,transparent_70%)] blur-2xl parallax-bg" data-speed="0.08"></div>
     </div>
 
-    <div class="inline-flex items-center mb-8 px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-xl text-[#A8A8A0] text-sm font-grotesk font-medium tracking-wide border border-white/[0.06]">
-      Student Developer & Economics Enthusiast
+    <!-- Floating geometric shapes -->
+    <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div class="absolute top-[15%] left-[10%] w-20 h-20 border border-white/[0.04] rounded-full parallax-bg" data-speed="0.06"></div>
+      <div class="absolute top-[25%] right-[12%] w-3 h-3 bg-[#E8A838]/20 rounded-full parallax-bg" data-speed="-0.12"></div>
+      <div class="absolute bottom-[20%] left-[20%] w-px h-24 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent parallax-bg" data-speed="0.04"></div>
+      <div class="absolute top-[60%] right-[8%] w-12 h-12 border border-white/[0.03] rotate-45 parallax-bg" data-speed="-0.07"></div>
+      <div class="absolute top-[40%] left-[5%] w-1.5 h-1.5 bg-[#60A5FA]/30 rounded-full parallax-bg" data-speed="0.1"></div>
+      <div class="absolute bottom-[35%] right-[25%] w-px h-16 bg-gradient-to-b from-transparent via-[#E8A838]/10 to-transparent parallax-bg" data-speed="0.05"></div>
     </div>
-    <h1 class="text-4xl md:text-5xl lg:text-6xl font-display text-[#F5F5F0] mb-6 tracking-tight text-balance">
-      Hi, I'm <span class="text-[#E8A838]">Morax</span>
-    </h1>
-    <p class="text-lg md:text-xl text-[#A8A8A0] max-w-2xl mx-auto leading-relaxed mb-12 text-pretty">
-      Currently studying at <span class="text-[#F5F5F0] font-medium">BASIS International School Park Lane Harbour</span>.
-      <br class="hidden md:block" />
-      Passionate about building software, exploring economic theories, and continuous learning.
-    </p>
 
-    <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-      <a
-        href="/projects"
-        class="inline-flex items-center justify-center px-6 py-3 bg-[#E8A838] text-[#0C0C0E] rounded-lg font-medium transition-all duration-base hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(232,168,56,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] press-effect"
-      >
-        View Projects
-      </a>
-      <a
-        href="/about"
-        class="inline-flex items-center justify-center px-6 py-3 bg-white/[0.03] backdrop-blur border border-white/[0.10] text-[#F5F5F0] rounded-lg font-medium transition-all duration-base hover:bg-white/[0.06] hover:border-white/[0.16] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] press-effect"
-      >
-        More About Me
-      </a>
+    <!-- Dot grid -->
+    <div class="absolute inset-0 -z-10 dot-pattern opacity-30" aria-hidden="true"></div>
+
+    <!-- Hero content — fades out on scroll -->
+    <div class="hero-fade-on-scroll story-container text-center relative z-10 py-24" id="hero-content">
+      <!-- Tagline pill — mask reveal -->
+      <div class="reveal-mask inline-flex items-center mb-8 px-5 py-2.5 rounded-full bg-white/[0.03] backdrop-blur-xl text-[#A8A8A0] text-sm font-grotesk font-medium tracking-wide border border-white/[0.06]" data-delay="1">
+        <span class="w-2 h-2 bg-[#4ADE80] rounded-full mr-3 animate-pulse" aria-hidden="true"></span>
+        Student Developer &amp; Economics Enthusiast
+      </div>
+
+      <!-- Main heading — blur reveal, massive -->
+      <h1 class="reveal-blur text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display text-[#F5F5F0] mb-8 tracking-tight leading-[1.1]" data-delay="2">
+        Hi, I'm
+        <span class="relative inline-block">
+          <span class="text-[#E8A838]">Morax</span>
+          <span class="absolute -bottom-2 left-0 w-full h-[3px] bg-gradient-to-r from-[#E8A838] to-transparent rounded-full line-grow" aria-hidden="true"></span>
+        </span>
+      </h1>
+
+      <!-- Subtitle — slide from right -->
+      <p class="reveal-right text-lg sm:text-xl md:text-2xl text-[#A8A8A0] max-w-3xl mx-auto leading-relaxed mb-6 text-pretty" data-delay="3">
+        Building software, exploring economic theories, and pushing the boundaries of what's possible with code.
+      </p>
+
+      <!-- School — scale up -->
+      <p class="reveal-scale text-sm font-grotesk text-[#6B6B65] tracking-wide mb-14" data-delay="4">
+        Currently at <span class="text-[#A8A8A0]">BASIS International School Park Lane Harbour</span>
+      </p>
+
+      <!-- CTA Buttons — slide from left & right -->
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="/projects"
+          class="reveal-left inline-flex items-center justify-center px-8 py-3.5 bg-[#E8A838] text-[#0C0C0E] rounded-lg font-medium text-sm tracking-wide transition-all duration-base hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(232,168,56,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] press-effect"
+          data-delay="5"
+        >
+          View Projects
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
+        <a
+          href="/about"
+          class="reveal-right inline-flex items-center justify-center px-8 py-3.5 bg-white/[0.03] backdrop-blur border border-white/[0.10] text-[#F5F5F0] rounded-lg font-medium text-sm tracking-wide transition-all duration-base hover:bg-white/[0.06] hover:border-white/[0.16] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] press-effect"
+          data-delay="5"
+        >
+          More About Me
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator — rotating circle text -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator" aria-hidden="true">
+      <div class="relative w-20 h-20 md:w-24 md:h-24">
+        <svg class="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+          <defs>
+            <path id="circlePath" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none"/>
+          </defs>
+          <text class="fill-[#4A4A45]" style="font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; letter-spacing: 4.5px; text-transform: uppercase;">
+            <textPath href="#circlePath">SCROLL DOWN · EXPLORE MORE ·&nbsp;</textPath>
+          </text>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-9 h-9 md:w-10 md:h-10 rounded-full border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm flex items-center justify-center animate-gentle-bounce">
+            <svg class="w-3.5 h-3.5 text-[#6B6B65]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Latest Updates -->
-  <section class="py-12 animate-on-scroll">
-    <div class="gradient-divider mb-10"></div>
-    <div class="flex items-center justify-between mb-8">
-      <h2 class="text-2xl font-display text-[#F5F5F0] flex items-center gap-3">
-        <span class="w-1.5 h-1.5 bg-[#E8A838] rounded-full" aria-hidden="true"></span>
-        Latest Updates
-      </h2>
-      <a
-        href="/blog"
-        class="inline-flex items-center gap-1.5 text-sm text-[#6B6B65] hover:text-[#E8A838] font-grotesk font-medium transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] rounded-sm"
-      >
-        View Archive
-        <span aria-hidden="true" class="transition-transform duration-fast group-hover:translate-x-0.5">&rarr;</span>
-      </a>
+  <!-- Horizontal Marquee Strip -->
+  <div class="overflow-hidden py-6 border-y border-white/[0.04] bg-[#0A0A0C] relative" aria-hidden="true">
+    <div class="marquee-track flex whitespace-nowrap gap-12 text-[clamp(0.75rem,1.5vw,0.875rem)] font-grotesk uppercase tracking-[0.3em] text-[#2A2A28]">
+      <span>Developer</span><span class="text-[#E8A838]/30">/</span>
+      <span>Economics</span><span class="text-[#E8A838]/30">/</span>
+      <span>Open Source</span><span class="text-[#E8A838]/30">/</span>
+      <span>Machine Learning</span><span class="text-[#E8A838]/30">/</span>
+      <span>Mathematics</span><span class="text-[#E8A838]/30">/</span>
+      <span>Python</span><span class="text-[#E8A838]/30">/</span>
+      <span>C++</span><span class="text-[#E8A838]/30">/</span>
+      <span>Rust</span><span class="text-[#E8A838]/30">/</span>
+      <span>Developer</span><span class="text-[#E8A838]/30">/</span>
+      <span>Economics</span><span class="text-[#E8A838]/30">/</span>
+      <span>Open Source</span><span class="text-[#E8A838]/30">/</span>
+      <span>Machine Learning</span><span class="text-[#E8A838]/30">/</span>
+      <span>Mathematics</span><span class="text-[#E8A838]/30">/</span>
+      <span>Python</span><span class="text-[#E8A838]/30">/</span>
+      <span>C++</span><span class="text-[#E8A838]/30">/</span>
+      <span>Rust</span><span class="text-[#E8A838]/30">/</span>
     </div>
+  </div>
 
-    <div class="grid md:grid-cols-2 gap-6">
-      {latestProject && (
-        <a
-          href="/projects"
-          class="group block p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-card hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1 transition-all duration-base h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
-        >
-          <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <span class="text-xs font-grotesk font-semibold tracking-wider text-[#6B6B65] uppercase">Project</span>
-              <span class="text-[#4A4A45] group-hover:text-[#E8A838] group-hover:translate-x-1 transition-all duration-smooth" aria-hidden="true">&rarr;</span>
-            </div>
+  <!-- ============================================
+       SECTION 2: IDENTITY / ABOUT
+       ============================================ -->
+  <section class="story-section py-28 md:py-36 relative" id="identity">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-[#0C0C0E] via-[#0E0E10] to-[#0C0C0E]" aria-hidden="true"></div>
+    <!-- Large decorative background number -->
+    <div class="absolute top-12 right-8 md:right-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">01</div>
 
-            <h3 class="text-xl font-medium text-[#F5F5F0] mb-2 group-hover:text-[#E8A838] transition-colors duration-fast font-display">
-              {latestProject.title}
-            </h3>
+    <div class="story-container max-w-5xl mx-auto">
+      <!-- Animated divider line -->
+      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-20 line-grow"></div>
 
-            <p class="text-[#A8A8A0] text-sm mb-4 flex-grow leading-relaxed line-clamp-3">
-              {latestProject.description}
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-white/[0.06]">
-              {latestProject.tech.map(tech => (
-                <span class="inline-flex items-center px-2 py-0.5 bg-white/[0.05] text-[#6B6B65] text-xs rounded-full font-medium border border-white/[0.10]">
-                  {tech}
-                </span>
-              ))}
+      <div class="grid md:grid-cols-[280px_1fr] gap-12 md:gap-16 items-start">
+        <!-- Photo side — scale reveal -->
+        <div class="reveal-scale flex flex-col items-center md:items-start gap-6" data-delay="1">
+          <div class="relative">
+            <img
+              src="/Morax.JPG"
+              alt="Morax Cheng"
+              class="w-44 h-44 md:w-56 md:h-56 rounded-2xl object-cover border border-white/[0.10] transition-transform duration-smooth hover:scale-[1.03]"
+              style="box-shadow: 0 0 60px rgba(232,168,56,0.12), 0 0 120px rgba(232,168,56,0.04);"
+              loading="eager"
+            />
+            <div class="absolute -bottom-3 -right-3 w-8 h-8 bg-[#E8A838] rounded-lg flex items-center justify-center" aria-hidden="true">
+              <svg class="w-4 h-4 text-[#0C0C0E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
             </div>
           </div>
-        </a>
-      )}
 
-      {latestPost && (
+          <!-- Quick facts — staggered from left -->
+          <div class="flex flex-col gap-2 w-full">
+            <div class="reveal-left flex items-center gap-2 text-xs font-grotesk text-[#6B6B65]" data-delay="3">
+              <i class="fa-solid fa-location-dot text-[#4A4A45]" aria-hidden="true"></i>
+              <span>China</span>
+            </div>
+            <div class="reveal-left flex items-center gap-2 text-xs font-grotesk text-[#6B6B65]" data-delay="4">
+              <i class="fa-solid fa-graduation-cap text-[#4A4A45]" aria-hidden="true"></i>
+              <span>High School Student</span>
+            </div>
+            <div class="reveal-left flex items-center gap-2 text-xs font-grotesk text-[#6B6B65]" data-delay="5">
+              <i class="fa-solid fa-code text-[#4A4A45]" aria-hidden="true"></i>
+              <span>Open Source Contributor</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio side -->
+        <div class="space-y-8">
+          <div>
+            <!-- Heading — mask wipe -->
+            <h2 class="reveal-mask text-3xl md:text-4xl font-display text-[#F5F5F0] mb-6" data-delay="1">
+              A story of curiosity<span class="text-[#E8A838]">.</span>
+            </h2>
+            <div class="space-y-4">
+              <!-- Paragraphs — slide from right, staggered -->
+              <p class="reveal-right text-[#A8A8A0] text-base md:text-lg leading-relaxed" data-delay="2">
+                I'm a teenage open-source enthusiast and developer from China, passionate about coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems.
+              </p>
+              <p class="reveal-right text-[#A8A8A0] text-base md:text-lg leading-relaxed" data-delay="3">
+                When I'm not coding, you can find me reading sci-fi novels or playing chess. I'm driven by the desire to understand how systems work -- from software architectures to economic models.
+              </p>
+            </div>
+          </div>
+
+          <!-- What I do cards — different directions -->
+          <div class="grid sm:grid-cols-2 gap-4">
+            <a
+              href="https://github.com/tjy-gitnub/win12"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="reveal-left group p-5 bg-[#1C1C1F] rounded-xl border border-white/[0.06] border-l-2 border-l-[#E8A838] hover:border-[rgba(232,168,56,0.3)] hover:shadow-glow transition-all duration-base" data-delay="4"
+            >
+              <span class="block text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Currently Building</span>
+              <span class="flex items-center gap-2 text-[#F5F5F0] font-medium group-hover:text-[#E8A838] transition-colors duration-fast">
+                Windows 12 Web
+                <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-fast" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </span>
+            </a>
+            <div class="reveal-right p-5 bg-[#1C1C1F] rounded-xl border border-white/[0.06] border-l-2 border-l-[#60A5FA]" data-delay="4">
+              <span class="block text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Currently Learning</span>
+              <span class="text-[#F5F5F0] font-medium">Matlab &amp; ML Algorithms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 3: FEATURED PROJECTS
+       ============================================ -->
+  <section class="story-section py-28 md:py-36 relative" id="projects">
+    <div class="absolute top-12 left-8 md:left-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">02</div>
+    <!-- Decorative parallax bg -->
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(232,168,56,0.05)_0%,transparent_70%)] blur-3xl parallax-bg" data-speed="0.12"></div>
+      <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(96,165,250,0.03)_0%,transparent_70%)] blur-3xl parallax-bg" data-speed="-0.08"></div>
+    </div>
+
+    <div class="story-container max-w-5xl mx-auto">
+      <!-- Section header -->
+      <div class="flex items-end justify-between mb-16">
+        <div>
+          <span class="reveal-mask block text-xs font-grotesk font-semibold text-[#E8A838] uppercase tracking-[0.2em] mb-4" data-delay="1">Featured Work</span>
+          <h2 class="reveal-blur text-3xl md:text-4xl font-display text-[#F5F5F0]" data-delay="2">
+            Things I've built<span class="text-[#E8A838]">.</span>
+          </h2>
+        </div>
         <a
-          href={`/blog/${latestPost.slug}`}
-          class="group block p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-card hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1 transition-all duration-base h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
+          href="/projects"
+          class="reveal-right hidden sm:inline-flex items-center gap-2 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast" data-delay="2"
         >
-          <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <span class="text-xs font-grotesk font-semibold tracking-wider text-[#6B6B65] uppercase">Blog</span>
-              <time datetime={latestPost.data.date} class="text-xs text-[#6B6B65] font-grotesk font-medium">
+          View all
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- Project cards — alternating left/right reveals -->
+      <div class="space-y-8">
+        {projects.map((project, idx) => (
+          <article
+            class={`${idx % 2 === 0 ? 'reveal-left' : 'reveal-right'} tilt-card group relative bg-[#1C1C1F] border rounded-2xl overflow-hidden transition-all duration-base hover:-translate-y-1 hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] ${project.featured ? 'border-white/[0.06] border-t-2 border-t-[#E8A838]' : 'border-white/[0.06] hover:border-[rgba(232,168,56,0.3)]'}`}
+            data-delay={String(idx + 1)}
+          >
+            <div class="absolute inset-0 dot-pattern opacity-20" aria-hidden="true"></div>
+
+            <div class="relative p-8 md:p-10">
+              <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                <div class="flex-1 space-y-4">
+                  <div class="flex items-center gap-3">
+                    {project.featured && (
+                      <span class="inline-flex items-center px-2.5 py-1 text-xs font-grotesk font-medium text-[#E8A838] bg-[rgba(232,168,56,0.08)] rounded-full border border-[rgba(232,168,56,0.2)]">
+                        Featured
+                      </span>
+                    )}
+                    <span class="text-xs font-grotesk text-[#4A4A45]">0{idx + 1}</span>
+                  </div>
+
+                  <h3 class="text-2xl md:text-3xl font-display text-[#F5F5F0] group-hover:text-[#E8A838] transition-colors duration-fast">
+                    {project.title}
+                  </h3>
+
+                  <p class="text-[#A8A8A0] leading-relaxed max-w-xl">
+                    {project.description}
+                  </p>
+
+                  <div class="flex flex-wrap gap-2 pt-2">
+                    {project.tech.map((tech) => (
+                      <span class="inline-flex items-center px-3 py-1 bg-white/[0.05] text-[#A8A8A0] text-xs rounded-full font-grotesk font-medium border border-white/[0.10]">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href={project.github}
+                  class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-white/[0.03] border border-white/[0.10] text-[#A8A8A0] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] rounded-lg font-grotesk text-sm font-medium transition-all duration-fast"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="fa-brands fa-github" aria-hidden="true"></i>
+                  View on GitHub
+                  <svg class="w-3.5 h-3.5 transition-transform duration-fast group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 4: STATS + AWARDS
+       ============================================ -->
+  <section class="story-section py-28 md:py-36 relative" id="achievements">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-[#0C0C0E] via-[#0E0E11] to-[#0C0C0E]" aria-hidden="true"></div>
+    <div class="absolute top-12 right-8 md:right-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">03</div>
+
+    <div class="story-container max-w-5xl mx-auto">
+      <!-- Section header — center, blur reveal -->
+      <div class="text-center mb-20">
+        <span class="reveal-mask block text-xs font-grotesk font-semibold text-[#E8A838] uppercase tracking-[0.2em] mb-4" data-delay="1">Achievements</span>
+        <h2 class="reveal-blur text-3xl md:text-4xl font-display text-[#F5F5F0]" data-delay="2">
+          By the numbers<span class="text-[#E8A838]">.</span>
+        </h2>
+      </div>
+
+      <!-- Stats counters — scale reveal (dramatic zoom-in) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
+        {stats.map((stat, idx) => (
+          <div class="reveal-scale text-center p-6 bg-[#1C1C1F]/50 rounded-2xl border border-white/[0.06] relative group hover:border-[rgba(232,168,56,0.2)] transition-all duration-base" data-delay={String(idx + 1)}>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.06)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-smooth rounded-2xl" aria-hidden="true"></div>
+            <div class="relative">
+              <div class="text-4xl md:text-5xl font-display text-[#F5F5F0] mb-2">
+                <span class="counter-value" data-target={stat.value}>0</span><span class="text-[#E8A838]">{stat.suffix}</span>
+              </div>
+              <span class="text-xs font-grotesk font-medium text-[#6B6B65] uppercase tracking-wider">{stat.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Divider line grow -->
+      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-12 line-grow"></div>
+
+      <!-- Awards — alternating left/right -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        {awards.map((award, idx) => (
+          <div class={`${idx % 2 === 0 ? 'reveal-left' : 'reveal-right'} flex items-start gap-4 p-5 bg-[#1C1C1F]/50 rounded-xl border border-white/[0.06] hover:border-[rgba(232,168,56,0.2)] transition-all duration-base group`} data-delay={String(idx + 1)}>
+            <div class="shrink-0 w-10 h-10 flex items-center justify-center bg-white/[0.03] border border-white/[0.06] rounded-lg text-[#6B6B65] group-hover:text-[#E8A838] group-hover:border-[rgba(232,168,56,0.2)] transition-all duration-fast">
+              <i class={`fa-solid ${award.icon}`} aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-[#F5F5F0] mb-1 group-hover:text-[#E8A838] transition-colors duration-fast">{award.title}</h3>
+              <span class="text-xs font-grotesk text-[#6B6B65]">{award.event}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-10">
+        <a
+          href="/awards"
+          class="reveal inline-flex items-center gap-2 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast"
+        >
+          View all awards
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 5: LATEST BLOG
+       ============================================ -->
+  <section class="story-section py-28 md:py-36 relative" id="blog">
+    <div class="absolute top-12 left-8 md:left-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">04</div>
+    <div class="story-container max-w-5xl mx-auto">
+      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-20 line-grow"></div>
+
+      <div class="grid md:grid-cols-[1fr_1.5fr] gap-12 md:gap-16 items-start">
+        <!-- Left side — from left -->
+        <div>
+          <span class="reveal-mask block text-xs font-grotesk font-semibold text-[#E8A838] uppercase tracking-[0.2em] mb-4" data-delay="1">From the Blog</span>
+          <h2 class="reveal-left text-3xl md:text-4xl font-display text-[#F5F5F0] mb-6" data-delay="2">
+            Latest writing<span class="text-[#E8A838]">.</span>
+          </h2>
+          <p class="reveal-left text-[#6B6B65] text-sm leading-relaxed mb-8" data-delay="3">
+            Thoughts on technology, economics, and everything in between.
+          </p>
+          <a
+            href="/blog"
+            class="reveal-left inline-flex items-center gap-2 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast" data-delay="4"
+          >
+            View all posts
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </a>
+        </div>
+
+        <!-- Right side — from right -->
+        {latestPost && (
+          <a
+            href={`/blog/${latestPost.slug}`}
+            class="reveal-right group block p-8 bg-[#1C1C1F] border border-white/[0.06] rounded-2xl hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1 transition-all duration-base" data-delay="2"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                {latestPost.data.category && (
+                  <span class="px-2.5 py-1 text-xs font-grotesk font-medium text-[#E8A838] bg-[rgba(232,168,56,0.08)] rounded-full border border-[rgba(232,168,56,0.2)]">
+                    {latestPost.data.category}
+                  </span>
+                )}
+              </div>
+              <time datetime={latestPost.data.date} class="text-xs font-grotesk text-[#6B6B65]">
                 {new Date(latestPost.data.date).toLocaleDateString('en-US', {
-                  month: 'short',
+                  month: 'long',
                   day: 'numeric',
                   year: 'numeric'
                 })}
               </time>
             </div>
 
-            <h3 class="text-xl font-medium text-[#F5F5F0] mb-2 group-hover:text-[#E8A838] transition-colors duration-fast font-display">
+            <h3 class="text-2xl font-display text-[#F5F5F0] mb-4 group-hover:text-[#E8A838] transition-colors duration-fast leading-snug">
               {latestPost.data.title}
             </h3>
 
             {latestPost.data.excerpt && (
-              <p class="text-[#A8A8A0] text-sm mb-4 flex-grow leading-relaxed line-clamp-3">
+              <p class="text-[#A8A8A0] leading-relaxed mb-6 line-clamp-3">
                 {latestPost.data.excerpt}
               </p>
             )}
 
             {latestPost.data.tags && (
-              <div class="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-white/[0.06]">
-                {latestPost.data.tags.slice(0, 3).map(tag => (
+              <div class="flex flex-wrap gap-2 pt-4 border-t border-white/[0.06]">
+                {latestPost.data.tags.slice(0, 4).map(tag => (
                   <span class="inline-flex items-center px-2 py-0.5 bg-white/[0.05] text-[#6B6B65] text-xs rounded-full font-medium border border-white/[0.10]">
                     #{tag}
                   </span>
                 ))}
               </div>
             )}
-          </div>
+
+            <div class="flex items-center gap-2 mt-6 text-sm font-grotesk font-medium text-[#6B6B65] group-hover:text-[#E8A838] transition-colors duration-fast">
+              Read article
+              <svg class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </div>
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 6: CTA / CONNECT
+       ============================================ -->
+  <section class="story-section py-28 md:py-36 relative" id="connect">
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.08)_0%,transparent_70%)] blur-3xl parallax-bg" data-speed="0.1"></div>
+    </div>
+
+    <div class="story-container max-w-3xl mx-auto text-center">
+      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-20 line-grow"></div>
+
+      <!-- Heading — blur reveal for drama -->
+      <h2 class="reveal-blur text-4xl md:text-5xl font-display text-[#F5F5F0] mb-6" data-delay="1">
+        Let's build something<br/>
+        <span class="text-[#E8A838]">together</span><span class="text-[#F5F5F0]">.</span>
+      </h2>
+
+      <p class="reveal-scale text-[#A8A8A0] text-lg leading-relaxed mb-12 max-w-xl mx-auto" data-delay="2">
+        I'm always interested in collaborating on open-source projects, discussing economics, or just chatting about technology.
+      </p>
+
+      <!-- Social links — staggered scale -->
+      <div class="flex items-center justify-center gap-4 mb-8">
+        {socialLinks.map((link, idx) => (
+          <a
+            href={link.href}
+            class={`reveal-scale group flex items-center justify-center w-12 h-12 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-full transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.label}
+            data-delay={String(idx + 3)}
+          >
+            <i class={`${link.icon} text-lg transition-transform duration-fast group-hover:scale-110`} aria-hidden="true"></i>
+          </a>
+        ))}
+        <a
+          href="mailto:james20081204@gmail.com"
+          class="reveal-scale group flex items-center justify-center w-12 h-12 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-full transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
+          aria-label="Send email"
+          data-delay="5"
+        >
+          <i class="fa-regular fa-envelope text-lg transition-transform duration-fast group-hover:scale-110" aria-hidden="true"></i>
         </a>
-      )}
+      </div>
+
+      <a
+        href="mailto:james20081204@gmail.com"
+        class="reveal inline-flex items-center gap-2 px-8 py-3.5 bg-[#E8A838] text-[#0C0C0E] rounded-lg font-medium text-sm tracking-wide transition-all duration-base hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(232,168,56,0.35)] press-effect" data-delay="6"
+      >
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+        Get in Touch
+      </a>
     </div>
   </section>
 </Layout>
+
+<!-- ============================================
+     SCROLL ENGINE
+     ============================================ -->
+<script>
+  function initScrollEngine() {
+    // --- Scroll Progress Bar ---
+    const progressBar = document.getElementById('scroll-progress');
+
+    function updateProgress() {
+      if (!progressBar) return;
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+      progressBar.style.transform = `scaleX(${Math.min(progress, 1)})`;
+    }
+
+    // --- Parallax ---
+    const parallaxElements = document.querySelectorAll('.parallax-bg');
+
+    function updateParallax() {
+      const scrollTop = window.scrollY;
+      parallaxElements.forEach(el => {
+        const speed = parseFloat(el.getAttribute('data-speed') || '0.1');
+        const yOffset = scrollTop * speed;
+        (el as HTMLElement).style.transform = `translateY(${yOffset}px)`;
+      });
+    }
+
+    // --- Hero scroll-linked fade & parallax ---
+    const heroContent = document.getElementById('hero-content');
+    const heroSection = document.getElementById('hero');
+
+    function updateHeroFade() {
+      if (!heroContent || !heroSection) return;
+      const heroHeight = heroSection.offsetHeight;
+      const scrollTop = window.scrollY;
+      const progress = Math.min(scrollTop / (heroHeight * 0.6), 1);
+      const opacity = 1 - progress;
+      const yShift = scrollTop * 0.35;
+      const scale = 1 - progress * 0.08;
+      heroContent.style.opacity = String(Math.max(opacity, 0));
+      heroContent.style.transform = `translateY(${yShift}px) scale(${scale})`;
+    }
+
+    // Combined rAF loop
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateProgress();
+          updateParallax();
+          updateHeroFade();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateProgress();
+    updateParallax();
+    updateHeroFade();
+
+    // --- Counter Animation ---
+    const counterElements = document.querySelectorAll('.counter-value');
+
+    function animateCounter(el: Element) {
+      const target = parseInt(el.getAttribute('data-target') || '0', 10);
+      const duration = 2000;
+      const start = performance.now();
+
+      function step(now: number) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * target);
+        el.textContent = String(current);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    counterElements.forEach(el => counterObserver.observe(el));
+
+    // --- Hide scroll indicator on scroll ---
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+      let indicatorHidden = false;
+      window.addEventListener('scroll', () => {
+        if (!indicatorHidden && window.scrollY > 80) {
+          scrollIndicator.classList.add('hidden-by-scroll');
+          indicatorHidden = true;
+        } else if (indicatorHidden && window.scrollY <= 80) {
+          scrollIndicator.classList.remove('hidden-by-scroll');
+          indicatorHidden = false;
+        }
+      }, { passive: true });
+    }
+
+    // --- Side Nav Active Tracking ---
+    const sideNav = document.getElementById('side-nav');
+    if (sideNav) {
+      const dots = sideNav.querySelectorAll('.side-dot');
+      const sectionIds = Array.from(dots).map(d => d.getAttribute('data-section')!);
+      const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+
+      function updateSideNav() {
+        const scrollY = window.scrollY + window.innerHeight / 3;
+        let activeIdx = 0;
+        sections.forEach((sec, i) => {
+          if (scrollY >= sec.offsetTop) activeIdx = i;
+        });
+        dots.forEach((dot, i) => {
+          const circle = dot.querySelector('span:last-child') as HTMLElement;
+          if (i === activeIdx) {
+            circle.classList.add('active-dot');
+          } else {
+            circle.classList.remove('active-dot');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateSideNav);
+      }, { passive: true });
+      updateSideNav();
+    }
+
+    // --- 3D Tilt Cards ---
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      const el = card as HTMLElement;
+      el.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = '';
+      });
+    });
+  }
+
+  initScrollEngine();
+  document.addEventListener('astro:page-load', initScrollEngine);
+</script>
