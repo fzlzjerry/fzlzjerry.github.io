@@ -22,56 +22,72 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
 
 <Layout title={`${post.data.title} - Morax Cheng`} description={post.data.excerpt}>
   <!-- Reading Progress Bar -->
-  <div id="progress-container" class="fixed top-0 left-0 w-full h-1 z-[100] bg-transparent">
-    <div id="progress-bar" class="h-full bg-zinc-900 w-0 transition-all duration-100 ease-out origin-left"></div>
+  <div id="progress-container" class="fixed top-0 left-0 w-full h-[2px] z-[100] bg-transparent">
+    <div id="progress-bar" class="h-full bg-gradient-to-r from-brand-accent to-brand-accent/60 w-0 transition-all duration-100 ease-out origin-left"></div>
   </div>
 
-  <article class="max-w-3xl mx-auto animate-on-scroll">
-    <header class="mb-12 text-center">
-      <div class="flex items-center justify-center gap-2 text-sm text-zinc-500 mb-6">
+  <article class="max-w-3xl mx-auto">
+    <!-- Article Header -->
+    <header class="py-12 md:py-20 reveal">
+      <!-- Back link -->
+      <a href="/blog" class="group inline-flex items-center gap-2 text-sm text-brand-muted hover:text-brand-accent transition-colors duration-fast mb-8">
+        <i class="fa-solid fa-arrow-left text-xs transition-transform duration-fast group-hover:-translate-x-0.5" aria-hidden="true"></i>
+        Back to Blog
+      </a>
+      
+      <!-- Meta -->
+      <div class="flex items-center gap-3 text-sm text-brand-muted mb-6 font-mono">
         <time datetime={post.data.date}>{formattedDate}</time>
         {post.data.category && (
           <>
-            <span>·</span>
-            <span class="font-medium text-zinc-700">{post.data.category}</span>
+            <span class="text-neutral-700" aria-hidden="true">/</span>
+            <a href={`/blog/category/${post.data.category.toLowerCase()}`} class="text-brand-accent hover:underline">
+              {post.data.category}
+            </a>
           </>
         )}
       </div>
       
-      <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-zinc-900 mb-6 leading-tight">
+      <!-- Title -->
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-brand-text leading-tight mb-6">
         {post.data.title}
       </h1>
 
+      <!-- Authors / Institution -->
       {(post.data.institution || post.data.professor || post.data.authors) && (
-        <div class="flex flex-wrap justify-center gap-4 text-sm text-zinc-500 border-t border-b border-zinc-100 py-4 mt-8">
+        <div class="flex flex-wrap gap-4 text-sm text-brand-muted border-t border-white/[0.04] pt-6 mt-2">
           {post.data.authors && (
-            <div class="flex gap-1">
-              <span class="text-zinc-400">By</span>
-              <span class="font-medium text-zinc-700">{post.data.authors.join(', ')}</span>
+            <div class="flex gap-1.5">
+              <span class="text-neutral-600">By</span>
+              <span class="font-medium text-brand-text">{post.data.authors.join(', ')}</span>
             </div>
           )}
           {post.data.institution && (
-            <div class="hidden sm:block text-zinc-300">|</div>
-          )}
-          {post.data.institution && (
-            <div>{post.data.institution}</div>
+            <>
+              <span class="hidden sm:block text-neutral-700" aria-hidden="true">|</span>
+              <div>{post.data.institution}</div>
+            </>
           )}
         </div>
       )}
     </header>
 
-    <div class="prose prose-zinc prose-lg max-w-none prose-headings:font-serif prose-headings:font-medium prose-a:text-zinc-900 prose-a:no-underline prose-a:border-b prose-a:border-zinc-300 hover:prose-a:border-zinc-900 prose-img:rounded-xl prose-pre:bg-zinc-50 prose-pre:border prose-pre:border-zinc-100">
+    <!-- Divider -->
+    <div class="h-px bg-gradient-to-r from-brand-accent/20 via-white/[0.06] to-transparent mb-12" aria-hidden="true"></div>
+
+    <!-- Article Content -->
+    <div class="prose prose-lg max-w-none prose-headings:font-serif prose-headings:font-medium reveal">
       <Content />
     </div>
     
     <!-- Tags Footer -->
     {post.data.tags && (
-      <div class="mt-16 pt-8 border-t border-zinc-100">
+      <div class="mt-16 pt-8 border-t border-white/[0.04] reveal">
         <div class="flex flex-wrap gap-2">
           {post.data.tags.map(tag => (
             <a 
               href={`/blog/tag/${tag.toLowerCase()}`}
-              class="px-3 py-1 bg-zinc-50 text-zinc-600 text-sm rounded-full hover:bg-zinc-100 transition-colors"
+              class="px-3 py-1.5 bg-white/[0.04] text-brand-muted text-sm rounded-lg hover:text-brand-accent hover:bg-brand-accent/[0.06] border border-white/[0.06] hover:border-brand-accent/20 transition-all duration-fast font-mono"
             >
               #{tag}
             </a>
@@ -92,15 +108,12 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
       }
     }
 
-    document.addEventListener('scroll', updateProgress);
-    // View Transitions cleanup is handled automatically for inline scripts in Astro components? 
-    // Actually no, if this script re-runs, it adds another listener.
-    // We should probably clean up or use a named function with check.
-    
-    // Better:
-    document.addEventListener('astro:page-load', () => {
+    const setupProgress = () => {
       document.removeEventListener('scroll', updateProgress);
       document.addEventListener('scroll', updateProgress);
-    });
+    };
+
+    setupProgress();
+    document.addEventListener('astro:page-load', setupProgress);
   </script>
 </Layout>

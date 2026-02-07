@@ -9,37 +9,29 @@ interface Props {
 }
 
 const { href, title, body, variant = 'default', tags, meta } = Astro.props;
-
-const baseStyles = "block h-full p-6 bg-white border rounded-card transition-all duration-base hover:shadow-card-hover hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2";
-const variantStyles = {
-	default: "border-zinc-200 hover:border-zinc-300",
-	featured: "border-zinc-300 ring-1 ring-zinc-100 hover:border-zinc-400"
-};
 ---
 
 <li class="group list-none">
-	<a href={href} class:list={[baseStyles, variantStyles[variant]]}>
+	<a href={href} class={`block h-full glass-card p-6 hover-lift ${variant === 'featured' ? 'border-brand-accent/20' : ''}`}>
 		<div class="flex items-center justify-between gap-3 mb-3">
-			<h2 class="text-lg font-medium text-zinc-900 group-hover:text-zinc-700 transition-colors duration-fast font-serif leading-snug">
+			<h2 class="text-lg font-medium text-brand-text group-hover:text-brand-accent transition-colors duration-smooth font-serif leading-snug">
 				{title}
 			</h2>
-			<span class="shrink-0 text-zinc-400 group-hover:translate-x-1 transition-transform duration-smooth" aria-hidden="true">
-				&rarr;
-			</span>
+			<i class="fa-solid fa-arrow-up-right text-xs text-brand-muted group-hover:text-brand-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-smooth flex-shrink-0" aria-hidden="true"></i>
 		</div>
 		
 		{meta && (
-			<p class="text-xs text-zinc-400 mb-2 font-medium uppercase tracking-wider">{meta}</p>
+			<p class="text-xs text-brand-muted mb-2 font-mono uppercase tracking-wider">{meta}</p>
 		)}
 		
-		<p class="text-sm text-zinc-600 leading-relaxed line-clamp-3">
+		<p class="text-sm text-brand-muted leading-relaxed line-clamp-3">
 			{body}
 		</p>
 		
 		{tags && tags.length > 0 && (
-			<div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-zinc-100">
+			<div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/[0.04]">
 				{tags.map(tag => (
-					<span class="inline-flex items-center px-2 py-0.5 bg-zinc-50 text-zinc-500 text-xs rounded-full font-medium border border-zinc-100/50">
+					<span class="inline-flex items-center px-2.5 py-1 bg-white/[0.04] text-brand-muted text-xs rounded-md font-mono">
 						{tag}
 					</span>
 				))}

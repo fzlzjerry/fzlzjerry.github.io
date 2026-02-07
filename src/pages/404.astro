@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="404 Not Found">
-  <main class="flex flex-col items-center justify-center min-h-[60vh] px-4 animate-on-scroll">
-    <div class="w-full max-w-2xl mb-8">
+  <div class="flex flex-col items-center justify-center min-h-[60vh] px-4">
+    <div class="w-full max-w-2xl mb-10 reveal">
       <video 
-        class="w-full h-auto rounded-xl shadow-sm"
+        class="w-full h-auto rounded-xl border border-white/[0.06]"
         autoplay
         loop
         muted
@@ -18,20 +18,19 @@ import Layout from '../layouts/Layout.astro';
       </video>
     </div>
     
-    <div class="text-center space-y-6">
-      <h1 class="text-4xl md:text-5xl font-serif font-medium text-zinc-900 tracking-tight">
+    <div class="text-center flex flex-col items-center gap-6 reveal stagger-1">
+      <h1 class="text-4xl md:text-5xl font-serif font-medium text-brand-text tracking-tight">
         Page Not Found
       </h1>
+      <p class="text-brand-muted text-lg">The page you're looking for doesn't exist or has been moved.</p>
       
       <a 
         href="/" 
-        class="inline-flex items-center px-6 py-3 text-sm font-medium text-zinc-900 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 hover:border-zinc-300 transition-all hover:shadow-sm"
+        class="group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-brand-bg bg-brand-accent rounded-lg hover:shadow-glow transition-all duration-smooth press-effect"
       >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
+        <i class="fa-solid fa-arrow-left text-xs transition-transform duration-fast group-hover:-translate-x-0.5" aria-hidden="true"></i>
         Return to Home
       </a>
     </div>
-  </main>
+  </div>
 </Layout>

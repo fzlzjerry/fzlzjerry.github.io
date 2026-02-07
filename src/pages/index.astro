@@ -30,74 +30,93 @@ const latestProject = projects[0];
 
 <Layout
   title="Morax Cheng - Student Developer & Economics Enthusiast"
-  description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a 9th-grade student developer passionate about programming and economics."
+  description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a student developer passionate about programming and economics."
 >
+  <!-- Ambient Background Glow -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-accent/[0.03] rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
+  
   <!-- Hero Section -->
-  <section class="py-16 md:py-24 text-center animate-on-scroll">
-    <div class="inline-flex items-center mb-6 px-3 py-1.5 rounded-full bg-zinc-100 text-zinc-600 text-sm font-medium tracking-wide border border-zinc-200/50">
-      Student Developer & Economics Enthusiast
+  <section class="relative py-20 md:py-32">
+    <!-- Status badge -->
+    <div class="reveal stagger-1">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-sm text-brand-muted mb-8">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent/60"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
+        </span>
+        Student Developer & Economics Enthusiast
+      </div>
     </div>
-    <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-zinc-900 mb-6 tracking-tight text-balance">
-      Hi, I'm Morax <span class="inline-block animate-wave origin-bottom-right">👋</span>
+
+    <!-- Main Headline -->
+    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-brand-text mb-6 reveal stagger-2">
+      Hi, I'm <span class="text-brand-accent">Morax</span>
     </h1>
-    <p class="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed mb-10 text-pretty">
-      Currently studying at <span class="text-zinc-800 font-medium">BASIS International School Park Lane Harbour</span>.
-      <br class="hidden md:block" />
+    
+    <p class="text-lg md:text-xl text-brand-muted max-w-2xl leading-relaxed mb-12 text-pretty reveal stagger-3">
+      Studying at <span class="text-brand-text/80 font-medium">BASIS International School Park Lane Harbour</span>.
       Passionate about building software, exploring economic theories, and continuous learning.
     </p>
     
-    <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 reveal stagger-4">
       <a 
         href="/projects" 
-        class="inline-flex items-center justify-center px-6 py-3 bg-zinc-900 text-white rounded-lg font-medium transition-all duration-base hover:bg-zinc-800 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 press-effect"
+        class="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-accent text-brand-bg rounded-lg font-medium text-sm transition-all duration-smooth hover:shadow-glow press-effect"
       >
         View Projects
+        <i class="fa-solid fa-arrow-right text-xs transition-transform duration-smooth group-hover:translate-x-0.5" aria-hidden="true"></i>
       </a>
       <a 
         href="/about" 
-        class="inline-flex items-center justify-center px-6 py-3 bg-white border border-zinc-200 text-zinc-700 rounded-lg font-medium transition-all duration-base hover:bg-zinc-50 hover:border-zinc-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 press-effect"
+        class="inline-flex items-center justify-center px-6 py-3 bg-white/[0.04] border border-white/[0.08] text-brand-text rounded-lg font-medium text-sm transition-all duration-smooth hover:bg-white/[0.08] hover:border-white/[0.12] press-effect"
       >
         More About Me
       </a>
     </div>
   </section>
 
+  <!-- Divider -->
+  <div class="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" aria-hidden="true"></div>
+
   <!-- Latest Updates -->
-  <section class="py-12 border-t border-zinc-100 animate-on-scroll">
-    <div class="flex items-center justify-between mb-8">
-      <h2 class="text-2xl font-serif font-medium text-zinc-900">Latest Updates</h2>
+  <section class="py-16 md:py-20">
+    <div class="flex items-center justify-between mb-10 reveal">
+      <h2 class="text-2xl font-serif font-medium text-brand-text">Latest Updates</h2>
       <a 
         href="/blog" 
-        class="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 font-medium transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 rounded-sm"
+        class="group inline-flex items-center gap-1.5 text-sm text-brand-muted hover:text-brand-accent font-medium transition-colors duration-fast"
       >
-        View Archive 
-        <span aria-hidden="true" class="transition-transform duration-fast group-hover:translate-x-0.5">&rarr;</span>
+        View all
+        <i class="fa-solid fa-arrow-right text-xs transition-transform duration-fast group-hover:translate-x-0.5" aria-hidden="true"></i>
       </a>
     </div>
     
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-5">
       {latestProject && (
         <a 
           href="/projects" 
-          class="group block p-6 bg-white border border-zinc-200 rounded-card hover:border-zinc-300 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-base h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+          class="group glass-card p-6 hover-lift reveal stagger-1"
         >
           <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <span class="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Project</span>
-              <span class="text-zinc-400 group-hover:translate-x-1 transition-transform duration-smooth" aria-hidden="true">&rarr;</span>
+            <div class="flex justify-between items-start mb-5">
+              <span class="inline-flex items-center px-2.5 py-1 bg-brand-accent/[0.08] text-brand-accent text-xs font-medium rounded-md tracking-wide uppercase">
+                Project
+              </span>
+              <i class="fa-solid fa-arrow-up-right text-xs text-brand-muted group-hover:text-brand-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-smooth" aria-hidden="true"></i>
             </div>
             
-            <h3 class="text-xl font-medium text-zinc-900 mb-2 group-hover:text-zinc-700 transition-colors duration-fast font-serif">
+            <h3 class="text-xl font-medium text-brand-text mb-3 font-serif group-hover:text-brand-accent transition-colors duration-smooth">
               {latestProject.title}
             </h3>
             
-            <p class="text-zinc-600 text-sm mb-4 flex-grow leading-relaxed line-clamp-3">
+            <p class="text-brand-muted text-sm mb-5 flex-grow leading-relaxed line-clamp-3">
               {latestProject.description}
             </p>
             
-            <div class="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-zinc-100">
+            <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/[0.04]">
               {latestProject.tech.map(tech => (
-                <span class="inline-flex items-center px-2 py-0.5 bg-zinc-50 text-zinc-500 text-xs rounded-full font-medium border border-zinc-100/50">
+                <span class="inline-flex items-center px-2.5 py-1 bg-white/[0.04] text-brand-muted text-xs rounded-md font-mono">
                   {tech}
                 </span>
               ))}
@@ -109,12 +128,14 @@ const latestProject = projects[0];
       {latestPost && (
         <a 
           href={`/blog/${latestPost.slug}`} 
-          class="group block p-6 bg-white border border-zinc-200 rounded-card hover:border-zinc-300 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-base h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+          class="group glass-card p-6 hover-lift reveal stagger-2"
         >
           <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <span class="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Blog</span>
-              <time datetime={latestPost.data.date} class="text-xs text-zinc-400 font-medium">
+            <div class="flex justify-between items-start mb-5">
+              <span class="inline-flex items-center px-2.5 py-1 bg-white/[0.04] text-brand-muted text-xs font-medium rounded-md tracking-wide uppercase">
+                Blog
+              </span>
+              <time datetime={latestPost.data.date} class="text-xs text-neutral-600 font-mono">
                 {new Date(latestPost.data.date).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
@@ -123,20 +144,20 @@ const latestProject = projects[0];
               </time>
             </div>
             
-            <h3 class="text-xl font-medium text-zinc-900 mb-2 group-hover:text-zinc-700 transition-colors duration-fast font-serif">
+            <h3 class="text-xl font-medium text-brand-text mb-3 font-serif group-hover:text-brand-accent transition-colors duration-smooth">
               {latestPost.data.title}
             </h3>
             
             {latestPost.data.excerpt && (
-              <p class="text-zinc-600 text-sm mb-4 flex-grow leading-relaxed line-clamp-3">
+              <p class="text-brand-muted text-sm mb-5 flex-grow leading-relaxed line-clamp-3">
                 {latestPost.data.excerpt}
               </p>
             )}
             
             {latestPost.data.tags && (
-              <div class="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-zinc-100">
+              <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/[0.04]">
                 {latestPost.data.tags.slice(0, 3).map(tag => (
-                  <span class="inline-flex items-center px-2 py-0.5 bg-zinc-50 text-zinc-500 text-xs rounded-full font-medium border border-zinc-100/50">
+                  <span class="inline-flex items-center px-2.5 py-1 bg-white/[0.04] text-brand-muted text-xs rounded-md font-mono">
                     #{tag}
                   </span>
                 ))}
@@ -148,20 +169,3 @@ const latestProject = projects[0];
     </div>
   </section>
 </Layout>
-
-<style>
-  @keyframes wave {
-    0% { transform: rotate(0deg); }
-    10% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    30% { transform: rotate(14deg); }
-    40% { transform: rotate(-4deg); }
-    50% { transform: rotate(10deg); }
-    60% { transform: rotate(0deg); }
-    100% { transform: rotate(0deg); }
-  }
-
-  .animate-wave:hover {
-    animation: wave 2.5s infinite;
-  }
-</style>

@@ -9,22 +9,21 @@ const { id } = Astro.props;
 <div
   id={id}
   class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"
-  style="background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);"
+  style="background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);"
   onclick="if (event.target === this) { this.classList.add('hidden'); this.classList.remove('flex'); }"
   role="dialog"
   aria-modal="true"
   aria-labelledby={`${id}-title`}
 >
-  <div class="max-w-4xl w-full rounded overflow-hidden modal-content" style="background-color: var(--primary-light); border: 2px solid var(--border-light); box-shadow: var(--shadow-lg);">
+  <div class="max-w-4xl w-full rounded-xl overflow-hidden modal-content border border-white/[0.06]" style="background-color: #161618;">
     <div class="relative">
       <button
         onclick="this.closest('.modal').classList.add('hidden'); this.closest('.modal').classList.remove('flex');"
-        class="close-btn absolute top-4 right-4 rounded-full p-2 transition-all z-10"
-        style="background-color: var(--accent-light); color: var(--text-light); border: 1px solid var(--border-light);"
+        class="close-btn absolute top-4 right-4 rounded-full p-2 transition-all z-10 bg-brand-bg/60 backdrop-blur border border-white/[0.08] text-brand-muted hover:text-brand-text hover:bg-brand-bg/90"
         aria-label="Close modal"
         tabindex="0"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
@@ -41,11 +40,16 @@ const { id } = Astro.props;
 
 <style>
   .modal {
-    animation: fadeIn var(--transition-base) ease-out;
+    animation: fadeIn 200ms ease-out;
   }
   
   .modal-content {
-    animation: scaleIn var(--transition-base) ease-out;
+    animation: scaleIn 200ms ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
   
   @keyframes scaleIn {
@@ -60,19 +64,16 @@ const { id } = Astro.props;
   }
   
   .close-btn:hover {
-    background-color: var(--text-light);
-    color: var(--primary-light);
     transform: scale(1.1);
   }
   
   .close-btn:focus-visible {
-    outline: 2px solid var(--text-light);
+    outline: 2px solid #5eead4;
     outline-offset: 2px;
   }
 </style>
 
 <script define:vars={{ id }}>
-// 打开模态框
 document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
   trigger.addEventListener('click', (e) => {
     e.preventDefault();
@@ -82,15 +83,12 @@ document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     
-    // 设置焦点trap
     const focusableElements = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
     
-    // 聚焦到关闭按钮
     setTimeout(() => firstElement?.focus(), 100);
     
-    // 键盘trap处理
     const trapFocus = (e) => {
       if (e.key === 'Tab') {
         if (e.shiftKey) {
@@ -108,11 +106,10 @@ document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
     };
     
     modal.addEventListener('keydown', trapFocus);
-    modal._trapFocus = trapFocus; // 保存引用以便后续移除
+    modal._trapFocus = trapFocus;
   });
 });
 
-// ESC键关闭模态框
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const modal = document.getElementById(id);

@@ -14,47 +14,57 @@ const isActive = (href: string) => {
 };
 ---
 
-<header class="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 border-b border-zinc-100 transition-all duration-base">
+<header class="sticky top-0 z-50 w-full transition-all duration-smooth" id="site-header">
   <!-- Skip to main content link for accessibility -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-accent focus:text-brand-bg focus:rounded-lg focus:text-sm focus:font-medium">
     Skip to main content
   </a>
   
-  <nav class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between" role="navigation" aria-label="Main navigation">
+  <!-- Glass backdrop -->
+  <div class="absolute inset-0 bg-brand-bg/70 backdrop-blur-xl border-b border-white/[0.04]"></div>
+  
+  <nav class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between" role="navigation" aria-label="Main navigation">
     <!-- Logo -->
     <div class="flex items-center">
       <a 
         href="/" 
-        class="text-lg font-serif font-semibold tracking-tight hover:text-zinc-600 transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 rounded-sm"
+        class="group flex items-center"
       >
-        Morax Cheng
+        <span class="text-lg font-serif font-semibold tracking-tight text-brand-text transition-colors duration-fast group-hover:text-brand-accent">
+          Morax Cheng
+        </span>
+        <span class="ml-2 w-1.5 h-1.5 rounded-full bg-brand-accent opacity-0 group-hover:opacity-100 transition-opacity duration-smooth"></span>
       </a>
     </div>
     
     <!-- Desktop Menu -->
-    <ul class="hidden md:flex gap-8 items-center" role="list">
+    <ul class="hidden md:flex items-center gap-1" role="list">
       {links.map(link => (
         <li>
           <a 
             href={link.href}
-            class={`relative text-sm font-medium transition-colors duration-fast hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 rounded-sm py-1 ${
-              isActive(link.href) ? 'text-zinc-900' : 'text-zinc-500'
+            class={`relative px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-fast ${
+              isActive(link.href) 
+                ? 'text-brand-accent bg-brand-accent/[0.08]' 
+                : 'text-brand-muted hover:text-brand-text hover:bg-white/[0.04]'
             }`}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.text}
-            {isActive(link.href) && (
-              <span class="absolute -bottom-1 left-0 right-0 h-0.5 bg-zinc-900 rounded-full" aria-hidden="true"></span>
-            )}
           </a>
         </li>
       ))}
+      
+      <!-- Separator -->
+      <li aria-hidden="true">
+        <div class="w-px h-4 bg-white/[0.08] mx-2"></div>
+      </li>
       
       <!-- Search Trigger -->
       <li>
         <button
           aria-label="Open search"
-          class="flex items-center justify-center w-8 h-8 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+          class="flex items-center justify-center w-9 h-9 text-brand-muted hover:text-brand-text hover:bg-white/[0.04] rounded-lg transition-all duration-fast"
           onclick="document.dispatchEvent(new CustomEvent('open-command-palette'))"
         >
           <i class="fa-solid fa-magnifying-glass text-sm" aria-hidden="true"></i>
@@ -65,60 +75,61 @@ const isActive = (href: string) => {
     <!-- Mobile Menu Button -->
     <button 
       id="menu-toggle"
-      class="md:hidden flex items-center justify-center w-10 h-10 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+      class="md:hidden flex items-center justify-center w-10 h-10 text-brand-muted hover:text-brand-text hover:bg-white/[0.04] rounded-lg transition-all duration-fast"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
 
     <!-- Mobile Menu Dropdown -->
     <div 
       id="mobile-menu" 
-      class="absolute top-full left-0 right-0 hidden md:hidden bg-white border-b border-zinc-100 shadow-lg"
+      class="absolute top-full left-0 right-0 hidden md:hidden"
       role="menu"
       aria-label="Mobile navigation"
     >
-      <ul class="py-3 px-4 flex flex-col gap-1" role="list">
-        {links.map(link => (
+      <div class="bg-brand-bg/95 backdrop-blur-xl border-b border-white/[0.04] shadow-2xl">
+        <ul class="py-3 px-4 flex flex-col gap-1" role="list">
+          {links.map(link => (
+            <li role="none">
+              <a 
+                href={link.href}
+                class={`block px-4 py-3 text-sm rounded-lg transition-all duration-fast ${
+                  isActive(link.href) 
+                    ? 'bg-brand-accent/[0.08] text-brand-accent font-medium' 
+                    : 'text-brand-muted hover:bg-white/[0.04] hover:text-brand-text'
+                }`}
+                role="menuitem"
+                aria-current={isActive(link.href) ? 'page' : undefined}
+              >
+                {link.text}
+              </a>
+            </li>
+          ))}
           <li role="none">
-            <a 
-              href={link.href}
-              class={`block px-4 py-3 text-sm rounded-lg transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 ${
-                isActive(link.href) 
-                  ? 'bg-zinc-100 text-zinc-900 font-medium' 
-                  : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
-              }`}
-              role="menuitem"
-              aria-current={isActive(link.href) ? 'page' : undefined}
-            >
-              {link.text}
-            </a>
+             <button 
+               class="w-full text-left flex items-center gap-2 px-4 py-3 text-sm text-brand-muted hover:bg-white/[0.04] hover:text-brand-text rounded-lg transition-all duration-fast"
+               onclick="document.dispatchEvent(new CustomEvent('open-command-palette')); document.getElementById('mobile-menu').classList.add('hidden');"
+               role="menuitem"
+             >
+               <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+               <span>Search</span>
+             </button>
           </li>
-        ))}
-        <li role="none">
-           <button 
-             class="w-full text-left flex items-center gap-2 px-4 py-3 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-lg transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1"
-             onclick="document.dispatchEvent(new CustomEvent('open-command-palette')); document.getElementById('mobile-menu').classList.add('hidden');"
-             role="menuitem"
-           >
-             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-             <span>Search</span>
-           </button>
-        </li>
-      </ul>
+        </ul>
+      </div>
     </div>
   </nav>
 </header>
 
 <style>
-  /* Mobile menu animation */
   #mobile-menu:not(.hidden) {
-    animation: slideDown var(--transition-smooth, 300ms) var(--ease-out, cubic-bezier(0, 0, 0.2, 1)) forwards;
+    animation: slideDown 300ms cubic-bezier(0, 0, 0.2, 1) forwards;
     transform-origin: top;
   }
 
@@ -131,24 +142,5 @@ const isActive = (href: string) => {
       opacity: 1;
       transform: translateY(0);
     }
-  }
-  
-  /* Active nav indicator animation */
-  nav a span[aria-hidden="true"] {
-    animation: expandWidth var(--transition-base, 200ms) var(--ease-out, cubic-bezier(0, 0, 0.2, 1)) forwards;
-  }
-  
-  @keyframes expandWidth {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
-  }
-  
-  /* Smooth header shadow on scroll (via JS if needed) */
-  header.scrolled {
-    box-shadow: var(--shadow-sm, 0 1px 3px 0 rgb(0 0 0 / 0.05));
   }
 </style>

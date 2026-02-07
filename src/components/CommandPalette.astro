@@ -1,16 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 
-// Fetch content for indexing
 const posts = await getCollection('blog');
 const searchItems = [
-  // Pages
   { title: 'Home', href: '/', type: 'Page', icon: 'fa-home' },
   { title: 'Projects', href: '/projects', type: 'Page', icon: 'fa-code' },
   { title: 'Blog', href: '/blog', type: 'Page', icon: 'fa-pen-nib' },
   { title: 'Awards', href: '/awards', type: 'Page', icon: 'fa-trophy' },
   { title: 'About', href: '/about', type: 'Page', icon: 'fa-user' },
-  // Blog Posts
   ...posts.map(post => ({
     title: post.data.title,
     href: `/blog/${post.slug}`,
@@ -23,28 +20,28 @@ const searchItems = [
 
 <div id="command-palette-container" class="hidden relative z-[100]" role="dialog" aria-modal="true">
   <!-- Backdrop -->
-  <div id="palette-backdrop" class="fixed inset-0 bg-zinc-900/20 backdrop-blur-sm transition-opacity opacity-0"></div>
+  <div id="palette-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0"></div>
   
   <!-- Modal Positioner -->
   <div class="fixed inset-0 z-[100] overflow-y-auto p-4 sm:p-6 md:p-20">
     <!-- Modal Panel -->
     <div 
       id="palette-panel"
-      class="mx-auto max-w-xl transform divide-y divide-zinc-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all scale-95 opacity-0"
+      class="mx-auto max-w-xl transform divide-y divide-white/[0.04] overflow-hidden rounded-xl bg-brand-surface border border-white/[0.08] shadow-2xl transition-all scale-95 opacity-0"
     >
       <div class="relative">
-        <i class="fa-solid fa-magnifying-glass absolute top-3.5 left-4 h-5 w-5 text-zinc-400"></i>
+        <i class="fa-solid fa-magnifying-glass absolute top-3.5 left-4 h-5 w-5 text-brand-muted"></i>
         <input 
           type="text" 
           id="palette-input"
-          class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-zinc-900 placeholder:text-zinc-400 focus:ring-0 sm:text-sm" 
+          class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-brand-text placeholder:text-neutral-600 focus:ring-0 focus:outline-none sm:text-sm font-sans" 
           placeholder="Search posts, pages, and more..." 
           role="combobox"
           aria-expanded="false"
           aria-controls="palette-results"
         />
         <div class="absolute top-3.5 right-4 flex items-center gap-1">
-           <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs text-zinc-400 border border-zinc-200 rounded font-mono">ESC</kbd>
+           <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs text-neutral-600 border border-white/[0.08] rounded font-mono bg-white/[0.02]">ESC</kbd>
         </div>
       </div>
 
@@ -53,34 +50,31 @@ const searchItems = [
         class="max-h-80 scroll-py-2 overflow-y-auto p-2"
         role="listbox"
       >
-        <!-- Results injected here -->
       </ul>
       
       <div id="palette-empty" class="hidden py-14 px-6 text-center text-sm sm:px-14">
-        <i class="fa-regular fa-face-sad-tear text-2xl text-zinc-400 mx-auto mb-4"></i>
-        <p class="mt-4 font-semibold text-zinc-900">No results found</p>
-        <p class="mt-2 text-zinc-500">We couldn't find anything with that term. Please try again.</p>
+        <i class="fa-regular fa-face-sad-tear text-2xl text-brand-muted mx-auto mb-4"></i>
+        <p class="mt-4 font-semibold text-brand-text">No results found</p>
+        <p class="mt-2 text-brand-muted">We couldn't find anything with that term. Please try again.</p>
       </div>
       
-      <div class="py-2.5 px-4 bg-zinc-50 border-t border-zinc-100 text-xs text-zinc-500 flex items-center justify-between">
+      <div class="py-2.5 px-4 bg-white/[0.02] border-t border-white/[0.04] text-xs text-neutral-600 flex items-center justify-between">
         <div class="flex gap-3">
-          <span class="flex items-center gap-1"><kbd class="font-mono bg-white border border-zinc-200 rounded px-1">↑</kbd> <kbd class="font-mono bg-white border border-zinc-200 rounded px-1">↓</kbd> to navigate</span>
-          <span class="flex items-center gap-1"><kbd class="font-mono bg-white border border-zinc-200 rounded px-1">↵</kbd> to select</span>
+          <span class="flex items-center gap-1"><kbd class="font-mono bg-white/[0.04] border border-white/[0.06] rounded px-1 text-brand-muted">&#8593;</kbd> <kbd class="font-mono bg-white/[0.04] border border-white/[0.06] rounded px-1 text-brand-muted">&#8595;</kbd> navigate</span>
+          <span class="flex items-center gap-1"><kbd class="font-mono bg-white/[0.04] border border-white/[0.06] rounded px-1 text-brand-muted">&#8629;</kbd> select</span>
         </div>
-        <span class="flex items-center gap-1">Search by <span class="font-semibold text-zinc-700">Morax</span></span>
+        <span class="flex items-center gap-1">Search by <span class="font-semibold text-brand-accent">Morax</span></span>
       </div>
     </div>
   </div>
 </div>
 
 <script define:vars={{ searchItems }}>
-  // Core Logic
   let isOpen = false;
   let query = '';
   let selectedIndex = 0;
   let filteredItems = searchItems || [];
   
-  // Helpers
   function getElements() {
     return {
       container: document.getElementById('command-palette-container'),
@@ -163,14 +157,14 @@ const searchItems = [
     filteredItems.forEach((item, index) => {
       const li = document.createElement('li');
       li.role = 'option';
-      li.className = `group flex cursor-default select-none items-center rounded-md px-3 py-2 ${index === selectedIndex ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900'}`;
+      li.className = `group flex cursor-default select-none items-center rounded-lg px-3 py-2.5 transition-colors ${index === selectedIndex ? 'bg-white/[0.06] text-brand-text' : 'text-brand-muted hover:bg-white/[0.03]'}`;
       li.innerHTML = `
-        <div class="flex h-8 w-8 flex-none items-center justify-center rounded-md border border-zinc-200 bg-white ${index === selectedIndex ? 'text-zinc-900' : 'text-zinc-400'}">
-          <i class="fa-solid ${item.icon || 'fa-file'}"></i>
+        <div class="flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] ${index === selectedIndex ? 'text-brand-accent' : 'text-brand-muted'}">
+          <i class="fa-solid ${item.icon || 'fa-file'} text-sm"></i>
         </div>
         <div class="ml-3 flex-auto truncate">
-          <div class="text-sm font-medium ${index === selectedIndex ? 'text-zinc-900' : 'text-zinc-700'}">${item.title}</div>
-          ${item.description ? `<div class="text-xs text-zinc-500 truncate">${item.description}</div>` : `<div class="text-xs text-zinc-400">${item.type}</div>`}
+          <div class="text-sm font-medium ${index === selectedIndex ? 'text-brand-text' : 'text-brand-muted'}">${item.title}</div>
+          ${item.description ? `<div class="text-xs text-neutral-600 truncate">${item.description}</div>` : `<div class="text-xs text-neutral-700">${item.type}</div>`}
         </div>
       `;
       
@@ -197,13 +191,13 @@ const searchItems = [
         const item = items[i];
         const isSelected = i === selectedIndex;
         if (isSelected) {
-            item.className = 'group flex cursor-default select-none items-center rounded-md px-3 py-2 bg-zinc-100 text-zinc-900';
-            item.children[0].className = 'flex h-8 w-8 flex-none items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-900';
-            item.children[1].children[0].className = 'text-sm font-medium text-zinc-900';
+            item.className = 'group flex cursor-default select-none items-center rounded-lg px-3 py-2.5 transition-colors bg-white/[0.06] text-brand-text';
+            item.children[0].className = 'flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-brand-accent';
+            item.children[1].children[0].className = 'text-sm font-medium text-brand-text';
         } else {
-            item.className = 'group flex cursor-default select-none items-center rounded-md px-3 py-2 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900';
-            item.children[0].className = 'flex h-8 w-8 flex-none items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-400';
-            item.children[1].children[0].className = 'text-sm font-medium text-zinc-700';
+            item.className = 'group flex cursor-default select-none items-center rounded-lg px-3 py-2.5 transition-colors text-brand-muted hover:bg-white/[0.03]';
+            item.children[0].className = 'flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-brand-muted';
+            item.children[1].children[0].className = 'text-sm font-medium text-brand-muted';
         }
     }
   }
@@ -249,14 +243,7 @@ const searchItems = [
     }
   }
 
-  // Robust Setup using global handler tracking
   document.addEventListener('astro:page-load', () => {
-    // Debug: Check if searchItems exists
-    if (!searchItems || searchItems.length === 0) {
-      console.error('Command Palette: No search items found.');
-    }
-
-    // 1. Clean up previous listeners
     if (window.__cmdPaletteOpen) {
       document.removeEventListener('open-command-palette', window.__cmdPaletteOpen);
     }
@@ -264,20 +251,16 @@ const searchItems = [
       document.removeEventListener('keydown', window.__cmdPaletteKey);
     }
 
-    // 2. Assign new handlers
     window.__cmdPaletteOpen = openPalette;
     window.__cmdPaletteKey = handleKeydown;
 
-    // 3. Attach new listeners
     document.addEventListener('open-command-palette', window.__cmdPaletteOpen);
     document.addEventListener('keydown', window.__cmdPaletteKey);
     
-    // 4. Attach local element listeners
     const { input, backdrop } = getElements();
     if (input) input.oninput = (e) => filterItems(e.target.value);
     if (backdrop) backdrop.onclick = closePalette;
 
-    // 5. Reset state
     isOpen = false;
   });
 </script>
