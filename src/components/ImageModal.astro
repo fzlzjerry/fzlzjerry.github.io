@@ -9,17 +9,17 @@ const { id } = Astro.props;
 <div
   id={id}
   class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"
-  style="background-color: rgba(0, 0, 0, 0.80); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);"
+  style="background-color: rgba(0, 0, 0, 0.86);"
   onclick="if (event.target === this) { this.classList.add('hidden'); this.classList.remove('flex'); }"
   role="dialog"
   aria-modal="true"
   aria-labelledby={`${id}-title`}
 >
-  <div class="max-w-4xl w-full rounded-xl overflow-hidden modal-content border border-white/[0.10] shadow-2xl">
+  <div class="max-w-4xl w-full rounded-[4px] overflow-hidden modal-content border border-white/[0.10] shadow-2xl">
     <div class="relative">
       <button
         onclick="this.closest('.modal').classList.add('hidden'); this.closest('.modal').classList.remove('flex');"
-        class="close-btn absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-full z-10 bg-white/[0.05] backdrop-blur-xl border border-white/[0.10] text-[#A8A8A0] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] transition-all"
+        class="close-btn absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-[2px] z-10 bg-white/[0.05] border border-white/[0.10] text-[#A8A8A0] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] transition-all"
         aria-label="Close modal"
         tabindex="0"
       >

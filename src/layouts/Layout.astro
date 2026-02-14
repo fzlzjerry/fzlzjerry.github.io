@@ -41,37 +41,37 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <style is:global>
       /* ============================================
-         WARM OBSIDIAN DESIGN SYSTEM
+         EDITORIAL INDUSTRIAL DESIGN SYSTEM
          ============================================ */
 
       :root {
         /* Backgrounds */
-        --bg-primary: #0C0C0E;
-        --bg-secondary: #141416;
-        --bg-tertiary: #1C1C1F;
-        --bg-elevated: #242428;
+        --bg-primary: #080808;
+        --bg-secondary: #0f0f10;
+        --bg-tertiary: #151518;
+        --bg-elevated: #1d1d20;
 
         /* Accent */
-        --accent: #E8A838;
-        --accent-muted: #C4893A;
+        --accent: #e8a838;
+        --accent-muted: #c4893a;
         --accent-glow: rgba(232,168,56,0.15);
         --accent-subtle: rgba(232,168,56,0.08);
 
         /* Text */
-        --text-primary: #F5F5F0;
-        --text-secondary: #A8A8A0;
-        --text-tertiary: #6B6B65;
-        --text-quaternary: #4A4A45;
+        --text-primary: #f1f0ea;
+        --text-secondary: #aeaba2;
+        --text-tertiary: #706d67;
+        --text-quaternary: #4e4b45;
 
         /* Borders */
         --border-subtle: rgba(255,255,255,0.06);
-        --border-default: rgba(255,255,255,0.10);
-        --border-strong: rgba(255,255,255,0.16);
+        --border-default: rgba(255,255,255,0.12);
+        --border-strong: rgba(255,255,255,0.2);
         --border-accent: rgba(232,168,56,0.3);
 
         /* Surfaces */
-        --surface-glass: rgba(255,255,255,0.03);
-        --surface-glass-hover: rgba(255,255,255,0.06);
+        --surface-panel: #131315;
+        --surface-panel-alt: #19191c;
 
         /* Semantic */
         --color-success: #4ADE80;
@@ -109,12 +109,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         /* Component Tokens */
         --card-padding: var(--space-6);
-        --card-radius: 0.75rem;
+        --card-radius: 0.25rem;
 
         /* Effects */
-        --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-        --shadow-md: 0 4px 12px rgba(0,0,0,0.35);
-        --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
+        --shadow-sm: 4px 4px 0 rgba(0,0,0,0.22);
+        --shadow-md: 6px 6px 0 rgba(0,0,0,0.26);
+        --shadow-lg: 10px 10px 0 rgba(0,0,0,0.3);
         --shadow-glow: 0 0 20px rgba(232,168,56,0.15);
 
         /* Focus Ring */
@@ -151,6 +151,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         font-size: var(--text-base);
         line-height: var(--leading-normal);
         color: var(--text-secondary);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0) 32%),
+          var(--bg-primary);
       }
 
       /* Film Grain Noise Overlay */
@@ -313,6 +316,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .text-balance { text-wrap: balance; }
       .text-pretty { text-wrap: pretty; }
 
+      /* Global hard-edge language */
+      .industrial-shell :is(.rounded-card, [class*="rounded-[2px]"], [class*="rounded-[3px]"], [class*="rounded-[4px]"]) {
+        border-radius: var(--card-radius);
+      }
+
+      .industrial-shell [class*="backdrop-blur"] {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
       /* ============================================
          VISUAL EFFECTS UTILITIES
          ============================================ */
@@ -330,12 +343,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         border: none;
       }
 
-      /* Glass Morphism */
+      /* Solid panel utility */
       .glass {
-        background: var(--surface-glass);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
+        background: linear-gradient(180deg, var(--surface-panel) 0%, var(--surface-panel-alt) 100%);
         border: 1px solid var(--border-default);
+        box-shadow: var(--shadow-sm);
       }
 
       /* ============================================
@@ -344,84 +356,70 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
       /* ---------- BASE: shared transition config ---------- */
       .reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .reveal-mask {
-        will-change: transform, opacity, filter;
+        will-change: transform, opacity;
       }
 
-      /* ---------- REVEAL UP (dramatic, 80px + blur) ---------- */
+      /* ---------- REVEAL UP ---------- */
       .reveal {
         opacity: 0;
-        transform: translateY(80px) scale(0.97);
-        filter: blur(8px);
+        transform: translateY(30px);
         transition:
-          opacity 900ms var(--ease-spring),
-          transform 900ms var(--ease-spring),
-          filter 800ms var(--ease-spring);
+          opacity 650ms var(--ease-spring),
+          transform 650ms var(--ease-spring);
       }
       .reveal.visible {
         opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
+        transform: translateY(0);
       }
 
-      /* ---------- REVEAL LEFT (slide from left + blur) ---------- */
+      /* ---------- REVEAL LEFT ---------- */
       .reveal-left {
         opacity: 0;
-        transform: translateX(-100px);
-        filter: blur(6px);
+        transform: translateX(-44px);
         transition:
-          opacity 900ms var(--ease-spring),
-          transform 900ms var(--ease-spring),
-          filter 800ms var(--ease-spring);
+          opacity 650ms var(--ease-spring),
+          transform 650ms var(--ease-spring);
       }
       .reveal-left.visible {
         opacity: 1;
         transform: translateX(0);
-        filter: blur(0);
       }
 
-      /* ---------- REVEAL RIGHT (slide from right + blur) ---------- */
+      /* ---------- REVEAL RIGHT ---------- */
       .reveal-right {
         opacity: 0;
-        transform: translateX(100px);
-        filter: blur(6px);
+        transform: translateX(44px);
         transition:
-          opacity 900ms var(--ease-spring),
-          transform 900ms var(--ease-spring),
-          filter 800ms var(--ease-spring);
+          opacity 650ms var(--ease-spring),
+          transform 650ms var(--ease-spring);
       }
       .reveal-right.visible {
         opacity: 1;
         transform: translateX(0);
-        filter: blur(0);
       }
 
-      /* ---------- REVEAL SCALE (zoom from center + blur) ---------- */
+      /* ---------- REVEAL SCALE ---------- */
       .reveal-scale {
         opacity: 0;
-        transform: scale(0.75);
-        filter: blur(12px);
+        transform: scale(0.92);
         transition:
-          opacity 1000ms var(--ease-spring),
-          transform 1000ms var(--ease-spring),
-          filter 900ms var(--ease-spring);
+          opacity 760ms var(--ease-spring),
+          transform 760ms var(--ease-spring);
       }
       .reveal-scale.visible {
         opacity: 1;
         transform: scale(1);
-        filter: blur(0);
       }
 
-      /* ---------- REVEAL BLUR (no movement, pure blur→sharp) ---------- */
+      /* ---------- REVEAL BLUR ---------- */
       .reveal-blur {
         opacity: 0;
-        filter: blur(20px);
-        transition:
-          opacity 1200ms var(--ease-spring),
-          filter 1200ms var(--ease-spring);
+        transform: translateY(18px);
+        transition: opacity 700ms var(--ease-spring), transform 700ms var(--ease-spring);
       }
       .reveal-blur.visible {
         opacity: 1;
-        filter: blur(0);
+        transform: translateY(0);
       }
 
       /* ---------- REVEAL MASK (horizontal clip wipe) ---------- */
@@ -629,7 +627,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col bg-[#0C0C0E]">
+  <body class="industrial-shell min-h-screen flex flex-col bg-[#080808]">
     <Header />
     <CommandPalette />
     <main id="main-content" class:list={['flex-grow w-full', !fullWidth && 'max-w-5xl mx-auto px-4 sm:px-6 py-12']} tabindex="-1">
@@ -709,7 +707,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           pre.classList.add('group', 'relative');
 
           const btn = document.createElement('button');
-          btn.className = 'copy-btn absolute top-3 right-3 text-[#6B6B65] hover:text-[#F5F5F0] bg-[#1C1C1F]/80 hover:bg-[#242428] backdrop-blur rounded-md px-2 py-1 text-xs transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 border border-white/[0.06]';
+          btn.className = 'copy-btn absolute top-3 right-3 text-[#6B6B65] hover:text-[#F5F5F0] bg-[#1C1C1F]/80 hover:bg-[#242428] rounded-[3px] px-2 py-1 text-xs transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 border border-white/[0.06]';
           btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
           btn.setAttribute('aria-label', 'Copy code');
 

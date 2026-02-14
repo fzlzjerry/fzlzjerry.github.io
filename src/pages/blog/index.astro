@@ -31,7 +31,7 @@ const sortedPosts = allPosts.sort((a, b) =>
         {categories.map(category => (
           <a
             href={`/blog/category/${category?.toLowerCase()}`}
-            class="px-3 py-1.5 text-xs font-grotesk font-medium rounded-full bg-white/[0.03] text-[#A8A8A0] border border-white/[0.06] hover:bg-[#E8A838] hover:text-[#0C0C0E] hover:border-[#E8A838] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
+            class="px-3 py-1.5 text-xs font-grotesk font-medium rounded-[2px] bg-white/[0.03] text-[#A8A8A0] border border-white/[0.06] hover:bg-[#E8A838] hover:text-[#0C0C0E] hover:border-[#E8A838] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
           >
             {category}
           </a>
@@ -94,7 +94,7 @@ const sortedPosts = allPosts.sort((a, b) =>
                   {post.data.tags.map(tag => (
                     <a
                       href={`/blog/tag/${tag.toLowerCase()}`}
-                      class="inline-flex items-center px-2 py-0.5 text-xs text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] rounded-full border border-white/[0.06] transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0C0C0E]"
+                      class="inline-flex items-center px-2 py-0.5 text-xs text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] rounded-[2px] border border-white/[0.06] transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0C0C0E]"
                     >
                       #{tag}
                     </a>

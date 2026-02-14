@@ -39,8 +39,8 @@ const awards = [
 ];
 
 const socialLinks = [
-  { href: "https://github.com/fzlzjerry", icon: "fa-brands fa-github", label: "GitHub" },
-  { href: "https://www.linkedin.com/in/morax-cheng-1ab88633a/", icon: "fa-brands fa-linkedin-in", label: "LinkedIn" },
+  { href: 'https://github.com/fzlzjerry', icon: 'fa-brands fa-github', label: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/morax-cheng-1ab88633a/', icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn' },
 ];
 ---
 
@@ -49,580 +49,1174 @@ const socialLinks = [
   description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a student developer passionate about programming and economics."
   fullWidth={true}
 >
-  <!-- Scroll Progress Bar -->
-  <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+  <div class="home-editorial" id="home-editorial">
+    <section class="home-chapter home-chapter--hero" id="hero" data-chapter="01" data-chapter-title="Opening">
+      <div class="chapter-stage">
+        <div class="chapter-grid chapter-grid--hero">
+          <p class="chapter-kicker">Student Developer &amp; Economics Enthusiast</p>
+          <h1 class="chapter-title">Hi, I'm <span>Morax</span></h1>
+          <p class="chapter-lead">Building software, exploring economic theories, and pushing the boundaries of what's possible with code.</p>
+          <p class="chapter-meta">Currently at BASIS International School Park Lane Harbour</p>
 
-  <!-- Side Navigation Dots -->
-  <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-3" aria-label="Section navigation" id="side-nav">
-    {['hero','identity','projects','achievements','blog','connect'].map((id, i) => (
-      <a href={`#${id}`} class="side-dot group relative flex items-center justify-end" data-section={id} aria-label={`Go to section ${i+1}`}>
-        <span class="opacity-0 group-hover:opacity-100 mr-3 text-[10px] font-grotesk uppercase tracking-widest text-[#6B6B65] transition-opacity duration-200 whitespace-nowrap pointer-events-none">{id === 'hero' ? 'Top' : id === 'identity' ? 'About' : id === 'achievements' ? 'Awards' : id.charAt(0).toUpperCase() + id.slice(1)}</span>
-        <span class="block w-2 h-2 rounded-full bg-[#4A4A45]/60 transition-all duration-300 group-hover:bg-[#E8A838] group-hover:scale-125"></span>
-      </a>
-    ))}
-  </nav>
-
-  <!-- ============================================
-       SECTION 1: CINEMATIC HERO
-       ============================================ -->
-  <section class="story-section relative min-h-screen flex items-center justify-center" id="hero">
-    <!-- Ambient gradient meshes — parallax layers -->
-    <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[700px] bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.12)_0%,transparent_55%)] blur-3xl parallax-bg" data-speed="0.15"></div>
-      <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(232,168,56,0.07)_0%,transparent_65%)] blur-2xl parallax-bg" data-speed="-0.1"></div>
-      <div class="absolute bottom-1/4 left-1/3 w-[350px] h-[350px] bg-[radial-gradient(circle,rgba(96,165,250,0.05)_0%,transparent_70%)] blur-2xl parallax-bg" data-speed="0.08"></div>
-    </div>
-
-    <!-- Floating geometric shapes -->
-    <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
-      <div class="absolute top-[15%] left-[10%] w-20 h-20 border border-white/[0.04] rounded-full parallax-bg" data-speed="0.06"></div>
-      <div class="absolute top-[25%] right-[12%] w-3 h-3 bg-[#E8A838]/20 rounded-full parallax-bg" data-speed="-0.12"></div>
-      <div class="absolute bottom-[20%] left-[20%] w-px h-24 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent parallax-bg" data-speed="0.04"></div>
-      <div class="absolute top-[60%] right-[8%] w-12 h-12 border border-white/[0.03] rotate-45 parallax-bg" data-speed="-0.07"></div>
-      <div class="absolute top-[40%] left-[5%] w-1.5 h-1.5 bg-[#60A5FA]/30 rounded-full parallax-bg" data-speed="0.1"></div>
-      <div class="absolute bottom-[35%] right-[25%] w-px h-16 bg-gradient-to-b from-transparent via-[#E8A838]/10 to-transparent parallax-bg" data-speed="0.05"></div>
-    </div>
-
-    <!-- Dot grid -->
-    <div class="absolute inset-0 -z-10 dot-pattern opacity-30" aria-hidden="true"></div>
-
-    <!-- Hero content — fades out on scroll -->
-    <div class="hero-fade-on-scroll story-container text-center relative z-10 py-24" id="hero-content">
-      <!-- Tagline pill — mask reveal -->
-      <div class="reveal-mask inline-flex items-center mb-8 px-5 py-2.5 rounded-full bg-white/[0.03] backdrop-blur-xl text-[#A8A8A0] text-sm font-grotesk font-medium tracking-wide border border-white/[0.06]" data-delay="1">
-        <span class="w-2 h-2 bg-[#4ADE80] rounded-full mr-3 animate-pulse" aria-hidden="true"></span>
-        Student Developer &amp; Economics Enthusiast
-      </div>
-
-      <!-- Main heading — blur reveal, massive -->
-      <h1 class="reveal-blur text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display text-[#F5F5F0] mb-8 tracking-tight leading-[1.1]" data-delay="2">
-        Hi, I'm
-        <span class="relative inline-block">
-          <span class="text-[#E8A838]">Morax</span>
-          <span class="absolute -bottom-2 left-0 w-full h-[3px] bg-gradient-to-r from-[#E8A838] to-transparent rounded-full line-grow" aria-hidden="true"></span>
-        </span>
-      </h1>
-
-      <!-- Subtitle — slide from right -->
-      <p class="reveal-right text-lg sm:text-xl md:text-2xl text-[#A8A8A0] max-w-3xl mx-auto leading-relaxed mb-6 text-pretty" data-delay="3">
-        Building software, exploring economic theories, and pushing the boundaries of what's possible with code.
-      </p>
-
-      <!-- School — scale up -->
-      <p class="reveal-scale text-sm font-grotesk text-[#6B6B65] tracking-wide mb-14" data-delay="4">
-        Currently at <span class="text-[#A8A8A0]">BASIS International School Park Lane Harbour</span>
-      </p>
-
-      <!-- CTA Buttons — slide from left & right -->
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a
-          href="/projects"
-          class="reveal-left inline-flex items-center justify-center px-8 py-3.5 bg-[#E8A838] text-[#0C0C0E] rounded-lg font-medium text-sm tracking-wide transition-all duration-base hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(232,168,56,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] press-effect"
-          data-delay="5"
-        >
-          View Projects
-          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-        </a>
-        <a
-          href="/about"
-          class="reveal-right inline-flex items-center justify-center px-8 py-3.5 bg-white/[0.03] backdrop-blur border border-white/[0.10] text-[#F5F5F0] rounded-lg font-medium text-sm tracking-wide transition-all duration-base hover:bg-white/[0.06] hover:border-white/[0.16] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] press-effect"
-          data-delay="5"
-        >
-          More About Me
-        </a>
-      </div>
-    </div>
-
-    <!-- Scroll indicator — rotating circle text -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator" aria-hidden="true">
-      <div class="relative w-20 h-20 md:w-24 md:h-24">
-        <svg class="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-          <defs>
-            <path id="circlePath" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none"/>
-          </defs>
-          <text class="fill-[#4A4A45]" style="font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; letter-spacing: 4.5px; text-transform: uppercase;">
-            <textPath href="#circlePath">SCROLL DOWN · EXPLORE MORE ·&nbsp;</textPath>
-          </text>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="w-9 h-9 md:w-10 md:h-10 rounded-full border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm flex items-center justify-center animate-gentle-bounce">
-            <svg class="w-3.5 h-3.5 text-[#6B6B65]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Horizontal Marquee Strip -->
-  <div class="overflow-hidden py-6 border-y border-white/[0.04] bg-[#0A0A0C] relative" aria-hidden="true">
-    <div class="marquee-track flex whitespace-nowrap gap-12 text-[clamp(0.75rem,1.5vw,0.875rem)] font-grotesk uppercase tracking-[0.3em] text-[#2A2A28]">
-      <span>Developer</span><span class="text-[#E8A838]/30">/</span>
-      <span>Economics</span><span class="text-[#E8A838]/30">/</span>
-      <span>Open Source</span><span class="text-[#E8A838]/30">/</span>
-      <span>Machine Learning</span><span class="text-[#E8A838]/30">/</span>
-      <span>Mathematics</span><span class="text-[#E8A838]/30">/</span>
-      <span>Python</span><span class="text-[#E8A838]/30">/</span>
-      <span>C++</span><span class="text-[#E8A838]/30">/</span>
-      <span>Rust</span><span class="text-[#E8A838]/30">/</span>
-      <span>Developer</span><span class="text-[#E8A838]/30">/</span>
-      <span>Economics</span><span class="text-[#E8A838]/30">/</span>
-      <span>Open Source</span><span class="text-[#E8A838]/30">/</span>
-      <span>Machine Learning</span><span class="text-[#E8A838]/30">/</span>
-      <span>Mathematics</span><span class="text-[#E8A838]/30">/</span>
-      <span>Python</span><span class="text-[#E8A838]/30">/</span>
-      <span>C++</span><span class="text-[#E8A838]/30">/</span>
-      <span>Rust</span><span class="text-[#E8A838]/30">/</span>
-    </div>
-  </div>
-
-  <!-- ============================================
-       SECTION 2: IDENTITY / ABOUT
-       ============================================ -->
-  <section class="story-section py-28 md:py-36 relative" id="identity">
-    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-[#0C0C0E] via-[#0E0E10] to-[#0C0C0E]" aria-hidden="true"></div>
-    <!-- Large decorative background number -->
-    <div class="absolute top-12 right-8 md:right-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">01</div>
-
-    <div class="story-container max-w-5xl mx-auto">
-      <!-- Animated divider line -->
-      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-20 line-grow"></div>
-
-      <div class="grid md:grid-cols-[280px_1fr] gap-12 md:gap-16 items-start">
-        <!-- Photo side — scale reveal -->
-        <div class="reveal-scale flex flex-col items-center md:items-start gap-6" data-delay="1">
-          <div class="relative">
-            <img
-              src="/Morax.JPG"
-              alt="Morax Cheng"
-              class="w-44 h-44 md:w-56 md:h-56 rounded-2xl object-cover border border-white/[0.10] transition-transform duration-smooth hover:scale-[1.03]"
-              style="box-shadow: 0 0 60px rgba(232,168,56,0.12), 0 0 120px rgba(232,168,56,0.04);"
-              loading="eager"
-            />
-            <div class="absolute -bottom-3 -right-3 w-8 h-8 bg-[#E8A838] rounded-lg flex items-center justify-center" aria-hidden="true">
-              <svg class="w-4 h-4 text-[#0C0C0E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-            </div>
-          </div>
-
-          <!-- Quick facts — staggered from left -->
-          <div class="flex flex-col gap-2 w-full">
-            <div class="reveal-left flex items-center gap-2 text-xs font-grotesk text-[#6B6B65]" data-delay="3">
-              <i class="fa-solid fa-location-dot text-[#4A4A45]" aria-hidden="true"></i>
-              <span>China</span>
-            </div>
-            <div class="reveal-left flex items-center gap-2 text-xs font-grotesk text-[#6B6B65]" data-delay="4">
-              <i class="fa-solid fa-graduation-cap text-[#4A4A45]" aria-hidden="true"></i>
-              <span>High School Student</span>
-            </div>
-            <div class="reveal-left flex items-center gap-2 text-xs font-grotesk text-[#6B6B65]" data-delay="5">
-              <i class="fa-solid fa-code text-[#4A4A45]" aria-hidden="true"></i>
-              <span>Open Source Contributor</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bio side -->
-        <div class="space-y-8">
-          <div>
-            <!-- Heading — mask wipe -->
-            <h2 class="reveal-mask text-3xl md:text-4xl font-display text-[#F5F5F0] mb-6" data-delay="1">
-              A story of curiosity<span class="text-[#E8A838]">.</span>
-            </h2>
-            <div class="space-y-4">
-              <!-- Paragraphs — slide from right, staggered -->
-              <p class="reveal-right text-[#A8A8A0] text-base md:text-lg leading-relaxed" data-delay="2">
-                I'm a teenage open-source enthusiast and developer from China, passionate about coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems.
-              </p>
-              <p class="reveal-right text-[#A8A8A0] text-base md:text-lg leading-relaxed" data-delay="3">
-                When I'm not coding, you can find me reading sci-fi novels or playing chess. I'm driven by the desire to understand how systems work -- from software architectures to economic models.
-              </p>
-            </div>
-          </div>
-
-          <!-- What I do cards — different directions -->
-          <div class="grid sm:grid-cols-2 gap-4">
-            <a
-              href="https://github.com/tjy-gitnub/win12"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="reveal-left group p-5 bg-[#1C1C1F] rounded-xl border border-white/[0.06] border-l-2 border-l-[#E8A838] hover:border-[rgba(232,168,56,0.3)] hover:shadow-glow transition-all duration-base" data-delay="4"
-            >
-              <span class="block text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Currently Building</span>
-              <span class="flex items-center gap-2 text-[#F5F5F0] font-medium group-hover:text-[#E8A838] transition-colors duration-fast">
-                Windows 12 Web
-                <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-fast" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-              </span>
+          <div class="chapter-actions">
+            <a href="/projects" class="action action--primary">
+              View Projects
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
             </a>
-            <div class="reveal-right p-5 bg-[#1C1C1F] rounded-xl border border-white/[0.06] border-l-2 border-l-[#60A5FA]" data-delay="4">
-              <span class="block text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Currently Learning</span>
-              <span class="text-[#F5F5F0] font-medium">Matlab &amp; ML Algorithms</span>
+            <a href="/about" class="action action--secondary">More About Me</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="editorial-strip" aria-hidden="true">
+      <div class="editorial-strip__track">
+        <span>Developer</span>
+        <span class="sep">/</span>
+        <span>Economics</span>
+        <span class="sep">/</span>
+        <span>Open Source</span>
+        <span class="sep">/</span>
+        <span>Machine Learning</span>
+        <span class="sep">/</span>
+        <span>Mathematics</span>
+        <span class="sep">/</span>
+        <span>Python</span>
+        <span class="sep">/</span>
+        <span>C++</span>
+        <span class="sep">/</span>
+        <span>Rust</span>
+        <span class="sep">/</span>
+        <span>Developer</span>
+        <span class="sep">/</span>
+        <span>Economics</span>
+        <span class="sep">/</span>
+        <span>Open Source</span>
+        <span class="sep">/</span>
+        <span>Machine Learning</span>
+        <span class="sep">/</span>
+        <span>Mathematics</span>
+        <span class="sep">/</span>
+        <span>Python</span>
+        <span class="sep">/</span>
+        <span>C++</span>
+        <span class="sep">/</span>
+        <span>Rust</span>
+        <span class="sep">/</span>
+      </div>
+    </div>
+
+    <section class="home-chapter" id="identity" data-chapter="02" data-chapter-title="Identity">
+      <div class="chapter-stage">
+        <div class="chapter-grid chapter-grid--identity">
+          <p class="section-index">01</p>
+
+          <figure class="chapter-photo panel">
+            <img src="/Morax.JPG" alt="Morax Cheng" loading="eager" />
+            <figcaption>
+              <div><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>China</span></div>
+              <div><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>High School Student</span></div>
+              <div><i class="fa-solid fa-code" aria-hidden="true"></i><span>Open Source Contributor</span></div>
+            </figcaption>
+          </figure>
+
+          <div class="chapter-copy">
+            <h2 class="chapter-heading">A story of curiosity<span>.</span></h2>
+            <p>I'm a teenage open-source enthusiast and developer from China, passionate about coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems.</p>
+            <p>When I'm not coding, you can find me reading sci-fi novels or playing chess. I'm driven by the desire to understand how systems work -- from software architectures to economic models.</p>
+
+            <div class="chapter-split">
+              <a
+                href="https://github.com/tjy-gitnub/win12"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="panel panel-link"
+              >
+                <span class="panel-label">Currently Building</span>
+                <span class="panel-value">Windows 12 Web</span>
+              </a>
+              <div class="panel">
+                <span class="panel-label">Currently Learning</span>
+                <span class="panel-value">Matlab &amp; ML Algorithms</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============================================
-       SECTION 3: FEATURED PROJECTS
-       ============================================ -->
-  <section class="story-section py-28 md:py-36 relative" id="projects">
-    <div class="absolute top-12 left-8 md:left-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">02</div>
-    <!-- Decorative parallax bg -->
-    <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(232,168,56,0.05)_0%,transparent_70%)] blur-3xl parallax-bg" data-speed="0.12"></div>
-      <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(96,165,250,0.03)_0%,transparent_70%)] blur-3xl parallax-bg" data-speed="-0.08"></div>
-    </div>
+    <section class="home-chapter" id="projects" data-chapter="03" data-chapter-title="Projects">
+      <div class="chapter-stage">
+        <div class="chapter-grid chapter-grid--projects">
+          <p class="section-index">02</p>
 
-    <div class="story-container max-w-5xl mx-auto">
-      <!-- Section header -->
-      <div class="flex items-end justify-between mb-16">
-        <div>
-          <span class="reveal-mask block text-xs font-grotesk font-semibold text-[#E8A838] uppercase tracking-[0.2em] mb-4" data-delay="1">Featured Work</span>
-          <h2 class="reveal-blur text-3xl md:text-4xl font-display text-[#F5F5F0]" data-delay="2">
-            Things I've built<span class="text-[#E8A838]">.</span>
-          </h2>
-        </div>
-        <a
-          href="/projects"
-          class="reveal-right hidden sm:inline-flex items-center gap-2 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast" data-delay="2"
-        >
-          View all
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-        </a>
-      </div>
+          <div class="chapter-header">
+            <span>Featured Work</span>
+            <h2 class="chapter-heading">Things I've built<span>.</span></h2>
+            <a href="/projects" class="header-link">
+              View all
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
+            </a>
+          </div>
 
-      <!-- Project cards — alternating left/right reveals -->
-      <div class="space-y-8">
-        {projects.map((project, idx) => (
-          <article
-            class={`${idx % 2 === 0 ? 'reveal-left' : 'reveal-right'} tilt-card group relative bg-[#1C1C1F] border rounded-2xl overflow-hidden transition-all duration-base hover:-translate-y-1 hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] ${project.featured ? 'border-white/[0.06] border-t-2 border-t-[#E8A838]' : 'border-white/[0.06] hover:border-[rgba(232,168,56,0.3)]'}`}
-            data-delay={String(idx + 1)}
-          >
-            <div class="absolute inset-0 dot-pattern opacity-20" aria-hidden="true"></div>
+          <div class="project-list">
+            {projects.map((project, idx) => (
+              <article class="project-item panel">
+                <div class="project-item__meta">
+                  {project.featured && <span class="project-flag">Featured</span>}
+                  <span class="project-order">0{idx + 1}</span>
+                </div>
 
-            <div class="relative p-8 md:p-10">
-              <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                <div class="flex-1 space-y-4">
-                  <div class="flex items-center gap-3">
-                    {project.featured && (
-                      <span class="inline-flex items-center px-2.5 py-1 text-xs font-grotesk font-medium text-[#E8A838] bg-[rgba(232,168,56,0.08)] rounded-full border border-[rgba(232,168,56,0.2)]">
-                        Featured
-                      </span>
-                    )}
-                    <span class="text-xs font-grotesk text-[#4A4A45]">0{idx + 1}</span>
-                  </div>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
 
-                  <h3 class="text-2xl md:text-3xl font-display text-[#F5F5F0] group-hover:text-[#E8A838] transition-colors duration-fast">
-                    {project.title}
-                  </h3>
-
-                  <p class="text-[#A8A8A0] leading-relaxed max-w-xl">
-                    {project.description}
-                  </p>
-
-                  <div class="flex flex-wrap gap-2 pt-2">
-                    {project.tech.map((tech) => (
-                      <span class="inline-flex items-center px-3 py-1 bg-white/[0.05] text-[#A8A8A0] text-xs rounded-full font-grotesk font-medium border border-white/[0.10]">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                <div class="project-tech">
+                  {project.tech.map((tech) => (
+                    <span>{tech}</span>
+                  ))}
                 </div>
 
                 <a
                   href={project.github}
-                  class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-white/[0.03] border border-white/[0.10] text-[#A8A8A0] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] rounded-lg font-grotesk text-sm font-medium transition-all duration-fast"
+                  class="project-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i class="fa-brands fa-github" aria-hidden="true"></i>
                   View on GitHub
-                  <svg class="w-3.5 h-3.5 transition-transform duration-fast group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"></path></svg>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14 5h5v5m0-5-9 9m-3 5h10"></path></svg>
                 </a>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 4: STATS + AWARDS
-       ============================================ -->
-  <section class="story-section py-28 md:py-36 relative" id="achievements">
-    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-[#0C0C0E] via-[#0E0E11] to-[#0C0C0E]" aria-hidden="true"></div>
-    <div class="absolute top-12 right-8 md:right-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">03</div>
-
-    <div class="story-container max-w-5xl mx-auto">
-      <!-- Section header — center, blur reveal -->
-      <div class="text-center mb-20">
-        <span class="reveal-mask block text-xs font-grotesk font-semibold text-[#E8A838] uppercase tracking-[0.2em] mb-4" data-delay="1">Achievements</span>
-        <h2 class="reveal-blur text-3xl md:text-4xl font-display text-[#F5F5F0]" data-delay="2">
-          By the numbers<span class="text-[#E8A838]">.</span>
-        </h2>
-      </div>
-
-      <!-- Stats counters — scale reveal (dramatic zoom-in) -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
-        {stats.map((stat, idx) => (
-          <div class="reveal-scale text-center p-6 bg-[#1C1C1F]/50 rounded-2xl border border-white/[0.06] relative group hover:border-[rgba(232,168,56,0.2)] transition-all duration-base" data-delay={String(idx + 1)}>
-            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.06)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-smooth rounded-2xl" aria-hidden="true"></div>
-            <div class="relative">
-              <div class="text-4xl md:text-5xl font-display text-[#F5F5F0] mb-2">
-                <span class="counter-value" data-target={stat.value}>0</span><span class="text-[#E8A838]">{stat.suffix}</span>
-              </div>
-              <span class="text-xs font-grotesk font-medium text-[#6B6B65] uppercase tracking-wider">{stat.label}</span>
-            </div>
+              </article>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
+    </section>
 
-      <!-- Divider line grow -->
-      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-12 line-grow"></div>
+    <section class="home-chapter" id="achievements" data-chapter="04" data-chapter-title="Achievements">
+      <div class="chapter-stage">
+        <div class="chapter-grid chapter-grid--achievements">
+          <p class="section-index">03</p>
 
-      <!-- Awards — alternating left/right -->
-      <div class="grid sm:grid-cols-2 gap-4">
-        {awards.map((award, idx) => (
-          <div class={`${idx % 2 === 0 ? 'reveal-left' : 'reveal-right'} flex items-start gap-4 p-5 bg-[#1C1C1F]/50 rounded-xl border border-white/[0.06] hover:border-[rgba(232,168,56,0.2)] transition-all duration-base group`} data-delay={String(idx + 1)}>
-            <div class="shrink-0 w-10 h-10 flex items-center justify-center bg-white/[0.03] border border-white/[0.06] rounded-lg text-[#6B6B65] group-hover:text-[#E8A838] group-hover:border-[rgba(232,168,56,0.2)] transition-all duration-fast">
-              <i class={`fa-solid ${award.icon}`} aria-hidden="true"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-medium text-[#F5F5F0] mb-1 group-hover:text-[#E8A838] transition-colors duration-fast">{award.title}</h3>
-              <span class="text-xs font-grotesk text-[#6B6B65]">{award.event}</span>
-            </div>
+          <div class="chapter-header chapter-header--stacked">
+            <span>Achievements</span>
+            <h2 class="chapter-heading">By the numbers<span>.</span></h2>
           </div>
-        ))}
-      </div>
 
-      <div class="text-center mt-10">
-        <a
-          href="/awards"
-          class="reveal inline-flex items-center gap-2 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast"
-        >
-          View all awards
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-        </a>
-      </div>
-    </div>
-  </section>
+          <div class="stats-grid">
+            {stats.map((stat) => (
+              <div class="stat-card panel">
+                <div class="stat-value">
+                  <span class="counter-value" data-target={stat.value}>0</span><span>{stat.suffix}</span>
+                </div>
+                <p>{stat.label}</p>
+              </div>
+            ))}
+          </div>
 
-  <!-- ============================================
-       SECTION 5: LATEST BLOG
-       ============================================ -->
-  <section class="story-section py-28 md:py-36 relative" id="blog">
-    <div class="absolute top-12 left-8 md:left-16 text-[8rem] md:text-[12rem] font-display leading-none text-white/[0.015] select-none pointer-events-none" aria-hidden="true">04</div>
-    <div class="story-container max-w-5xl mx-auto">
-      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-20 line-grow"></div>
+          <div class="awards-grid">
+            {awards.map((award) => (
+              <div class="award-item panel">
+                <i class={`fa-solid ${award.icon}`} aria-hidden="true"></i>
+                <div>
+                  <h3>{award.title}</h3>
+                  <p>{award.event}</p>
+                </div>
+              </div>
+            ))}
+          </div>
 
-      <div class="grid md:grid-cols-[1fr_1.5fr] gap-12 md:gap-16 items-start">
-        <!-- Left side — from left -->
-        <div>
-          <span class="reveal-mask block text-xs font-grotesk font-semibold text-[#E8A838] uppercase tracking-[0.2em] mb-4" data-delay="1">From the Blog</span>
-          <h2 class="reveal-left text-3xl md:text-4xl font-display text-[#F5F5F0] mb-6" data-delay="2">
-            Latest writing<span class="text-[#E8A838]">.</span>
-          </h2>
-          <p class="reveal-left text-[#6B6B65] text-sm leading-relaxed mb-8" data-delay="3">
-            Thoughts on technology, economics, and everything in between.
-          </p>
-          <a
-            href="/blog"
-            class="reveal-left inline-flex items-center gap-2 text-sm font-grotesk font-medium text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast" data-delay="4"
-          >
-            View all posts
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          <a href="/awards" class="header-link awards-link">
+            View all awards
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
           </a>
         </div>
+      </div>
+    </section>
 
-        <!-- Right side — from right -->
-        {latestPost && (
-          <a
-            href={`/blog/${latestPost.slug}`}
-            class="reveal-right group block p-8 bg-[#1C1C1F] border border-white/[0.06] rounded-2xl hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1 transition-all duration-base" data-delay="2"
-          >
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center gap-3">
-                {latestPost.data.category && (
-                  <span class="px-2.5 py-1 text-xs font-grotesk font-medium text-[#E8A838] bg-[rgba(232,168,56,0.08)] rounded-full border border-[rgba(232,168,56,0.2)]">
-                    {latestPost.data.category}
-                  </span>
-                )}
+    <section class="home-chapter" id="blog" data-chapter="05" data-chapter-title="Writing">
+      <div class="chapter-stage">
+        <div class="chapter-grid chapter-grid--blog">
+          <p class="section-index">04</p>
+
+          <div class="blog-overview">
+            <span>From the Blog</span>
+            <h2 class="chapter-heading">Latest writing<span>.</span></h2>
+            <p>Thoughts on technology, economics, and everything in between.</p>
+            <a href="/blog" class="header-link">
+              View all posts
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
+            </a>
+          </div>
+
+          {latestPost && (
+            <article class="latest-post panel">
+              <div class="latest-post__meta">
+                {latestPost.data.category && <span>{latestPost.data.category}</span>}
+                <time datetime={latestPost.data.date}>
+                  {new Date(latestPost.data.date).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </time>
               </div>
-              <time datetime={latestPost.data.date} class="text-xs font-grotesk text-[#6B6B65]">
-                {new Date(latestPost.data.date).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </time>
+
+              <h3>{latestPost.data.title}</h3>
+
+              {latestPost.data.excerpt && <p>{latestPost.data.excerpt}</p>}
+
+              {latestPost.data.tags && (
+                <div class="latest-post__tags">
+                  {latestPost.data.tags.slice(0, 4).map((tag) => (
+                    <span>#{tag}</span>
+                  ))}
+                </div>
+              )}
+
+              <a href={`/blog/${latestPost.slug}`} class="project-link">
+                Read article
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
+              </a>
+            </article>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section class="home-chapter home-chapter--connect" id="connect" data-chapter="06" data-chapter-title="Connect">
+      <div class="chapter-stage">
+        <div class="chapter-grid chapter-grid--connect">
+          <div class="connect-copy">
+            <h2 class="chapter-heading">Let's build something <span>together</span>.</h2>
+            <p>I'm always interested in collaborating on open-source projects, discussing economics, or just chatting about technology.</p>
+
+            <div class="social-row">
+              {socialLinks.map((link) => (
+                <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
+                  <i class={link.icon} aria-hidden="true"></i>
+                </a>
+              ))}
+              <a href="mailto:james20081204@gmail.com" aria-label="Send email">
+                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+              </a>
             </div>
 
-            <h3 class="text-2xl font-display text-[#F5F5F0] mb-4 group-hover:text-[#E8A838] transition-colors duration-fast leading-snug">
-              {latestPost.data.title}
-            </h3>
-
-            {latestPost.data.excerpt && (
-              <p class="text-[#A8A8A0] leading-relaxed mb-6 line-clamp-3">
-                {latestPost.data.excerpt}
-              </p>
-            )}
-
-            {latestPost.data.tags && (
-              <div class="flex flex-wrap gap-2 pt-4 border-t border-white/[0.06]">
-                {latestPost.data.tags.slice(0, 4).map(tag => (
-                  <span class="inline-flex items-center px-2 py-0.5 bg-white/[0.05] text-[#6B6B65] text-xs rounded-full font-medium border border-white/[0.10]">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <div class="flex items-center gap-2 mt-6 text-sm font-grotesk font-medium text-[#6B6B65] group-hover:text-[#E8A838] transition-colors duration-fast">
-              Read article
-              <svg class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </div>
-          </a>
-        )}
+            <a href="mailto:james20081204@gmail.com" class="action action--primary action--mail">
+              <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+              Get in Touch
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 6: CTA / CONNECT
-       ============================================ -->
-  <section class="story-section py-28 md:py-36 relative" id="connect">
-    <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.08)_0%,transparent_70%)] blur-3xl parallax-bg" data-speed="0.1"></div>
-    </div>
-
-    <div class="story-container max-w-3xl mx-auto text-center">
-      <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent mb-20 line-grow"></div>
-
-      <!-- Heading — blur reveal for drama -->
-      <h2 class="reveal-blur text-4xl md:text-5xl font-display text-[#F5F5F0] mb-6" data-delay="1">
-        Let's build something<br/>
-        <span class="text-[#E8A838]">together</span><span class="text-[#F5F5F0]">.</span>
-      </h2>
-
-      <p class="reveal-scale text-[#A8A8A0] text-lg leading-relaxed mb-12 max-w-xl mx-auto" data-delay="2">
-        I'm always interested in collaborating on open-source projects, discussing economics, or just chatting about technology.
-      </p>
-
-      <!-- Social links — staggered scale -->
-      <div class="flex items-center justify-center gap-4 mb-8">
-        {socialLinks.map((link, idx) => (
-          <a
-            href={link.href}
-            class={`reveal-scale group flex items-center justify-center w-12 h-12 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-full transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={link.label}
-            data-delay={String(idx + 3)}
-          >
-            <i class={`${link.icon} text-lg transition-transform duration-fast group-hover:scale-110`} aria-hidden="true"></i>
-          </a>
-        ))}
-        <a
-          href="mailto:james20081204@gmail.com"
-          class="reveal-scale group flex items-center justify-center w-12 h-12 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-full transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
-          aria-label="Send email"
-          data-delay="5"
-        >
-          <i class="fa-regular fa-envelope text-lg transition-transform duration-fast group-hover:scale-110" aria-hidden="true"></i>
-        </a>
-      </div>
-
-      <a
-        href="mailto:james20081204@gmail.com"
-        class="reveal inline-flex items-center gap-2 px-8 py-3.5 bg-[#E8A838] text-[#0C0C0E] rounded-lg font-medium text-sm tracking-wide transition-all duration-base hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(232,168,56,0.35)] press-effect" data-delay="6"
-      >
-        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
-        Get in Touch
-      </a>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>
 
-<!-- ============================================
-     SCROLL ENGINE
-     ============================================ -->
+<style>
+  .home-editorial {
+    --home-bg-0: #080808;
+    --home-bg-1: #101011;
+    --home-bg-2: #161618;
+    --home-bg-3: #1d1d21;
+    --home-panel: #121214;
+    --home-panel-alt: #17171a;
+    --home-text-1: #eceae5;
+    --home-text-2: #b1aea6;
+    --home-text-3: #73706a;
+    --home-line-soft: rgba(255, 255, 255, 0.08);
+    --home-line-strong: rgba(255, 255, 255, 0.16);
+    --home-accent: #e8a838;
+    --home-accent-muted: #c4893a;
+    --home-shadow-hard: 6px 6px 0 rgba(0, 0, 0, 0.35);
+    --home-radius-1: 2px;
+    --home-radius-2: 4px;
+
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 12% 16%, rgba(232, 168, 56, 0.08) 0%, transparent 34%),
+      radial-gradient(circle at 86% 60%, rgba(232, 168, 56, 0.05) 0%, transparent 30%),
+      linear-gradient(180deg, var(--home-bg-0) 0%, var(--home-bg-1) 28%, var(--home-bg-2) 72%, var(--home-bg-0) 100%);
+  }
+
+  .home-editorial::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent 52px,
+      rgba(255, 255, 255, 0.025) 52px,
+      rgba(255, 255, 255, 0.025) 53px
+    );
+    z-index: -1;
+  }
+
+  .home-chapter {
+    --chapter-progress: 0;
+    --chapter-enter: 0;
+    --chapter-hold: 0;
+    --chapter-exit: 0;
+    --chapter-visibility: 0;
+
+    position: relative;
+    min-height: 186vh;
+    border-top: 1px solid var(--home-line-soft);
+  }
+
+  .home-chapter--hero {
+    min-height: 100vh;
+    overflow: clip;
+    --chapter-visibility: 1;
+    --chapter-enter: 1;
+    --chapter-hold: 1;
+    --chapter-exit: 0;
+  }
+
+
+  .home-chapter:first-of-type {
+    border-top: none;
+  }
+
+  .chapter-stage {
+    position: sticky;
+    top: 3.5rem;
+    min-height: calc(100vh - 3.5rem);
+    display: flex;
+    align-items: center;
+    padding: clamp(1.1rem, 2vw, 2.4rem) 0;
+  }
+
+  .chapter-grid {
+    width: min(1240px, calc(100vw - 3rem));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(0.8rem, 1.8vw, 1.3rem);
+    align-items: start;
+  }
+
+  .section-index {
+    grid-column: 1 / span 2;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(3.5rem, 9vw, 8.5rem);
+    line-height: 0.9;
+    color: rgba(255, 255, 255, 0.06);
+    pointer-events: none;
+  }
+
+  .chapter-kicker,
+  .chapter-title,
+  .chapter-lead,
+  .chapter-meta,
+  .chapter-heading,
+  .chapter-copy p,
+  .chapter-copy .chapter-split,
+  .chapter-header,
+  .chapter-actions,
+  .project-list,
+  .stats-grid,
+  .awards-grid,
+  .blog-overview,
+  .latest-post,
+  .connect-copy,
+  .chapter-photo,
+  .awards-link {
+    --entry-x: -22px;
+    --entry-y: 28px;
+    --exit-x: 16px;
+    --exit-y: 14px;
+    --entry-scale: 0.968;
+    --exit-scale: 0.985;
+
+    opacity: var(--chapter-visibility);
+    transform: translate3d(
+      calc((1 - var(--chapter-enter)) * var(--entry-x) + var(--chapter-exit) * var(--exit-x)),
+      calc((1 - var(--chapter-enter)) * var(--entry-y) - var(--chapter-exit) * var(--exit-y)),
+      0
+    ) scale(
+      calc(
+        var(--entry-scale) +
+        (var(--chapter-enter) * (1 - var(--entry-scale))) -
+        (var(--chapter-exit) * (1 - var(--exit-scale)))
+      )
+    );
+    transition: transform 220ms linear, opacity 220ms linear;
+  }
+
+  .panel {
+    border: 1px solid var(--home-line-soft);
+    background: linear-gradient(180deg, var(--home-panel) 0%, var(--home-panel-alt) 100%);
+    border-radius: var(--home-radius-2);
+    box-shadow: var(--home-shadow-hard);
+  }
+
+  .chapter-grid--hero {
+    position: relative;
+    z-index: 1;
+    align-content: end;
+    min-height: 100%;
+    width: min(1420px, calc(100vw - 2.25rem));
+    padding-bottom: clamp(2rem, 5vh, 4rem);
+  }
+
+  .home-chapter--hero .chapter-stage {
+    top: 0;
+    min-height: calc(100vh - 3.5rem);
+    align-items: center;
+    padding: clamp(3rem, 9vh, 7rem) 0 clamp(1.25rem, 3vh, 2.5rem);
+  }
+
+
+  .chapter-grid--hero .chapter-kicker {
+    grid-column: 3 / span 7;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.69rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+    --entry-x: -90px;
+    --entry-y: 62px;
+    --exit-x: 68px;
+    --exit-y: 24px;
+  }
+
+  .chapter-grid--hero .chapter-title {
+    grid-column: 3 / span 8;
+    margin: 0;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(3.2rem, 9.6vw, 8.2rem);
+    font-weight: 400;
+    line-height: 0.92;
+    color: var(--home-text-1);
+    max-width: 15ch;
+    --entry-x: -66px;
+    --entry-y: 46px;
+    --exit-x: 86px;
+    --exit-y: 36px;
+    --entry-scale: 0.94;
+    --exit-scale: 0.97;
+  }
+
+  .chapter-grid--hero .chapter-title span {
+    color: var(--home-accent);
+  }
+
+  .chapter-grid--hero .chapter-lead {
+    grid-column: 3 / span 6;
+    margin: 0;
+    max-width: 36rem;
+    font-size: clamp(1.05rem, 2.15vw, 1.52rem);
+    line-height: 1.56;
+    color: var(--home-text-2);
+    --entry-x: -38px;
+    --entry-y: 34px;
+    --exit-x: 50px;
+    --exit-y: 22px;
+  }
+
+  .chapter-grid--hero .chapter-meta {
+    grid-column: 3 / span 6;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+    --entry-x: -30px;
+    --entry-y: 28px;
+    --exit-x: 26px;
+    --exit-y: 10px;
+  }
+
+  .chapter-actions {
+    grid-column: 3 / span 6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    --entry-x: -28px;
+    --entry-y: 26px;
+    --exit-x: 18px;
+    --exit-y: 8px;
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.76rem 1.1rem;
+    border-radius: var(--home-radius-1);
+    border: 1px solid transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    transition: transform 180ms ease, color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  }
+
+  .action:hover {
+    transform: translate(-2px, -2px);
+  }
+
+  .action--primary {
+    background: var(--home-accent);
+    color: #0b0b0b;
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .action--secondary {
+    background: #151518;
+    border-color: var(--home-line-strong);
+    color: var(--home-text-1);
+  }
+
+
+  .editorial-strip {
+    overflow: hidden;
+    border-top: 1px solid var(--home-line-soft);
+    border-bottom: 1px solid var(--home-line-soft);
+    background: #0b0b0c;
+    padding: 0.8rem 0;
+  }
+
+  .editorial-strip__track {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-inline: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+    animation: strip-scroll 22s linear infinite;
+  }
+
+  .editorial-strip .sep {
+    color: rgba(232, 168, 56, 0.55);
+  }
+
+  @keyframes strip-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .chapter-heading {
+    margin: 0;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 5.5vw, 4.6rem);
+    line-height: 0.98;
+    color: var(--home-text-1);
+  }
+
+  .chapter-heading span {
+    color: var(--home-accent);
+  }
+
+  .chapter-grid--identity .chapter-photo {
+    grid-column: 3 / span 3;
+    padding: 1rem;
+  }
+
+  .chapter-photo img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--home-radius-2);
+    border: 1px solid var(--home-line-soft);
+  }
+
+  .chapter-photo figcaption {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .chapter-photo figcaption div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--home-text-2);
+  }
+
+  .chapter-photo figcaption i {
+    color: var(--home-accent-muted);
+    width: 0.9rem;
+  }
+
+  .chapter-grid--identity .chapter-copy {
+    grid-column: 6 / span 6;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .chapter-copy p {
+    margin: 0;
+    color: var(--home-text-2);
+    line-height: 1.65;
+    font-size: 1.02rem;
+  }
+
+  .chapter-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 0.4rem;
+  }
+
+  .chapter-split .panel {
+    padding: 0.85rem 0.95rem;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .panel-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+  }
+
+  .panel-value {
+    color: var(--home-text-1);
+    font-size: 1rem;
+  }
+
+  .panel-link:hover {
+    border-color: rgba(232, 168, 56, 0.45);
+    transform: translate(-2px, -2px);
+  }
+
+  .chapter-grid--projects .chapter-header {
+    grid-column: 3 / span 4;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .chapter-header > span,
+  .blog-overview > span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+  }
+
+  .header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.69rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--home-text-2);
+    border-bottom: 1px solid var(--home-line-soft);
+    padding-bottom: 0.35rem;
+    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  }
+
+  .header-link:hover {
+    color: var(--home-accent);
+    border-color: rgba(232, 168, 56, 0.45);
+    transform: translateX(2px);
+  }
+
+  .chapter-grid--projects .project-list {
+    grid-column: 7 / span 5;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .project-item {
+    padding: 1rem;
+    display: grid;
+    gap: 0.72rem;
+  }
+
+  .project-item__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .project-flag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #141414;
+    background: var(--home-accent);
+    padding: 0.22rem 0.45rem;
+    border-radius: var(--home-radius-1);
+  }
+
+  .project-order {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    color: var(--home-text-3);
+  }
+
+  .project-item h3,
+  .award-item h3,
+  .latest-post h3 {
+    margin: 0;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    color: var(--home-text-1);
+  }
+
+  .project-item p,
+  .award-item p,
+  .latest-post p,
+  .connect-copy p,
+  .blog-overview p {
+    margin: 0;
+    color: var(--home-text-2);
+    line-height: 1.58;
+  }
+
+  .project-tech,
+  .latest-post__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .project-tech span,
+  .latest-post__tags span {
+    border: 1px solid var(--home-line-soft);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--home-text-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--home-radius-1);
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    width: fit-content;
+    color: var(--home-text-2);
+    border: 1px solid var(--home-line-soft);
+    padding: 0.46rem 0.64rem;
+    border-radius: var(--home-radius-1);
+    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  }
+
+  .project-link:hover {
+    color: var(--home-accent);
+    border-color: rgba(232, 168, 56, 0.45);
+    transform: translate(-1px, -1px);
+  }
+
+  .chapter-grid--achievements .chapter-header {
+    grid-column: 3 / span 9;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .stats-grid {
+    grid-column: 3 / span 9;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .stat-value {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1;
+    color: var(--home-text-1);
+  }
+
+  .stat-value span:last-child {
+    color: var(--home-accent);
+  }
+
+  .stat-card p {
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+  }
+
+  .awards-grid {
+    grid-column: 3 / span 9;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .award-item {
+    padding: 0.9rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+
+  .award-item i {
+    margin-top: 0.2rem;
+    color: var(--home-accent-muted);
+    font-size: 0.92rem;
+  }
+
+  .award-item h3 {
+    font-size: 1.05rem;
+  }
+
+  .award-item p {
+    margin-top: 0.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+  }
+
+  .awards-link {
+    grid-column: 3 / span 9;
+    margin-top: 0.35rem;
+  }
+
+  .chapter-grid--blog .blog-overview {
+    grid-column: 3 / span 4;
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .chapter-grid--blog .latest-post {
+    grid-column: 7 / span 5;
+    padding: 1.1rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .latest-post__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .latest-post__meta span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #151515;
+    background: var(--home-accent);
+    padding: 0.22rem 0.45rem;
+    border-radius: var(--home-radius-1);
+  }
+
+  .latest-post__meta time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+  }
+
+  .chapter-grid--connect {
+    align-content: center;
+  }
+
+  .connect-copy {
+    grid-column: 3 / span 8;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .connect-copy .chapter-heading span {
+    color: var(--home-accent);
+  }
+
+  .social-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .social-row a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.15rem;
+    height: 2.15rem;
+    border: 1px solid var(--home-line-soft);
+    background: #141417;
+    border-radius: var(--home-radius-1);
+    color: var(--home-text-3);
+    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  }
+
+  .social-row a:hover {
+    color: var(--home-accent);
+    border-color: rgba(232, 168, 56, 0.45);
+    transform: translate(-1px, -1px);
+  }
+
+  .action--mail {
+    width: fit-content;
+  }
+
+  @media (max-width: 1279px) {
+    .chapter-grid {
+      width: min(1060px, calc(100vw - 3rem));
+    }
+
+    .chapter-grid--hero .hero-ruler {
+      grid-column: 1 / span 1;
+    }
+
+    .chapter-grid--hero .chapter-title,
+    .chapter-grid--hero .chapter-kicker,
+    .chapter-grid--hero .chapter-lead,
+    .chapter-grid--hero .chapter-meta,
+    .chapter-actions {
+      grid-column: 2 / span 10;
+    }
+
+    .section-index {
+      grid-column: 1 / span 2;
+      font-size: clamp(3rem, 7vw, 6rem);
+    }
+
+    .chapter-grid--identity .chapter-photo {
+      grid-column: 3 / span 4;
+    }
+
+    .chapter-grid--identity .chapter-copy {
+      grid-column: 7 / span 5;
+    }
+
+    .chapter-grid--projects .chapter-header,
+    .chapter-grid--blog .blog-overview {
+      grid-column: 3 / span 5;
+    }
+
+    .chapter-grid--projects .project-list,
+    .chapter-grid--blog .latest-post {
+      grid-column: 8 / span 4;
+    }
+
+    .chapter-grid--achievements .chapter-header,
+    .stats-grid,
+    .awards-grid,
+    .awards-link {
+      grid-column: 3 / span 9;
+    }
+
+    .chapter-grid--connect .connect-copy {
+      grid-column: 2 / span 10;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .home-chapter {
+      min-height: auto;
+      padding: 3.8rem 0;
+      border-top: 1px solid var(--home-line-soft);
+    }
+
+    .home-chapter--hero {
+      min-height: auto;
+    }
+
+    .chapter-grid--hero .hero-ruler {
+      display: none;
+    }
+
+    .chapter-stage {
+      position: relative;
+      top: auto;
+      min-height: auto;
+      padding: 0;
+    }
+
+    .chapter-grid {
+      width: min(760px, calc(100vw - 2rem));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .section-index {
+      grid-column: 1 / span 6;
+      font-size: 2.8rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .chapter-grid--hero .chapter-kicker,
+    .chapter-grid--hero .chapter-title,
+    .chapter-grid--hero .chapter-lead,
+    .chapter-grid--hero .chapter-meta,
+    .chapter-actions,
+    .chapter-grid--hero .hero-ruler,
+      .chapter-grid--identity .chapter-photo,
+    .chapter-grid--identity .chapter-copy,
+    .chapter-grid--projects .chapter-header,
+    .chapter-grid--projects .project-list,
+    .chapter-grid--achievements .chapter-header,
+    .stats-grid,
+    .awards-grid,
+    .awards-link,
+    .chapter-grid--blog .blog-overview,
+    .chapter-grid--blog .latest-post,
+    .chapter-grid--connect .connect-copy {
+      grid-column: 1 / span 6;
+    }
+
+    .chapter-split,
+    .stats-grid,
+    .awards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .editorial-strip {
+      padding: 0.6rem 0;
+    }
+
+    .editorial-strip__track {
+      animation: none;
+      width: auto;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      padding-inline: 1rem;
+      justify-content: center;
+    }
+
+    .chapter-kicker,
+    .chapter-title,
+    .chapter-lead,
+    .chapter-meta,
+    .chapter-heading,
+    .chapter-copy p,
+    .chapter-copy .chapter-split,
+    .chapter-header,
+    .project-list,
+    .stats-grid,
+    .awards-grid,
+    .blog-overview,
+    .latest-post,
+    .connect-copy,
+        .chapter-photo,
+    .awards-link {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .chapter-grid--hero .chapter-title {
+      font-size: clamp(2.3rem, 14vw, 3.8rem);
+    }
+
+    .chapter-heading {
+      font-size: clamp(1.9rem, 11vw, 3.1rem);
+    }
+
+    .project-item h3,
+    .latest-post h3 {
+      font-size: 1.35rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .editorial-strip__track {
+      animation: none;
+    }
+
+    .chapter-kicker,
+    .chapter-title,
+    .chapter-lead,
+    .chapter-meta,
+    .chapter-heading,
+    .chapter-copy p,
+    .chapter-copy .chapter-split,
+    .chapter-header,
+    .project-list,
+    .stats-grid,
+    .awards-grid,
+    .blog-overview,
+    .latest-post,
+    .connect-copy,
+        .chapter-photo,
+    .awards-link {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
 <script>
-  function initScrollEngine() {
-    // --- Scroll Progress Bar ---
-    const progressBar = document.getElementById('scroll-progress');
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
 
-    function updateProgress() {
-      if (!progressBar) return;
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-      progressBar.style.transform = `scaleX(${Math.min(progress, 1)})`;
+  function initHomeStory() {
+    const previousCleanup = window.__homeStoryCleanup;
+    if (typeof previousCleanup === 'function') {
+      previousCleanup();
     }
 
-    // --- Parallax ---
-    const parallaxElements = document.querySelectorAll('.parallax-bg');
-
-    function updateParallax() {
-      const scrollTop = window.scrollY;
-      parallaxElements.forEach(el => {
-        const speed = parseFloat(el.getAttribute('data-speed') || '0.1');
-        const yOffset = scrollTop * speed;
-        (el as HTMLElement).style.transform = `translateY(${yOffset}px)`;
-      });
+    const homeRoot = document.getElementById('home-editorial');
+    if (!homeRoot) {
+      window.__homeStoryCleanup = null;
+      return;
     }
 
-    // --- Hero scroll-linked fade & parallax ---
-    const heroContent = document.getElementById('hero-content');
-    const heroSection = document.getElementById('hero');
+    const chapters = Array.from(document.querySelectorAll('.home-chapter[data-chapter]'));
+    const counterNodes = Array.from(document.querySelectorAll('.counter-value'));
 
-    function updateHeroFade() {
-      if (!heroContent || !heroSection) return;
-      const heroHeight = heroSection.offsetHeight;
-      const scrollTop = window.scrollY;
-      const progress = Math.min(scrollTop / (heroHeight * 0.6), 1);
-      const opacity = 1 - progress;
-      const yShift = scrollTop * 0.35;
-      const scale = 1 - progress * 0.08;
-      heroContent.style.opacity = String(Math.max(opacity, 0));
-      heroContent.style.transform = `translateY(${yShift}px) scale(${scale})`;
-    }
 
-    // Combined rAF loop
+    const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
     let ticking = false;
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateProgress();
-          updateParallax();
-          updateHeroFade();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    updateProgress();
-    updateParallax();
-    updateHeroFade();
-
-    // --- Counter Animation ---
-    const counterElements = document.querySelectorAll('.counter-value');
-
-    function animateCounter(el: Element) {
-      const target = parseInt(el.getAttribute('data-target') || '0', 10);
-      const duration = 2000;
+    function animateCounter(node) {
+      const target = Number(node.getAttribute('data-target') || 0);
+      const duration = 1700;
       const start = performance.now();
 
-      function step(now: number) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
+      function step(now) {
+        const progress = clamp((now - start) / duration, 0, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.round(eased * target);
-        el.textContent = String(current);
+        node.textContent = String(Math.round(eased * target));
         if (progress < 1) {
           requestAnimationFrame(step);
         }
@@ -631,80 +1225,141 @@ const socialLinks = [
       requestAnimationFrame(step);
     }
 
-    const counterObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          counterObserver.unobserve(entry.target);
+    function updateCounters() {
+      counterNodes.forEach((node) => {
+        if (node.dataset.counted === 'true') {
+          return;
+        }
+        const rect = node.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.2;
+        if (inView) {
+          node.dataset.counted = 'true';
+          animateCounter(node);
         }
       });
-    }, { threshold: 0.3 });
-
-    counterElements.forEach(el => counterObserver.observe(el));
-
-    // --- Hide scroll indicator on scroll ---
-    const scrollIndicator = document.querySelector('.scroll-indicator');
-    if (scrollIndicator) {
-      let indicatorHidden = false;
-      window.addEventListener('scroll', () => {
-        if (!indicatorHidden && window.scrollY > 80) {
-          scrollIndicator.classList.add('hidden-by-scroll');
-          indicatorHidden = true;
-        } else if (indicatorHidden && window.scrollY <= 80) {
-          scrollIndicator.classList.remove('hidden-by-scroll');
-          indicatorHidden = false;
-        }
-      }, { passive: true });
     }
 
-    // --- Side Nav Active Tracking ---
-    const sideNav = document.getElementById('side-nav');
-    if (sideNav) {
-      const dots = sideNav.querySelectorAll('.side-dot');
-      const sectionIds = Array.from(dots).map(d => d.getAttribute('data-section')!);
-      const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    function updateChapters(scrollY) {
+      const viewportHeight = window.innerHeight;
+      let activeChapter = chapters[0] || null;
+      let activeScore = -Infinity;
 
-      function updateSideNav() {
-        const scrollY = window.scrollY + window.innerHeight / 3;
-        let activeIdx = 0;
-        sections.forEach((sec, i) => {
-          if (scrollY >= sec.offsetTop) activeIdx = i;
-        });
-        dots.forEach((dot, i) => {
-          const circle = dot.querySelector('span:last-child') as HTMLElement;
-          if (i === activeIdx) {
-            circle.classList.add('active-dot');
-          } else {
-            circle.classList.remove('active-dot');
+      chapters.forEach((chapter, index) => {
+        if (!cinematicEnabled) {
+          chapter.style.setProperty('--chapter-progress', '1');
+          chapter.style.setProperty('--chapter-enter', '1');
+          chapter.style.setProperty('--chapter-hold', '1');
+          chapter.style.setProperty('--chapter-exit', '0');
+          chapter.style.setProperty('--chapter-visibility', '1');
+          chapter.setAttribute('data-phase', 'hold');
+          if (!activeChapter || chapter.id === 'hero') {
+            activeChapter = chapter;
           }
-        });
-      }
+          return;
+        }
 
-      window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateSideNav);
-      }, { passive: true });
-      updateSideNav();
+        const isHero = chapter.classList.contains('home-chapter--hero');
+
+        if (isHero) {
+          chapter.style.setProperty('--chapter-progress', '1');
+          chapter.style.setProperty('--chapter-enter', '1');
+          chapter.style.setProperty('--chapter-hold', '1');
+          chapter.style.setProperty('--chapter-exit', '0');
+          chapter.style.setProperty('--chapter-visibility', '1');
+          chapter.setAttribute('data-phase', 'hold');
+          activeChapter = chapter;
+          return;
+        }
+
+        const chapterTop = chapter.offsetTop;
+        const chapterDistance = Math.max(chapter.offsetHeight - viewportHeight * 0.16, viewportHeight * 0.86);
+        const chapterStart = chapterTop - viewportHeight * 0.1;
+
+        const progress = clamp((scrollY - chapterStart) / chapterDistance, 0, 1);
+        const enterEnd = 0.2;
+        const holdEnd = 0.75;
+        const enter = clamp(progress / enterEnd, 0, 1);
+        const hold = clamp((progress - enterEnd) / (holdEnd - enterEnd), 0, 1);
+        const exit = clamp((progress - holdEnd) / (1 - holdEnd), 0, 1);
+        const visibility = progress < enterEnd ? enter : progress < holdEnd ? 1 : 1 - exit;
+
+        chapter.style.setProperty('--chapter-progress', progress.toFixed(4));
+        chapter.style.setProperty('--chapter-enter', enter.toFixed(4));
+        chapter.style.setProperty('--chapter-hold', hold.toFixed(4));
+        chapter.style.setProperty('--chapter-exit', exit.toFixed(4));
+        chapter.style.setProperty('--chapter-visibility', visibility.toFixed(4));
+
+        if (progress < enterEnd) {
+          chapter.setAttribute('data-phase', 'enter');
+        } else if (progress < holdEnd) {
+          chapter.setAttribute('data-phase', 'hold');
+        } else {
+          chapter.setAttribute('data-phase', 'exit');
+        }
+
+        const score = visibility + hold * 0.45 - index * 0.01;
+        if (score >= activeScore) {
+          activeScore = score;
+          activeChapter = chapter;
+        }
+      });
+
     }
 
-    // --- 3D Tilt Cards ---
-    document.querySelectorAll('.tilt-card').forEach(card => {
-      const el = card as HTMLElement;
-      el.addEventListener('mousemove', (e: MouseEvent) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4;
-        const rotateY = ((x - centerX) / centerX) * 4;
-        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    function updateStory() {
+      const scrollY = window.scrollY;
+      updateChapters(scrollY);
+      updateCounters();
+    }
+
+    function onScroll() {
+      if (ticking) {
+        return;
+      }
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateStory();
+        ticking = false;
       });
-      el.addEventListener('mouseleave', () => {
-        el.style.transform = '';
-      });
-    });
+    }
+
+    function onResize() {
+      cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
+      updateStory();
+    }
+
+    function onMotionPreferenceChange() {
+      cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
+      updateStory();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    if (typeof reducedMotionMedia.addEventListener === 'function') {
+      reducedMotionMedia.addEventListener('change', onMotionPreferenceChange);
+    } else if (typeof reducedMotionMedia.addListener === 'function') {
+      reducedMotionMedia.addListener(onMotionPreferenceChange);
+    }
+
+    updateStory();
+
+    window.__homeStoryCleanup = () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      if (typeof reducedMotionMedia.removeEventListener === 'function') {
+        reducedMotionMedia.removeEventListener('change', onMotionPreferenceChange);
+      } else if (typeof reducedMotionMedia.removeListener === 'function') {
+        reducedMotionMedia.removeListener(onMotionPreferenceChange);
+      }
+    };
   }
 
-  initScrollEngine();
-  document.addEventListener('astro:page-load', initScrollEngine);
+  if (window.__homeStoryPageLoadHandler) {
+    document.removeEventListener('astro:page-load', window.__homeStoryPageLoadHandler);
+  }
+
+  window.__homeStoryPageLoadHandler = initHomeStory;
+  document.addEventListener('astro:page-load', window.__homeStoryPageLoadHandler);
+
+  initHomeStory();
 </script>

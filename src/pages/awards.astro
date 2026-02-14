@@ -90,19 +90,19 @@ const awardCategories = [
     <!-- Folder View (Main View) -->
     <div id="folder-container" class="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
       <div
-        class="award-folder group p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-xl cursor-pointer transition-all hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1"
+        class="award-folder group p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] cursor-pointer transition-all hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1"
         data-folder-id="cnec2025"
         tabindex="0"
         role="button"
         aria-label="Open CNEC2025 Pre division awards"
       >
         <div class="flex justify-between items-start mb-4">
-          <div class="p-2 bg-white/[0.03] rounded-lg text-[#6B6B65] group-hover:text-[#E8A838] transition-colors border border-white/[0.06]">
+          <div class="p-2 bg-white/[0.03] rounded-[3px] text-[#6B6B65] group-hover:text-[#E8A838] transition-colors border border-white/[0.06]">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
             </svg>
           </div>
-          <span class="px-2.5 py-1 bg-[rgba(232,168,56,0.08)] text-[#E8A838] text-xs rounded-md font-grotesk font-medium border border-[rgba(232,168,56,0.2)]">
+          <span class="px-2.5 py-1 bg-[rgba(232,168,56,0.08)] text-[#E8A838] text-xs rounded-[3px] font-grotesk font-medium border border-[rgba(232,168,56,0.2)]">
             {awardCategories[0].awards.length} Awards
           </span>
         </div>
@@ -123,19 +123,19 @@ const awardCategories = [
       </div>
 
       <div
-        class="award-folder group p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-xl cursor-pointer transition-all hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1"
+        class="award-folder group p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] cursor-pointer transition-all hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1"
         data-folder-id="himcm2025"
         tabindex="0"
         role="button"
         aria-label="Open HiMCM 2025 awards"
       >
         <div class="flex justify-between items-start mb-4">
-          <div class="p-2 bg-white/[0.03] rounded-lg text-[#6B6B65] group-hover:text-[#E8A838] transition-colors border border-white/[0.06]">
+          <div class="p-2 bg-white/[0.03] rounded-[3px] text-[#6B6B65] group-hover:text-[#E8A838] transition-colors border border-white/[0.06]">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
             </svg>
           </div>
-          <span class="px-2.5 py-1 bg-[rgba(232,168,56,0.08)] text-[#E8A838] text-xs rounded-md font-grotesk font-medium border border-[rgba(232,168,56,0.2)]">
+          <span class="px-2.5 py-1 bg-[rgba(232,168,56,0.08)] text-[#E8A838] text-xs rounded-[3px] font-grotesk font-medium border border-[rgba(232,168,56,0.2)]">
             {awardCategories[1].awards.length} Award
           </span>
         </div>
@@ -159,7 +159,7 @@ const awardCategories = [
     <!-- Individual Award Category Views -->
     <div id="awards-cnec2025" class="award-container hidden space-y-8 max-w-4xl mx-auto fade-in">
         <div class="flex items-center gap-4 pb-6">
-          <button class="back-to-folders p-2 -ml-2 text-[#6B6B65] hover:text-[#E8A838] hover:bg-white/[0.03] rounded-lg transition-all" aria-label="Back to award categories">
+          <button class="back-to-folders p-2 -ml-2 text-[#6B6B65] hover:text-[#E8A838] hover:bg-white/[0.03] rounded-[3px] transition-all" aria-label="Back to award categories">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -170,7 +170,7 @@ const awardCategories = [
 
         <div class="grid gap-8">
           {awardCategories[0].awards.map((award, index) => (
-            <article class="bg-[#1C1C1F] border border-white/[0.06] rounded-2xl overflow-hidden transition-all hover:border-[rgba(232,168,56,0.3)]">
+            <article class="bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] overflow-hidden transition-all hover:border-[rgba(232,168,56,0.3)]">
               <div class="p-6 md:p-8 grid md:grid-cols-[1fr_300px] gap-8">
 
                 <!-- Content -->
@@ -183,7 +183,7 @@ const awardCategories = [
                         </svg>
                         {award.date}
                       </span>
-                      <span class="w-1 h-1 rounded-full bg-[#4A4A45] self-center"></span>
+                      <span class="w-1 h-1 rounded-[2px] bg-[#4A4A45] self-center"></span>
                       <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-[#4A4A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -198,7 +198,7 @@ const awardCategories = [
                   </div>
 
                   <div class="space-y-4 text-sm">
-                    <div class="grid grid-cols-2 gap-4 p-4 bg-[#141416] rounded-lg border border-white/[0.06]">
+                    <div class="grid grid-cols-2 gap-4 p-4 bg-[#141416] rounded-[3px] border border-white/[0.06]">
                       <div>
                         <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Achievement</span>
                         <span class="font-medium text-[#F5F5F0]">{award.achievement}</span>
@@ -222,8 +222,8 @@ const awardCategories = [
                         <h4 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-3">Team Members</h4>
                         <div class="flex flex-wrap gap-2">
                           {award.teamMembers.map(member => (
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-md text-[#A8A8A0]">
-                              <span class="w-1.5 h-1.5 rounded-full bg-[#E8A838]/50"></span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-[3px] text-[#A8A8A0]">
+                              <span class="w-1.5 h-1.5 rounded-[2px] bg-[#E8A838]/50"></span>
                               {member.name}
                               <span class="text-[#6B6B65] text-xs">({member.role})</span>
                             </span>
@@ -238,7 +238,7 @@ const awardCategories = [
                         <ul class="space-y-1 text-[#A8A8A0]">
                           {award.criteria.map(criterion => (
                             <li class="flex items-start gap-2">
-                              <span class="mt-1.5 w-1 h-1 rounded-full bg-[#E8A838]/50"></span>
+                              <span class="mt-1.5 w-1 h-1 rounded-[2px] bg-[#E8A838]/50"></span>
                               <span>{criterion}</span>
                             </li>
                           ))}
@@ -249,11 +249,11 @@ const awardCategories = [
                 </div>
 
                 <!-- Certificate Image -->
-                <div class="flex flex-col items-center justify-center p-4 bg-[#141416] rounded-xl border border-white/[0.06] border-dashed">
+                <div class="flex flex-col items-center justify-center p-4 bg-[#141416] rounded-[4px] border border-white/[0.06] border-dashed">
                   <a
                     href={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
                     data-modal="certificate-modal"
-                    class="group relative block w-full overflow-hidden rounded-lg bg-[#1C1C1F] shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] border border-white/[0.06]"
+                    class="group relative block w-full overflow-hidden rounded-[3px] bg-[#1C1C1F] shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] border border-white/[0.06]"
                     aria-label={`View ${award.title} certificate`}
                   >
                     <img
@@ -263,7 +263,7 @@ const awardCategories = [
                       loading="lazy"
                     />
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span class="px-3 py-1.5 bg-[#1C1C1F]/90 backdrop-blur text-xs font-grotesk font-medium text-[#F5F5F0] rounded-full border border-white/[0.10]">
+                      <span class="px-3 py-1.5 bg-[#1C1C1F]/90 text-xs font-grotesk font-medium text-[#F5F5F0] rounded-[2px] border border-white/[0.10]">
                         View Full Size
                       </span>
                     </div>
@@ -282,7 +282,7 @@ const awardCategories = [
     <!-- HiMCM 2025 Awards View -->
     <div id="awards-himcm2025" class="award-container hidden space-y-8 max-w-4xl mx-auto fade-in">
         <div class="flex items-center gap-4 pb-6">
-          <button class="back-to-folders p-2 -ml-2 text-[#6B6B65] hover:text-[#E8A838] hover:bg-white/[0.03] rounded-lg transition-all" aria-label="Back to award categories">
+          <button class="back-to-folders p-2 -ml-2 text-[#6B6B65] hover:text-[#E8A838] hover:bg-white/[0.03] rounded-[3px] transition-all" aria-label="Back to award categories">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -293,7 +293,7 @@ const awardCategories = [
 
         <div class="grid gap-8">
           {awardCategories[1].awards.map((award) => (
-            <article class="bg-[#1C1C1F] border border-white/[0.06] rounded-2xl overflow-hidden transition-all hover:border-[rgba(232,168,56,0.3)]">
+            <article class="bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] overflow-hidden transition-all hover:border-[rgba(232,168,56,0.3)]">
               <div class="p-6 md:p-8 grid md:grid-cols-[1fr_300px] gap-8">
 
                 <!-- Content -->
@@ -306,7 +306,7 @@ const awardCategories = [
                         </svg>
                         {award.date}
                       </span>
-                      <span class="w-1 h-1 rounded-full bg-[#4A4A45] self-center"></span>
+                      <span class="w-1 h-1 rounded-[2px] bg-[#4A4A45] self-center"></span>
                       <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-[#4A4A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -321,7 +321,7 @@ const awardCategories = [
                   </div>
 
                   <div class="space-y-4 text-sm">
-                    <div class="grid grid-cols-2 gap-4 p-4 bg-[#141416] rounded-lg border border-white/[0.06]">
+                    <div class="grid grid-cols-2 gap-4 p-4 bg-[#141416] rounded-[3px] border border-white/[0.06]">
                       <div>
                         <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Achievement</span>
                         <span class="font-medium text-[#F5F5F0]">{award.achievement}</span>
@@ -345,8 +345,8 @@ const awardCategories = [
                         <h4 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-3">Team Members</h4>
                         <div class="flex flex-wrap gap-2">
                           {award.teamMembers.map(member => (
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-md text-[#A8A8A0]">
-                              <span class="w-1.5 h-1.5 rounded-full bg-[#E8A838]/50"></span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-[3px] text-[#A8A8A0]">
+                              <span class="w-1.5 h-1.5 rounded-[2px] bg-[#E8A838]/50"></span>
                               {member.name}
                               <span class="text-[#6B6B65] text-xs">({member.role})</span>
                             </span>
@@ -358,10 +358,10 @@ const awardCategories = [
                 </div>
 
                 <!-- Certificate Image -->
-                <div class="flex flex-col items-center justify-center p-4 bg-[#141416] rounded-xl border border-white/[0.06] border-dashed">
+                <div class="flex flex-col items-center justify-center p-4 bg-[#141416] rounded-[4px] border border-white/[0.06] border-dashed">
                   <a
                     href="/certificates/16400.pdf"
-                    class="group relative block w-full overflow-hidden rounded-lg bg-[#1C1C1F] shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] border border-white/[0.06]"
+                    class="group relative block w-full overflow-hidden rounded-[3px] bg-[#1C1C1F] shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] border border-white/[0.06]"
                     aria-label={`View ${award.title} certificate`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -381,7 +381,7 @@ const awardCategories = [
                       </object>
                     </div>
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span class="px-3 py-1.5 bg-[#1C1C1F]/90 backdrop-blur text-xs font-grotesk font-medium text-[#F5F5F0] rounded-full border border-white/[0.10]">
+                      <span class="px-3 py-1.5 bg-[#1C1C1F]/90 text-xs font-grotesk font-medium text-[#F5F5F0] rounded-[2px] border border-white/[0.10]">
                         View Full Size
                       </span>
                     </div>
