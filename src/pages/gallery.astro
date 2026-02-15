@@ -85,7 +85,6 @@ const photos = [
   },
 ];
 
-const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
 ---
 
 <Layout
@@ -104,7 +103,6 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
           <p class="gallery-hero__lead reveal" data-delay="2">A curated selection of moments captured across landscapes, architecture, and the quiet beauty of everyday life.</p>
           <div class="gallery-hero__meta reveal" data-delay="3">
             <span><i class="fa-solid fa-images" aria-hidden="true"></i> {photos.length} Photographs</span>
-            <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> {categories.length - 1} Collections</span>
           </div>
         </div>
       </div>
@@ -125,28 +123,6 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
         ))}
       </div>
     </div>
-
-    <!-- Filter Bar -->
-    <nav class="gallery-filters" aria-label="Photo categories">
-      <div class="gallery-filters__inner">
-        <span class="gallery-filters__label">Filter</span>
-        <div class="gallery-filters__list" role="tablist">
-          {categories.map((cat, idx) => (
-            <button
-              class={`gallery-filter-btn ${idx === 0 ? 'active' : ''}`}
-              role="tab"
-              aria-selected={idx === 0 ? 'true' : 'false'}
-              data-category={cat}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-        <div class="gallery-filters__count">
-          <span id="photo-count">{photos.length}</span> photos
-        </div>
-      </div>
-    </nav>
 
     <!-- Masonry Gallery Grid -->
     <section class="gallery-grid-section">
@@ -439,86 +415,6 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
   }
 
   /* ============================================
-     FILTER BAR
-     ============================================ */
-
-  .gallery-filters {
-    position: sticky;
-    top: 4rem;
-    z-index: 20;
-    background: rgba(8, 8, 8, 0.92);
-    border-bottom: 1px solid var(--g-line-soft);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-  }
-
-  .gallery-filters__inner {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0.8rem clamp(1rem, 3vw, 2rem);
-  }
-
-  .gallery-filters__label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--g-text-4);
-    flex-shrink: 0;
-  }
-
-  .gallery-filters__list {
-    display: flex;
-    gap: 0.3rem;
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    flex: 1;
-  }
-
-  .gallery-filters__list::-webkit-scrollbar {
-    display: none;
-  }
-
-  .gallery-filter-btn {
-    padding: 0.38rem 0.72rem;
-    border-radius: var(--g-radius);
-    border: 1px solid transparent;
-    background: transparent;
-    color: var(--g-text-3);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: all 180ms ease;
-  }
-
-  .gallery-filter-btn:hover {
-    color: var(--g-text-1);
-    border-color: var(--g-line-soft);
-  }
-
-  .gallery-filter-btn.active {
-    color: #0e0e0e;
-    background: var(--g-accent);
-    border-color: rgba(0, 0, 0, 0.2);
-  }
-
-  .gallery-filters__count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--g-text-4);
-    flex-shrink: 0;
-  }
-
-  /* ============================================
      MASONRY GALLERY GRID
      ============================================ */
 
@@ -740,11 +636,6 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
   .gallery-item:hover .gallery-item__expand-icon {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-  }
-
-  /* Hidden state for filtering */
-  .gallery-item.hidden {
-    display: none;
   }
 
   /* ============================================
@@ -1024,15 +915,6 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
       aspect-ratio: 16 / 9;
     }
 
-    .gallery-filters__inner {
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .gallery-filters__label {
-      display: none;
-    }
-
     .lightbox__container {
       width: 95vw;
     }
@@ -1093,8 +975,6 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
     }
 
     const items = Array.from(grid.querySelectorAll('.gallery-item'));
-    const filterBtns = Array.from(document.querySelectorAll('.gallery-filter-btn'));
-    const photoCountEl = document.getElementById('photo-count');
     const lightbox = document.getElementById('lightbox') as HTMLElement;
     const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
     const lightboxTitle = document.getElementById('lightbox-title');
@@ -1108,48 +988,8 @@ const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
     const lightboxPrev = document.getElementById('lightbox-prev');
     const lightboxNext = document.getElementById('lightbox-next');
 
-    let currentFilter = 'All';
     let currentLightboxIndex = 0;
-    let visibleItems: Element[] = [...items];
-
-    // Filter functionality
-    function applyFilter(category: string) {
-      currentFilter = category;
-
-      filterBtns.forEach(btn => {
-        const btnCat = btn.getAttribute('data-category');
-        if (btnCat === category) {
-          btn.classList.add('active');
-          btn.setAttribute('aria-selected', 'true');
-        } else {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-selected', 'false');
-        }
-      });
-
-      visibleItems = [];
-
-      items.forEach(item => {
-        const itemCat = item.getAttribute('data-category');
-        if (category === 'All' || itemCat === category) {
-          item.classList.remove('hidden');
-          visibleItems.push(item);
-        } else {
-          item.classList.add('hidden');
-        }
-      });
-
-      if (photoCountEl) {
-        photoCountEl.textContent = String(visibleItems.length);
-      }
-    }
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const cat = btn.getAttribute('data-category');
-        if (cat) applyFilter(cat);
-      });
-    });
+    const visibleItems: Element[] = [...items];
 
     // Lightbox functionality
     function openLightbox(index: number) {
