@@ -1,0 +1,1262 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const photos = [
+  {
+    src: '/gallery/urban-geometry.jpg',
+    title: 'Urban Geometry',
+    category: 'Architecture',
+    location: 'Shanghai',
+    date: '2025',
+    aspect: 'landscape',
+    size: 'large',
+  },
+  {
+    src: '/gallery/misty-mountains.jpg',
+    title: 'Misty Mountains',
+    category: 'Landscape',
+    location: 'Huangshan',
+    date: '2025',
+    aspect: 'landscape',
+    size: 'medium',
+  },
+  {
+    src: '/gallery/neon-streets.jpg',
+    title: 'Neon Streets',
+    category: 'Street',
+    location: 'Shenzhen',
+    date: '2025',
+    aspect: 'landscape',
+    size: 'medium',
+  },
+  {
+    src: '/gallery/autumn-forest.jpg',
+    title: 'Autumn Forest',
+    category: 'Nature',
+    location: 'Jiuzhaigou',
+    date: '2024',
+    aspect: 'landscape',
+    size: 'small',
+  },
+  {
+    src: '/gallery/ocean-horizon.jpg',
+    title: 'Ocean Horizon',
+    category: 'Seascape',
+    location: 'Xiamen',
+    date: '2024',
+    aspect: 'landscape',
+    size: 'large',
+  },
+  {
+    src: '/gallery/abstract-light.jpg',
+    title: 'Abstract Light',
+    category: 'Abstract',
+    location: 'Studio',
+    date: '2025',
+    aspect: 'landscape',
+    size: 'small',
+  },
+  {
+    src: '/gallery/botanical-close.jpg',
+    title: 'Botanical Close',
+    category: 'Macro',
+    location: 'Guangzhou',
+    date: '2024',
+    aspect: 'landscape',
+    size: 'medium',
+  },
+  {
+    src: '/gallery/steel-bridge.jpg',
+    title: 'Steel Bridge',
+    category: 'Architecture',
+    location: 'Chongqing',
+    date: '2025',
+    aspect: 'landscape',
+    size: 'small',
+  },
+  {
+    src: '/gallery/quiet-alley.jpg',
+    title: 'Quiet Alley',
+    category: 'Street',
+    location: 'Suzhou',
+    date: '2024',
+    aspect: 'landscape',
+    size: 'medium',
+  },
+];
+
+const categories = ['All', ...Array.from(new Set(photos.map(p => p.category)))];
+---
+
+<Layout
+  title="Gallery - Morax Cheng"
+  description="A curated collection of photography by Morax Cheng. Exploring architecture, landscapes, street photography, and more through a cinematic lens."
+  fullWidth={true}
+>
+  <div class="gallery-editorial" id="gallery-editorial">
+
+    <!-- Hero Section -->
+    <section class="gallery-hero">
+      <div class="gallery-hero__stage">
+        <div class="gallery-hero__grid">
+          <p class="gallery-hero__kicker reveal">Photography Collection</p>
+          <h1 class="gallery-hero__title reveal" data-delay="1">Through the <span>Lens</span></h1>
+          <p class="gallery-hero__lead reveal" data-delay="2">A curated selection of moments captured across landscapes, architecture, and the quiet beauty of everyday life.</p>
+          <div class="gallery-hero__meta reveal" data-delay="3">
+            <span><i class="fa-solid fa-images" aria-hidden="true"></i> {photos.length} Photographs</span>
+            <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> {categories.length - 1} Collections</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Film Strip Divider -->
+    <div class="film-strip" aria-hidden="true">
+      <div class="film-strip__track">
+        {photos.map((photo) => (
+          <div class="film-strip__frame">
+            <img src={photo.src} alt="" loading="lazy" />
+          </div>
+        ))}
+        {photos.map((photo) => (
+          <div class="film-strip__frame">
+            <img src={photo.src} alt="" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <nav class="gallery-filters" aria-label="Photo categories">
+      <div class="gallery-filters__inner">
+        <span class="gallery-filters__label">Filter</span>
+        <div class="gallery-filters__list" role="tablist">
+          {categories.map((cat, idx) => (
+            <button
+              class={`gallery-filter-btn ${idx === 0 ? 'active' : ''}`}
+              role="tab"
+              aria-selected={idx === 0 ? 'true' : 'false'}
+              data-category={cat}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+        <div class="gallery-filters__count">
+          <span id="photo-count">{photos.length}</span> photos
+        </div>
+      </div>
+    </nav>
+
+    <!-- Masonry Gallery Grid -->
+    <section class="gallery-grid-section">
+      <div class="gallery-grid" id="gallery-grid">
+        {photos.map((photo, idx) => (
+          <article
+            class={`gallery-item gallery-item--${photo.size}`}
+            data-category={photo.category}
+            data-index={idx}
+          >
+            <button
+              class="gallery-item__trigger"
+              aria-label={`View ${photo.title}`}
+              data-src={photo.src}
+              data-title={photo.title}
+              data-category={photo.category}
+              data-location={photo.location}
+              data-date={photo.date}
+              data-index={idx}
+            >
+              <div class="gallery-item__image-wrap">
+                <img
+                  src={photo.src}
+                  alt={photo.title}
+                  loading="lazy"
+                  class="gallery-item__image"
+                />
+                <div class="gallery-item__overlay">
+                  <div class="gallery-item__overlay-top">
+                    <span class="gallery-item__number">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span class="gallery-item__category-tag">{photo.category}</span>
+                  </div>
+                  <div class="gallery-item__overlay-bottom">
+                    <h3 class="gallery-item__title">{photo.title}</h3>
+                    <div class="gallery-item__details">
+                      <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {photo.location}</span>
+                      <span><i class="fa-regular fa-calendar" aria-hidden="true"></i> {photo.date}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="gallery-item__expand-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                  </svg>
+                </div>
+              </div>
+            </button>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+      <div class="lightbox__backdrop"></div>
+      <div class="lightbox__container">
+        <div class="lightbox__content">
+          <div class="lightbox__image-wrap">
+            <img id="lightbox-img" class="lightbox__image" src="" alt="" />
+          </div>
+          <aside class="lightbox__sidebar">
+            <div class="lightbox__meta-top">
+              <span class="lightbox__number" id="lightbox-number">01</span>
+              <button class="lightbox__close" aria-label="Close viewer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="lightbox__info">
+              <span class="lightbox__category" id="lightbox-category">Category</span>
+              <h2 class="lightbox__title" id="lightbox-title">Title</h2>
+              <div class="lightbox__details">
+                <div class="lightbox__detail">
+                  <span class="lightbox__detail-label">Location</span>
+                  <span class="lightbox__detail-value" id="lightbox-location">Location</span>
+                </div>
+                <div class="lightbox__detail">
+                  <span class="lightbox__detail-label">Year</span>
+                  <span class="lightbox__detail-value" id="lightbox-date">Date</span>
+                </div>
+              </div>
+            </div>
+            <div class="lightbox__nav">
+              <button class="lightbox__nav-btn" id="lightbox-prev" aria-label="Previous photo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 12H5m7-7-7 7 7 7" />
+                </svg>
+                <span>Prev</span>
+              </button>
+              <span class="lightbox__nav-counter" id="lightbox-counter">1 / {photos.length}</span>
+              <button class="lightbox__nav-btn" id="lightbox-next" aria-label="Next photo">
+                <span>Next</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14m-7-7 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  /* ============================================
+     GALLERY EDITORIAL DESIGN
+     ============================================ */
+
+  .gallery-editorial {
+    --g-bg-0: #080808;
+    --g-bg-1: #101011;
+    --g-bg-2: #151518;
+    --g-panel: #121214;
+    --g-panel-alt: #17171a;
+    --g-text-1: #eceae5;
+    --g-text-2: #b1aea6;
+    --g-text-3: #73706a;
+    --g-text-4: #4e4b45;
+    --g-accent: #e8a838;
+    --g-accent-muted: #c4893a;
+    --g-line-soft: rgba(255, 255, 255, 0.08);
+    --g-line-strong: rgba(255, 255, 255, 0.16);
+    --g-shadow-hard: 6px 6px 0 rgba(0, 0, 0, 0.35);
+    --g-radius: 2px;
+
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(232, 168, 56, 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(232, 168, 56, 0.04) 0%, transparent 35%),
+      linear-gradient(180deg, var(--g-bg-0) 0%, var(--g-bg-1) 30%, var(--g-bg-2) 70%, var(--g-bg-0) 100%);
+  }
+
+  /* ============================================
+     HERO
+     ============================================ */
+
+  .gallery-hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--g-line-soft);
+    padding: clamp(4rem, 10vh, 8rem) 0 clamp(2rem, 4vh, 4rem);
+  }
+
+  .gallery-hero__stage {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+  }
+
+  .gallery-hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .gallery-hero__kicker {
+    grid-column: 3 / span 8;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.69rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--g-text-3);
+  }
+
+  .gallery-hero__title {
+    grid-column: 3 / span 8;
+    margin: 0;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--g-text-1);
+  }
+
+  .gallery-hero__title span {
+    color: var(--g-accent);
+  }
+
+  .gallery-hero__lead {
+    grid-column: 3 / span 6;
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    line-height: 1.6;
+    color: var(--g-text-2);
+    max-width: 38rem;
+  }
+
+  .gallery-hero__meta {
+    grid-column: 3 / span 6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .gallery-hero__meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--g-text-3);
+  }
+
+  .gallery-hero__meta i {
+    color: var(--g-accent-muted);
+  }
+
+  /* ============================================
+     FILM STRIP
+     ============================================ */
+
+  .film-strip {
+    overflow: hidden;
+    background: #0a0a0b;
+    border-bottom: 1px solid var(--g-line-soft);
+    padding: 0.6rem 0;
+    position: relative;
+  }
+
+  .film-strip::before,
+  .film-strip::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .film-strip::before {
+    left: 0;
+    background: linear-gradient(90deg, #0a0a0b, transparent);
+  }
+
+  .film-strip::after {
+    right: 0;
+    background: linear-gradient(270deg, #0a0a0b, transparent);
+  }
+
+  .film-strip__track {
+    display: flex;
+    gap: 0.4rem;
+    width: max-content;
+    animation: filmScroll 40s linear infinite;
+  }
+
+  .film-strip__track:hover {
+    animation-play-state: paused;
+  }
+
+  .film-strip__frame {
+    width: 80px;
+    height: 52px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: var(--g-radius);
+    border: 1px solid var(--g-line-soft);
+    opacity: 0.55;
+    transition: opacity 300ms ease, border-color 300ms ease;
+  }
+
+  .film-strip__frame:hover {
+    opacity: 1;
+    border-color: var(--g-accent);
+  }
+
+  .film-strip__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  @keyframes filmScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ============================================
+     FILTER BAR
+     ============================================ */
+
+  .gallery-filters {
+    position: sticky;
+    top: 4rem;
+    z-index: 20;
+    background: rgba(8, 8, 8, 0.92);
+    border-bottom: 1px solid var(--g-line-soft);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .gallery-filters__inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0.8rem clamp(1rem, 3vw, 2rem);
+  }
+
+  .gallery-filters__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--g-text-4);
+    flex-shrink: 0;
+  }
+
+  .gallery-filters__list {
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    flex: 1;
+  }
+
+  .gallery-filters__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-filter-btn {
+    padding: 0.38rem 0.72rem;
+    border-radius: var(--g-radius);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--g-text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 180ms ease;
+  }
+
+  .gallery-filter-btn:hover {
+    color: var(--g-text-1);
+    border-color: var(--g-line-soft);
+  }
+
+  .gallery-filter-btn.active {
+    color: #0e0e0e;
+    background: var(--g-accent);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .gallery-filters__count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--g-text-4);
+    flex-shrink: 0;
+  }
+
+  /* ============================================
+     MASONRY GALLERY GRID
+     ============================================ */
+
+  .gallery-grid-section {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 3vw, 2rem);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0.75rem;
+    grid-auto-flow: dense;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--g-radius);
+    border: 1px solid var(--g-line-soft);
+    background: var(--g-panel);
+    transition: border-color 300ms ease, box-shadow 300ms ease;
+  }
+
+  .gallery-item:hover {
+    border-color: rgba(232, 168, 56, 0.35);
+    box-shadow: var(--g-shadow-hard);
+  }
+
+  /* Size variants for editorial layout */
+  .gallery-item--large {
+    grid-column: span 8;
+  }
+
+  .gallery-item--medium {
+    grid-column: span 4;
+  }
+
+  .gallery-item--small {
+    grid-column: span 4;
+  }
+
+  /* Specific layout pattern */
+  .gallery-item:nth-child(1) { grid-column: 1 / span 8; }
+  .gallery-item:nth-child(2) { grid-column: 9 / span 4; }
+  .gallery-item:nth-child(3) { grid-column: 1 / span 4; }
+  .gallery-item:nth-child(4) { grid-column: 5 / span 4; }
+  .gallery-item:nth-child(5) { grid-column: 9 / span 4; }
+  .gallery-item:nth-child(6) { grid-column: 1 / span 7; }
+  .gallery-item:nth-child(7) { grid-column: 8 / span 5; }
+  .gallery-item:nth-child(8) { grid-column: 1 / span 5; }
+  .gallery-item:nth-child(9) { grid-column: 6 / span 7; }
+
+  .gallery-item__trigger {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+  }
+
+  .gallery-item__trigger:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--g-accent);
+  }
+
+  .gallery-item__image-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: auto;
+  }
+
+  .gallery-item--large .gallery-item__image-wrap {
+    aspect-ratio: 16 / 9;
+  }
+
+  .gallery-item--medium .gallery-item__image-wrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gallery-item--small .gallery-item__image-wrap {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Override specific items for variety */
+  .gallery-item:nth-child(1) .gallery-item__image-wrap { aspect-ratio: 16 / 9; }
+  .gallery-item:nth-child(2) .gallery-item__image-wrap { aspect-ratio: 4 / 5; }
+  .gallery-item:nth-child(3) .gallery-item__image-wrap { aspect-ratio: 3 / 4; }
+  .gallery-item:nth-child(4) .gallery-item__image-wrap { aspect-ratio: 1 / 1; }
+  .gallery-item:nth-child(5) .gallery-item__image-wrap { aspect-ratio: 3 / 4; }
+  .gallery-item:nth-child(6) .gallery-item__image-wrap { aspect-ratio: 16 / 10; }
+  .gallery-item:nth-child(7) .gallery-item__image-wrap { aspect-ratio: 4 / 3; }
+  .gallery-item:nth-child(8) .gallery-item__image-wrap { aspect-ratio: 4 / 3; }
+  .gallery-item:nth-child(9) .gallery-item__image-wrap { aspect-ratio: 16 / 9; }
+
+  .gallery-item__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .gallery-item:hover .gallery-item__image {
+    transform: scale(1.05);
+  }
+
+  /* Overlay */
+  .gallery-item__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      transparent 40%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.85rem;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .gallery-item:hover .gallery-item__overlay {
+    opacity: 1;
+  }
+
+  .gallery-item__overlay-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .gallery-item__number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--g-radius);
+  }
+
+  .gallery-item__category-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0e0e0e;
+    background: var(--g-accent);
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--g-radius);
+  }
+
+  .gallery-item__overlay-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transform: translateY(8px);
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .gallery-item:hover .gallery-item__overlay-bottom {
+    transform: translateY(0);
+  }
+
+  .gallery-item__title {
+    margin: 0;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    font-weight: 400;
+    color: #f5f5f0;
+    line-height: 1.15;
+  }
+
+  .gallery-item__details {
+    display: flex;
+    gap: 0.85rem;
+  }
+
+  .gallery-item__details span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .gallery-item__details i {
+    font-size: 0.5rem;
+  }
+
+  .gallery-item__expand-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--g-radius);
+    padding: 0.55rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 300ms ease, transform 300ms ease;
+  }
+
+  .gallery-item:hover .gallery-item__expand-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* Hidden state for filtering */
+  .gallery-item.hidden {
+    display: none;
+  }
+
+  /* ============================================
+     LIGHTBOX
+     ============================================ */
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 4, 4, 0.94);
+    animation: lbFadeIn 300ms ease forwards;
+  }
+
+  .lightbox__container {
+    position: relative;
+    z-index: 1;
+    width: min(90vw, 1200px);
+    max-height: 90vh;
+  }
+
+  .lightbox__content {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 0;
+    background: var(--g-panel);
+    border: 1px solid var(--g-line-soft);
+    border-radius: var(--g-radius);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: lbSlideIn 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .lightbox__image-wrap {
+    position: relative;
+    background: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    max-height: 80vh;
+    overflow: hidden;
+  }
+
+  .lightbox__image {
+    width: 100%;
+    height: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  .lightbox__sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-left: 1px solid var(--g-line-soft);
+    background: linear-gradient(180deg, var(--g-panel) 0%, var(--g-panel-alt) 100%);
+  }
+
+  .lightbox__meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .lightbox__number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--g-text-4);
+  }
+
+  .lightbox__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--g-line-soft);
+    background: transparent;
+    border-radius: var(--g-radius);
+    color: var(--g-text-3);
+    cursor: pointer;
+    transition: all 180ms ease;
+  }
+
+  .lightbox__close:hover {
+    color: var(--g-accent);
+    border-color: rgba(232, 168, 56, 0.4);
+  }
+
+  .lightbox__info {
+    flex: 1;
+  }
+
+  .lightbox__category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--g-accent-muted);
+  }
+
+  .lightbox__title {
+    margin: 0.5rem 0 0;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--g-text-1);
+  }
+
+  .lightbox__details {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--g-line-soft);
+  }
+
+  .lightbox__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .lightbox__detail-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--g-text-4);
+  }
+
+  .lightbox__detail-value {
+    font-size: 0.95rem;
+    color: var(--g-text-2);
+  }
+
+  .lightbox__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--g-line-soft);
+  }
+
+  .lightbox__nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--g-line-soft);
+    background: transparent;
+    border-radius: var(--g-radius);
+    color: var(--g-text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 180ms ease;
+  }
+
+  .lightbox__nav-btn:hover {
+    color: var(--g-accent);
+    border-color: rgba(232, 168, 56, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .lightbox__nav-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--g-text-4);
+  }
+
+  @keyframes lbFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes lbSlideIn {
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+
+  @media (max-width: 1023px) {
+    .gallery-hero__kicker,
+    .gallery-hero__title,
+    .gallery-hero__lead,
+    .gallery-hero__meta {
+      grid-column: 1 / span 12;
+    }
+
+    .gallery-hero__title {
+      font-size: clamp(2.5rem, 10vw, 4.5rem);
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .gallery-item:nth-child(1) { grid-column: 1 / span 6; }
+    .gallery-item:nth-child(2) { grid-column: 1 / span 3; }
+    .gallery-item:nth-child(3) { grid-column: 4 / span 3; }
+    .gallery-item:nth-child(4) { grid-column: 1 / span 3; }
+    .gallery-item:nth-child(5) { grid-column: 4 / span 3; }
+    .gallery-item:nth-child(6) { grid-column: 1 / span 6; }
+    .gallery-item:nth-child(7) { grid-column: 1 / span 3; }
+    .gallery-item:nth-child(8) { grid-column: 4 / span 3; }
+    .gallery-item:nth-child(9) { grid-column: 1 / span 6; }
+
+    .lightbox__content {
+      grid-template-columns: 1fr;
+    }
+
+    .lightbox__sidebar {
+      border-left: none;
+      border-top: 1px solid var(--g-line-soft);
+      padding: 1rem 1.2rem;
+    }
+
+    .lightbox__image-wrap {
+      max-height: 50vh;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .gallery-hero {
+      min-height: auto;
+      padding: 3rem 0 2rem;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .gallery-item:nth-child(1) { grid-column: 1 / span 2; }
+    .gallery-item:nth-child(2) { grid-column: 1 / span 1; }
+    .gallery-item:nth-child(3) { grid-column: 2 / span 1; }
+    .gallery-item:nth-child(4) { grid-column: 1 / span 1; }
+    .gallery-item:nth-child(5) { grid-column: 2 / span 1; }
+    .gallery-item:nth-child(6) { grid-column: 1 / span 2; }
+    .gallery-item:nth-child(7) { grid-column: 1 / span 1; }
+    .gallery-item:nth-child(8) { grid-column: 2 / span 1; }
+    .gallery-item:nth-child(9) { grid-column: 1 / span 2; }
+
+    .gallery-item:nth-child(n) .gallery-item__image-wrap {
+      aspect-ratio: 1 / 1;
+    }
+
+    .gallery-item:nth-child(1) .gallery-item__image-wrap,
+    .gallery-item:nth-child(6) .gallery-item__image-wrap,
+    .gallery-item:nth-child(9) .gallery-item__image-wrap {
+      aspect-ratio: 16 / 9;
+    }
+
+    .gallery-filters__inner {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .gallery-filters__label {
+      display: none;
+    }
+
+    .lightbox__container {
+      width: 95vw;
+    }
+
+    .lightbox__image-wrap {
+      max-height: 40vh;
+      min-height: 200px;
+    }
+
+    .lightbox__title {
+      font-size: 1.4rem;
+    }
+
+    .film-strip__frame {
+      width: 56px;
+      height: 36px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .film-strip__track {
+      animation: none;
+    }
+
+    .gallery-item__image {
+      transition: none;
+    }
+
+    .gallery-item__overlay {
+      opacity: 1;
+    }
+
+    .gallery-item__overlay-bottom {
+      transform: none;
+    }
+
+    .lightbox__content {
+      animation: none;
+    }
+
+    .lightbox__backdrop {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function initGallery() {
+    const previousCleanup = (window as any).__galleryCleanup;
+    if (typeof previousCleanup === 'function') {
+      previousCleanup();
+    }
+
+    const grid = document.getElementById('gallery-grid');
+    if (!grid) {
+      (window as any).__galleryCleanup = null;
+      return;
+    }
+
+    const items = Array.from(grid.querySelectorAll('.gallery-item'));
+    const filterBtns = Array.from(document.querySelectorAll('.gallery-filter-btn'));
+    const photoCountEl = document.getElementById('photo-count');
+    const lightbox = document.getElementById('lightbox') as HTMLElement;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxCategory = document.getElementById('lightbox-category');
+    const lightboxLocation = document.getElementById('lightbox-location');
+    const lightboxDate = document.getElementById('lightbox-date');
+    const lightboxNumber = document.getElementById('lightbox-number');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    const lightboxClose = lightbox?.querySelector('.lightbox__close');
+    const lightboxBackdrop = lightbox?.querySelector('.lightbox__backdrop');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+
+    let currentFilter = 'All';
+    let currentLightboxIndex = 0;
+    let visibleItems: Element[] = [...items];
+
+    // Filter functionality
+    function applyFilter(category: string) {
+      currentFilter = category;
+
+      filterBtns.forEach(btn => {
+        const btnCat = btn.getAttribute('data-category');
+        if (btnCat === category) {
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+        } else {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        }
+      });
+
+      visibleItems = [];
+
+      items.forEach(item => {
+        const itemCat = item.getAttribute('data-category');
+        if (category === 'All' || itemCat === category) {
+          item.classList.remove('hidden');
+          visibleItems.push(item);
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      if (photoCountEl) {
+        photoCountEl.textContent = String(visibleItems.length);
+      }
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-category');
+        if (cat) applyFilter(cat);
+      });
+    });
+
+    // Lightbox functionality
+    function openLightbox(index: number) {
+      if (!lightbox) return;
+
+      currentLightboxIndex = index;
+      updateLightbox();
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+
+      // Focus trap
+      setTimeout(() => lightboxClose?.focus(), 100);
+    }
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function updateLightbox() {
+      const item = visibleItems[currentLightboxIndex];
+      if (!item) return;
+
+      const trigger = item.querySelector('.gallery-item__trigger');
+      if (!trigger) return;
+
+      const src = trigger.getAttribute('data-src') || '';
+      const title = trigger.getAttribute('data-title') || '';
+      const category = trigger.getAttribute('data-category') || '';
+      const location = trigger.getAttribute('data-location') || '';
+      const date = trigger.getAttribute('data-date') || '';
+
+      if (lightboxImg) { lightboxImg.src = src; lightboxImg.alt = title; }
+      if (lightboxTitle) lightboxTitle.textContent = title;
+      if (lightboxCategory) lightboxCategory.textContent = category;
+      if (lightboxLocation) lightboxLocation.textContent = location;
+      if (lightboxDate) lightboxDate.textContent = date;
+      if (lightboxNumber) lightboxNumber.textContent = String(currentLightboxIndex + 1).padStart(2, '0');
+      if (lightboxCounter) lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${visibleItems.length}`;
+    }
+
+    function nextPhoto() {
+      currentLightboxIndex = (currentLightboxIndex + 1) % visibleItems.length;
+      updateLightbox();
+    }
+
+    function prevPhoto() {
+      currentLightboxIndex = (currentLightboxIndex - 1 + visibleItems.length) % visibleItems.length;
+      updateLightbox();
+    }
+
+    // Event bindings
+    items.forEach(item => {
+      const trigger = item.querySelector('.gallery-item__trigger');
+      trigger?.addEventListener('click', () => {
+        const idx = visibleItems.indexOf(item);
+        if (idx >= 0) openLightbox(idx);
+      });
+    });
+
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxBackdrop?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', prevPhoto);
+    lightboxNext?.addEventListener('click', nextPhoto);
+
+    function handleKeydown(e: KeyboardEvent) {
+      if (lightbox?.hidden) return;
+
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') prevPhoto();
+    }
+
+    document.addEventListener('keydown', handleKeydown);
+
+    // Reveal animations via IntersectionObserver
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          (entry.target as HTMLElement).style.opacity = '1';
+          (entry.target as HTMLElement).style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    items.forEach((item, idx) => {
+      const el = item as HTMLElement;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = `opacity 600ms cubic-bezier(0.22, 1, 0.36, 1) ${idx * 80}ms, transform 600ms cubic-bezier(0.22, 1, 0.36, 1) ${idx * 80}ms`;
+      revealObserver.observe(item);
+    });
+
+    // Cleanup
+    (window as any).__galleryCleanup = () => {
+      document.removeEventListener('keydown', handleKeydown);
+      revealObserver.disconnect();
+    };
+  }
+
+  if ((window as any).__galleryPageLoadHandler) {
+    document.removeEventListener('astro:page-load', (window as any).__galleryPageLoadHandler);
+  }
+
+  (window as any).__galleryPageLoadHandler = initGallery;
+  document.addEventListener('astro:page-load', (window as any).__galleryPageLoadHandler);
+
+  initGallery();
+</script>
