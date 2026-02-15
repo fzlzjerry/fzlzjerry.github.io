@@ -72,38 +72,26 @@ const socialLinks = [
 
     <div class="editorial-strip" aria-hidden="true">
       <div class="editorial-strip__track">
-        <span>Developer</span>
-        <span class="sep">/</span>
-        <span>Economics</span>
-        <span class="sep">/</span>
-        <span>Open Source</span>
-        <span class="sep">/</span>
-        <span>Machine Learning</span>
-        <span class="sep">/</span>
-        <span>Mathematics</span>
-        <span class="sep">/</span>
-        <span>Python</span>
-        <span class="sep">/</span>
-        <span>C++</span>
-        <span class="sep">/</span>
-        <span>Rust</span>
-        <span class="sep">/</span>
-        <span>Developer</span>
-        <span class="sep">/</span>
-        <span>Economics</span>
-        <span class="sep">/</span>
-        <span>Open Source</span>
-        <span class="sep">/</span>
-        <span>Machine Learning</span>
-        <span class="sep">/</span>
-        <span>Mathematics</span>
-        <span class="sep">/</span>
-        <span>Python</span>
-        <span class="sep">/</span>
-        <span>C++</span>
-        <span class="sep">/</span>
-        <span>Rust</span>
-        <span class="sep">/</span>
+        {[...Array(4)].map(() => (
+          <span class="editorial-strip__set">
+            <span>Developer</span>
+            <span class="sep">/</span>
+            <span>Economics</span>
+            <span class="sep">/</span>
+            <span>Open Source</span>
+            <span class="sep">/</span>
+            <span>Machine Learning</span>
+            <span class="sep">/</span>
+            <span>Mathematics</span>
+            <span class="sep">/</span>
+            <span>Python</span>
+            <span class="sep">/</span>
+            <span>C++</span>
+            <span class="sep">/</span>
+            <span>Rust</span>
+            <span class="sep">/</span>
+          </span>
+        ))}
       </div>
     </div>
 
@@ -586,17 +574,23 @@ const socialLinks = [
   }
 
   .editorial-strip__track {
+    display: flex;
     width: max-content;
+    animation: strip-scroll 28s linear infinite;
+    will-change: transform;
+  }
+
+  .editorial-strip__set {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding-inline: 1.5rem;
+    padding-inline-end: 1rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.68rem;
     letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--home-text-3);
-    animation: strip-scroll 22s linear infinite;
+    flex-shrink: 0;
   }
 
   .editorial-strip .sep {
