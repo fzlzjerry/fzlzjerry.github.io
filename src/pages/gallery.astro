@@ -2,87 +2,44 @@
 import Layout from '../layouts/Layout.astro';
 
 const photos = [
-  {
-    src: '/gallery/urban-geometry.jpg',
-    title: 'Urban Geometry',
-    category: 'Architecture',
-    location: 'Shanghai',
-    date: '2025',
-    aspect: 'landscape',
-    size: 'large',
-  },
-  {
-    src: '/gallery/misty-mountains.jpg',
-    title: 'Misty Mountains',
-    category: 'Landscape',
-    location: 'Huangshan',
-    date: '2025',
-    aspect: 'landscape',
-    size: 'medium',
-  },
-  {
-    src: '/gallery/neon-streets.jpg',
-    title: 'Neon Streets',
-    category: 'Street',
-    location: 'Shenzhen',
-    date: '2025',
-    aspect: 'landscape',
-    size: 'medium',
-  },
-  {
-    src: '/gallery/autumn-forest.jpg',
-    title: 'Autumn Forest',
-    category: 'Nature',
-    location: 'Jiuzhaigou',
-    date: '2024',
-    aspect: 'landscape',
-    size: 'small',
-  },
-  {
-    src: '/gallery/ocean-horizon.jpg',
-    title: 'Ocean Horizon',
-    category: 'Seascape',
-    location: 'Xiamen',
-    date: '2024',
-    aspect: 'landscape',
-    size: 'large',
-  },
-  {
-    src: '/gallery/abstract-light.jpg',
-    title: 'Abstract Light',
-    category: 'Abstract',
-    location: 'Studio',
-    date: '2025',
-    aspect: 'landscape',
-    size: 'small',
-  },
-  {
-    src: '/gallery/botanical-close.jpg',
-    title: 'Botanical Close',
-    category: 'Macro',
-    location: 'Guangzhou',
-    date: '2024',
-    aspect: 'landscape',
-    size: 'medium',
-  },
-  {
-    src: '/gallery/steel-bridge.jpg',
-    title: 'Steel Bridge',
-    category: 'Architecture',
-    location: 'Chongqing',
-    date: '2025',
-    aspect: 'landscape',
-    size: 'small',
-  },
-  {
-    src: '/gallery/quiet-alley.jpg',
-    title: 'Quiet Alley',
-    category: 'Street',
-    location: 'Suzhou',
-    date: '2024',
-    aspect: 'landscape',
-    size: 'medium',
-  },
+  // Paris — Landmarks & Cityscape
+  { src: '/gallery/Paris_Eiffel-Tower-Dusk-Seine.webp', title: 'Eiffel Tower at Dusk', category: 'Landmark', location: 'Seine River, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'large' },
+  { src: '/gallery/Paris_Arc-de-Triomphe-Up-Close.webp', title: 'Arc de Triomphe', category: 'Landmark', location: 'Place Charles de Gaulle, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Sacre-Coeur-Basilica.webp', title: 'Sacré-Cœur Basilica', category: 'Architecture', location: 'Montmartre, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Montmartre-Panoramic-View.webp', title: 'Montmartre Panoramic View', category: 'Cityscape', location: 'Montmartre, Paris', date: 'Oct 2025', aspect: 'landscape', size: 'medium' },
+  { src: '/gallery/Paris_Champs-Elysees-Arc-de-Triomphe.webp', title: 'Champs-Élysées', category: 'Street', location: 'Champs-Élysées, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Musee-dOrsay-from-Seine.webp', title: "Musée d'Orsay", category: 'Architecture', location: 'Seine River, Paris', date: 'Oct 2025', aspect: 'landscape', size: 'medium' },
+  { src: '/gallery/Paris_Seine-River-Quay-and-Boats.webp', title: 'Seine River Quay', category: 'Cityscape', location: 'Seine River, Paris', date: 'Oct 2025', aspect: 'landscape', size: 'medium' },
+
+  // Paris — Louvre Museum
+  { src: '/gallery/Paris_Louvre-Mona-Lisa.webp', title: 'Mona Lisa', category: 'Art', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Louvre-Coronation-of-Napoleon.webp', title: 'The Coronation of Napoleon', category: 'Art', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'landscape', size: 'large' },
+  { src: '/gallery/Paris_Louvre-Winged-Victory-of-Samothrace.webp', title: 'Winged Victory of Samothrace', category: 'Sculpture', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Louvre-Venus-de-Milo.webp', title: 'Venus de Milo', category: 'Sculpture', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Louvre-Diana-of-Versailles.webp', title: 'Diana of Versailles', category: 'Sculpture', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Louvre-Apollo-Gallery-Ceiling-Fresco.webp', title: 'Apollo Gallery Fresco', category: 'Art', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'landscape', size: 'large' },
+  { src: '/gallery/Paris_Louvre-Apollo-Gallery-Gilded-Ceiling.webp', title: 'Apollo Gallery Ceiling', category: 'Architecture', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+
+  // Paris — Notre-Dame & Sacred Art
+  { src: '/gallery/Paris_Louvre-Salle-des-Caryatides.webp', title: 'Salle des Caryatides', category: 'Sculpture', location: 'Louvre Museum, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Notre-Dame-Apse-Stained-Glass.webp', title: 'Apse Stained Glass', category: 'Architecture', location: 'Notre-Dame, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Notre-Dame-High-Altar-and-Pieta.webp', title: 'High Altar & Pietà', category: 'Architecture', location: 'Notre-Dame, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Notre-Dame-Annunciation-Painting.webp', title: 'The Annunciation', category: 'Art', location: 'Notre-Dame, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Notre-Dame-Virgin-and-Child-Marble.webp', title: 'Virgin and Child', category: 'Sculpture', location: 'Notre-Dame, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+
+  // Paris — Street & River
+  { src: '/gallery/Paris_Eiffel-Tower-Night-Cruise-Ticket.webp', title: 'Seine Night Cruise', category: 'Landmark', location: 'Seine River, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Rolls-Royce-Ghost-Champs-Elysees.webp', title: 'Rolls-Royce Ghost', category: 'Street', location: 'Champs-Élysées, Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+  { src: '/gallery/Paris_Religious-Procession-Float.webp', title: 'Religious Procession', category: 'Street', location: 'Paris', date: 'Oct 2025', aspect: 'portrait', size: 'medium' },
+
+  // Skiing
+  { src: '/gallery/Skiing_Chairlift-Mountain-View.webp', title: 'Chairlift Ascent', category: 'Landscape', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'landscape', size: 'large' },
+  { src: '/gallery/Skiing_Helmet-Selfie-Ski-Mountain.webp', title: 'Summit Selfie', category: 'Portrait', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'landscape', size: 'medium' },
+  { src: '/gallery/Skiing_Red-Suit-Sunny-Carving.webp', title: 'Sunny Carving', category: 'Action', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'landscape', size: 'medium' },
+  { src: '/gallery/Skiing_Red-Suit-Carving-Among-Trees.webp', title: 'Tree Line Carving', category: 'Action', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'landscape', size: 'medium' },
+  { src: '/gallery/Skiing_Skis-Resting-on-Snow-Sunny.webp', title: 'Skis in the Sun', category: 'Still Life', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'portrait', size: 'small' },
+  { src: '/gallery/Skiing_Snowy-Run-Trees-Blue-Sky.webp', title: 'Snowy Trail', category: 'Landscape', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'landscape', size: 'large' },
+  { src: '/gallery/Skiing_Summit-Mountain-Panorama.webp', title: 'Mountain Summit Panorama', category: 'Landscape', location: 'Beidahu Ski Resort, Jilin', date: 'Feb 2026', aspect: 'landscape', size: 'large' },
 ];
 
 ---
@@ -427,6 +384,7 @@ const photos = [
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: clamp(220px, 28vw, 380px);
     gap: 0.75rem;
     grid-auto-flow: dense;
   }
@@ -445,33 +403,59 @@ const photos = [
     box-shadow: var(--g-shadow-hard);
   }
 
-  /* Size variants for editorial layout */
-  .gallery-item--large {
-    grid-column: span 8;
-  }
+  /* Size variants (fallback) */
+  .gallery-item--large { grid-column: span 8; }
+  .gallery-item--medium { grid-column: span 4; }
+  .gallery-item--small { grid-column: span 4; }
 
-  .gallery-item--medium {
-    grid-column: span 4;
-  }
-
-  .gallery-item--small {
-    grid-column: span 4;
-  }
-
-  /* Specific layout pattern */
+  /* Specific layout pattern — 29 items across 13 rows */
+  /* Row 1 */
   .gallery-item:nth-child(1) { grid-column: 1 / span 8; }
   .gallery-item:nth-child(2) { grid-column: 9 / span 4; }
+  /* Row 2 */
   .gallery-item:nth-child(3) { grid-column: 1 / span 4; }
   .gallery-item:nth-child(4) { grid-column: 5 / span 4; }
   .gallery-item:nth-child(5) { grid-column: 9 / span 4; }
+  /* Row 3 */
   .gallery-item:nth-child(6) { grid-column: 1 / span 7; }
   .gallery-item:nth-child(7) { grid-column: 8 / span 5; }
+  /* Row 4 */
   .gallery-item:nth-child(8) { grid-column: 1 / span 5; }
   .gallery-item:nth-child(9) { grid-column: 6 / span 7; }
+  /* Row 5 */
+  .gallery-item:nth-child(10) { grid-column: 1 / span 4; }
+  .gallery-item:nth-child(11) { grid-column: 5 / span 4; }
+  .gallery-item:nth-child(12) { grid-column: 9 / span 4; }
+  /* Row 6 */
+  .gallery-item:nth-child(13) { grid-column: 1 / span 8; }
+  .gallery-item:nth-child(14) { grid-column: 9 / span 4; }
+  /* Row 7 */
+  .gallery-item:nth-child(15) { grid-column: 1 / span 4; }
+  .gallery-item:nth-child(16) { grid-column: 5 / span 4; }
+  .gallery-item:nth-child(17) { grid-column: 9 / span 4; }
+  /* Row 8 */
+  .gallery-item:nth-child(18) { grid-column: 1 / span 6; }
+  .gallery-item:nth-child(19) { grid-column: 7 / span 6; }
+  /* Row 9 */
+  .gallery-item:nth-child(20) { grid-column: 1 / span 4; }
+  .gallery-item:nth-child(21) { grid-column: 5 / span 4; }
+  .gallery-item:nth-child(22) { grid-column: 9 / span 4; }
+  /* Row 10 */
+  .gallery-item:nth-child(23) { grid-column: 1 / span 8; }
+  .gallery-item:nth-child(24) { grid-column: 9 / span 4; }
+  /* Row 11 */
+  .gallery-item:nth-child(25) { grid-column: 1 / span 6; }
+  .gallery-item:nth-child(26) { grid-column: 7 / span 6; }
+  /* Row 12 */
+  .gallery-item:nth-child(27) { grid-column: 1 / span 4; }
+  .gallery-item:nth-child(28) { grid-column: 5 / span 8; }
+  /* Row 13 — panorama */
+  .gallery-item:nth-child(29) { grid-column: 1 / span 12; grid-row: span 1; }
 
   .gallery-item__trigger {
     display: block;
     width: 100%;
+    height: 100%;
     padding: 0;
     border: none;
     background: none;
@@ -487,31 +471,8 @@ const photos = [
   .gallery-item__image-wrap {
     position: relative;
     overflow: hidden;
-    aspect-ratio: auto;
+    height: 100%;
   }
-
-  .gallery-item--large .gallery-item__image-wrap {
-    aspect-ratio: 16 / 9;
-  }
-
-  .gallery-item--medium .gallery-item__image-wrap {
-    aspect-ratio: 4 / 3;
-  }
-
-  .gallery-item--small .gallery-item__image-wrap {
-    aspect-ratio: 1 / 1;
-  }
-
-  /* Override specific items for variety */
-  .gallery-item:nth-child(1) .gallery-item__image-wrap { aspect-ratio: 16 / 9; }
-  .gallery-item:nth-child(2) .gallery-item__image-wrap { aspect-ratio: 4 / 5; }
-  .gallery-item:nth-child(3) .gallery-item__image-wrap { aspect-ratio: 3 / 4; }
-  .gallery-item:nth-child(4) .gallery-item__image-wrap { aspect-ratio: 1 / 1; }
-  .gallery-item:nth-child(5) .gallery-item__image-wrap { aspect-ratio: 3 / 4; }
-  .gallery-item:nth-child(6) .gallery-item__image-wrap { aspect-ratio: 16 / 10; }
-  .gallery-item:nth-child(7) .gallery-item__image-wrap { aspect-ratio: 4 / 3; }
-  .gallery-item:nth-child(8) .gallery-item__image-wrap { aspect-ratio: 4 / 3; }
-  .gallery-item:nth-child(9) .gallery-item__image-wrap { aspect-ratio: 16 / 9; }
 
   .gallery-item__image {
     width: 100%;
@@ -857,17 +818,17 @@ const photos = [
 
     .gallery-grid {
       grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-auto-rows: clamp(180px, 25vw, 300px);
     }
 
+    /* Reset all items to half-width, then override heroes */
+    .gallery-item:nth-child(n) { grid-column: span 3; }
     .gallery-item:nth-child(1) { grid-column: 1 / span 6; }
-    .gallery-item:nth-child(2) { grid-column: 1 / span 3; }
-    .gallery-item:nth-child(3) { grid-column: 4 / span 3; }
-    .gallery-item:nth-child(4) { grid-column: 1 / span 3; }
-    .gallery-item:nth-child(5) { grid-column: 4 / span 3; }
-    .gallery-item:nth-child(6) { grid-column: 1 / span 6; }
-    .gallery-item:nth-child(7) { grid-column: 1 / span 3; }
-    .gallery-item:nth-child(8) { grid-column: 4 / span 3; }
     .gallery-item:nth-child(9) { grid-column: 1 / span 6; }
+    .gallery-item:nth-child(13) { grid-column: 1 / span 6; }
+    .gallery-item:nth-child(23) { grid-column: 1 / span 6; }
+    .gallery-item:nth-child(28) { grid-column: 1 / span 6; }
+    .gallery-item:nth-child(29) { grid-column: 1 / span 6; }
 
     .lightbox__content {
       grid-template-columns: 1fr;
@@ -892,28 +853,18 @@ const photos = [
 
     .gallery-grid {
       grid-template-columns: 1fr 1fr;
+      grid-auto-rows: clamp(140px, 28vw, 220px);
       gap: 0.5rem;
     }
 
+    /* Reset all items to half-width, then override heroes */
+    .gallery-item:nth-child(n) { grid-column: span 1; }
     .gallery-item:nth-child(1) { grid-column: 1 / span 2; }
-    .gallery-item:nth-child(2) { grid-column: 1 / span 1; }
-    .gallery-item:nth-child(3) { grid-column: 2 / span 1; }
-    .gallery-item:nth-child(4) { grid-column: 1 / span 1; }
-    .gallery-item:nth-child(5) { grid-column: 2 / span 1; }
-    .gallery-item:nth-child(6) { grid-column: 1 / span 2; }
-    .gallery-item:nth-child(7) { grid-column: 1 / span 1; }
-    .gallery-item:nth-child(8) { grid-column: 2 / span 1; }
     .gallery-item:nth-child(9) { grid-column: 1 / span 2; }
-
-    .gallery-item:nth-child(n) .gallery-item__image-wrap {
-      aspect-ratio: 1 / 1;
-    }
-
-    .gallery-item:nth-child(1) .gallery-item__image-wrap,
-    .gallery-item:nth-child(6) .gallery-item__image-wrap,
-    .gallery-item:nth-child(9) .gallery-item__image-wrap {
-      aspect-ratio: 16 / 9;
-    }
+    .gallery-item:nth-child(13) { grid-column: 1 / span 2; }
+    .gallery-item:nth-child(23) { grid-column: 1 / span 2; }
+    .gallery-item:nth-child(28) { grid-column: 1 / span 2; }
+    .gallery-item:nth-child(29) { grid-column: 1 / span 2; }
 
     .lightbox__container {
       width: 95vw;
