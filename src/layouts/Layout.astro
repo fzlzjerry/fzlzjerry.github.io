@@ -698,7 +698,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('section, .animate-on-scroll').forEach(el => observer.observe(el));
+        document.querySelectorAll('section:not(.home-chapter), .animate-on-scroll').forEach(el => observer.observe(el));
 
         // Copy Code Button Logic
         document.querySelectorAll('pre').forEach(pre => {

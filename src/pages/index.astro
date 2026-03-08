@@ -42,6 +42,15 @@ const socialLinks = [
   { href: 'https://github.com/fzlzjerry', icon: 'fa-brands fa-github', label: 'GitHub' },
   { href: 'https://www.linkedin.com/in/morax-cheng-1ab88633a/', icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn' },
 ];
+
+const chaptersMeta = [
+  { id: 'hero', number: '01', label: 'Opening' },
+  { id: 'identity', number: '02', label: 'Identity' },
+  { id: 'projects', number: '03', label: 'Projects' },
+  { id: 'achievements', number: '04', label: 'Achievements' },
+  { id: 'blog', number: '05', label: 'Writing' },
+  { id: 'connect', number: '06', label: 'Connect' },
+];
 ---
 
 <Layout
@@ -50,7 +59,33 @@ const socialLinks = [
   fullWidth={true}
 >
   <div class="home-editorial" id="home-editorial">
+    <nav class="chapter-rail" aria-label="Homepage chapters">
+      <div class="chapter-rail__inner panel">
+        <p class="chapter-rail__eyebrow">Story Mode</p>
+        <div class="chapter-rail__progress" aria-hidden="true">
+          <span></span>
+        </div>
+        <ol class="chapter-rail__list">
+          {chaptersMeta.map((chapter) => (
+            <li>
+              <a href={`#${chapter.id}`} class="chapter-rail__item" data-rail-target={chapter.id}>
+                <span class="chapter-rail__number">{chapter.number}</span>
+                <span class="chapter-rail__label">{chapter.label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </nav>
+
     <section class="home-chapter home-chapter--hero" id="hero" data-chapter="01" data-chapter-title="Opening">
+      <div class="hero-atmosphere" aria-hidden="true">
+        <span class="hero-atmosphere__orb hero-atmosphere__orb--primary"></span>
+        <span class="hero-atmosphere__orb hero-atmosphere__orb--secondary"></span>
+        <span class="hero-atmosphere__beam"></span>
+        <span class="hero-atmosphere__grid"></span>
+      </div>
+
       <div class="chapter-stage">
         <div class="chapter-grid chapter-grid--hero">
           <p class="chapter-kicker">Student Developer &amp; Economics Enthusiast</p>
@@ -65,6 +100,13 @@ const socialLinks = [
             </a>
             <a href="/about" class="action action--secondary">More About Me</a>
           </div>
+
+          <a href="#identity" class="hero-cue">
+            <span class="hero-cue__label">Scroll for the story</span>
+            <span class="hero-cue__track" aria-hidden="true">
+              <span class="hero-cue__dot"></span>
+            </span>
+          </a>
 
         </div>
       </div>
@@ -320,6 +362,8 @@ const socialLinks = [
     --home-shadow-hard: 6px 6px 0 rgba(0, 0, 0, 0.35);
     --home-radius-1: 2px;
     --home-radius-2: 4px;
+    --story-progress: 0;
+    --hero-progress: 0;
 
     position: relative;
     isolation: isolate;
@@ -344,6 +388,107 @@ const socialLinks = [
     z-index: -1;
   }
 
+  .chapter-rail {
+    position: fixed;
+    top: 50%;
+    right: clamp(0.8rem, 2vw, 1.8rem);
+    z-index: 8;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .chapter-rail__inner {
+    pointer-events: auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+    min-width: 12rem;
+    padding: 0.9rem 0.85rem;
+    background: rgba(10, 10, 11, 0.76);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.28),
+      var(--home-shadow-hard);
+    backdrop-filter: blur(18px);
+    transition: opacity 500ms var(--ease-spring), transform 500ms var(--ease-spring), border-color 220ms ease;
+  }
+
+  .chapter-rail__eyebrow {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--home-text-3);
+  }
+
+  .chapter-rail__inner::after {
+    display: none;
+  }
+
+  .chapter-rail__progress {
+    position: relative;
+    width: 1px;
+    min-height: 11rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.22));
+    overflow: hidden;
+  }
+
+  .chapter-rail__progress span {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--home-accent), rgba(232, 168, 56, 0.28));
+    transform-origin: top;
+    transform: scaleY(var(--story-progress));
+    box-shadow: 0 0 18px rgba(232, 168, 56, 0.35);
+  }
+
+  .chapter-rail__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .chapter-rail__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding: 0.2rem 0;
+    color: var(--home-text-3);
+    transition: color 180ms ease, transform 180ms ease;
+  }
+
+  .chapter-rail__item:hover {
+    color: var(--home-text-1);
+    transform: translateX(-2px);
+  }
+
+  .chapter-rail__item[aria-current='location'] {
+    color: var(--home-text-1);
+  }
+
+  .chapter-rail__item[aria-current='location'] .chapter-rail__label {
+    color: var(--home-accent);
+  }
+
+  .chapter-rail__number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .chapter-rail__label {
+    font-size: 0.83rem;
+    letter-spacing: -0.02em;
+    transition: color 180ms ease;
+  }
+
   .home-chapter {
     --chapter-progress: 0;
     --chapter-enter: 0;
@@ -354,6 +499,7 @@ const socialLinks = [
     position: relative;
     min-height: 186vh;
     border-top: 1px solid var(--home-line-soft);
+    scroll-margin-top: 6rem;
   }
 
   .home-chapter--hero {
@@ -363,6 +509,72 @@ const socialLinks = [
     --chapter-enter: 1;
     --chapter-hold: 1;
     --chapter-exit: 0;
+  }
+
+  .hero-atmosphere {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-atmosphere__orb,
+  .hero-atmosphere__beam,
+  .hero-atmosphere__grid {
+    transition:
+      opacity 900ms var(--ease-spring),
+      transform 1200ms var(--ease-spring);
+    will-change: transform, opacity;
+  }
+
+  .hero-atmosphere__orb {
+    position: absolute;
+    border-radius: 999px;
+    mix-blend-mode: screen;
+    opacity: calc(0.72 - (var(--hero-progress) * 0.38));
+  }
+
+  .hero-atmosphere__orb--primary {
+    top: 5%;
+    right: -10%;
+    width: min(40vw, 34rem);
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(232, 168, 56, 0.18) 0%, rgba(232, 168, 56, 0.08) 34%, transparent 72%);
+    transform: translate3d(calc(var(--hero-progress) * -4%), calc(var(--hero-progress) * 6%), 0) scale(calc(1.04 - (var(--hero-progress) * 0.12)));
+  }
+
+  .hero-atmosphere__orb--secondary {
+    left: -6%;
+    bottom: 2%;
+    width: min(30vw, 24rem);
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 72%);
+    transform: translate3d(calc(var(--hero-progress) * 3%), calc(var(--hero-progress) * -5%), 0) scale(calc(1 - (var(--hero-progress) * 0.08)));
+  }
+
+  .hero-atmosphere__beam {
+    position: absolute;
+    right: -10%;
+    bottom: 20%;
+    width: min(46vw, 42rem);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.7), transparent);
+    opacity: calc(0.52 - (var(--hero-progress) * 0.24));
+    transform: translate3d(calc(var(--hero-progress) * -7%), calc(var(--hero-progress) * 36px), 0) rotate(-14deg);
+  }
+
+  .hero-atmosphere__grid {
+    position: absolute;
+    inset: 7% -5% 0 46%;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 2.7rem 2.7rem;
+    -webkit-mask-image: linear-gradient(180deg, transparent, black 16%, black 70%, transparent);
+    mask-image: linear-gradient(180deg, transparent, black 16%, black 70%, transparent);
+    opacity: calc(0.16 - (var(--hero-progress) * 0.08));
+    transform: translate3d(calc(var(--hero-progress) * -32px), calc(var(--hero-progress) * 26px), 0) perspective(900px) rotateX(65deg);
+    transform-origin: bottom right;
   }
 
 
@@ -396,6 +608,12 @@ const socialLinks = [
     line-height: 0.9;
     color: rgba(255, 255, 255, 0.06);
     pointer-events: none;
+    transition: color 260ms ease, transform 260ms var(--ease-spring);
+  }
+
+  .home-chapter[data-active='true'] .section-index {
+    color: rgba(232, 168, 56, 0.18);
+    transform: translate3d(0, -6px, 0);
   }
 
   .chapter-kicker,
@@ -407,26 +625,33 @@ const socialLinks = [
   .chapter-copy .chapter-split,
   .chapter-header,
   .chapter-actions,
-  .project-list,
-  .stats-grid,
-  .awards-grid,
   .blog-overview,
   .latest-post,
   .connect-copy,
   .chapter-photo,
-  .awards-link {
+  .awards-link,
+  .project-item,
+  .stat-card,
+  .award-item,
+  .hero-cue {
     --entry-x: -22px;
     --entry-y: 28px;
     --exit-x: 16px;
     --exit-y: 14px;
     --entry-scale: 0.968;
     --exit-scale: 0.985;
+    --entry-rotate: 0deg;
+    --exit-rotate: 0deg;
+    --entry-blur: 10px;
+    --exit-blur: 4px;
 
     opacity: var(--chapter-visibility);
     transform: translate3d(
       calc((1 - var(--chapter-enter)) * var(--entry-x) + var(--chapter-exit) * var(--exit-x)),
       calc((1 - var(--chapter-enter)) * var(--entry-y) - var(--chapter-exit) * var(--exit-y)),
       0
+    ) rotate(
+      calc((1 - var(--chapter-enter)) * var(--entry-rotate) + var(--chapter-exit) * var(--exit-rotate))
     ) scale(
       calc(
         var(--entry-scale) +
@@ -434,14 +659,37 @@ const socialLinks = [
         (var(--chapter-exit) * (1 - var(--exit-scale)))
       )
     );
-    transition: transform 220ms linear, opacity 220ms linear;
+    filter: blur(
+      calc((1 - var(--chapter-enter)) * var(--entry-blur) + var(--chapter-exit) * var(--exit-blur))
+    );
+    transition:
+      transform 320ms cubic-bezier(0.2, 0.72, 0.18, 1),
+      opacity 320ms linear,
+      filter 320ms linear,
+      border-color 220ms ease,
+      box-shadow 320ms ease;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
   }
 
   .panel {
+    position: relative;
+    overflow: hidden;
     border: 1px solid var(--home-line-soft);
     background: linear-gradient(180deg, var(--home-panel) 0%, var(--home-panel-alt) 100%);
     border-radius: var(--home-radius-2);
     box-shadow: var(--home-shadow-hard);
+  }
+
+  .panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(118deg, transparent 12%, rgba(255, 255, 255, 0.04) 32%, rgba(232, 168, 56, 0.16) 51%, transparent 72%);
+    opacity: calc(0.06 + (var(--chapter-hold, 0) * 0.11));
+    transform: translate3d(calc((var(--chapter-progress, 0) * 96%) - 58%), 0, 0);
+    mix-blend-mode: screen;
   }
 
   .chapter-grid--hero {
@@ -451,6 +699,8 @@ const socialLinks = [
     min-height: 100%;
     width: min(1420px, calc(100vw - 2.25rem));
     padding-bottom: clamp(2rem, 5vh, 4rem);
+    transition: opacity 280ms linear, transform 280ms linear;
+    transform: translate3d(0, calc(var(--hero-progress) * 24px), 0);
   }
 
   .home-chapter--hero .chapter-stage {
@@ -473,6 +723,9 @@ const socialLinks = [
     --entry-y: 62px;
     --exit-x: 68px;
     --exit-y: 24px;
+    --entry-rotate: -2.4deg;
+    --exit-rotate: 1.6deg;
+    --entry-blur: 12px;
   }
 
   .chapter-grid--hero .chapter-title {
@@ -490,6 +743,9 @@ const socialLinks = [
     --exit-y: 36px;
     --entry-scale: 0.94;
     --exit-scale: 0.97;
+    --entry-rotate: -1.7deg;
+    --exit-rotate: 1.2deg;
+    --entry-blur: 14px;
   }
 
   .chapter-grid--hero .chapter-title span {
@@ -507,6 +763,7 @@ const socialLinks = [
     --entry-y: 34px;
     --exit-x: 50px;
     --exit-y: 22px;
+    --entry-rotate: -1deg;
   }
 
   .chapter-grid--hero .chapter-meta {
@@ -521,6 +778,7 @@ const socialLinks = [
     --entry-y: 28px;
     --exit-x: 26px;
     --exit-y: 10px;
+    --entry-rotate: -0.6deg;
   }
 
   .chapter-actions {
@@ -532,6 +790,57 @@ const socialLinks = [
     --entry-y: 26px;
     --exit-x: 18px;
     --exit-y: 8px;
+    --entry-rotate: -0.4deg;
+  }
+
+  .hero-cue {
+    grid-column: 10 / span 2;
+    justify-self: end;
+    align-self: end;
+    display: grid;
+    gap: 0.55rem;
+    margin-top: clamp(1rem, 3vh, 2rem);
+    color: var(--home-text-3);
+    --entry-x: 36px;
+    --entry-y: 28px;
+    --exit-x: 12px;
+    --exit-y: 10px;
+    --entry-rotate: 1.4deg;
+    --exit-rotate: -0.8deg;
+  }
+
+  .hero-cue:hover {
+    color: var(--home-text-1);
+  }
+
+  .hero-cue__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.61rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .hero-cue__track {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 5.5rem;
+    margin-left: auto;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    overflow: hidden;
+  }
+
+  .hero-cue__dot {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: var(--home-accent);
+    transform: translateX(-50%);
+    box-shadow: 0 0 16px rgba(232, 168, 56, 0.5);
+    animation: cueTravel 1.8s var(--ease-spring) infinite;
   }
 
   .action {
@@ -618,6 +927,10 @@ const socialLinks = [
   .chapter-grid--identity .chapter-photo {
     grid-column: 3 / span 3;
     padding: 1rem;
+    --entry-x: -54px;
+    --entry-y: 38px;
+    --entry-rotate: -1.8deg;
+    --exit-rotate: 0.7deg;
   }
 
   .chapter-photo img {
@@ -654,6 +967,16 @@ const socialLinks = [
     grid-column: 6 / span 6;
     display: grid;
     gap: 1rem;
+  }
+
+  .chapter-copy p:first-of-type {
+    --entry-y: 30px;
+  }
+
+  .chapter-copy p:last-of-type {
+    --entry-x: 18px;
+    --entry-y: 42px;
+    --entry-rotate: 0.8deg;
   }
 
   .chapter-copy p {
@@ -740,6 +1063,21 @@ const socialLinks = [
     padding: 1rem;
     display: grid;
     gap: 0.72rem;
+    transform-origin: top right;
+  }
+
+  .project-item:nth-child(1) {
+    --entry-x: 44px;
+    --entry-y: 28px;
+    --entry-rotate: 1.2deg;
+    --exit-rotate: -0.8deg;
+  }
+
+  .project-item:nth-child(2) {
+    --entry-x: 62px;
+    --entry-y: 44px;
+    --entry-rotate: 2deg;
+    --exit-rotate: -1deg;
   }
 
   .project-item__meta {
@@ -847,6 +1185,30 @@ const socialLinks = [
     gap: 0.35rem;
   }
 
+  .stat-card:nth-child(1) {
+    --entry-x: -42px;
+    --entry-y: 24px;
+    --entry-rotate: -1deg;
+  }
+
+  .stat-card:nth-child(2) {
+    --entry-x: -14px;
+    --entry-y: 32px;
+    --entry-rotate: -0.5deg;
+  }
+
+  .stat-card:nth-child(3) {
+    --entry-x: 14px;
+    --entry-y: 34px;
+    --entry-rotate: 0.5deg;
+  }
+
+  .stat-card:nth-child(4) {
+    --entry-x: 42px;
+    --entry-y: 26px;
+    --entry-rotate: 1deg;
+  }
+
   .stat-value {
     font-family: 'Instrument Serif', Georgia, serif;
     font-size: clamp(2rem, 5vw, 3.4rem);
@@ -882,6 +1244,18 @@ const socialLinks = [
     align-items: start;
   }
 
+  .award-item:nth-child(odd) {
+    --entry-x: -34px;
+    --entry-y: 28px;
+    --entry-rotate: -1.1deg;
+  }
+
+  .award-item:nth-child(even) {
+    --entry-x: 34px;
+    --entry-y: 34px;
+    --entry-rotate: 1.1deg;
+  }
+
   .award-item i {
     margin-top: 0.2rem;
     color: var(--home-accent-muted);
@@ -910,6 +1284,9 @@ const socialLinks = [
     grid-column: 3 / span 4;
     display: grid;
     gap: 0.95rem;
+    --entry-x: -34px;
+    --entry-y: 26px;
+    --entry-rotate: -1deg;
   }
 
   .chapter-grid--blog .latest-post {
@@ -917,6 +1294,9 @@ const socialLinks = [
     padding: 1.1rem;
     display: grid;
     gap: 0.9rem;
+    --entry-x: 42px;
+    --entry-y: 34px;
+    --entry-rotate: 1.25deg;
   }
 
   .latest-post__meta {
@@ -954,6 +1334,8 @@ const socialLinks = [
     grid-column: 3 / span 8;
     display: grid;
     gap: 1rem;
+    --entry-y: 34px;
+    --entry-rotate: -0.8deg;
   }
 
   .connect-copy .chapter-heading span {
@@ -989,7 +1371,48 @@ const socialLinks = [
     width: fit-content;
   }
 
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .chapter-rail__inner {
+    opacity: 0;
+    transform: translate3d(14px, 0, 0);
+  }
+
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-kicker,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-title,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-lead,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-meta,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-actions,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .hero-cue {
+    opacity: 0;
+    filter: blur(18px);
+    transform: translate3d(0, 44px, 0) scale(0.95);
+  }
+
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .hero-atmosphere__orb,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .hero-atmosphere__beam,
+  .home-editorial[data-enhanced='true']:not([data-ready='true']) .hero-atmosphere__grid {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.96);
+  }
+
+  @keyframes cueTravel {
+    0% {
+      transform: translate(-50%, 0);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, 4.4rem);
+      opacity: 0;
+    }
+  }
+
   @media (max-width: 1279px) {
+    .chapter-rail {
+      display: none;
+    }
+
     .chapter-grid {
       width: min(1060px, calc(100vw - 3rem));
     }
@@ -1004,6 +1427,12 @@ const socialLinks = [
     .chapter-grid--hero .chapter-meta,
     .chapter-actions {
       grid-column: 2 / span 10;
+    }
+
+    .hero-cue {
+      grid-column: 2 / span 10;
+      justify-self: start;
+      margin-top: 0.6rem;
     }
 
     .section-index {
@@ -1069,6 +1498,11 @@ const socialLinks = [
       gap: 0.75rem;
     }
 
+    .hero-atmosphere__grid {
+      inset: 22% -10% -14% 26%;
+      opacity: 0.08;
+    }
+
     .section-index {
       grid-column: 1 / span 6;
       font-size: 2.8rem;
@@ -1080,8 +1514,8 @@ const socialLinks = [
     .chapter-grid--hero .chapter-lead,
     .chapter-grid--hero .chapter-meta,
     .chapter-actions,
-    .chapter-grid--hero .hero-ruler,
-      .chapter-grid--identity .chapter-photo,
+    .hero-cue,
+    .chapter-grid--identity .chapter-photo,
     .chapter-grid--identity .chapter-copy,
     .chapter-grid--projects .chapter-header,
     .chapter-grid--projects .project-list,
@@ -1122,16 +1556,18 @@ const socialLinks = [
     .chapter-copy p,
     .chapter-copy .chapter-split,
     .chapter-header,
-    .project-list,
-    .stats-grid,
-    .awards-grid,
     .blog-overview,
     .latest-post,
     .connect-copy,
-        .chapter-photo,
-    .awards-link {
+    .chapter-photo,
+    .awards-link,
+    .project-item,
+    .stat-card,
+    .award-item,
+    .hero-cue {
       opacity: 1;
       transform: none;
+      filter: none;
       transition: none;
     }
 
@@ -1147,11 +1583,23 @@ const socialLinks = [
     .latest-post h3 {
       font-size: 1.35rem;
     }
+
+    .hero-cue {
+      display: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .editorial-strip__track {
       animation: none;
+    }
+
+    .hero-atmosphere__orb,
+    .hero-atmosphere__beam,
+    .hero-atmosphere__grid,
+    .hero-cue__dot {
+      animation: none;
+      transform: none;
     }
 
     .chapter-kicker,
@@ -1162,16 +1610,18 @@ const socialLinks = [
     .chapter-copy p,
     .chapter-copy .chapter-split,
     .chapter-header,
-    .project-list,
-    .stats-grid,
-    .awards-grid,
     .blog-overview,
     .latest-post,
     .connect-copy,
-        .chapter-photo,
-    .awards-link {
+    .chapter-photo,
+    .awards-link,
+    .project-item,
+    .stat-card,
+    .award-item,
+    .hero-cue {
       opacity: 1;
       transform: none;
+      filter: none;
       transition: none;
     }
   }
@@ -1196,11 +1646,52 @@ const socialLinks = [
 
     const chapters = Array.from(document.querySelectorAll('.home-chapter[data-chapter]'));
     const counterNodes = Array.from(document.querySelectorAll('.counter-value'));
-
-
+    const railLinks = Array.from(homeRoot.querySelectorAll('.chapter-rail__item'));
     const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
+    let cinematicEnabled = false;
     let ticking = false;
+    let scrollFrame = 0;
+    let readyFrame = 0;
+    let readyFrameTwo = 0;
+
+    homeRoot.dataset.enhanced = 'true';
+    homeRoot.dataset.ready = 'false';
+
+    function syncMotionMode() {
+      cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
+      homeRoot.dataset.cinematic = cinematicEnabled ? 'true' : 'false';
+    }
+
+    function setChapterState(chapter, progress, enter, hold, exit, visibility) {
+      chapter.style.setProperty('--chapter-progress', progress.toFixed(4));
+      chapter.style.setProperty('--chapter-enter', enter.toFixed(4));
+      chapter.style.setProperty('--chapter-hold', hold.toFixed(4));
+      chapter.style.setProperty('--chapter-exit', exit.toFixed(4));
+      chapter.style.setProperty('--chapter-visibility', visibility.toFixed(4));
+    }
+
+    function setActiveChapter(activeChapter) {
+      const activeId = activeChapter?.id || '';
+
+      chapters.forEach((chapter) => {
+        if (chapter === activeChapter) {
+          chapter.setAttribute('data-active', 'true');
+        } else {
+          chapter.removeAttribute('data-active');
+        }
+      });
+
+      homeRoot.dataset.activeChapter = activeId;
+
+      railLinks.forEach((link) => {
+        const isActive = link.getAttribute('data-rail-target') === activeId;
+        if (isActive) {
+          link.setAttribute('aria-current', 'location');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
 
     function animateCounter(node) {
       const target = Number(node.getAttribute('data-target') || 0);
@@ -1235,18 +1726,31 @@ const socialLinks = [
 
     function updateChapters(scrollY) {
       const viewportHeight = window.innerHeight;
+      const maxScroll = Math.max(document.documentElement.scrollHeight - viewportHeight, 1);
+      const storyProgress = clamp(scrollY / maxScroll, 0, 1);
       let activeChapter = chapters[0] || null;
       let activeScore = -Infinity;
+      const hero = chapters[0];
+      const heroTravel = hero
+        ? Math.max(hero.offsetHeight - viewportHeight * 0.2, viewportHeight * 0.95)
+        : viewportHeight;
+      const heroProgress = clamp(scrollY / heroTravel, 0, 1);
+
+      homeRoot.style.setProperty('--story-progress', storyProgress.toFixed(4));
+      homeRoot.style.setProperty('--hero-progress', heroProgress.toFixed(4));
 
       chapters.forEach((chapter, index) => {
+        const rect = chapter.getBoundingClientRect();
+        const chapterCenter = rect.top + rect.height / 2;
+        const centerOffset = Math.abs(chapterCenter - viewportHeight / 2) / viewportHeight;
+        const centerScore = 1 - clamp(centerOffset, 0, 1.8);
+
         if (!cinematicEnabled) {
-          chapter.style.setProperty('--chapter-progress', '1');
-          chapter.style.setProperty('--chapter-enter', '1');
-          chapter.style.setProperty('--chapter-hold', '1');
-          chapter.style.setProperty('--chapter-exit', '0');
-          chapter.style.setProperty('--chapter-visibility', '1');
+          setChapterState(chapter, 1, 1, 1, 0, 1);
           chapter.setAttribute('data-phase', 'hold');
-          if (!activeChapter || chapter.id === 'hero') {
+          const score = centerScore - index * 0.01;
+          if (score >= activeScore) {
+            activeScore = score;
             activeChapter = chapter;
           }
           return;
@@ -1255,33 +1759,34 @@ const socialLinks = [
         const isHero = chapter.classList.contains('home-chapter--hero');
 
         if (isHero) {
-          chapter.style.setProperty('--chapter-progress', '1');
-          chapter.style.setProperty('--chapter-enter', '1');
-          chapter.style.setProperty('--chapter-hold', '1');
-          chapter.style.setProperty('--chapter-exit', '0');
-          chapter.style.setProperty('--chapter-visibility', '1');
-          chapter.setAttribute('data-phase', 'hold');
-          activeChapter = chapter;
+          const hold = 1 - clamp(heroProgress / 0.76, 0, 1);
+          const exit = clamp((heroProgress - 0.18) / 0.82, 0, 1);
+          const visibility = 1 - heroProgress * 0.24;
+
+          setChapterState(chapter, heroProgress, 1, hold, exit, visibility);
+          chapter.setAttribute('data-phase', heroProgress < 0.16 ? 'hold' : 'exit');
+
+          const score = (1 - heroProgress * 0.9) + centerScore * 0.22;
+          if (score >= activeScore) {
+            activeScore = score;
+            activeChapter = chapter;
+          }
           return;
         }
 
         const chapterTop = chapter.offsetTop;
-        const chapterDistance = Math.max(chapter.offsetHeight - viewportHeight * 0.16, viewportHeight * 0.86);
-        const chapterStart = chapterTop - viewportHeight * 0.1;
+        const chapterDistance = Math.max(chapter.offsetHeight - viewportHeight * 0.18, viewportHeight * 0.9);
+        const chapterStart = chapterTop - viewportHeight * 0.12;
 
         const progress = clamp((scrollY - chapterStart) / chapterDistance, 0, 1);
-        const enterEnd = 0.2;
-        const holdEnd = 0.75;
+        const enterEnd = 0.22;
+        const holdEnd = 0.68;
         const enter = clamp(progress / enterEnd, 0, 1);
         const hold = clamp((progress - enterEnd) / (holdEnd - enterEnd), 0, 1);
         const exit = clamp((progress - holdEnd) / (1 - holdEnd), 0, 1);
-        const visibility = progress < enterEnd ? enter : progress < holdEnd ? 1 : 1 - exit;
+        const visibility = progress < enterEnd ? enter : progress < holdEnd ? 1 : 1 - exit * 0.92;
 
-        chapter.style.setProperty('--chapter-progress', progress.toFixed(4));
-        chapter.style.setProperty('--chapter-enter', enter.toFixed(4));
-        chapter.style.setProperty('--chapter-hold', hold.toFixed(4));
-        chapter.style.setProperty('--chapter-exit', exit.toFixed(4));
-        chapter.style.setProperty('--chapter-visibility', visibility.toFixed(4));
+        setChapterState(chapter, progress, enter, hold, exit, visibility);
 
         if (progress < enterEnd) {
           chapter.setAttribute('data-phase', 'enter');
@@ -1291,13 +1796,13 @@ const socialLinks = [
           chapter.setAttribute('data-phase', 'exit');
         }
 
-        const score = visibility + hold * 0.45 - index * 0.01;
+        const score = visibility * 0.72 + hold * 0.42 + centerScore * 0.28 - index * 0.01;
         if (score >= activeScore) {
           activeScore = score;
           activeChapter = chapter;
         }
       });
-
+      setActiveChapter(activeChapter);
     }
 
     function updateStory() {
@@ -1311,22 +1816,49 @@ const socialLinks = [
         return;
       }
       ticking = true;
-      requestAnimationFrame(() => {
+      scrollFrame = requestAnimationFrame(() => {
         updateStory();
         ticking = false;
       });
     }
 
+    function scheduleReadyState() {
+      cancelAnimationFrame(readyFrame);
+      cancelAnimationFrame(readyFrameTwo);
+
+      if (!cinematicEnabled) {
+        homeRoot.dataset.ready = 'true';
+        return;
+      }
+
+      homeRoot.dataset.ready = 'false';
+      readyFrame = requestAnimationFrame(() => {
+        readyFrameTwo = requestAnimationFrame(() => {
+          homeRoot.dataset.ready = 'true';
+          updateStory();
+        });
+      });
+    }
+
     function onResize() {
-      cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
+      const wasCinematic = cinematicEnabled;
+      syncMotionMode();
+      if (wasCinematic !== cinematicEnabled) {
+        scheduleReadyState();
+      }
       updateStory();
     }
 
     function onMotionPreferenceChange() {
-      cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
+      const wasCinematic = cinematicEnabled;
+      syncMotionMode();
+      if (wasCinematic !== cinematicEnabled) {
+        scheduleReadyState();
+      }
       updateStory();
     }
 
+    syncMotionMode();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
     if (typeof reducedMotionMedia.addEventListener === 'function') {
@@ -1336,10 +1868,14 @@ const socialLinks = [
     }
 
     updateStory();
+    scheduleReadyState();
 
     window.__homeStoryCleanup = () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      cancelAnimationFrame(scrollFrame);
+      cancelAnimationFrame(readyFrame);
+      cancelAnimationFrame(readyFrameTwo);
       if (typeof reducedMotionMedia.removeEventListener === 'function') {
         reducedMotionMedia.removeEventListener('change', onMotionPreferenceChange);
       } else if (typeof reducedMotionMedia.removeListener === 'function') {
