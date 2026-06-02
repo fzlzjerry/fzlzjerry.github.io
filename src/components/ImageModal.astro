@@ -9,18 +9,18 @@ const { id } = Astro.props;
 <div
   id={id}
   class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"
-  style="background-color: rgba(0, 0, 0, 0.86);"
+  style="background-color: oklch(0.2 0.01 70 / 0.86);"
   onclick="if (event.target === this) { this.classList.add('hidden'); this.classList.remove('flex'); }"
   role="dialog"
   aria-modal="true"
   aria-labelledby={`${id}-title`}
 >
-  <div class="max-w-4xl w-full rounded-[4px] overflow-hidden modal-content border border-white/[0.10] shadow-2xl">
-    <div class="relative">
+  <div class="modal-content w-full max-w-4xl">
+    <div class="relative bg-paper border border-border-strong rounded-card overflow-hidden">
       <button
         onclick="this.closest('.modal').classList.add('hidden'); this.closest('.modal').classList.remove('flex');"
-        class="close-btn absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-[2px] z-10 bg-white/[0.05] border border-white/[0.10] text-[#A8A8A0] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] transition-all"
-        aria-label="Close modal"
+        class="close-btn absolute top-3 right-3 z-10 flex items-center justify-center w-10 h-10 rounded-card bg-paper border border-border-strong text-ink-faint transition-colors hover:text-accent hover:border-accent"
+        aria-label="Close"
         tabindex="0"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,26 +30,34 @@ const { id } = Astro.props;
       <img
         src=""
         alt="Certificate"
-        class="w-full h-auto loaded"
+        class="block w-full h-auto"
         id={`${id}-image`}
-        style="display: block;"
       />
+      <figcaption id={`${id}-title`} class="modal-caption font-mono">
+        <span class="modal-caption__index">Pl.</span>
+        <span class="modal-caption__text" id={`${id}-caption`}>Certificate</span>
+      </figcaption>
     </div>
   </div>
 </div>
 
 <style>
   .modal {
-    animation: fadeIn var(--transition-base) ease-out;
+    animation: fadeIn var(--t-base) ease-out;
   }
 
   .modal-content {
-    animation: scaleIn 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    animation: scaleIn 300ms var(--ease-out);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   @keyframes scaleIn {
     from {
-      transform: scale(0.95);
+      transform: scale(0.96);
       opacity: 0;
     }
     to {
@@ -58,9 +66,34 @@ const { id } = Astro.props;
     }
   }
 
+  .modal-caption {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .modal-caption__index {
+    color: var(--ochre);
+  }
+  .modal-caption__text {
+    color: var(--ink-soft);
+  }
+
   .close-btn:focus-visible {
-    outline: 2px solid #E8A838;
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modal,
+    .modal-content {
+      animation: none;
+    }
   }
 </style>
 
@@ -70,7 +103,12 @@ document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
     e.preventDefault();
     const modal = document.getElementById(id);
     const modalImg = document.getElementById(`${id}-image`);
+    const modalCaption = document.getElementById(`${id}-caption`);
     modalImg.src = trigger.getAttribute('href');
+    const label = trigger.getAttribute('aria-label');
+    if (modalCaption && label) {
+      modalCaption.textContent = label.replace(/^View\s+/i, '').replace(/,?\s*full size$/i, '');
+    }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 

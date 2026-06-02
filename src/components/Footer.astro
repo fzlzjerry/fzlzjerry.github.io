@@ -1,51 +1,86 @@
 ---
 const currentYear = new Date().getFullYear();
 
-const socialLinks = [
-  { href: "https://x.com/moraxcheng", icon: "fa-brands fa-x-twitter", label: "Follow on X (Twitter)" },
-  { href: "https://fb.com/moraxcheng", icon: "fa-brands fa-facebook", label: "Follow on Facebook" },
-  { href: "https://instagram.com/moraxcheng", icon: "fa-brands fa-instagram", label: "Follow on Instagram" },
-  { href: "https://github.com/fzlzjerry", icon: "fa-brands fa-github", label: "View GitHub profile" }
+const pages = [
+  { href: '/projects', text: 'Projects' },
+  { href: '/gallery', text: 'Gallery' },
+  { href: '/blog', text: 'Blog' },
+  { href: '/awards', text: 'Awards' },
+  { href: '/about', text: 'About' },
+];
+
+const elsewhere = [
+  { href: 'https://github.com/fzlzjerry', text: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/morax-cheng-1ab88633a/', text: 'LinkedIn' },
+  { href: 'https://x.com/moraxcheng', text: 'X / Twitter' },
+  { href: 'https://instagram.com/moraxcheng', text: 'Instagram' },
 ];
 ---
 
-<footer class="bg-[#09090A] border-t border-white/[0.06] py-12 mt-auto" role="contentinfo">
-  <!-- Gradient divider -->
-  <div class="gradient-divider mb-12"></div>
+<footer class="mt-auto bg-paper" role="contentinfo">
+  <hr class="rule" />
+  <div class="container footer-pad">
+    <div class="grid gap-y-12 gap-x-8 lg:grid-cols-12">
+      <!-- Sign-off -->
+      <div class="lg:col-span-6">
+        <p class="label mb-7">Colophon</p>
+        <a href="mailto:james20081204@gmail.com" class="say-hello font-display tracking-tight text-ink hover:text-accent transition-colors inline-flex items-center gap-3">
+          Say hello<span class="say-hello__arrow text-accent" aria-hidden="true">&rarr;</span>
+        </a>
+        <p class="mt-6 max-w-sm text-ink-faint text-[0.95rem] leading-relaxed">
+          Open to collaborating on open-source, talking economics, or trading notes on code and cameras.
+        </p>
+      </div>
 
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center gap-6">
+      <!-- Index -->
+      <nav class="lg:col-span-3" aria-label="Footer pages">
+        <p class="label mb-7">Index</p>
+        <ul class="flex flex-col gap-4" role="list">
+          {pages.map((p) => (
+            <li><a href={p.href} class="link-underline text-[0.95rem]">{p.text}</a></li>
+          ))}
+        </ul>
+      </nav>
 
-    <!-- Social Links -->
-    <nav aria-label="Social media links">
-      <ul class="flex items-center gap-3" role="list">
-        {socialLinks.map(link => (
-          <li>
-            <a
-              href={link.href}
-              class="group flex items-center justify-center w-10 h-10 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-[2px] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.label}
-            >
-              <i class={`${link.icon} text-base transition-transform duration-fast group-hover:scale-110`} aria-hidden="true"></i>
-            </a>
-          </li>
-        ))}
-        <li>
-          <a
-            href="mailto:james20081204@gmail.com"
-            class="group flex items-center justify-center w-10 h-10 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-[2px] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
-            aria-label="Send email"
-          >
-            <i class="fa-regular fa-envelope text-base transition-transform duration-fast group-hover:scale-110" aria-hidden="true"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
+      <!-- Elsewhere -->
+      <nav class="lg:col-span-3" aria-label="Social links">
+        <p class="label mb-7">Elsewhere</p>
+        <ul class="flex flex-col gap-4" role="list">
+          {elsewhere.map((l) => (
+            <li>
+              <a href={l.href} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 text-[0.95rem] text-ink-soft hover:text-accent transition-colors">
+                {l.text}
+                <span class="text-ink-ghost group-hover:text-accent transition-transform group-hover:translate-x-0.5">↗</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
 
-    <!-- Copyright -->
-    <p class="text-sm text-[#4A4A45] font-grotesk font-medium">
-      &copy; {currentYear} Morax Cheng. All rights reserved.
-    </p>
+    <hr class="rule footer-sep" />
+
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <p class="mono text-[0.72rem] tracking-wide text-ink-faint">
+        © {currentYear} Morax Cheng. Set in Bricolage Grotesque &amp; Hanken Grotesk. Built with Astro and GSAP.
+      </p>
+      <a href="#top" class="mono text-[0.72rem] tracking-wide text-ink-faint hover:text-accent transition-colors inline-flex items-center gap-2" onclick="event.preventDefault(); window.scrollTo({top:0, behavior:'smooth'});">
+        Back to top <span aria-hidden="true">↑</span>
+      </a>
+    </div>
   </div>
 </footer>
+
+<style>
+  /* Real CSS (not Tailwind arbitrary values): clamp math needs spaces around +,
+     which Tailwind's [...] syntax drops, silently zeroing these out. */
+  .footer-pad { padding-block: clamp(4rem, 3rem + 5vw, 7.5rem); }
+  .footer-sep { margin-top: clamp(3.5rem, 2.5rem + 4vw, 6rem); margin-bottom: 1.75rem; }
+  .say-hello { font-size: clamp(2rem, 1.4rem + 3vw, 3.75rem); line-height: 0.98; }
+
+  .say-hello__arrow {
+    display: inline-block;
+    transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .say-hello:hover .say-hello__arrow { transform: translateX(6px); }
+</style>

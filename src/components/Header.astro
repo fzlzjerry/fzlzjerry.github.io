@@ -1,11 +1,11 @@
 ---
 const links = [
-  { href: '/', text: 'Home' },
-  { href: '/projects', text: 'Projects' },
-  { href: '/gallery', text: 'Gallery' },
-  { href: '/blog', text: 'Blog' },
-  { href: '/awards', text: 'Awards' },
-  { href: '/about', text: 'About' },
+  { href: '/', text: 'Home', num: '01' },
+  { href: '/projects', text: 'Projects', num: '02' },
+  { href: '/gallery', text: 'Gallery', num: '03' },
+  { href: '/blog', text: 'Blog', num: '04' },
+  { href: '/awards', text: 'Awards', num: '05' },
+  { href: '/about', text: 'About', num: '06' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -15,149 +15,177 @@ const isActive = (href: string) => {
 };
 ---
 
-<header class="sticky top-0 z-50 w-full bg-[#09090A] border-b border-white/[0.08] transition-all duration-base">
-  <!-- Skip to main content link for accessibility -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#E8A838] focus:text-[#0C0C0E] focus:rounded-[3px] focus:text-sm focus:font-medium">
-    Skip to main content
-  </a>
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-ink focus:text-paper focus:text-sm focus:font-medium focus:rounded-sm">
+  Skip to main content
+</a>
 
-  <nav class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between" role="navigation" aria-label="Main navigation">
-    <!-- Logo -->
-    <div class="flex items-center">
-      <a
-        href="/"
-        class="text-lg font-display italic text-[#F5F5F0] tracking-tight hover:text-[#E8A838] transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] rounded-sm"
-      >
-        Morax<span class="text-[#E8A838]">.</span>
-      </a>
-    </div>
+<header class="site-header sticky top-0 z-50 w-full bg-paper border-b border-border-subtle">
+  <nav class="container h-[4.25rem] flex items-center justify-between" aria-label="Main navigation">
+    <!-- Wordmark -->
+    <a href="/" class="font-display text-[1.4rem] leading-none font-medium tracking-tight text-ink hover:text-accent transition-colors" aria-label="Morax Cheng, home">
+      Morax<span class="text-accent">.</span>
+    </a>
 
-    <!-- Desktop Menu -->
-    <ul class="hidden md:flex gap-8 items-center" role="list">
-      {links.map(link => (
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-7" role="list">
+      {links.map((link) => (
         <li>
           <a
             href={link.href}
-            class={`relative font-grotesk text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-fast hover:text-[#F5F5F0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E] rounded-sm py-1 ${
-              isActive(link.href) ? 'text-[#E8A838]' : 'text-[#6B6B65]'
-            }`}
+            class:list={["nav-link", isActive(link.href) && "is-active"]}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
-            {link.text}
-            {isActive(link.href) && (
-              <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#E8A838] rounded-[2px]" aria-hidden="true"></span>
-            )}
+            <span class="nav-link__num">{link.num}</span>
+            <span class="nav-link__text">{link.text}</span>
           </a>
         </li>
       ))}
-
-      <!-- Search Trigger -->
       <li>
         <button
-          aria-label="Open search"
-          class="flex items-center justify-center w-8 h-8 text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-[rgba(232,168,56,0.3)] rounded-[2px] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
+          aria-label="Open command palette"
+          class="search-pill"
           onclick="document.dispatchEvent(new CustomEvent('open-command-palette'))"
         >
-          <i class="fa-solid fa-magnifying-glass text-xs" aria-hidden="true"></i>
+          <i class="fa-solid fa-magnifying-glass text-[0.7rem]" aria-hidden="true"></i>
+          <span class="hidden lg:inline">Search</span>
+          <kbd class="hidden lg:inline">⌘K</kbd>
         </button>
       </li>
     </ul>
 
-    <!-- Mobile Menu Button -->
+    <!-- Mobile toggle -->
     <button
       id="menu-toggle"
-      class="md:hidden flex items-center justify-center w-10 h-10 text-[#A8A8A0] hover:text-[#F5F5F0] rounded-[3px] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
+      class="md:hidden flex items-center justify-center w-11 h-11 -mr-2 text-ink rounded-sm"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 6h18M3 12h18M3 18h18"></path>
+        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
-
-    <!-- Mobile Menu Panel -->
-    <div
-      id="mobile-menu"
-      class="fixed right-0 top-0 h-full w-72 hidden md:hidden bg-[#101012] border-l border-white/[0.08] shadow-[8px_0_0_rgba(0,0,0,0.36)] z-[60]"
-      role="menu"
-      aria-label="Mobile navigation"
-    >
-      <div class="flex items-center justify-between px-6 h-16 border-b border-white/[0.06]">
-        <span class="font-display italic text-[#F5F5F0]">Menu</span>
-        <button
-          class="flex items-center justify-center w-8 h-8 text-[#6B6B65] hover:text-[#F5F5F0] rounded-[3px] transition-colors"
-          onclick="document.getElementById('mobile-menu').classList.add('hidden'); document.querySelector('.menu-open').classList.remove('hidden'); document.querySelector('.menu-close').classList.add('hidden');"
-          aria-label="Close menu"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-      </div>
-      <ul class="py-4 px-4 flex flex-col gap-1" role="list">
-        {links.map(link => (
-          <li role="none">
-            <a
-              href={link.href}
-              class={`block px-4 py-3 font-grotesk text-sm uppercase tracking-[0.1em] rounded-[3px] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1 ${
-                isActive(link.href)
-                  ? 'bg-white/[0.06] text-[#E8A838] font-medium border-l-2 border-[#E8A838]'
-                  : 'text-[#A8A8A0] hover:bg-white/[0.03] hover:text-[#F5F5F0]'
-              }`}
-              role="menuitem"
-              aria-current={isActive(link.href) ? 'page' : undefined}
-            >
-              {link.text}
-            </a>
-          </li>
-        ))}
-        <li role="none" class="mt-2 pt-2 border-t border-white/[0.06]">
-           <button
-             class="w-full text-left flex items-center gap-2 px-4 py-3 font-grotesk text-sm text-[#A8A8A0] hover:bg-white/[0.03] hover:text-[#F5F5F0] rounded-[3px] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1"
-             onclick="document.dispatchEvent(new CustomEvent('open-command-palette')); document.getElementById('mobile-menu').classList.add('hidden');"
-             role="menuitem"
-           >
-             <i class="fa-solid fa-magnifying-glass text-xs" aria-hidden="true"></i>
-             <span>Search</span>
-           </button>
-        </li>
-      </ul>
-    </div>
   </nav>
+
+  <!-- Mobile panel -->
+  <div id="mobile-menu" class="mobile-panel md:hidden" role="dialog" aria-label="Mobile navigation" aria-modal="false">
+    <div class="flex items-center justify-between px-6 h-[4.25rem] border-b border-border-subtle">
+      <span class="label">Index</span>
+      <button
+        class="text-ink-faint hover:text-ink transition-colors w-8 h-8 flex items-center justify-center"
+        onclick="document.getElementById('mobile-menu').classList.remove('is-open'); document.getElementById('menu-toggle')?.setAttribute('aria-expanded','false'); document.querySelector('.menu-open')?.classList.remove('hidden'); document.querySelector('.menu-close')?.classList.add('hidden');"
+        aria-label="Close menu"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <ul class="flex flex-col" role="list">
+      {links.map((link) => (
+        <li class="border-b border-border-subtle">
+          <a
+            href={link.href}
+            class:list={["mobile-link", isActive(link.href) && "is-active"]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            <span class="index-num">{link.num}</span>
+            <span>{link.text}</span>
+          </a>
+        </li>
+      ))}
+      <li>
+        <button
+          class="mobile-link w-full text-left"
+          onclick="document.dispatchEvent(new CustomEvent('open-command-palette')); document.getElementById('mobile-menu').classList.remove('is-open');"
+        >
+          <span class="index-num">⌘</span>
+          <span>Search</span>
+        </button>
+      </li>
+    </ul>
+  </div>
 </header>
 
 <style>
-  /* Mobile menu animation */
-  #mobile-menu:not(.hidden) {
-    animation: slideInRight 300ms var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+  .nav-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-family: 'Spline Sans Mono', ui-monospace, monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    transition: color var(--t-base) ease;
+  }
+  .nav-link__num { font-size: 0.62rem; color: var(--ink-ghost); transition: color var(--t-base) ease; }
+  .nav-link__text {
+    background-image: linear-gradient(var(--ochre), var(--ochre));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size var(--t-base) var(--ease-out);
+  }
+  .nav-link:hover { color: var(--ink); }
+  .nav-link:hover .nav-link__text { background-size: 100% 1px; }
+  .nav-link.is-active { color: var(--ochre); }
+  .nav-link.is-active .nav-link__num { color: var(--ochre); }
+
+  .search-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    transition: color var(--t-base) ease, border-color var(--t-base) ease;
+    cursor: pointer;
+  }
+  .search-pill:hover { color: var(--ink); border-color: var(--line-strong); }
+  .search-pill kbd {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--ink-ghost);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.05rem 0.3rem;
   }
 
-  @keyframes slideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  .mobile-panel {
+    position: fixed;
+    top: 0; right: 0;
+    height: 100dvh;
+    width: min(82vw, 20rem);
+    background: var(--paper);
+    border-left: 1px solid var(--line);
+    box-shadow: -30px 0 60px -40px rgba(40,30,18,0.5);
+    z-index: 60;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 420ms var(--ease-out), visibility 0s linear 420ms;
   }
-
-  /* Active nav indicator animation */
-  nav a span[aria-hidden="true"] {
-    animation: expandDot var(--transition-base, 200ms) var(--ease-out, cubic-bezier(0, 0, 0.2, 1)) forwards;
+  .mobile-panel.is-open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 420ms var(--ease-out), visibility 0s;
   }
-
-  @keyframes expandDot {
-    from {
-      transform: translateX(-50%) scale(0);
-    }
-    to {
-      transform: translateX(-50%) scale(1);
-    }
+  .mobile-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.5rem;
+    font-family: 'Bricolage Grotesque', serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    transition: background-color var(--t-base) ease, color var(--t-base) ease;
   }
+  .mobile-link:hover { background: var(--panel); }
+  .mobile-link.is-active { color: var(--ochre); }
 
-  header.scrolled {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-panel { transition: none; }
   }
 </style>

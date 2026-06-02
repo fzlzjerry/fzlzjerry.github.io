@@ -18,90 +18,123 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric'
 });
+
+const { title, category, authors, professor, institution, department, tags } = post.data;
+const hasByline = (authors && authors.length) || institution || department || professor;
 ---
 
 <Layout title={`${post.data.title} - Morax Cheng`} description={post.data.excerpt}>
-  <!-- Reading Progress Bar -->
-  <div id="progress-container" class="fixed top-0 left-0 w-full h-1 z-[100] bg-transparent">
-    <div id="progress-bar" class="h-full w-0 transition-all duration-100 ease-out origin-left rounded-r-full" style="background: linear-gradient(90deg, #C4893A, #E8A838); box-shadow: 0 0 10px rgba(232,168,56,0.5);"></div>
-  </div>
-
-  <article class="max-w-3xl mx-auto animate-on-scroll">
-    <header class="mb-12 text-center">
-      <div class="flex items-center justify-center gap-2 text-sm text-[#6B6B65] font-grotesk mb-6">
-        <time datetime={post.data.date}>{formattedDate}</time>
-        {post.data.category && (
-          <>
-            <span class="text-[#4A4A45]">&middot;</span>
-            <span class="font-medium text-[#A8A8A0]">{post.data.category}</span>
-          </>
-        )}
+  <article class="container">
+    <header class="page-head post-head">
+      <div class="post-head__meta">
+        <time class="mono post-head__date" datetime={post.data.date}>{formattedDate}</time>
+        {category && <span class="label post-head__cat">{category}</span>}
       </div>
 
-      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display text-[#F5F5F0] mb-6 leading-tight">
-        {post.data.title}
-      </h1>
+      <h1 class="post-title" data-reveal-lines>{title}</h1>
 
-      {(post.data.institution || post.data.professor || post.data.authors) && (
-        <div class="flex flex-wrap justify-center gap-4 text-sm text-[#6B6B65] py-4 mt-8">
-          <div class="gradient-divider w-full"></div>
-          <div class="flex flex-wrap justify-center gap-4 py-2">
-            {post.data.authors && (
-              <div class="flex gap-1">
-                <span class="text-[#4A4A45]">By</span>
-                <span class="font-medium text-[#A8A8A0]">{post.data.authors.join(', ')}</span>
-              </div>
-            )}
-            {post.data.institution && (
-              <div class="hidden sm:block text-[#4A4A45]">|</div>
-            )}
-            {post.data.institution && (
-              <div class="text-[#A8A8A0]">{post.data.institution}</div>
-            )}
-          </div>
-          <div class="gradient-divider w-full"></div>
-        </div>
+      {hasByline && (
+        <dl class="post-byline" data-reveal>
+          {authors && authors.length > 0 && (
+            <div class="post-byline__row">
+              <dt class="label">By</dt>
+              <dd>{authors.join(', ')}</dd>
+            </div>
+          )}
+          {institution && (
+            <div class="post-byline__row">
+              <dt class="label">Institution</dt>
+              <dd>{institution}</dd>
+            </div>
+          )}
+          {department && (
+            <div class="post-byline__row">
+              <dt class="label">Department</dt>
+              <dd>{department}</dd>
+            </div>
+          )}
+          {professor && (
+            <div class="post-byline__row">
+              <dt class="label">Advisor</dt>
+              <dd>{professor}</dd>
+            </div>
+          )}
+        </dl>
       )}
     </header>
 
-    <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-normal prose-a:text-[#E8A838] prose-a:no-underline prose-a:border-b prose-a:border-[rgba(232,168,56,0.3)] hover:prose-a:border-[#E8A838] prose-img:rounded-[4px] prose-pre:bg-[#141416] prose-pre:border prose-pre:border-white/[0.06]">
+    <hr class="rule post-rule" />
+
+    <div class="prose prose-lg post-body" data-reveal>
       <Content />
     </div>
 
-    <!-- Tags Footer -->
-    {post.data.tags && (
-      <div class="mt-16 pt-8">
-        <div class="gradient-divider mb-8"></div>
-        <div class="flex flex-wrap gap-2">
-          {post.data.tags.map(tag => (
-            <a
-              href={`/blog/tag/${tag.toLowerCase()}`}
-              class="px-3 py-1 bg-white/[0.03] text-[#A8A8A0] text-sm rounded-[2px] border border-white/[0.06] hover:bg-white/[0.06] hover:text-[#E8A838] hover:border-[rgba(232,168,56,0.3)] transition-all"
-            >
-              #{tag}
-            </a>
+    <footer class="post-foot">
+      <hr class="rule" />
+      {tags && tags.length > 0 && (
+        <ul class="tag-list post-foot__tags" role="list">
+          {tags.map(tag => (
+            <li>
+              <a class="tag post-tag" href={`/blog/tag/${tag.toLowerCase()}`}>#{tag}</a>
+            </li>
           ))}
-        </div>
-      </div>
-    )}
+        </ul>
+      )}
+      <a class="section-link link-underline post-foot__back" href="/blog">← All writing</a>
+    </footer>
   </article>
-
-  <script>
-    function updateProgress() {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      const progressBar = document.getElementById("progress-bar");
-      if (progressBar) {
-        progressBar.style.width = scrolled + "%";
-      }
-    }
-
-    document.addEventListener('scroll', updateProgress);
-
-    document.addEventListener('astro:page-load', () => {
-      document.removeEventListener('scroll', updateProgress);
-      document.addEventListener('scroll', updateProgress);
-    });
-  </script>
 </Layout>
+
+<style>
+  /* Constrained reading column for the article */
+  .post-head { max-width: var(--container-text); }
+  .post-head__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  }
+  .post-head__date { font-size: 0.8rem; color: var(--ink-faint); letter-spacing: 0.02em; }
+  .post-head__cat { color: var(--ochre); }
+
+  .post-title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 18ch;
+  }
+
+  .post-byline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: clamp(1.75rem, 1.25rem + 2vw, 2.75rem) 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .post-byline__row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+  }
+  .post-byline__row dt { flex: 0 0 auto; min-width: 7rem; }
+  .post-byline__row dd { margin: 0; color: var(--ink); font-size: 0.95rem; }
+
+  .post-rule { margin-block: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
+
+  /* Constrain the reading column to the text measure (overrides prose's 68ch) */
+  .post-body { max-width: var(--container-text); margin-inline: 0; }
+
+  .post-foot {
+    max-width: var(--container-text);
+    margin-top: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+  .post-foot .rule { margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+  .post-foot__tags { margin-bottom: 2rem; }
+  .post-tag:hover { color: var(--ochre); border-color: var(--ochre-faint); }
+  .post-foot__back { font-size: 0.95rem; color: var(--ink); }
+</style>
+</content>
+</invoke>

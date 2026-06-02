@@ -4,460 +4,394 @@ import ImageModal from '../components/ImageModal.astro';
 
 const awardCategories = [
   {
-    id: 'cnec2025',
-    name: 'CNEC2025 Pre division',
-    description: 'Achievements in the National Economics Challenge (CNEC) Pre Division 2025',
+    index: '01',
+    name: 'USACO 2025–2026',
+    description:
+      'USA Computing Olympiad (USACO) — promoted to the Gold division.',
+    issuer: 'Administered by USACO',
     awards: [
       {
-        title: 'Regional Overall Team Silver Award',
-        date: 'December 2025',
-        category: 'Team Achievement',
-        certificateId: '202503100579',
-        achievement: 'Regional Overall Team Silver Award',
-        division: 'Pre Division (Entry-Level Division)',
-        level: 'NEC Preliminary Level 2025',
-        teamMembers: [
-          { name: 'Yixuan Cheng', role: 'Team Leader' },
-          { name: 'Jacky Xiao', role: 'Team Member' },
-          { name: 'Jerry Liu', role: 'Team Member' },
-          { name: 'Candy Gond', role: 'Team Member' }
-        ]
-      },
-      {
-        title: 'National Top Scoring Individual Gold Award',
-        date: 'December 2025',
+        title: 'Gold Division',
+        date: '2025–2026',
         category: 'Individual Achievement',
-        certificateId: '202503200667',
-        achievement: 'National Top Scoring Individual Gold Award',
-        division: 'Pre Division (Entry-Level Division)',
-        level: 'NEC Preliminary Level 2025',
-        score: '330/360'
+        division: 'Gold Division',
+        level: 'Competitive Programming',
       },
-      {
-        title: 'Macroeconomics Hall of Fame',
-        date: 'December 2025',
-        category: 'Special Recognition',
-        certificateId: '202503200703',
-        achievement: 'Macroeconomics Hall of Fame',
-        division: 'Pre Division (Entry-Level Division)',
-        level: 'NEC Preliminary Level 2025',
-        criteria: [
-          'Outstanding academic performance in macroeconomics',
-          'Innovative research contributions',
-          'Leadership in economic projects'
-        ]
-      }
-    ]
+    ],
   },
   {
-    id: 'himcm2025',
+    index: '02',
     name: 'HiMCM 2025',
-    description: 'High School Mathematical Contest in Modeling (HiMCM) 2025',
+    description:
+      'High School Mathematical Contest in Modeling (HiMCM) 2025',
+    issuer: 'Administered by COMAP',
     awards: [
       {
         title: 'Meritorious Award',
         date: '2025',
         category: 'Team Achievement',
-        certificateId: '16400',
-        achievement: 'Meritorious',
-        division: 'High School Mathematical Contest in Modeling',
-        level: 'HiMCM 2025',
-        school: 'BASIS International school Park Lane Harbour',
+        contest: 'High School Mathematical Contest in Modeling',
+        teamNumber: '16400',
+        school: 'BASIS International School Park Lane Harbour',
         advisor: 'Shazaib Ramzan Nauman',
         teamMembers: [
           { name: 'Yixuan Cheng', role: 'Team Member' },
           { name: 'Lan Jocelyn Bai', role: 'Team Member' },
-          { name: 'Sibo Huang', role: 'Team Member' }
-        ]
-      }
-    ]
-  }
+          { name: 'Sibo Huang', role: 'Team Member' },
+        ],
+        certPdf: '/certificates/16400.pdf',
+      },
+    ],
+  },
 ];
 ---
 
 <Layout
-  title="Awards - Morax Cheng"
-  description="View Morax Cheng's academic achievements and awards, including recognitions from the National Economics Challenge (CNEC) 2025 Pre Division."
+  title="Awards — Morax Cheng"
+  description="Morax Cheng's academic achievements: USACO 2025–2026 Gold division and the HiMCM 2025 modeling contest."
+  fullWidth={true}
 >
-  <div class="space-y-12 animate-on-scroll">
-    <header class="max-w-2xl">
-      <h1 class="text-3xl md:text-4xl font-display text-[#F5F5F0] mb-4">Academic Achievements</h1>
-      <p class="text-[#A8A8A0] text-lg leading-relaxed">
+  <div class="container">
+    <header class="page-head">
+      <span class="label">Awards</span>
+      <h1 class="page-title" data-reveal-lines>Academic achievements</h1>
+      <p class="page-lead" data-reveal>
         Recognitions and awards from academic competitions.
       </p>
     </header>
 
-    <!-- Folder View (Main View) -->
-    <div id="folder-container" class="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-      <div
-        class="award-folder group p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] cursor-pointer transition-all hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1"
-        data-folder-id="cnec2025"
-        tabindex="0"
-        role="button"
-        aria-label="Open CNEC2025 Pre division awards"
-      >
-        <div class="flex justify-between items-start mb-4">
-          <div class="p-2 bg-white/[0.03] rounded-[3px] text-[#6B6B65] group-hover:text-[#E8A838] transition-colors border border-white/[0.06]">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-            </svg>
+    {awardCategories.map((cat) => (
+      <section class="section" aria-labelledby={`cat-${cat.index}`}>
+        <div class="section-head section-head--split">
+          <div>
+            <span class="index-num">{cat.index}</span>
+            <h2 class="section-title" id={`cat-${cat.index}`} data-reveal-lines>
+              {cat.name}
+            </h2>
           </div>
-          <span class="px-2.5 py-1 bg-[rgba(232,168,56,0.08)] text-[#E8A838] text-xs rounded-[3px] font-grotesk font-medium border border-[rgba(232,168,56,0.2)]">
-            {awardCategories[0].awards.length} Awards
+          <span class="section-link mono">
+            {cat.awards.length} {cat.awards.length === 1 ? 'award' : 'awards'}
           </span>
         </div>
 
-        <h2 class="text-xl font-display font-medium text-[#F5F5F0] mb-2 group-hover:text-[#E8A838] transition-colors">
-          {awardCategories[0].name}
-        </h2>
-        <p class="text-sm text-[#A8A8A0] mb-6 line-clamp-2">
-          {awardCategories[0].description}
-        </p>
+        <p class="cat-desc" data-reveal>{cat.description}</p>
 
-        <div class="flex items-center text-sm font-grotesk font-medium text-[#6B6B65] group-hover:text-[#E8A838] transition-colors">
-          View Details
-          <svg class="ml-1.5 w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
+        <ol class="award-list" data-stagger>
+          {cat.awards.map((award, i) => (
+            <li class="award-entry">
+              <div class="award-entry__body">
+                <span class="award-entry__num index-num">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
 
-      <div
-        class="award-folder group p-6 bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] cursor-pointer transition-all hover:border-[rgba(232,168,56,0.3)] hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] hover:-translate-y-1"
-        data-folder-id="himcm2025"
-        tabindex="0"
-        role="button"
-        aria-label="Open HiMCM 2025 awards"
-      >
-        <div class="flex justify-between items-start mb-4">
-          <div class="p-2 bg-white/[0.03] rounded-[3px] text-[#6B6B65] group-hover:text-[#E8A838] transition-colors border border-white/[0.06]">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-            </svg>
-          </div>
-          <span class="px-2.5 py-1 bg-[rgba(232,168,56,0.08)] text-[#E8A838] text-xs rounded-[3px] font-grotesk font-medium border border-[rgba(232,168,56,0.2)]">
-            {awardCategories[1].awards.length} Award
-          </span>
-        </div>
+                <div class="award-entry__main">
+                  <span class="award-entry__date label">{award.date}</span>
+                  <h3 class="award-entry__title font-display">{award.title}</h3>
 
-        <h2 class="text-xl font-display font-medium text-[#F5F5F0] mb-2 group-hover:text-[#E8A838] transition-colors">
-          {awardCategories[1].name}
-        </h2>
-        <p class="text-sm text-[#A8A8A0] mb-6 line-clamp-2">
-          {awardCategories[1].description}
-        </p>
+                  <ul class="tag-list award-entry__tags" role="list">
+                    <li class="tag">{award.category}</li>
+                    {award.division && <li class="tag">{award.division}</li>}
+                    {award.contest && <li class="tag">{award.contest}</li>}
+                    {award.level && <li class="tag">{award.level}</li>}
+                    {award.score && (
+                      <li class="tag tag--accent">Score {award.score}</li>
+                    )}
+                    {award.certificateId && (
+                      <li class="tag tag--id">ID {award.certificateId}</li>
+                    )}
+                    {award.teamNumber && (
+                      <li class="tag tag--id">Team {award.teamNumber}</li>
+                    )}
+                  </ul>
 
-        <div class="flex items-center text-sm font-grotesk font-medium text-[#6B6B65] group-hover:text-[#E8A838] transition-colors">
-          View Details
-          <svg class="ml-1.5 w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <!-- Individual Award Category Views -->
-    <div id="awards-cnec2025" class="award-container hidden space-y-8 max-w-4xl mx-auto fade-in">
-        <div class="flex items-center gap-4 pb-6">
-          <button class="back-to-folders p-2 -ml-2 text-[#6B6B65] hover:text-[#E8A838] hover:bg-white/[0.03] rounded-[3px] transition-all" aria-label="Back to award categories">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h2 class="text-2xl font-display text-[#F5F5F0]">{awardCategories[0].name}</h2>
-        </div>
-        <div class="gradient-divider"></div>
-
-        <div class="grid gap-8">
-          {awardCategories[0].awards.map((award, index) => (
-            <article class="bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] overflow-hidden transition-all hover:border-[rgba(232,168,56,0.3)]">
-              <div class="p-6 md:p-8 grid md:grid-cols-[1fr_300px] gap-8">
-
-                <!-- Content -->
-                <div class="space-y-6">
-                  <div class="space-y-2">
-                    <div class="flex flex-wrap gap-3 text-xs font-grotesk font-medium text-[#6B6B65]">
-                      <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-[#4A4A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {award.date}
-                      </span>
-                      <span class="w-1 h-1 rounded-[2px] bg-[#4A4A45] self-center"></span>
-                      <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-[#4A4A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                        {award.category}
-                      </span>
-                    </div>
-
-                    <h3 class="text-2xl font-display text-[#F5F5F0] leading-tight">
-                      {award.title}
-                    </h3>
-                  </div>
-
-                  <div class="space-y-4 text-sm">
-                    <div class="grid grid-cols-2 gap-4 p-4 bg-[#141416] rounded-[3px] border border-white/[0.06]">
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Achievement</span>
-                        <span class="font-medium text-[#F5F5F0]">{award.achievement}</span>
-                      </div>
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Score</span>
-                        <span class="font-medium text-[#F5F5F0]">{award.score || 'N/A'}</span>
-                      </div>
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Division</span>
-                        <span class="text-[#A8A8A0]">{award.division}</span>
-                      </div>
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Certificate ID</span>
-                        <span class="font-mono text-[#A8A8A0]">{award.certificateId}</span>
-                      </div>
-                    </div>
-
-                    {award.teamMembers && (
-                      <div>
-                        <h4 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-3">Team Members</h4>
-                        <div class="flex flex-wrap gap-2">
-                          {award.teamMembers.map(member => (
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-[3px] text-[#A8A8A0]">
-                              <span class="w-1.5 h-1.5 rounded-[2px] bg-[#E8A838]/50"></span>
-                              {member.name}
-                              <span class="text-[#6B6B65] text-xs">({member.role})</span>
-                            </span>
-                          ))}
+                  {(award.school || award.advisor) && (
+                    <dl class="award-entry__meta">
+                      {award.school && (
+                        <div>
+                          <dt class="label">School</dt>
+                          <dd>{award.school}</dd>
                         </div>
-                      </div>
-                    )}
+                      )}
+                      {award.advisor && (
+                        <div>
+                          <dt class="label">Faculty Advisor</dt>
+                          <dd>{award.advisor}</dd>
+                        </div>
+                      )}
+                    </dl>
+                  )}
 
-                    {award.criteria && (
-                      <div>
-                        <h4 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Criteria</h4>
-                        <ul class="space-y-1 text-[#A8A8A0]">
-                          {award.criteria.map(criterion => (
-                            <li class="flex items-start gap-2">
-                              <span class="mt-1.5 w-1 h-1 rounded-[2px] bg-[#E8A838]/50"></span>
-                              <span>{criterion}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <!-- Certificate Image -->
-                <div class="flex flex-col items-center justify-center p-4 bg-[#141416] rounded-[4px] border border-white/[0.06] border-dashed">
-                  <a
-                    href={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
-                    data-modal="certificate-modal"
-                    class="group relative block w-full overflow-hidden rounded-[3px] bg-[#1C1C1F] shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] border border-white/[0.06]"
-                    aria-label={`View ${award.title} certificate`}
-                  >
-                    <img
-                      src={`/certificates/cnec-${award.title === 'National Top Scoring Individual Gold Award' ? 3 : award.title === 'Macroeconomics Hall of Fame' ? 2 : 1}.jpg`}
-                      alt={`${award.title} Certificate`}
-                      class="w-full h-auto object-contain"
-                      loading="lazy"
-                    />
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span class="px-3 py-1.5 bg-[#1C1C1F]/90 text-xs font-grotesk font-medium text-[#F5F5F0] rounded-[2px] border border-white/[0.10]">
-                        View Full Size
-                      </span>
+                  {award.teamMembers && (
+                    <div class="award-entry__group">
+                      <span class="label">Team</span>
+                      <ul class="member-list" role="list">
+                        {award.teamMembers.map((member) => (
+                          <li class="member">
+                            <span class="member__name">{member.name}</span>
+                            <span class="member__role mono">{member.role}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  </a>
-                  <p class="mt-3 text-xs text-center text-[#4A4A45] font-grotesk">
-                    Issued by CEE &middot; CNEC 2025
-                  </p>
+                  )}
+
+                  {award.criteria && (
+                    <div class="award-entry__group">
+                      <span class="label">Criteria</span>
+                      <ul class="criteria-list" role="list">
+                        {award.criteria.map((criterion) => (
+                          <li class="criterion">{criterion}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
+                <div class="award-entry__cert">
+                  {award.certImage && (
+                    <a
+                      href={award.certImage}
+                      data-modal="certificate-modal"
+                      class="cert-thumb media-frame"
+                      aria-label={`View ${award.title} certificate, full size`}
+                    >
+                      <img
+                        data-zoom
+                        src={award.certImage}
+                        alt={`Certificate: ${award.title}`}
+                        loading="lazy"
+                      />
+                      <figcaption class="wall-label wall-label--hover">
+                        <span class="index-num">Pl.</span>
+                        <span>View full size</span>
+                      </figcaption>
+                    </a>
+                  )}
+                  {award.certPdf && (
+                    <a
+                      href={award.certPdf}
+                      class="cert-pdf link-underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View ${award.title} certificate, PDF`}
+                    >
+                      View certificate (PDF)
+                      <span class="cert-pdf__arrow" aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  <span class="cert-issuer mono">{cat.issuer}</span>
+                </div>
               </div>
-            </article>
+            </li>
           ))}
-        </div>
-      </div>
-
-    <!-- HiMCM 2025 Awards View -->
-    <div id="awards-himcm2025" class="award-container hidden space-y-8 max-w-4xl mx-auto fade-in">
-        <div class="flex items-center gap-4 pb-6">
-          <button class="back-to-folders p-2 -ml-2 text-[#6B6B65] hover:text-[#E8A838] hover:bg-white/[0.03] rounded-[3px] transition-all" aria-label="Back to award categories">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h2 class="text-2xl font-display text-[#F5F5F0]">{awardCategories[1].name}</h2>
-        </div>
-        <div class="gradient-divider"></div>
-
-        <div class="grid gap-8">
-          {awardCategories[1].awards.map((award) => (
-            <article class="bg-[#1C1C1F] border border-white/[0.06] rounded-[4px] overflow-hidden transition-all hover:border-[rgba(232,168,56,0.3)]">
-              <div class="p-6 md:p-8 grid md:grid-cols-[1fr_300px] gap-8">
-
-                <!-- Content -->
-                <div class="space-y-6">
-                  <div class="space-y-2">
-                    <div class="flex flex-wrap gap-3 text-xs font-grotesk font-medium text-[#6B6B65]">
-                      <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-[#4A4A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {award.date}
-                      </span>
-                      <span class="w-1 h-1 rounded-[2px] bg-[#4A4A45] self-center"></span>
-                      <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-[#4A4A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                        {award.category}
-                      </span>
-                    </div>
-
-                    <h3 class="text-2xl font-display text-[#F5F5F0] leading-tight">
-                      {award.title}
-                    </h3>
-                  </div>
-
-                  <div class="space-y-4 text-sm">
-                    <div class="grid grid-cols-2 gap-4 p-4 bg-[#141416] rounded-[3px] border border-white/[0.06]">
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Achievement</span>
-                        <span class="font-medium text-[#F5F5F0]">{award.achievement}</span>
-                      </div>
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Team Number</span>
-                        <span class="font-mono text-[#F5F5F0]">{award.certificateId}</span>
-                      </div>
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">School</span>
-                        <span class="text-[#A8A8A0]">{award.school}</span>
-                      </div>
-                      <div>
-                        <span class="block text-xs font-grotesk text-[#6B6B65] mb-1">Faculty Advisor</span>
-                        <span class="text-[#A8A8A0]">{award.advisor}</span>
-                      </div>
-                    </div>
-
-                    {award.teamMembers && (
-                      <div>
-                        <h4 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-3">Team Members</h4>
-                        <div class="flex flex-wrap gap-2">
-                          {award.teamMembers.map(member => (
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-[3px] text-[#A8A8A0]">
-                              <span class="w-1.5 h-1.5 rounded-[2px] bg-[#E8A838]/50"></span>
-                              {member.name}
-                              <span class="text-[#6B6B65] text-xs">({member.role})</span>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <!-- Certificate Image -->
-                <div class="flex flex-col items-center justify-center p-4 bg-[#141416] rounded-[4px] border border-white/[0.06] border-dashed">
-                  <a
-                    href="/certificates/16400.pdf"
-                    class="group relative block w-full overflow-hidden rounded-[3px] bg-[#1C1C1F] shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] border border-white/[0.06]"
-                    aria-label={`View ${award.title} certificate`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div class="relative w-full aspect-[4/3] overflow-hidden">
-                      <object
-                        data="/certificates/16400.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
-                        type="application/pdf"
-                        class="w-full h-full pointer-events-none"
-                      >
-                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                          <svg class="w-12 h-12 text-[#4A4A45] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                          <span class="text-xs text-[#6B6B65]">PDF Preview</span>
-                        </div>
-                      </object>
-                    </div>
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span class="px-3 py-1.5 bg-[#1C1C1F]/90 text-xs font-grotesk font-medium text-[#F5F5F0] rounded-[2px] border border-white/[0.10]">
-                        View Full Size
-                      </span>
-                    </div>
-                  </a>
-                  <p class="mt-3 text-xs text-center text-[#4A4A45] font-grotesk">
-                    Administered by COMAP &middot; HiMCM 2025
-                  </p>
-                </div>
-
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
+        </ol>
+      </section>
+    ))}
   </div>
+
   <ImageModal id="certificate-modal" />
-
-  <script>
-    function setupAwards() {
-      const folders = document.querySelectorAll('.award-folder');
-      const backButtons = document.querySelectorAll('.back-to-folders');
-      const folderContainer = document.getElementById('folder-container');
-      const awardContainers = document.querySelectorAll('.award-container');
-
-      const openFolder = (folderId) => {
-        folderContainer.classList.add('hidden');
-        const selectedContainer = document.getElementById('awards-' + folderId);
-        if (selectedContainer) {
-          selectedContainer.classList.remove('hidden');
-          selectedContainer.classList.add('fade-in');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      };
-
-      const closeFolder = () => {
-        awardContainers.forEach(container => {
-          container.classList.add('hidden');
-        });
-        folderContainer.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      };
-
-      folders.forEach(folder => {
-        const newFolder = folder.cloneNode(true);
-        folder.parentNode.replaceChild(newFolder, folder);
-
-        newFolder.addEventListener('click', () => {
-          const folderId = newFolder.getAttribute('data-folder-id');
-          openFolder(folderId);
-        });
-
-        newFolder.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            const folderId = newFolder.getAttribute('data-folder-id');
-            openFolder(folderId);
-          }
-        });
-      });
-
-      backButtons.forEach(button => {
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-
-        newButton.addEventListener('click', closeFolder);
-
-        newButton.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            closeFolder();
-          }
-        });
-      });
-    }
-
-    setupAwards();
-    document.addEventListener('astro:page-load', setupAwards);
-  </script>
 </Layout>
+
+<style>
+  /* ---------- category intro ---------- */
+  .cat-desc {
+    color: var(--ink-soft);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    max-width: 52ch;
+    margin: -0.5rem 0 clamp(1.75rem, 1rem + 2vw, 2.75rem);
+  }
+
+  /* ---------- award list ---------- */
+  .award-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .award-entry {
+    border-bottom: 1px solid var(--line);
+  }
+  .award-entry__body {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    padding-block: clamp(2rem, 1.25rem + 2.5vw, 3.25rem);
+    align-items: start;
+  }
+  .award-entry__num {
+    padding-top: 0.45rem;
+  }
+
+  .award-entry__main {
+    min-width: 0;
+  }
+  .award-entry__date {
+    display: block;
+    margin-bottom: 0.65rem;
+  }
+  .award-entry__title {
+    font-size: var(--step-2);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.1rem;
+    max-width: 22ch;
+  }
+
+  .award-entry__tags {
+    margin-bottom: 1.4rem;
+  }
+  .tag--accent {
+    color: var(--ochre);
+    border-color: var(--ochre-faint);
+  }
+  .tag--id {
+    color: var(--ink-soft);
+  }
+
+  /* school / advisor meta */
+  .award-entry__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    margin: 0 0 1.4rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .award-entry__meta dt {
+    margin-bottom: 0.3rem;
+  }
+  .award-entry__meta dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+
+  /* shared group (team / criteria) */
+  .award-entry__group {
+    padding-top: 1.25rem;
+    margin-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .award-entry__group > .label {
+    display: block;
+    margin-bottom: 0.85rem;
+  }
+
+  /* team members */
+  .member-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    max-width: 40ch;
+  }
+  .member {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .member:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .member__name {
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .member__role {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* criteria */
+  .criteria-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 56ch;
+  }
+  .criterion {
+    position: relative;
+    padding-left: 1.4rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .criterion::before {
+    content: '';
+    position: absolute;
+    left: 0.1rem;
+    top: 0.62em;
+    width: 0.4rem;
+    height: 1px;
+    background: var(--ochre);
+  }
+
+  /* ---------- certificate column ---------- */
+  .award-entry__cert {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    width: 100%;
+  }
+  .cert-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    transition: border-color var(--t-base) ease;
+  }
+  .cert-thumb:hover {
+    border-color: var(--line-strong);
+  }
+  .cert-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .cert-pdf__arrow {
+    color: var(--ink-ghost);
+    transition: transform var(--t-base) var(--ease-out), color var(--t-base) ease;
+  }
+  .cert-pdf:hover .cert-pdf__arrow {
+    transform: translate(3px, -3px);
+    color: var(--ochre);
+  }
+  .cert-issuer {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- responsive: certificate sits beside content on wide screens ---------- */
+  @media (min-width: 860px) {
+    .award-entry__body {
+      grid-template-columns: auto 1fr 280px;
+    }
+    .award-entry__cert {
+      align-self: start;
+    }
+  }
+  @media (max-width: 520px) {
+    .award-entry__body {
+      grid-template-columns: 1fr;
+    }
+    .award-entry__num {
+      padding-top: 0;
+    }
+  }
+</style>

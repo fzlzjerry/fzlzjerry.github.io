@@ -2,41 +2,109 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="404 Not Found">
-  <main class="flex flex-col items-center justify-center min-h-[60vh] px-4 animate-on-scroll relative">
-    <!-- Atmospheric gradient -->
-    <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(232,168,56,0.08)_0%,transparent_70%)] blur-3xl"></div>
-    </div>
+<Layout
+  title="Page not found · Morax Cheng"
+  description="This page could not be found. Return to the homepage."
+  fullWidth={true}
+>
+  <section class="notfound">
+    <div class="container">
+      <div class="notfound__top">
+        <span class="index-num">Err. 404</span>
+        <span class="label">Off the catalogue</span>
+      </div>
+      <hr class="rule" />
 
-    <div class="w-full max-w-2xl mb-8">
-      <video
-        class="w-full h-auto rounded-[4px] border border-white/[0.06]"
-        autoplay
-        loop
-        muted
-        playsinline
-        aria-label="404 animation"
-      >
-        <source src="/404.webm" type="video/webm">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+      <div class="notfound__grid">
+        <div class="notfound__text">
+          <h1 class="notfound__title" data-reveal-lines>Page not found</h1>
+          <p class="notfound__lead" data-reveal>
+            This plate isn't in the collection. The link may have moved, or it
+            never hung here at all.
+          </p>
+          <div class="notfound__cta" data-reveal>
+            <a class="btn btn-primary" href="/">Return to home<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
 
-    <div class="text-center space-y-6">
-      <h1 class="text-4xl md:text-5xl font-display text-[#F5F5F0] tracking-tight">
-        Page Not Found
-      </h1>
-
-      <a
-        href="/"
-        class="inline-flex items-center px-6 py-3 text-sm font-medium text-[#0C0C0E] bg-[#E8A838] rounded-[3px] hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(232,168,56,0.3)] transition-all"
-      >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
-        Return to Home
-      </a>
+        <figure class="notfound__media media-frame" data-reveal>
+          <video
+            class="notfound__video"
+            autoplay
+            loop
+            muted
+            playsinline
+            aria-label="A short looping animation marking a missing page"
+          >
+            <source src="/404.webm" type="video/webm" />
+          </video>
+          <figcaption class="wall-label">
+            <span class="index-num">Pl. 404</span>
+            <span>Missing plate</span>
+          </figcaption>
+        </figure>
+      </div>
     </div>
-  </main>
+  </section>
 </Layout>
+
+<style>
+  .notfound {
+    padding-block: clamp(3.5rem, 2.5rem + 6vw, 8rem);
+  }
+  .notfound__top {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .notfound .rule {
+    margin-bottom: clamp(2rem, 1.5rem + 3vw, 4rem);
+  }
+
+  .notfound__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 1.5rem + 4vw, 4.5rem);
+    align-items: center;
+  }
+
+  .notfound__title {
+    font-size: var(--step-5);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    max-width: 12ch;
+  }
+  .notfound__lead {
+    margin-top: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: 38ch;
+    line-height: 1.5;
+  }
+  .notfound__cta {
+    margin-top: clamp(1.75rem, 1.5rem + 1.5vw, 2.5rem);
+  }
+
+  .notfound__media {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    max-width: 32rem;
+  }
+  /* Global .media-frame styles target `img`; the video needs its own fill rule. */
+  .notfound__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 860px) {
+    .notfound__grid {
+      grid-template-columns: 1fr 0.85fr;
+    }
+    .notfound__media {
+      margin-left: auto;
+    }
+  }
+</style>

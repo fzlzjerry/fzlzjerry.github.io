@@ -7,1889 +7,409 @@ const latestPost = allPosts.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 )[0];
 
+const fmtDate = (d: string) =>
+  new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
 const projects = [
   {
     title: 'Windows 12 Web',
-    description: 'A web-based Windows 12 concept UI implementation with modern web technologies. Features a realistic Windows-like interface, multiple windows management, and various system apps.',
-    tech: ['Html', 'CSS', 'JS'],
+    description: 'A web-based Windows 12 concept UI built with modern web technologies. A realistic Windows-like interface with multi-window management and a set of working system apps.',
+    tech: ['HTML', 'CSS', 'JS'],
     github: 'https://github.com/tjy-gitnub/win12',
-    featured: true
+    year: '2024',
   },
   {
     title: 'WeChat Anti-Recall',
-    description: 'A SwiftPM command-line tool for macOS WeChat 4 that patches supported builds to preserve recalled messages, offer tip mode, and block auto-updates.',
+    description: 'A SwiftPM command-line tool for macOS WeChat 4 that patches supported builds to preserve recalled messages, add a tip mode, and block auto-updates.',
     tech: ['Swift', 'SwiftPM', 'Mach-O', 'macOS'],
     github: 'https://github.com/fzlzjerry/wechat-antirecall',
-    featured: false
-  }
+    year: '2025',
+  },
 ];
 
 const stats = [
-  { value: '330', suffix: '/360', label: 'NEC Score' },
-  { value: '4', suffix: '+', label: 'Awards' },
+  { value: '29', suffix: '', label: 'Photographs' },
+  { value: '2', suffix: '', label: 'Awards' },
   { value: '6', suffix: '+', label: 'Languages' },
   { value: '2', suffix: '', label: 'Projects' },
 ];
 
 const awards = [
-  { title: 'National Top Scoring Individual Gold', event: 'CNEC 2025 Pre Division', icon: 'fa-trophy' },
-  { title: 'Macroeconomics Hall of Fame', event: 'CNEC 2025 Pre Division', icon: 'fa-star' },
-  { title: 'Regional Team Silver Award', event: 'CNEC 2025 Pre Division', icon: 'fa-medal' },
-  { title: 'Meritorious Award', event: 'HiMCM 2025', icon: 'fa-award' },
+  { title: 'Gold Division', event: 'USACO 2025–2026' },
+  { title: 'Meritorious Award', event: 'HiMCM 2025' },
 ];
 
-const socialLinks = [
-  { href: 'https://github.com/fzlzjerry', icon: 'fa-brands fa-github', label: 'GitHub' },
-  { href: 'https://www.linkedin.com/in/morax-cheng-1ab88633a/', icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn' },
-];
-
-const chaptersMeta = [
-  { id: 'hero', number: '01', label: 'Opening' },
-  { id: 'identity', number: '02', label: 'Identity' },
-  { id: 'projects', number: '03', label: 'Projects' },
-  { id: 'achievements', number: '04', label: 'Achievements' },
-  { id: 'blog', number: '05', label: 'Writing' },
-  { id: 'connect', number: '06', label: 'Connect' },
+const galleryTeaser = [
+  { src: '/gallery/Paris_Louvre-Coronation-of-Napoleon.webp', alt: 'The Coronation of Napoleon hanging in the Louvre', place: 'Louvre, Paris', span: 'wide' },
+  { src: '/gallery/Paris_Sacre-Coeur-Basilica.webp', alt: 'Sacré-Cœur Basilica above Montmartre', place: 'Montmartre, Paris', span: 'tall' },
+  { src: '/gallery/Skiing_Summit-Mountain-Panorama.webp', alt: 'Mountain summit panorama under blue sky', place: 'Beidahu, Jilin', span: 'wide' },
+  { src: '/gallery/Paris_Eiffel-Tower-Dusk-Seine.webp', alt: 'The Eiffel Tower at dusk over the Seine', place: 'Seine, Paris', span: 'tall' },
 ];
 ---
 
 <Layout
-  title="Morax Cheng - Student Developer & Economics Enthusiast"
-  description="Welcome to Morax Cheng's personal website. Explore projects, blog posts, and learn about a student developer passionate about programming and economics."
+  title="Morax Cheng — Student Developer & Economics Enthusiast"
+  description="Morax Cheng: student developer and economics enthusiast. Software, markets, and a camera. Projects, writing, awards, and a photo gallery."
   fullWidth={true}
 >
-  <div class="home-editorial" id="home-editorial">
-    <nav class="chapter-rail" aria-label="Homepage chapters">
-      <div class="chapter-rail__inner panel">
-        <p class="chapter-rail__eyebrow">Story Mode</p>
-        <div class="chapter-rail__progress" aria-hidden="true">
-          <span></span>
-        </div>
-        <ol class="chapter-rail__list">
-          {chaptersMeta.map((chapter) => (
-            <li>
-              <a href={`#${chapter.id}`} class="chapter-rail__item" data-rail-target={chapter.id}>
-                <span class="chapter-rail__number">{chapter.number}</span>
-                <span class="chapter-rail__label">{chapter.label}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
+  <span id="top" aria-hidden="true"></span>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" data-hero aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero__top">
+        <span class="label" data-hero-item>Morax Cheng · Portfolio, Edition 2026</span>
+        <span class="label" data-hero-item>Shenzhen, China · Open source</span>
       </div>
-    </nav>
+      <hr class="rule" data-hero-item />
 
-    <section class="home-chapter home-chapter--hero" id="hero" data-chapter="01" data-chapter-title="Opening">
-      <div class="hero-atmosphere" aria-hidden="true">
-        <span class="hero-atmosphere__orb hero-atmosphere__orb--primary"></span>
-        <span class="hero-atmosphere__orb hero-atmosphere__orb--secondary"></span>
-        <span class="hero-atmosphere__beam"></span>
-        <span class="hero-atmosphere__grid"></span>
-      </div>
+      <h1 class="hero__title" id="hero-title" data-hero-headline>Morax Cheng</h1>
 
-      <div class="chapter-stage">
-        <div class="chapter-grid chapter-grid--hero">
-          <p class="chapter-kicker">Student Developer &amp; Economics Enthusiast</p>
-          <h1 class="chapter-title">Hi, I'm <span>Morax</span></h1>
-          <p class="chapter-lead">Building software, exploring economic theories, and pushing the boundaries of what's possible with code.</p>
-          <p class="chapter-meta">Currently at BASIS International School Park Lane Harbour</p>
-
-          <div class="chapter-actions">
-            <a href="/projects" class="action action--primary">
-              View Projects
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
-            </a>
-            <a href="/about" class="action action--secondary">More About Me</a>
+      <div class="hero__row">
+        <div class="hero__lead">
+          <p data-hero-item>
+            Student developer and economics enthusiast. I build software, study how
+            markets move, and carry a camera for everything in between.
+          </p>
+          <div class="hero__cta" data-hero-item>
+            <a class="btn btn-primary" href="/projects">View projects<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn btn-ghost" href="/about">About me</a>
           </div>
-
-          <a href="#identity" class="hero-cue">
-            <span class="hero-cue__label">Scroll for the story</span>
-            <span class="hero-cue__track" aria-hidden="true">
-              <span class="hero-cue__dot"></span>
-            </span>
-          </a>
-
         </div>
+        <dl class="hero__meta" data-hero-item>
+          <div><dt class="label">Disciplines</dt><dd>Software · Economics · Photography</dd></div>
+          <div><dt class="label">Currently</dt><dd>BASIS International School, Park Lane Harbour</dd></div>
+          <div><dt class="label">Learning</dt><dd>MATLAB &amp; ML algorithms</dd></div>
+        </dl>
       </div>
-    </section>
 
-    <div class="editorial-strip" aria-hidden="true">
-      <div class="editorial-strip__track">
-        {[...Array(4)].map(() => (
-          <span class="editorial-strip__set">
-            <span>Developer</span>
-            <span class="sep">/</span>
-            <span>Economics</span>
-            <span class="sep">/</span>
-            <span>Open Source</span>
-            <span class="sep">/</span>
-            <span>Machine Learning</span>
-            <span class="sep">/</span>
-            <span>Mathematics</span>
-            <span class="sep">/</span>
-            <span>Python</span>
-            <span class="sep">/</span>
-            <span>C++</span>
-            <span class="sep">/</span>
-            <span>Rust</span>
-            <span class="sep">/</span>
-          </span>
+      <figure class="hero__media media-frame" data-hero-media>
+        <img data-parallax="6" src="/gallery/Paris_Montmartre-Panoramic-View.webp" alt="The rooftops of Paris seen from the steps of Montmartre" loading="eager" />
+        <figcaption class="wall-label">
+          <span class="index-num">Pl. 01</span>
+          <span>Montmartre, Paris</span>
+          <span class="text-ink-faint">Oct 2025</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== 01 · PROFILE ===================== -->
+  <section class="section" aria-labelledby="profile-h">
+    <div class="container">
+      <div class="section-head">
+        <span class="index-num">01</span>
+        <span class="label">Profile</span>
+      </div>
+      <div class="profile">
+        <div class="profile__text">
+          <h2 class="profile__title" id="profile-h" data-reveal-lines>Curious, by default.</h2>
+          <div class="profile__body">
+            <p data-reveal>
+              I'm Morax Cheng, a high-school student at BASIS International School Park Lane Harbour.
+              I write software, dig into economic theory, and gravitate toward problems that sit
+              where the two meet.
+            </p>
+            <p data-reveal>
+              Away from the editor you'll find me reading science fiction, playing chess, or out
+              with a camera. Most of what I make ends up open source.
+            </p>
+          </div>
+          <dl class="profile__facts" data-stagger>
+            <div>
+              <dt class="label">Currently building</dt>
+              <dd><a class="link-underline" href="https://github.com/tjy-gitnub/win12" target="_blank" rel="noopener noreferrer">Windows 12 Web</a></dd>
+            </div>
+            <div>
+              <dt class="label">Currently learning</dt>
+              <dd>MATLAB &amp; machine-learning algorithms</dd>
+            </div>
+            <div>
+              <dt class="label">Based in</dt>
+              <dd>China</dd>
+            </div>
+          </dl>
+        </div>
+        <figure class="profile__portrait media-frame" data-reveal>
+          <img data-zoom src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="lazy" />
+          <figcaption class="wall-label">
+            <span>Morax Cheng</span>
+            <span class="text-ink-faint">Open-source contributor</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- keyword marquee -->
+  <div class="marquee strip" aria-hidden="true">
+    <div class="marquee__track" data-marquee="36">
+      {Array.from({ length: 2 }).map(() => (
+        <span class="strip__inner">
+          {['Developer', 'Economics', 'Open Source', 'Machine Learning', 'Mathematics', 'Python', 'C++', 'Rust', 'Photography'].map((w) => (
+            <span class="strip__item">{w}<span class="strip__dot">✦</span></span>
+          ))}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ===================== 02 · SELECTED WORK ===================== -->
+  <section class="section" aria-labelledby="work-h">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <span class="index-num">02</span>
+          <h2 class="section-title" id="work-h" data-reveal-lines>Selected work</h2>
+        </div>
+        <a class="section-link link-underline" href="/projects">All projects →</a>
+      </div>
+
+      <ol class="work-list">
+        {projects.map((p, i) => (
+          <li class="work-row" data-reveal>
+            <a class="work-row__link" href={p.github} target="_blank" rel="noopener noreferrer">
+              <span class="work-row__num index-num">{String(i + 1).padStart(2, '0')}</span>
+              <div class="work-row__main">
+                <h3 class="work-row__title">{p.title}</h3>
+                <p class="work-row__desc">{p.description}</p>
+                <ul class="work-row__tech" role="list">
+                  {p.tech.map((t) => <li>{t}</li>)}
+                </ul>
+              </div>
+              <span class="work-row__year mono">{p.year}</span>
+              <span class="work-row__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== 03 · RECOGNITION ===================== -->
+  <section class="section" aria-labelledby="rec-h">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <span class="index-num">03</span>
+          <h2 class="section-title" id="rec-h" data-reveal-lines>On the record</h2>
+        </div>
+        <a class="section-link link-underline" href="/awards">All awards →</a>
+      </div>
+
+      <dl class="stats" data-stagger>
+        {stats.map((s) => (
+          <div class="stat">
+            <dd class="stat__value">
+              <span class="counter" data-count={s.value}>{s.value}</span><span class="stat__suffix">{s.suffix}</span>
+            </dd>
+            <dt class="stat__label label">{s.label}</dt>
+          </div>
+        ))}
+      </dl>
+
+      <ul class="awards" role="list">
+        {awards.map((a) => (
+          <li class="award" data-reveal>
+            <span class="award__title">{a.title}</span>
+            <span class="award__event mono">{a.event}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== 04 · THROUGH THE LENS ===================== -->
+  <section class="section" aria-labelledby="lens-h">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <span class="index-num">04</span>
+          <h2 class="section-title" id="lens-h" data-reveal-lines>Through the lens</h2>
+        </div>
+        <a class="section-link link-underline" href="/gallery">Full gallery →</a>
+      </div>
+      <p class="lens-intro" data-reveal>Twenty-nine frames across Paris and the slopes of Jilin.</p>
+
+      <div class="lens-grid" data-stagger>
+        {galleryTeaser.map((g) => (
+          <a href="/gallery" class:list={['lens-cell media-frame', `lens-cell--${g.span}`]} aria-label={`Gallery: ${g.place}`}>
+            <img data-zoom src={g.src} alt={g.alt} loading="lazy" />
+            <figcaption class="wall-label wall-label--hover">
+              <span>{g.place}</span>
+            </figcaption>
+          </a>
         ))}
       </div>
     </div>
+  </section>
 
-    <section class="home-chapter" id="identity" data-chapter="02" data-chapter-title="Identity">
-      <div class="chapter-stage">
-        <div class="chapter-grid chapter-grid--identity">
-          <p class="section-index">01</p>
-
-          <figure class="chapter-photo panel">
-            <img src="/Morax.JPG" alt="Morax Cheng" loading="eager" />
-            <figcaption>
-              <div><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>China</span></div>
-              <div><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>High School Student</span></div>
-              <div><i class="fa-solid fa-code" aria-hidden="true"></i><span>Open Source Contributor</span></div>
-            </figcaption>
-          </figure>
-
-          <div class="chapter-copy">
-            <h2 class="chapter-heading">A story of curiosity<span>.</span></h2>
-            <p>I'm a teenage open-source enthusiast and developer from China, passionate about coding, mathematics, and artificial intelligence. I love to explore new technologies and apply them to solve real-world problems.</p>
-            <p>When I'm not coding, you can find me reading sci-fi novels or playing chess. I'm driven by the desire to understand how systems work -- from software architectures to economic models.</p>
-
-            <div class="chapter-split">
-              <a
-                href="https://github.com/tjy-gitnub/win12"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="panel panel-link"
-              >
-                <span class="panel-label">Currently Building</span>
-                <span class="panel-value">Windows 12 Web</span>
-              </a>
-              <div class="panel">
-                <span class="panel-label">Currently Learning</span>
-                <span class="panel-value">Matlab &amp; ML Algorithms</span>
-              </div>
-            </div>
+  <!-- ===================== 05 · LATEST WRITING ===================== -->
+  {latestPost && (
+    <section class="section" aria-labelledby="write-h">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <span class="index-num">05</span>
+            <h2 class="section-title" id="write-h" data-reveal-lines>Latest writing</h2>
           </div>
+          <a class="section-link link-underline" href="/blog">All posts →</a>
         </div>
+
+        <a class="feature-post" href={`/blog/${latestPost.slug}`} data-reveal>
+          <div class="feature-post__meta">
+            <time class="mono" datetime={latestPost.data.date}>{fmtDate(latestPost.data.date)}</time>
+            {latestPost.data.category && <span class="feature-post__cat label">{latestPost.data.category}</span>}
+          </div>
+          <h3 class="feature-post__title">{latestPost.data.title}</h3>
+          {latestPost.data.excerpt && <p class="feature-post__excerpt">{latestPost.data.excerpt}</p>}
+          <span class="feature-post__cta link-underline">Read the piece →</span>
+        </a>
       </div>
     </section>
+  )}
 
-    <section class="home-chapter" id="projects" data-chapter="03" data-chapter-title="Projects">
-      <div class="chapter-stage">
-        <div class="chapter-grid chapter-grid--projects">
-          <p class="section-index">02</p>
-
-          <div class="chapter-header">
-            <span>Featured Work</span>
-            <h2 class="chapter-heading">Things I've built<span>.</span></h2>
-            <a href="/projects" class="header-link">
-              View all
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
-            </a>
-          </div>
-
-          <div class="project-list">
-            {projects.map((project, idx) => (
-              <article class="project-item panel">
-                <div class="project-item__meta">
-                  {project.featured && <span class="project-flag">Featured</span>}
-                  <span class="project-order">0{idx + 1}</span>
-                </div>
-
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-
-                <div class="project-tech">
-                  {project.tech.map((tech) => (
-                    <span>{tech}</span>
-                  ))}
-                </div>
-
-                <a
-                  href={project.github}
-                  class="project-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i class="fa-brands fa-github" aria-hidden="true"></i>
-                  View on GitHub
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14 5h5v5m0-5-9 9m-3 5h10"></path></svg>
-                </a>
-              </article>
-            ))}
-          </div>
-        </div>
+  <!-- ===================== 06 · CONTACT ===================== -->
+  <section class="section contact" aria-labelledby="contact-h">
+    <div class="container">
+      <div class="section-head">
+        <span class="index-num">06</span>
+        <span class="label">Contact</span>
       </div>
-    </section>
-
-    <section class="home-chapter" id="achievements" data-chapter="04" data-chapter-title="Achievements">
-      <div class="chapter-stage">
-        <div class="chapter-grid chapter-grid--achievements">
-          <p class="section-index">03</p>
-
-          <div class="chapter-header chapter-header--stacked">
-            <span>Achievements</span>
-            <h2 class="chapter-heading">By the numbers<span>.</span></h2>
-          </div>
-
-          <div class="stats-grid">
-            {stats.map((stat) => (
-              <div class="stat-card panel">
-                <div class="stat-value">
-                  <span class="counter-value" data-target={stat.value}>0</span><span>{stat.suffix}</span>
-                </div>
-                <p>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-
-          <div class="awards-grid">
-            {awards.map((award) => (
-              <div class="award-item panel">
-                <i class={`fa-solid ${award.icon}`} aria-hidden="true"></i>
-                <div>
-                  <h3>{award.title}</h3>
-                  <p>{award.event}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <a href="/awards" class="header-link awards-link">
-            View all awards
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
-          </a>
-        </div>
+      <h2 class="contact__title" id="contact-h" data-reveal-lines>Let's build something.</h2>
+      <p class="contact__body" data-reveal>
+        I'm always up for collaborating on open source, talking economics, or comparing notes on
+        code and cameras.
+      </p>
+      <div class="contact__cta" data-reveal>
+        <a class="btn btn-primary" href="mailto:james20081204@gmail.com">Get in touch<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn-ghost" href="https://github.com/fzlzjerry" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
-    </section>
-
-    <section class="home-chapter" id="blog" data-chapter="05" data-chapter-title="Writing">
-      <div class="chapter-stage">
-        <div class="chapter-grid chapter-grid--blog">
-          <p class="section-index">04</p>
-
-          <div class="blog-overview">
-            <span>From the Blog</span>
-            <h2 class="chapter-heading">Latest writing<span>.</span></h2>
-            <p>Thoughts on technology, economics, and everything in between.</p>
-            <a href="/blog" class="header-link">
-              View all posts
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
-            </a>
-          </div>
-
-          {latestPost && (
-            <article class="latest-post panel">
-              <div class="latest-post__meta">
-                {latestPost.data.category && <span>{latestPost.data.category}</span>}
-                <time datetime={latestPost.data.date}>
-                  {new Date(latestPost.data.date).toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                </time>
-              </div>
-
-              <h3>{latestPost.data.title}</h3>
-
-              {latestPost.data.excerpt && <p>{latestPost.data.excerpt}</p>}
-
-              {latestPost.data.tags && (
-                <div class="latest-post__tags">
-                  {latestPost.data.tags.slice(0, 4).map((tag) => (
-                    <span>#{tag}</span>
-                  ))}
-                </div>
-              )}
-
-              <a href={`/blog/${latestPost.slug}`} class="project-link">
-                Read article
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 12h14m-4-4 4 4-4 4"></path></svg>
-              </a>
-            </article>
-          )}
-        </div>
-      </div>
-    </section>
-
-    <section class="home-chapter home-chapter--connect" id="connect" data-chapter="06" data-chapter-title="Connect">
-      <div class="chapter-stage">
-        <div class="chapter-grid chapter-grid--connect">
-          <div class="connect-copy">
-            <h2 class="chapter-heading">Let's build something <span>together</span>.</h2>
-            <p>I'm always interested in collaborating on open-source projects, discussing economics, or just chatting about technology.</p>
-
-            <div class="social-row">
-              {socialLinks.map((link) => (
-                <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
-                  <i class={link.icon} aria-hidden="true"></i>
-                </a>
-              ))}
-              <a href="mailto:james20081204@gmail.com" aria-label="Send email">
-                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
-              </a>
-            </div>
-
-            <a href="mailto:james20081204@gmail.com" class="action action--primary action--mail">
-              <i class="fa-regular fa-envelope" aria-hidden="true"></i>
-              Get in Touch
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  .home-editorial {
-    --home-bg-0: #080808;
-    --home-bg-1: #101011;
-    --home-bg-2: #161618;
-    --home-bg-3: #1d1d21;
-    --home-panel: #121214;
-    --home-panel-alt: #17171a;
-    --home-text-1: #eceae5;
-    --home-text-2: #b1aea6;
-    --home-text-3: #73706a;
-    --home-line-soft: rgba(255, 255, 255, 0.08);
-    --home-line-strong: rgba(255, 255, 255, 0.16);
-    --home-accent: #e8a838;
-    --home-accent-muted: #c4893a;
-    --home-shadow-hard: 6px 6px 0 rgba(0, 0, 0, 0.35);
-    --home-radius-1: 2px;
-    --home-radius-2: 4px;
-    --story-progress: 0;
-    --hero-progress: 0;
-
-    position: relative;
-    isolation: isolate;
-    background:
-      radial-gradient(circle at 12% 16%, rgba(232, 168, 56, 0.08) 0%, transparent 34%),
-      radial-gradient(circle at 86% 60%, rgba(232, 168, 56, 0.05) 0%, transparent 30%),
-      linear-gradient(180deg, var(--home-bg-0) 0%, var(--home-bg-1) 28%, var(--home-bg-2) 72%, var(--home-bg-0) 100%);
+  /* ---------- HERO ---------- */
+  .hero { padding-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); padding-bottom: clamp(2rem, 1rem + 3vw, 4rem); }
+  .hero__top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .hero .rule { margin-bottom: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
+  .hero__title {
+    font-size: var(--step-6);
+    line-height: 0.86;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    margin-bottom: clamp(1.5rem, 1rem + 3vw, 3.5rem);
   }
-
-  .home-editorial::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-      to right,
-      transparent 0,
-      transparent 52px,
-      rgba(255, 255, 255, 0.025) 52px,
-      rgba(255, 255, 255, 0.025) 53px
-    );
-    z-index: -1;
-  }
-
-  .chapter-rail {
-    position: fixed;
-    top: 50%;
-    right: clamp(0.8rem, 2vw, 1.8rem);
-    z-index: 8;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
-
-  .chapter-rail__inner {
-    pointer-events: auto;
+  .hero__row {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.9rem;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    margin-bottom: clamp(2rem, 1.5rem + 3vw, 4rem);
+  }
+  .hero__lead p { font-size: var(--step-1); color: var(--ink); max-width: 34ch; line-height: 1.4; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+  .hero__meta { display: flex; flex-direction: column; gap: 1rem; }
+  .hero__meta dt { margin-bottom: 0.3rem; }
+  .hero__meta dd { color: var(--ink); font-size: 0.95rem; }
+  .hero__media { aspect-ratio: 4 / 3; }
+  @media (min-width: 900px) {
+    .hero__row { grid-template-columns: 1.1fr 0.9fr; align-items: end; }
+    .hero__title { font-size: var(--step-6); }
+    .hero__media { aspect-ratio: 16 / 8; }
+  }
+
+  /* ---------- 01 PROFILE ---------- */
+  .profile { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 1rem + 4vw, 4rem); align-items: start; }
+  .profile__title { font-size: var(--step-4); margin-bottom: 1.5rem; max-width: 14ch; }
+  .profile__body { display: flex; flex-direction: column; gap: 1.1rem; max-width: 52ch; }
+  .profile__body p { font-size: var(--step-1); color: var(--ink-soft); line-height: 1.55; }
+  .profile__facts { display: flex; flex-direction: column; gap: 1rem; margin-top: 2.25rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+  .profile__facts dt { margin-bottom: 0.3rem; }
+  .profile__facts dd { color: var(--ink); }
+  .profile__portrait { aspect-ratio: 4 / 5; }
+  @media (min-width: 880px) {
+    .profile { grid-template-columns: 1.2fr 0.8fr; }
+  }
+
+  /* ---------- marquee strip ---------- */
+  .strip { border-block: 1px solid var(--line); padding-block: 1.1rem; }
+  .strip__inner { display: inline-flex; align-items: center; }
+  .strip__item {
+    display: inline-flex; align-items: center;
+    font-family: 'Bricolage Grotesque', serif;
+    font-size: clamp(1.1rem, 0.9rem + 1vw, 1.8rem);
+    color: var(--ink);
+    padding-inline: 1.4rem;
+    white-space: nowrap;
+  }
+  .strip__dot { color: var(--ochre); margin-left: 2.8rem; font-size: 0.7em; }
+
+  /* ---------- 02 SELECTED WORK ---------- */
+  .work-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .work-row { border-bottom: 1px solid var(--line); }
+  .work-row__link {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
     align-items: start;
-    min-width: 12rem;
-    padding: 0.9rem 0.85rem;
-    background: rgba(10, 10, 11, 0.76);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow:
-      0 18px 40px rgba(0, 0, 0, 0.28),
-      var(--home-shadow-hard);
-    backdrop-filter: blur(18px);
-    transition: opacity 500ms var(--ease-spring), transform 500ms var(--ease-spring), border-color 220ms ease;
-  }
-
-  .chapter-rail__eyebrow {
-    grid-column: 1 / -1;
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-  }
-
-  .chapter-rail__inner::after {
-    display: none;
-  }
-
-  .chapter-rail__progress {
-    position: relative;
-    width: 1px;
-    min-height: 11rem;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.22));
-    overflow: hidden;
-  }
-
-  .chapter-rail__progress span {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, var(--home-accent), rgba(232, 168, 56, 0.28));
-    transform-origin: top;
-    transform: scaleY(var(--story-progress));
-    box-shadow: 0 0 18px rgba(232, 168, 56, 0.35);
-  }
-
-  .chapter-rail__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 0.3rem;
-  }
-
-  .chapter-rail__item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: baseline;
-    gap: 0.7rem;
-    padding: 0.2rem 0;
-    color: var(--home-text-3);
-    transition: color 180ms ease, transform 180ms ease;
-  }
-
-  .chapter-rail__item:hover {
-    color: var(--home-text-1);
-    transform: translateX(-2px);
-  }
-
-  .chapter-rail__item[aria-current='location'] {
-    color: var(--home-text-1);
-  }
-
-  .chapter-rail__item[aria-current='location'] .chapter-rail__label {
-    color: var(--home-accent);
-  }
-
-  .chapter-rail__number {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
-  .chapter-rail__label {
-    font-size: 0.83rem;
-    letter-spacing: -0.02em;
-    transition: color 180ms ease;
-  }
-
-  .home-chapter {
-    --chapter-progress: 0;
-    --chapter-enter: 0;
-    --chapter-hold: 0;
-    --chapter-exit: 0;
-    --chapter-visibility: 0;
-
-    position: relative;
-    min-height: 186vh;
-    border-top: 1px solid var(--home-line-soft);
-    scroll-margin-top: 6rem;
-  }
-
-  .home-chapter--hero {
-    min-height: 100vh;
-    overflow: clip;
-    --chapter-visibility: 1;
-    --chapter-enter: 1;
-    --chapter-hold: 1;
-    --chapter-exit: 0;
-  }
-
-  .hero-atmosphere {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .hero-atmosphere__orb,
-  .hero-atmosphere__beam,
-  .hero-atmosphere__grid {
-    transition:
-      opacity 900ms var(--ease-spring),
-      transform 1200ms var(--ease-spring);
-    will-change: transform, opacity;
-  }
-
-  .hero-atmosphere__orb {
-    position: absolute;
-    border-radius: 999px;
-    mix-blend-mode: screen;
-    opacity: calc(0.72 - (var(--hero-progress) * 0.38));
-  }
-
-  .hero-atmosphere__orb--primary {
-    top: 5%;
-    right: -10%;
-    width: min(40vw, 34rem);
-    aspect-ratio: 1;
-    background: radial-gradient(circle, rgba(232, 168, 56, 0.18) 0%, rgba(232, 168, 56, 0.08) 34%, transparent 72%);
-    transform: translate3d(calc(var(--hero-progress) * -4%), calc(var(--hero-progress) * 6%), 0) scale(calc(1.04 - (var(--hero-progress) * 0.12)));
-  }
-
-  .hero-atmosphere__orb--secondary {
-    left: -6%;
-    bottom: 2%;
-    width: min(30vw, 24rem);
-    aspect-ratio: 1;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 72%);
-    transform: translate3d(calc(var(--hero-progress) * 3%), calc(var(--hero-progress) * -5%), 0) scale(calc(1 - (var(--hero-progress) * 0.08)));
-  }
-
-  .hero-atmosphere__beam {
-    position: absolute;
-    right: -10%;
-    bottom: 20%;
-    width: min(46vw, 42rem);
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.7), transparent);
-    opacity: calc(0.52 - (var(--hero-progress) * 0.24));
-    transform: translate3d(calc(var(--hero-progress) * -7%), calc(var(--hero-progress) * 36px), 0) rotate(-14deg);
-  }
-
-  .hero-atmosphere__grid {
-    position: absolute;
-    inset: 7% -5% 0 46%;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size: 2.7rem 2.7rem;
-    -webkit-mask-image: linear-gradient(180deg, transparent, black 16%, black 70%, transparent);
-    mask-image: linear-gradient(180deg, transparent, black 16%, black 70%, transparent);
-    opacity: calc(0.16 - (var(--hero-progress) * 0.08));
-    transform: translate3d(calc(var(--hero-progress) * -32px), calc(var(--hero-progress) * 26px), 0) perspective(900px) rotateX(65deg);
-    transform-origin: bottom right;
-  }
-
-
-  .home-chapter:first-of-type {
-    border-top: none;
-  }
-
-  .chapter-stage {
-    position: sticky;
-    top: 3.5rem;
-    min-height: calc(100vh - 3.5rem);
-    display: flex;
-    align-items: center;
-    padding: clamp(1.1rem, 2vw, 2.4rem) 0;
-  }
-
-  .chapter-grid {
-    width: min(1240px, calc(100vw - 3rem));
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(0.8rem, 1.8vw, 1.3rem);
-    align-items: start;
-  }
-
-  .section-index {
-    grid-column: 1 / span 2;
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(3.5rem, 9vw, 8.5rem);
-    line-height: 0.9;
-    color: rgba(255, 255, 255, 0.06);
-    pointer-events: none;
-    transition: color 260ms ease, transform 260ms var(--ease-spring);
-  }
-
-  .home-chapter[data-active='true'] .section-index {
-    color: rgba(232, 168, 56, 0.18);
-    transform: translate3d(0, -6px, 0);
-  }
-
-  .chapter-kicker,
-  .chapter-title,
-  .chapter-lead,
-  .chapter-meta,
-  .chapter-heading,
-  .chapter-copy p,
-  .chapter-copy .chapter-split,
-  .chapter-header,
-  .chapter-actions,
-  .blog-overview,
-  .latest-post,
-  .connect-copy,
-  .chapter-photo,
-  .awards-link,
-  .project-item,
-  .stat-card,
-  .award-item,
-  .hero-cue {
-    --entry-x: -22px;
-    --entry-y: 28px;
-    --exit-x: 16px;
-    --exit-y: 14px;
-    --entry-scale: 0.968;
-    --exit-scale: 0.985;
-    --entry-rotate: 0deg;
-    --exit-rotate: 0deg;
-    --entry-blur: 10px;
-    --exit-blur: 4px;
-
-    opacity: var(--chapter-visibility);
-    transform: translate3d(
-      calc((1 - var(--chapter-enter)) * var(--entry-x) + var(--chapter-exit) * var(--exit-x)),
-      calc((1 - var(--chapter-enter)) * var(--entry-y) - var(--chapter-exit) * var(--exit-y)),
-      0
-    ) rotate(
-      calc((1 - var(--chapter-enter)) * var(--entry-rotate) + var(--chapter-exit) * var(--exit-rotate))
-    ) scale(
-      calc(
-        var(--entry-scale) +
-        (var(--chapter-enter) * (1 - var(--entry-scale))) -
-        (var(--chapter-exit) * (1 - var(--exit-scale)))
-      )
-    );
-    filter: blur(
-      calc((1 - var(--chapter-enter)) * var(--entry-blur) + var(--chapter-exit) * var(--exit-blur))
-    );
-    transition:
-      transform 320ms cubic-bezier(0.2, 0.72, 0.18, 1),
-      opacity 320ms linear,
-      filter 320ms linear,
-      border-color 220ms ease,
-      box-shadow 320ms ease;
-    will-change: transform, opacity, filter;
-    backface-visibility: hidden;
-  }
-
-  .panel {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--home-line-soft);
-    background: linear-gradient(180deg, var(--home-panel) 0%, var(--home-panel-alt) 100%);
-    border-radius: var(--home-radius-2);
-    box-shadow: var(--home-shadow-hard);
-  }
-
-  .panel::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(118deg, transparent 12%, rgba(255, 255, 255, 0.04) 32%, rgba(232, 168, 56, 0.16) 51%, transparent 72%);
-    opacity: calc(0.06 + (var(--chapter-hold, 0) * 0.11));
-    transform: translate3d(calc((var(--chapter-progress, 0) * 96%) - 58%), 0, 0);
-    mix-blend-mode: screen;
-  }
-
-  .chapter-grid--hero {
-    position: relative;
-    z-index: 1;
-    align-content: end;
-    min-height: 100%;
-    width: min(1420px, calc(100vw - 2.25rem));
-    padding-bottom: clamp(2rem, 5vh, 4rem);
-    transition: opacity 280ms linear, transform 280ms linear;
-    transform: translate3d(0, calc(var(--hero-progress) * 24px), 0);
-  }
-
-  .home-chapter--hero .chapter-stage {
-    top: 0;
-    min-height: calc(100vh - 3.5rem);
-    align-items: center;
-    padding: clamp(3rem, 9vh, 7rem) 0 clamp(1.25rem, 3vh, 2.5rem);
-  }
-
-
-  .chapter-grid--hero .chapter-kicker {
-    grid-column: 3 / span 7;
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.69rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-    --entry-x: -90px;
-    --entry-y: 62px;
-    --exit-x: 68px;
-    --exit-y: 24px;
-    --entry-rotate: -2.4deg;
-    --exit-rotate: 1.6deg;
-    --entry-blur: 12px;
-  }
-
-  .chapter-grid--hero .chapter-title {
-    grid-column: 3 / span 8;
-    margin: 0;
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-size: clamp(3.2rem, 9.6vw, 8.2rem);
-    font-weight: 400;
-    line-height: 0.92;
-    color: var(--home-text-1);
-    max-width: 15ch;
-    --entry-x: -66px;
-    --entry-y: 46px;
-    --exit-x: 86px;
-    --exit-y: 36px;
-    --entry-scale: 0.94;
-    --exit-scale: 0.97;
-    --entry-rotate: -1.7deg;
-    --exit-rotate: 1.2deg;
-    --entry-blur: 14px;
-  }
-
-  .chapter-grid--hero .chapter-title span {
-    color: var(--home-accent);
-  }
-
-  .chapter-grid--hero .chapter-lead {
-    grid-column: 3 / span 6;
-    margin: 0;
-    max-width: 36rem;
-    font-size: clamp(1.05rem, 2.15vw, 1.52rem);
-    line-height: 1.56;
-    color: var(--home-text-2);
-    --entry-x: -38px;
-    --entry-y: 34px;
-    --exit-x: 50px;
-    --exit-y: 22px;
-    --entry-rotate: -1deg;
-  }
-
-  .chapter-grid--hero .chapter-meta {
-    grid-column: 3 / span 6;
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-    --entry-x: -30px;
-    --entry-y: 28px;
-    --exit-x: 26px;
-    --exit-y: 10px;
-    --entry-rotate: -0.6deg;
-  }
-
-  .chapter-actions {
-    grid-column: 3 / span 6;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-    --entry-x: -28px;
-    --entry-y: 26px;
-    --exit-x: 18px;
-    --exit-y: 8px;
-    --entry-rotate: -0.4deg;
-  }
-
-  .hero-cue {
-    grid-column: 10 / span 2;
-    justify-self: end;
-    align-self: end;
-    display: grid;
-    gap: 0.55rem;
-    margin-top: clamp(1rem, 3vh, 2rem);
-    color: var(--home-text-3);
-    --entry-x: 36px;
-    --entry-y: 28px;
-    --exit-x: 12px;
-    --exit-y: 10px;
-    --entry-rotate: 1.4deg;
-    --exit-rotate: -0.8deg;
-  }
-
-  .hero-cue:hover {
-    color: var(--home-text-1);
-  }
-
-  .hero-cue__label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.61rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
-  .hero-cue__track {
-    position: relative;
-    display: block;
-    width: 1px;
-    height: 5.5rem;
-    margin-left: auto;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
-    overflow: hidden;
-  }
-
-  .hero-cue__dot {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 999px;
-    background: var(--home-accent);
-    transform: translateX(-50%);
-    box-shadow: 0 0 16px rgba(232, 168, 56, 0.5);
-    animation: cueTravel 1.8s var(--ease-spring) infinite;
-  }
-
-  .action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.76rem 1.1rem;
-    border-radius: var(--home-radius-1);
-    border: 1px solid transparent;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    transition: transform 180ms ease, color 180ms ease, background-color 180ms ease, border-color 180ms ease;
-  }
-
-  .action:hover {
-    transform: translate(-2px, -2px);
-  }
-
-  .action--primary {
-    background: var(--home-accent);
-    color: #0b0b0b;
-    border-color: rgba(0, 0, 0, 0.3);
-  }
-
-  .action--secondary {
-    background: #151518;
-    border-color: var(--home-line-strong);
-    color: var(--home-text-1);
-  }
-
-
-  .editorial-strip {
-    overflow: hidden;
-    border-top: 1px solid var(--home-line-soft);
-    border-bottom: 1px solid var(--home-line-soft);
-    background: #0b0b0c;
-    padding: 0.8rem 0;
-  }
-
-  .editorial-strip__track {
-    display: flex;
-    width: max-content;
-    animation: strip-scroll 28s linear infinite;
-    will-change: transform;
-  }
-
-  .editorial-strip__set {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding-inline-end: 1rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-    flex-shrink: 0;
-  }
-
-  .editorial-strip .sep {
-    color: rgba(232, 168, 56, 0.55);
-  }
-
-  @keyframes strip-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  .chapter-heading {
-    margin: 0;
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-weight: 400;
-    font-size: clamp(2.2rem, 5.5vw, 4.6rem);
-    line-height: 0.98;
-    color: var(--home-text-1);
-  }
-
-  .chapter-heading span {
-    color: var(--home-accent);
-  }
-
-  .chapter-grid--identity .chapter-photo {
-    grid-column: 3 / span 3;
-    padding: 1rem;
-    --entry-x: -54px;
-    --entry-y: 38px;
-    --entry-rotate: -1.8deg;
-    --exit-rotate: 0.7deg;
-  }
-
-  .chapter-photo img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: var(--home-radius-2);
-    border: 1px solid var(--home-line-soft);
-  }
-
-  .chapter-photo figcaption {
-    margin-top: 1rem;
-    display: grid;
-    gap: 0.6rem;
-  }
-
-  .chapter-photo figcaption div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.67rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--home-text-2);
-  }
-
-  .chapter-photo figcaption i {
-    color: var(--home-accent-muted);
-    width: 0.9rem;
-  }
-
-  .chapter-grid--identity .chapter-copy {
-    grid-column: 6 / span 6;
-    display: grid;
-    gap: 1rem;
-  }
-
-  .chapter-copy p:first-of-type {
-    --entry-y: 30px;
-  }
-
-  .chapter-copy p:last-of-type {
-    --entry-x: 18px;
-    --entry-y: 42px;
-    --entry-rotate: 0.8deg;
-  }
-
-  .chapter-copy p {
-    margin: 0;
-    color: var(--home-text-2);
-    line-height: 1.65;
-    font-size: 1.02rem;
-  }
-
-  .chapter-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    margin-top: 0.4rem;
-  }
-
-  .chapter-split .panel {
-    padding: 0.85rem 0.95rem;
-    display: grid;
-    gap: 0.45rem;
-  }
-
-  .panel-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-  }
-
-  .panel-value {
-    color: var(--home-text-1);
-    font-size: 1rem;
-  }
-
-  .panel-link:hover {
-    border-color: rgba(232, 168, 56, 0.45);
-    transform: translate(-2px, -2px);
-  }
-
-  .chapter-grid--projects .chapter-header {
-    grid-column: 3 / span 4;
-    display: grid;
-    gap: 0.8rem;
-  }
-
-  .chapter-header > span,
-  .blog-overview > span {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-  }
-
-  .header-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    width: fit-content;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.69rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--home-text-2);
-    border-bottom: 1px solid var(--home-line-soft);
-    padding-bottom: 0.35rem;
-    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
-  }
-
-  .header-link:hover {
-    color: var(--home-accent);
-    border-color: rgba(232, 168, 56, 0.45);
-    transform: translateX(2px);
-  }
-
-  .chapter-grid--projects .project-list {
-    grid-column: 7 / span 5;
-    display: grid;
-    gap: 0.8rem;
-  }
-
-  .project-item {
-    padding: 1rem;
-    display: grid;
-    gap: 0.72rem;
-    transform-origin: top right;
-  }
-
-  .project-item:nth-child(1) {
-    --entry-x: 44px;
-    --entry-y: 28px;
-    --entry-rotate: 1.2deg;
-    --exit-rotate: -0.8deg;
-  }
-
-  .project-item:nth-child(2) {
-    --entry-x: 62px;
-    --entry-y: 44px;
-    --entry-rotate: 2deg;
-    --exit-rotate: -1deg;
-  }
-
-  .project-item__meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .project-flag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #141414;
-    background: var(--home-accent);
-    padding: 0.22rem 0.45rem;
-    border-radius: var(--home-radius-1);
-  }
-
-  .project-order {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.67rem;
-    color: var(--home-text-3);
-  }
-
-  .project-item h3,
-  .award-item h3,
-  .latest-post h3 {
-    margin: 0;
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-weight: 400;
-    font-size: 1.6rem;
-    line-height: 1.1;
-    color: var(--home-text-1);
-  }
-
-  .project-item p,
-  .award-item p,
-  .latest-post p,
-  .connect-copy p,
-  .blog-overview p {
-    margin: 0;
-    color: var(--home-text-2);
-    line-height: 1.58;
-  }
-
-  .project-tech,
-  .latest-post__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-
-  .project-tech span,
-  .latest-post__tags span {
-    border: 1px solid var(--home-line-soft);
-    background: rgba(255, 255, 255, 0.02);
-    color: var(--home-text-2);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.45rem;
-    border-radius: var(--home-radius-1);
-  }
-
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    width: fit-content;
-    color: var(--home-text-2);
-    border: 1px solid var(--home-line-soft);
-    padding: 0.46rem 0.64rem;
-    border-radius: var(--home-radius-1);
-    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
-  }
-
-  .project-link:hover {
-    color: var(--home-accent);
-    border-color: rgba(232, 168, 56, 0.45);
-    transform: translate(-1px, -1px);
-  }
-
-  .chapter-grid--achievements .chapter-header {
-    grid-column: 3 / span 9;
-    display: grid;
-    gap: 0.8rem;
-  }
-
-  .stats-grid {
-    grid-column: 3 / span 9;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.8rem;
-  }
-
-  .stat-card {
-    padding: 1rem;
-    display: grid;
-    gap: 0.35rem;
-  }
-
-  .stat-card:nth-child(1) {
-    --entry-x: -42px;
-    --entry-y: 24px;
-    --entry-rotate: -1deg;
-  }
-
-  .stat-card:nth-child(2) {
-    --entry-x: -14px;
-    --entry-y: 32px;
-    --entry-rotate: -0.5deg;
-  }
-
-  .stat-card:nth-child(3) {
-    --entry-x: 14px;
-    --entry-y: 34px;
-    --entry-rotate: 0.5deg;
-  }
-
-  .stat-card:nth-child(4) {
-    --entry-x: 42px;
-    --entry-y: 26px;
-    --entry-rotate: 1deg;
-  }
-
-  .stat-value {
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    line-height: 1;
-    color: var(--home-text-1);
-  }
-
-  .stat-value span:last-child {
-    color: var(--home-accent);
-  }
-
-  .stat-card p {
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-  }
-
-  .awards-grid {
-    grid-column: 3 / span 9;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.8rem;
-  }
-
-  .award-item {
-    padding: 0.9rem;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.75rem;
-    align-items: start;
-  }
-
-  .award-item:nth-child(odd) {
-    --entry-x: -34px;
-    --entry-y: 28px;
-    --entry-rotate: -1.1deg;
-  }
-
-  .award-item:nth-child(even) {
-    --entry-x: 34px;
-    --entry-y: 34px;
-    --entry-rotate: 1.1deg;
-  }
-
-  .award-item i {
-    margin-top: 0.2rem;
-    color: var(--home-accent-muted);
-    font-size: 0.92rem;
-  }
-
-  .award-item h3 {
-    font-size: 1.05rem;
-  }
-
-  .award-item p {
-    margin-top: 0.25rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-  }
-
-  .awards-link {
-    grid-column: 3 / span 9;
-    margin-top: 0.35rem;
-  }
-
-  .chapter-grid--blog .blog-overview {
-    grid-column: 3 / span 4;
-    display: grid;
-    gap: 0.95rem;
-    --entry-x: -34px;
-    --entry-y: 26px;
-    --entry-rotate: -1deg;
-  }
-
-  .chapter-grid--blog .latest-post {
-    grid-column: 7 / span 5;
-    padding: 1.1rem;
-    display: grid;
-    gap: 0.9rem;
-    --entry-x: 42px;
-    --entry-y: 34px;
-    --entry-rotate: 1.25deg;
-  }
-
-  .latest-post__meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .latest-post__meta span {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #151515;
-    background: var(--home-accent);
-    padding: 0.22rem 0.45rem;
-    border-radius: var(--home-radius-1);
-  }
-
-  .latest-post__meta time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.63rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--home-text-3);
-  }
-
-  .chapter-grid--connect {
-    align-content: center;
-  }
-
-  .connect-copy {
-    grid-column: 3 / span 8;
-    display: grid;
-    gap: 1rem;
-    --entry-y: 34px;
-    --entry-rotate: -0.8deg;
-  }
-
-  .connect-copy .chapter-heading span {
-    color: var(--home-accent);
-  }
-
-  .social-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-  }
-
-  .social-row a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.15rem;
-    height: 2.15rem;
-    border: 1px solid var(--home-line-soft);
-    background: #141417;
-    border-radius: var(--home-radius-1);
-    color: var(--home-text-3);
-    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
-  }
-
-  .social-row a:hover {
-    color: var(--home-accent);
-    border-color: rgba(232, 168, 56, 0.45);
-    transform: translate(-1px, -1px);
-  }
-
-  .action--mail {
-    width: fit-content;
-  }
-
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .chapter-rail__inner {
-    opacity: 0;
-    transform: translate3d(14px, 0, 0);
-  }
-
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-kicker,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-title,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-lead,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-meta,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .chapter-actions,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .home-chapter--hero .hero-cue {
-    opacity: 0;
-    filter: blur(18px);
-    transform: translate3d(0, 44px, 0) scale(0.95);
-  }
-
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .hero-atmosphere__orb,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .hero-atmosphere__beam,
-  .home-editorial[data-enhanced='true']:not([data-ready='true']) .hero-atmosphere__grid {
-    opacity: 0;
-    transform: translate3d(0, 18px, 0) scale(0.96);
-  }
-
-  @keyframes cueTravel {
-    0% {
-      transform: translate(-50%, 0);
-      opacity: 0;
-    }
-    18% {
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, 4.4rem);
-      opacity: 0;
-    }
-  }
-
-  @media (max-width: 1279px) {
-    .chapter-rail {
-      display: none;
-    }
-
-    .chapter-grid {
-      width: min(1060px, calc(100vw - 3rem));
-    }
-
-    .chapter-grid--hero .hero-ruler {
-      grid-column: 1 / span 1;
-    }
-
-    .chapter-grid--hero .chapter-title,
-    .chapter-grid--hero .chapter-kicker,
-    .chapter-grid--hero .chapter-lead,
-    .chapter-grid--hero .chapter-meta,
-    .chapter-actions {
-      grid-column: 2 / span 10;
-    }
-
-    .hero-cue {
-      grid-column: 2 / span 10;
-      justify-self: start;
-      margin-top: 0.6rem;
-    }
-
-    .section-index {
-      grid-column: 1 / span 2;
-      font-size: clamp(3rem, 7vw, 6rem);
-    }
-
-    .chapter-grid--identity .chapter-photo {
-      grid-column: 3 / span 4;
-    }
-
-    .chapter-grid--identity .chapter-copy {
-      grid-column: 7 / span 5;
-    }
-
-    .chapter-grid--projects .chapter-header,
-    .chapter-grid--blog .blog-overview {
-      grid-column: 3 / span 5;
-    }
-
-    .chapter-grid--projects .project-list,
-    .chapter-grid--blog .latest-post {
-      grid-column: 8 / span 4;
-    }
-
-    .chapter-grid--achievements .chapter-header,
-    .stats-grid,
-    .awards-grid,
-    .awards-link {
-      grid-column: 3 / span 9;
-    }
-
-    .chapter-grid--connect .connect-copy {
-      grid-column: 2 / span 10;
-    }
-  }
-
-  @media (max-width: 1023px) {
-    .home-chapter {
-      min-height: auto;
-      padding: 3.8rem 0;
-      border-top: 1px solid var(--home-line-soft);
-    }
-
-    .home-chapter--hero {
-      min-height: auto;
-    }
-
-    .chapter-grid--hero .hero-ruler {
-      display: none;
-    }
-
-    .chapter-stage {
-      position: relative;
-      top: auto;
-      min-height: auto;
-      padding: 0;
-    }
-
-    .chapter-grid {
-      width: min(760px, calc(100vw - 2rem));
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 0.75rem;
-    }
-
-    .hero-atmosphere__grid {
-      inset: 22% -10% -14% 26%;
-      opacity: 0.08;
-    }
-
-    .section-index {
-      grid-column: 1 / span 6;
-      font-size: 2.8rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .chapter-grid--hero .chapter-kicker,
-    .chapter-grid--hero .chapter-title,
-    .chapter-grid--hero .chapter-lead,
-    .chapter-grid--hero .chapter-meta,
-    .chapter-actions,
-    .hero-cue,
-    .chapter-grid--identity .chapter-photo,
-    .chapter-grid--identity .chapter-copy,
-    .chapter-grid--projects .chapter-header,
-    .chapter-grid--projects .project-list,
-    .chapter-grid--achievements .chapter-header,
-    .stats-grid,
-    .awards-grid,
-    .awards-link,
-    .chapter-grid--blog .blog-overview,
-    .chapter-grid--blog .latest-post,
-    .chapter-grid--connect .connect-copy {
-      grid-column: 1 / span 6;
-    }
-
-    .chapter-split,
-    .stats-grid,
-    .awards-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .editorial-strip {
-      padding: 0.6rem 0;
-    }
-
-    .editorial-strip__track {
-      animation: none;
-      width: auto;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-      padding-inline: 1rem;
-      justify-content: center;
-    }
-
-    .chapter-kicker,
-    .chapter-title,
-    .chapter-lead,
-    .chapter-meta,
-    .chapter-heading,
-    .chapter-copy p,
-    .chapter-copy .chapter-split,
-    .chapter-header,
-    .blog-overview,
-    .latest-post,
-    .connect-copy,
-    .chapter-photo,
-    .awards-link,
-    .project-item,
-    .stat-card,
-    .award-item,
-    .hero-cue {
-      opacity: 1;
-      transform: none;
-      filter: none;
-      transition: none;
-    }
-
-    .chapter-grid--hero .chapter-title {
-      font-size: clamp(2.3rem, 14vw, 3.8rem);
-    }
-
-    .chapter-heading {
-      font-size: clamp(1.9rem, 11vw, 3.1rem);
-    }
-
-    .project-item h3,
-    .latest-post h3 {
-      font-size: 1.35rem;
-    }
-
-    .hero-cue {
-      display: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .editorial-strip__track {
-      animation: none;
-    }
-
-    .hero-atmosphere__orb,
-    .hero-atmosphere__beam,
-    .hero-atmosphere__grid,
-    .hero-cue__dot {
-      animation: none;
-      transform: none;
-    }
-
-    .chapter-kicker,
-    .chapter-title,
-    .chapter-lead,
-    .chapter-meta,
-    .chapter-heading,
-    .chapter-copy p,
-    .chapter-copy .chapter-split,
-    .chapter-header,
-    .blog-overview,
-    .latest-post,
-    .connect-copy,
-    .chapter-photo,
-    .awards-link,
-    .project-item,
-    .stat-card,
-    .award-item,
-    .hero-cue {
-      opacity: 1;
-      transform: none;
-      filter: none;
-      transition: none;
-    }
-  }
+    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    padding-block: clamp(1.75rem, 1rem + 2vw, 2.75rem);
+  }
+  .work-row__num { padding-top: 0.45rem; }
+  .work-row__title { font-size: var(--step-2); transition: color var(--t-base) ease; }
+  .work-row__desc { margin-top: 0.6rem; color: var(--ink-soft); max-width: 60ch; line-height: 1.55; }
+  .work-row__tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; list-style: none; padding: 0; }
+  .work-row__tech li {
+    font-family: 'Spline Sans Mono', monospace; font-size: 0.7rem; letter-spacing: 0.03em;
+    color: var(--ink-faint); border: 1px solid var(--line); border-radius: 999px; padding: 0.2rem 0.65rem;
+  }
+  .work-row__year { color: var(--ink-faint); font-size: 0.8rem; padding-top: 0.5rem; }
+  .work-row__arrow { font-size: 1.25rem; color: var(--ink-ghost); padding-top: 0.35rem; transition: transform var(--t-base) var(--ease-out), color var(--t-base) ease; }
+  .work-row__link:hover .work-row__title { color: var(--ochre); }
+  .work-row__link:hover .work-row__arrow { transform: translate(4px, -4px); color: var(--ochre); }
+  @media (max-width: 640px) {
+    .work-row__link { grid-template-columns: auto 1fr; }
+    .work-row__year, .work-row__arrow { display: none; }
+  }
+
+  /* ---------- 03 RECOGNITION ---------- */
+  .stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); margin: 0 0 clamp(2rem, 1rem + 3vw, 3.5rem);
+  }
+  .stat { background: var(--paper); padding: clamp(1.25rem, 1rem + 2vw, 2.5rem) 1.25rem; }
+  .stat__value { font-family: 'Bricolage Grotesque', serif; font-size: var(--step-4); line-height: 1; color: var(--ink); font-weight: 500; margin: 0; }
+  .stat__suffix { color: var(--ochre); font-size: 0.5em; }
+  .stat__label { margin-top: 0.6rem; }
+  @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+
+  .awards { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .award { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; flex-wrap: wrap; padding-block: 1.15rem; border-bottom: 1px solid var(--line); }
+  .award__title { font-family: 'Bricolage Grotesque', serif; font-size: var(--step-1); color: var(--ink); }
+  .award__event { color: var(--ink-faint); font-size: 0.78rem; white-space: nowrap; }
+
+  /* ---------- 04 THROUGH THE LENS ---------- */
+  .lens-intro { color: var(--ink-soft); font-size: var(--step-1); max-width: 40ch; margin: -1rem 0 clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+  .lens-grid { display: grid; grid-template-columns: 1fr; gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem); }
+  .lens-cell { display: block; aspect-ratio: 3 / 2; }
+  .lens-cell--tall { aspect-ratio: 4 / 5; }
+  @media (min-width: 720px) {
+    .lens-grid { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; }
+    .lens-cell--wide { grid-column: span 4; aspect-ratio: 16 / 10; }
+    .lens-cell--tall { grid-column: span 2; aspect-ratio: 3 / 4; }
+  }
+
+  /* ---------- 05 WRITING ---------- */
+  .feature-post { display: block; border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.75rem, 1rem + 3vw, 3.5rem); transition: border-color var(--t-base) ease, background-color var(--t-base) ease; }
+  .feature-post:hover { border-color: var(--line-strong); background: var(--panel); }
+  .feature-post__meta { display: flex; align-items: center; gap: 1rem; color: var(--ink-faint); font-size: 0.8rem; }
+  .feature-post__cat { color: var(--ochre); }
+  .feature-post__title { font-size: var(--step-3); margin: 1rem 0; max-width: 22ch; }
+  .feature-post__excerpt { color: var(--ink-soft); max-width: 62ch; line-height: 1.6; margin-bottom: 1.5rem; }
+  .feature-post__cta { font-size: 0.95rem; color: var(--ink); }
+
+  /* ---------- 06 CONTACT ---------- */
+  .contact__title { font-size: var(--step-5); max-width: 12ch; margin-bottom: 1.5rem; }
+  .contact__body { font-size: var(--step-1); color: var(--ink-soft); max-width: 46ch; margin-bottom: 2rem; }
+  .contact__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 </style>
-
-<script>
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  function initHomeStory() {
-    const previousCleanup = window.__homeStoryCleanup;
-    if (typeof previousCleanup === 'function') {
-      previousCleanup();
-    }
-
-    const homeRoot = document.getElementById('home-editorial');
-    if (!homeRoot) {
-      window.__homeStoryCleanup = null;
-      return;
-    }
-
-    const chapters = Array.from(document.querySelectorAll('.home-chapter[data-chapter]'));
-    const counterNodes = Array.from(document.querySelectorAll('.counter-value'));
-    const railLinks = Array.from(homeRoot.querySelectorAll('.chapter-rail__item'));
-    const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let cinematicEnabled = false;
-    let ticking = false;
-    let scrollFrame = 0;
-    let readyFrame = 0;
-    let readyFrameTwo = 0;
-
-    homeRoot.dataset.enhanced = 'true';
-    homeRoot.dataset.ready = 'false';
-
-    function syncMotionMode() {
-      cinematicEnabled = window.innerWidth >= 1024 && !reducedMotionMedia.matches;
-      homeRoot.dataset.cinematic = cinematicEnabled ? 'true' : 'false';
-    }
-
-    function setChapterState(chapter, progress, enter, hold, exit, visibility) {
-      chapter.style.setProperty('--chapter-progress', progress.toFixed(4));
-      chapter.style.setProperty('--chapter-enter', enter.toFixed(4));
-      chapter.style.setProperty('--chapter-hold', hold.toFixed(4));
-      chapter.style.setProperty('--chapter-exit', exit.toFixed(4));
-      chapter.style.setProperty('--chapter-visibility', visibility.toFixed(4));
-    }
-
-    function setActiveChapter(activeChapter) {
-      const activeId = activeChapter?.id || '';
-
-      chapters.forEach((chapter) => {
-        if (chapter === activeChapter) {
-          chapter.setAttribute('data-active', 'true');
-        } else {
-          chapter.removeAttribute('data-active');
-        }
-      });
-
-      homeRoot.dataset.activeChapter = activeId;
-
-      railLinks.forEach((link) => {
-        const isActive = link.getAttribute('data-rail-target') === activeId;
-        if (isActive) {
-          link.setAttribute('aria-current', 'location');
-        } else {
-          link.removeAttribute('aria-current');
-        }
-      });
-    }
-
-    function animateCounter(node) {
-      const target = Number(node.getAttribute('data-target') || 0);
-      const duration = 1700;
-      const start = performance.now();
-
-      function step(now) {
-        const progress = clamp((now - start) / duration, 0, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        node.textContent = String(Math.round(eased * target));
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        }
-      }
-
-      requestAnimationFrame(step);
-    }
-
-    function updateCounters() {
-      counterNodes.forEach((node) => {
-        if (node.dataset.counted === 'true') {
-          return;
-        }
-        const rect = node.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.2;
-        if (inView) {
-          node.dataset.counted = 'true';
-          animateCounter(node);
-        }
-      });
-    }
-
-    function updateChapters(scrollY) {
-      const viewportHeight = window.innerHeight;
-      const maxScroll = Math.max(document.documentElement.scrollHeight - viewportHeight, 1);
-      const storyProgress = clamp(scrollY / maxScroll, 0, 1);
-      let activeChapter = chapters[0] || null;
-      let activeScore = -Infinity;
-      const hero = chapters[0];
-      const heroTravel = hero
-        ? Math.max(hero.offsetHeight - viewportHeight * 0.2, viewportHeight * 0.95)
-        : viewportHeight;
-      const heroProgress = clamp(scrollY / heroTravel, 0, 1);
-
-      homeRoot.style.setProperty('--story-progress', storyProgress.toFixed(4));
-      homeRoot.style.setProperty('--hero-progress', heroProgress.toFixed(4));
-
-      chapters.forEach((chapter, index) => {
-        const rect = chapter.getBoundingClientRect();
-        const chapterCenter = rect.top + rect.height / 2;
-        const centerOffset = Math.abs(chapterCenter - viewportHeight / 2) / viewportHeight;
-        const centerScore = 1 - clamp(centerOffset, 0, 1.8);
-
-        if (!cinematicEnabled) {
-          setChapterState(chapter, 1, 1, 1, 0, 1);
-          chapter.setAttribute('data-phase', 'hold');
-          const score = centerScore - index * 0.01;
-          if (score >= activeScore) {
-            activeScore = score;
-            activeChapter = chapter;
-          }
-          return;
-        }
-
-        const isHero = chapter.classList.contains('home-chapter--hero');
-
-        if (isHero) {
-          const hold = 1 - clamp(heroProgress / 0.76, 0, 1);
-          const exit = clamp((heroProgress - 0.18) / 0.82, 0, 1);
-          const visibility = 1 - heroProgress * 0.24;
-
-          setChapterState(chapter, heroProgress, 1, hold, exit, visibility);
-          chapter.setAttribute('data-phase', heroProgress < 0.16 ? 'hold' : 'exit');
-
-          const score = (1 - heroProgress * 0.9) + centerScore * 0.22;
-          if (score >= activeScore) {
-            activeScore = score;
-            activeChapter = chapter;
-          }
-          return;
-        }
-
-        const chapterTop = chapter.offsetTop;
-        const chapterDistance = Math.max(chapter.offsetHeight - viewportHeight * 0.18, viewportHeight * 0.9);
-        const chapterStart = chapterTop - viewportHeight * 0.12;
-
-        const progress = clamp((scrollY - chapterStart) / chapterDistance, 0, 1);
-        const enterEnd = 0.22;
-        const holdEnd = 0.68;
-        const enter = clamp(progress / enterEnd, 0, 1);
-        const hold = clamp((progress - enterEnd) / (holdEnd - enterEnd), 0, 1);
-        const exit = clamp((progress - holdEnd) / (1 - holdEnd), 0, 1);
-        const visibility = progress < enterEnd ? enter : progress < holdEnd ? 1 : 1 - exit * 0.92;
-
-        setChapterState(chapter, progress, enter, hold, exit, visibility);
-
-        if (progress < enterEnd) {
-          chapter.setAttribute('data-phase', 'enter');
-        } else if (progress < holdEnd) {
-          chapter.setAttribute('data-phase', 'hold');
-        } else {
-          chapter.setAttribute('data-phase', 'exit');
-        }
-
-        const score = visibility * 0.72 + hold * 0.42 + centerScore * 0.28 - index * 0.01;
-        if (score >= activeScore) {
-          activeScore = score;
-          activeChapter = chapter;
-        }
-      });
-      setActiveChapter(activeChapter);
-    }
-
-    function updateStory() {
-      const scrollY = window.scrollY;
-      updateChapters(scrollY);
-      updateCounters();
-    }
-
-    function onScroll() {
-      if (ticking) {
-        return;
-      }
-      ticking = true;
-      scrollFrame = requestAnimationFrame(() => {
-        updateStory();
-        ticking = false;
-      });
-    }
-
-    function scheduleReadyState() {
-      cancelAnimationFrame(readyFrame);
-      cancelAnimationFrame(readyFrameTwo);
-
-      if (!cinematicEnabled) {
-        homeRoot.dataset.ready = 'true';
-        return;
-      }
-
-      homeRoot.dataset.ready = 'false';
-      readyFrame = requestAnimationFrame(() => {
-        readyFrameTwo = requestAnimationFrame(() => {
-          homeRoot.dataset.ready = 'true';
-          updateStory();
-        });
-      });
-    }
-
-    function onResize() {
-      const wasCinematic = cinematicEnabled;
-      syncMotionMode();
-      if (wasCinematic !== cinematicEnabled) {
-        scheduleReadyState();
-      }
-      updateStory();
-    }
-
-    function onMotionPreferenceChange() {
-      const wasCinematic = cinematicEnabled;
-      syncMotionMode();
-      if (wasCinematic !== cinematicEnabled) {
-        scheduleReadyState();
-      }
-      updateStory();
-    }
-
-    syncMotionMode();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
-    if (typeof reducedMotionMedia.addEventListener === 'function') {
-      reducedMotionMedia.addEventListener('change', onMotionPreferenceChange);
-    } else if (typeof reducedMotionMedia.addListener === 'function') {
-      reducedMotionMedia.addListener(onMotionPreferenceChange);
-    }
-
-    updateStory();
-    scheduleReadyState();
-
-    window.__homeStoryCleanup = () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
-      cancelAnimationFrame(scrollFrame);
-      cancelAnimationFrame(readyFrame);
-      cancelAnimationFrame(readyFrameTwo);
-      if (typeof reducedMotionMedia.removeEventListener === 'function') {
-        reducedMotionMedia.removeEventListener('change', onMotionPreferenceChange);
-      } else if (typeof reducedMotionMedia.removeListener === 'function') {
-        reducedMotionMedia.removeListener(onMotionPreferenceChange);
-      }
-    };
-  }
-
-  if (window.__homeStoryPageLoadHandler) {
-    document.removeEventListener('astro:page-load', window.__homeStoryPageLoadHandler);
-  }
-
-  window.__homeStoryPageLoadHandler = initHomeStory;
-  document.addEventListener('astro:page-load', window.__homeStoryPageLoadHandler);
-
-  initHomeStory();
-</script>

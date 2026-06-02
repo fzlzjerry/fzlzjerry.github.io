@@ -9,102 +9,107 @@ const tags = [...new Set(allPosts.flatMap(post => post.data.tags))];
 const sortedPosts = allPosts.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+const fmtDate = (d: string) =>
+  new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
 <Layout
   title="Blog - Morax Cheng"
   description="Browse Morax Cheng's blog for articles on programming, technology, economics, and personal reflections."
+  fullWidth={true}
 >
-  <div class="space-y-12 animate-on-scroll">
-    <header class="max-w-2xl">
-      <h1 class="text-3xl md:text-4xl font-display text-[#F5F5F0] mb-4 text-balance">Blog</h1>
-      <p class="text-[#A8A8A0] text-lg leading-relaxed text-pretty">
-        Thoughts, tutorials, and notes on technology and economics.
-      </p>
+  <div class="container">
+    <header class="page-head">
+      <span class="label">Writing</span>
+      <h1 class="page-title" data-reveal-lines>Blog</h1>
+      <p class="page-lead" data-reveal>Thoughts, tutorials, and notes on technology and economics.</p>
     </header>
 
-    <!-- Filter Tags -->
-    <div class="flex flex-col gap-6 py-8">
-      <div class="gradient-divider"></div>
-      <div class="flex flex-wrap items-center gap-2 max-w-3xl">
-        <span class="text-xs font-grotesk font-semibold text-[#4A4A45] uppercase tracking-wider mr-2">Categories:</span>
-        {categories.map(category => (
-          <a
-            href={`/blog/category/${category?.toLowerCase()}`}
-            class="px-3 py-1.5 text-xs font-grotesk font-medium rounded-[2px] bg-white/[0.03] text-[#A8A8A0] border border-white/[0.06] hover:bg-[#E8A838] hover:text-[#0C0C0E] hover:border-[#E8A838] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
-          >
-            {category}
-          </a>
-        ))}
+    <section class="section-sm" aria-label="Filter writing">
+      <hr class="rule" />
+      <div class="filters" data-reveal>
+        {categories.length > 0 && (
+          <div class="filters__row">
+            <span class="label filters__key">Categories</span>
+            <ul class="tag-list">
+              {categories.map(category => (
+                <li>
+                  <a class="tag tag-link" href={`/blog/category/${category?.toLowerCase()}`}>{category}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {tags.length > 0 && (
+          <div class="filters__row">
+            <span class="label filters__key">Popular tags</span>
+            <ul class="tag-list">
+              {tags.slice(0, 8).map(tag => (
+                <li>
+                  <a class="tag tag-link" href={`/blog/tag/${tag?.toLowerCase()}`}>#{tag}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+      <hr class="rule" />
+    </section>
 
-      <div class="flex flex-wrap items-center gap-2 max-w-3xl">
-        <span class="text-xs font-grotesk font-semibold text-[#4A4A45] uppercase tracking-wider mr-2">Popular Tags:</span>
-        {tags.slice(0, 8).map(tag => (
-          <a
-            href={`/blog/tag/${tag?.toLowerCase()}`}
-            class="px-2 py-1 text-xs text-[#6B6B65] hover:text-[#E8A838] transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0C0C0E] rounded-sm"
-          >
-            #{tag}
-          </a>
-        ))}
-      </div>
-      <div class="gradient-divider"></div>
-    </div>
-
-    <section class="max-w-3xl mx-auto relative">
-      <!-- Vertical accent line -->
-      <div class="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-[#E8A838]/30 via-white/[0.06] to-transparent hidden md:block" aria-hidden="true"></div>
-
-      <div class="grid gap-2">
-        {sortedPosts.map((post, index) => (
-          <article class={`group relative flex flex-col sm:flex-row gap-4 sm:gap-8 items-start p-6 rounded-card border border-transparent hover:bg-white/[0.03] hover:border-white/[0.06] hover:border-l-2 hover:border-l-[#E8A838] transition-all duration-base stagger-${Math.min(index + 1, 5)}`}>
-            <div class="flex-1 space-y-3 md:pl-6">
-              <div class="flex items-center gap-3 text-xs text-[#6B6B65] font-grotesk font-medium">
-                <time datetime={post.data.date}>
-                  {new Date(post.data.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
+    <section class="section-sm" aria-label="All posts">
+      <ol class="post-list" data-stagger>
+        {sortedPosts.map((post) => (
+          <li class="post-row">
+            <article>
+              <div class="post-row__meta">
+                <time class="mono" datetime={post.data.date}>{fmtDate(post.data.date)}</time>
                 {post.data.category && (
-                  <>
-                    <span aria-hidden="true" class="text-[#4A4A45]">&middot;</span>
-                    <span class="text-[#A8A8A0]">{post.data.category}</span>
-                  </>
+                  <a class="post-row__cat label" href={`/blog/category/${post.data.category.toLowerCase()}`}>{post.data.category}</a>
                 )}
               </div>
-
-              <h2 class="text-xl font-medium text-[#F5F5F0] group-hover:text-[#E8A838] transition-colors duration-fast font-display">
-                <a href={`/blog/${post.slug}`} class="focus-visible:outline-none">
-                  <span class="absolute inset-0 rounded-card" aria-hidden="true"></span>
-                  {post.data.title}
-                </a>
+              <h2 class="post-row__title">
+                <a href={`/blog/${post.slug}`}>{post.data.title}</a>
               </h2>
-
               {post.data.excerpt && (
-                <p class="text-[#A8A8A0] text-sm leading-relaxed line-clamp-2">
-                  {post.data.excerpt}
-                </p>
+                <p class="post-row__excerpt">{post.data.excerpt}</p>
               )}
-
-              {post.data.tags && (
-                <div class="flex flex-wrap gap-1.5 pt-3 relative z-10">
+              {post.data.tags && post.data.tags.length > 0 && (
+                <ul class="tag-list post-row__tags">
                   {post.data.tags.map(tag => (
-                    <a
-                      href={`/blog/tag/${tag.toLowerCase()}`}
-                      class="inline-flex items-center px-2 py-0.5 text-xs text-[#6B6B65] hover:text-[#E8A838] bg-white/[0.03] rounded-[2px] border border-white/[0.06] transition-colors duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0C0C0E]"
-                    >
-                      #{tag}
-                    </a>
+                    <li>
+                      <a class="tag tag-link" href={`/blog/tag/${tag.toLowerCase()}`}>#{tag}</a>
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
-            </div>
-          </article>
+            </article>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   </div>
 </Layout>
+
+<style>
+  /* ---------- filter row ---------- */
+  .filters { display: flex; flex-direction: column; gap: 1.25rem; padding-block: clamp(1.25rem, 1rem + 1vw, 2rem); }
+  .filters__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem 1rem; }
+  .filters__key { flex: 0 0 auto; padding-top: 0.2rem; }
+  @media (min-width: 640px) { .filters__key { min-width: 9rem; } }
+
+  .tag-link { transition: color var(--t-base) ease, border-color var(--t-base) ease; }
+  .tag-link:hover { color: var(--ochre); border-color: var(--ochre-faint); }
+
+  /* ---------- post list ---------- */
+  .post-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .post-row { border-bottom: 1px solid var(--line); padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem); }
+  .post-row__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; color: var(--ink-faint); font-size: 0.78rem; }
+  .post-row__cat { color: var(--ochre); transition: color var(--t-base) ease; }
+  .post-row__cat:hover { color: var(--ochre-deep); }
+  .post-row__title { font-size: var(--step-3); margin: 0.85rem 0 0; max-width: 24ch; }
+  .post-row__title a { transition: color var(--t-base) ease; }
+  .post-row__title a:hover { color: var(--ochre); }
+  .post-row__excerpt { color: var(--ink-soft); max-width: 62ch; line-height: 1.6; margin-top: 1rem; }
+  .post-row__tags { margin-top: 1.25rem; }
+</style>

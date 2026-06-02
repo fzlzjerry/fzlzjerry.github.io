@@ -32,92 +32,173 @@ const skillCategories = [
 <Layout
   title="About - Morax Cheng"
   description="Learn more about Morax Cheng, a teenage open-source enthusiast and developer from China. Discover his skills in programming (Python, C++, Rust), AI/ML, web technologies, and his passion for learning."
+  fullWidth={true}
 >
-  <div class="max-w-3xl mx-auto space-y-16 animate-on-scroll">
-    <!-- Profile Section -->
-    <section class="text-center space-y-6">
-      <div class="relative inline-block">
-        <img
-          src="/Morax.JPG"
-          alt="Morax Cheng"
-          class="w-32 h-32 md:w-40 md:h-40 rounded-[2px] object-cover border-2 border-white/[0.10] transition-transform duration-smooth hover:scale-105"
-          style="box-shadow: 0 0 60px rgba(232,168,56,0.15), 0 0 120px rgba(232,168,56,0.05);"
-          loading="eager"
-        />
-        <div class="absolute inset-0 rounded-[2px] ring-1 ring-[rgba(232,168,56,0.2)]"></div>
+  <div class="container">
+    <!-- ===================== PAGE HEAD ===================== -->
+    <header class="page-head">
+      <span class="label">About</span>
+      <h1 class="page-title" data-reveal-lines>A teenager who builds.</h1>
+      <p class="page-lead" data-reveal>
+        A teenage open-source enthusiast and developer from China, passionate about coding,
+        mathematics, and artificial intelligence.
+      </p>
+    </header>
+
+    <hr class="rule" />
+
+    <!-- ===================== 01 · PROFILE ===================== -->
+    <section class="section" aria-labelledby="profile-h">
+      <div class="section-head">
+        <span class="index-num">01</span>
+        <span class="label">Profile</span>
       </div>
 
-      <div class="space-y-4">
-        <h1 class="text-3xl md:text-4xl font-display text-[#F5F5F0] text-balance">About Me</h1>
-        <p class="text-[#A8A8A0] text-lg leading-relaxed max-w-2xl mx-auto text-pretty">
-          A teenage open-source enthusiast and developer from China, passionate about coding, mathematics, and artificial intelligence.
-        </p>
-      </div>
-    </section>
+      <div class="profile">
+        <figure class="profile__portrait media-frame" data-reveal>
+          <img data-zoom src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="eager" />
+          <figcaption class="wall-label">
+            <span>Morax Cheng</span>
+            <span class="text-ink-faint">China</span>
+          </figcaption>
+        </figure>
 
-    <!-- Bio & Current Status -->
-    <section>
-      <div class="text-[#A8A8A0] leading-relaxed space-y-6">
-        <p>
-          Hello! I'm Morax Cheng. I love to explore new technologies and apply them to solve real-world problems. When I'm not coding, you can find me reading sci-fi novels or playing chess.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-5 my-8">
-          <a
-            href="https://github.com/tjy-gitnub/win12"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group p-5 bg-[#1C1C1F] rounded-card border border-white/[0.06] border-l-2 border-l-[#E8A838] hover:border-[rgba(232,168,56,0.3)] hover:shadow-glow transition-all duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
-          >
-            <h3 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Currently Working On</h3>
-            <div class="flex items-center gap-2 text-[#F5F5F0] font-medium group-hover:text-[#E8A838] transition-colors duration-fast">
-              Windows 12 Web
-              <svg class="w-4 h-4 opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all duration-fast" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </div>
-          </a>
-
-          <div class="p-5 bg-[#1C1C1F] rounded-card border border-white/[0.06] border-l-2 border-l-[#E8A838]">
-            <h3 class="text-xs font-grotesk font-semibold text-[#6B6B65] uppercase tracking-wider mb-2">Currently Learning</h3>
-            <p class="text-[#F5F5F0] font-medium">Matlab & Machine Learning Algorithms</p>
+        <div class="profile__text">
+          <h2 class="profile__title" id="profile-h" data-reveal-lines>Hello, I'm Morax.</h2>
+          <div class="profile__body">
+            <p data-reveal>
+              Hello! I'm Morax Cheng. I love to explore new technologies and apply them to solve
+              real-world problems. When I'm not coding, you can find me reading sci-fi novels or
+              playing chess.
+            </p>
+            <p data-reveal>
+              I'm looking to collaborate on
+              <a class="link-underline" href="https://github.com/lanbinshijie/bili2text" target="_blank" rel="noopener noreferrer">bili2text</a>
+              and other exciting open-source projects.
+            </p>
           </div>
-        </div>
 
-        <p>
-          I'm looking to collaborate on <a href="https://github.com/lanbinshijie/bili2text" class="text-[#E8A838] font-medium border-b border-[rgba(232,168,56,0.3)] hover:border-[#E8A838] transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-1 focus-visible:ring-offset-[#0C0C0E] rounded-sm" target="_blank" rel="noopener noreferrer">bili2text</a> and other exciting open-source projects.
-        </p>
-
-        <div class="flex flex-wrap items-center gap-3 p-4 bg-[#1C1C1F] rounded-card border border-white/[0.06] text-sm">
-          <span class="font-medium text-[#F5F5F0]">Ask me about:</span>
-          <span class="text-[#A8A8A0]">Python, C++, Machine Learning, and Data Analysis</span>
+          <dl class="profile__facts" data-stagger>
+            <div class="fact">
+              <dt class="label">Currently working on</dt>
+              <dd><a class="link-underline" href="https://github.com/tjy-gitnub/win12" target="_blank" rel="noopener noreferrer">Windows 12 Web</a></dd>
+            </div>
+            <div class="fact">
+              <dt class="label">Currently learning</dt>
+              <dd>MATLAB &amp; Machine Learning Algorithms</dd>
+            </div>
+            <div class="fact">
+              <dt class="label">Ask me about</dt>
+              <dd>Python, C++, Machine Learning, and Data Analysis</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>
 
-    <!-- Technical Skills -->
-    <section>
-      <h2 class="text-2xl font-display text-[#F5F5F0] mb-8 pb-4">
-        <div class="flex items-center gap-3">
-          <span class="w-1.5 h-1.5 bg-[#E8A838] rounded-[2px]" aria-hidden="true"></span>
-          Technical Skills
-        </div>
-        <div class="gradient-divider mt-4"></div>
-      </h2>
-      <div class="grid gap-5 md:grid-cols-2">
-        {skillCategories.map(category => (
-          <div class="p-5 bg-[#1C1C1F] border border-white/[0.06] rounded-card hover:border-[rgba(232,168,56,0.3)] transition-all duration-base">
-            <h3 class="text-sm font-grotesk font-medium text-[#F5F5F0] mb-4">{category.category}</h3>
-            <div class="flex flex-wrap gap-1.5">
-              {category.skills.map(skill => (
-                <span class="inline-flex items-center px-2 py-0.5 bg-white/[0.05] text-[#A8A8A0] text-xs rounded-[2px] font-medium border border-white/[0.10]">
-                  {skill}
-                </span>
-              ))}
-            </div>
+    <hr class="rule" />
+
+    <!-- ===================== 02 · SKILLS ===================== -->
+    <section class="section" aria-labelledby="skills-h">
+      <div class="section-head">
+        <span class="index-num">02</span>
+        <h2 class="section-title" id="skills-h" data-reveal-lines>Skills</h2>
+      </div>
+
+      <dl class="skills" data-stagger>
+        {skillCategories.map((c, i) => (
+          <div class="skill-row">
+            <dt class="skill-row__head">
+              <span class="skill-row__num index-num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="skill-row__name">{c.category}</span>
+            </dt>
+            <dd class="skill-row__skills">
+              <ul class="tag-list" role="list">
+                {c.skills.map((s) => <li class="tag">{s}</li>)}
+              </ul>
+            </dd>
           </div>
         ))}
-      </div>
+      </dl>
     </section>
   </div>
 </Layout>
+
+<style>
+  /* ---------- 01 PROFILE ---------- */
+  .profile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: start;
+  }
+  .profile__portrait { aspect-ratio: 4 / 5; }
+  .profile__title { font-size: var(--step-3); margin-bottom: 1.5rem; max-width: 16ch; }
+  .profile__body { display: flex; flex-direction: column; gap: 1.1rem; max-width: 56ch; }
+  .profile__body p { font-size: var(--step-1); color: var(--ink-soft); line-height: 1.55; }
+  .profile__facts {
+    display: flex;
+    flex-direction: column;
+    margin: 2.5rem 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .profile__facts .fact {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .profile__facts dt { margin: 0; }
+  .profile__facts dd { margin: 0; color: var(--ink); font-size: var(--step-0); }
+  @media (min-width: 560px) {
+    .profile__facts .fact {
+      grid-template-columns: 14rem 1fr;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 880px) {
+    .profile {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: clamp(2rem, 1rem + 5vw, 5rem);
+    }
+  }
+
+  /* ---------- 02 SKILLS ---------- */
+  .skills {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    padding-block: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .skill-row__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin: 0;
+  }
+  .skill-row__num { flex: none; padding-top: 0.1rem; }
+  .skill-row__name {
+    font-family: 'Bricolage Grotesque', Georgia, serif;
+    font-size: var(--step-2);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .skill-row__skills { margin: 0; }
+  @media (min-width: 820px) {
+    .skill-row {
+      grid-template-columns: 18rem 1fr;
+      align-items: baseline;
+      gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    }
+    .skill-row__skills { padding-top: 0.4rem; }
+  }
+</style>

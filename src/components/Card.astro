@@ -9,41 +9,77 @@ interface Props {
 }
 
 const { href, title, body, variant = 'default', tags, meta } = Astro.props;
-
-const baseStyles = "block h-full p-6 bg-[#1C1C1F] border rounded-card transition-all duration-base hover:-translate-y-1 hover:shadow-[0_0_0_1px_rgba(232,168,56,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8A838] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]";
-const variantStyles = {
-	default: "border-white/[0.06] hover:border-[rgba(232,168,56,0.3)]",
-	featured: "border-white/[0.06] border-t-2 border-t-[#E8A838] hover:border-[rgba(232,168,56,0.3)]"
-};
 ---
 
-<li class="group list-none">
-	<a href={href} class:list={[baseStyles, variantStyles[variant]]}>
-		<div class="flex items-center justify-between gap-3 mb-3">
-			<h2 class="text-lg font-medium text-[#F5F5F0] group-hover:text-[#E8A838] transition-colors duration-fast font-display leading-snug">
-				{title}
-			</h2>
-			<span class="shrink-0 text-[#4A4A45] group-hover:text-[#E8A838] group-hover:translate-x-1 transition-all duration-smooth" aria-hidden="true">
-				&rarr;
-			</span>
-		</div>
+<a
+	href={href}
+	class:list={['card group', variant === 'featured' && 'card-feature']}
+>
+	<div class="card-head">
+		{meta && <span class="label card-meta">{meta}</span>}
+		<h2 class="card-title font-display">{title}</h2>
+	</div>
 
-		{meta && (
-			<p class="text-xs text-[#6B6B65] mb-2 font-grotesk font-medium uppercase tracking-wider">{meta}</p>
-		)}
+	<p class="card-body text-ink-soft">{body}</p>
 
-		<p class="text-sm text-[#A8A8A0] leading-relaxed line-clamp-3">
-			{body}
-		</p>
+	{tags && tags.length > 0 && (
+		<ul class="tag-list card-tags" role="list">
+			{tags.map((tag) => <li class="tag">{tag}</li>)}
+		</ul>
+	)}
 
-		{tags && tags.length > 0 && (
-			<div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-white/[0.06]">
-				{tags.map(tag => (
-					<span class="inline-flex items-center px-2 py-0.5 bg-white/[0.05] text-[#6B6B65] text-xs rounded-[2px] font-medium border border-white/[0.10]">
-						{tag}
-					</span>
-				))}
-			</div>
-		)}
-	</a>
-</li>
+	<span class="card-arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+	.card {
+		position: relative;
+		height: 100%;
+	}
+
+	/* Featured: a stronger top hairline for emphasis. No side-stripe, no ochre flood. */
+	.card-feature {
+		border-top: 2px solid var(--line-strong);
+	}
+
+	.card-head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.card-title {
+		font-size: var(--step-2);
+		line-height: 1.1;
+		color: var(--ink);
+		transition: color var(--t-base) ease;
+	}
+	.card:hover .card-title {
+		color: var(--ochre);
+	}
+
+	.card-body {
+		margin-top: 0.85rem;
+		line-height: 1.55;
+		max-width: 56ch;
+	}
+
+	.card-tags {
+		margin-top: 1.25rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--line);
+	}
+
+	.card-arrow {
+		position: absolute;
+		top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+		right: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+		font-size: 1.25rem;
+		line-height: 1;
+		color: var(--ink-ghost);
+		transition: transform var(--t-base) var(--ease-out), color var(--t-base) ease;
+	}
+	.card:hover .card-arrow {
+		transform: translate(4px, -4px);
+		color: var(--ochre);
+	}
+</style>
