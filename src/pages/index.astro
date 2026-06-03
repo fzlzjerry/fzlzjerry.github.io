@@ -299,6 +299,14 @@ const filmstripPlates = [
   </section>
 
   <!-- ===================== 04 · THROUGH THE LENS ===================== -->
+  <aside class="chapter" aria-hidden="true" data-chapter>
+    <span class="chapter__ghost">04</span>
+    <div class="container chapter__body">
+      <span class="chapter__kicker label">Movement</span>
+      <span class="chapter__title">The photographs</span>
+    </div>
+  </aside>
+
   <section class="section section--lens" aria-labelledby="lens-h" data-movement="Through the lens">
     <div class="container">
       <div class="section-head section-head--split">
@@ -315,7 +323,7 @@ const filmstripPlates = [
       <ol class="filmstrip__track" data-pin-track>
         {filmstripPlates.map((g, i) => (
           <li class="filmstrip__plate" data-velocity-skew>
-            <a href="/gallery" class="media-frame" aria-label={`Gallery: ${g.place}`}>
+            <a href="/gallery" class="media-frame" data-tilt="7" aria-label={`Gallery: ${g.place}`}>
               <img data-zoom src={g.src} alt={g.alt} loading="lazy" />
               <figcaption class="wall-label">
                 <span class="index-num">{`Pl. ${String(i + 1).padStart(2, '0')}`}</span>
@@ -357,6 +365,14 @@ const filmstripPlates = [
   )}
 
   <!-- ===================== 06 · CONTACT ===================== -->
+  <aside class="chapter" aria-hidden="true" data-chapter>
+    <span class="chapter__ghost">06</span>
+    <div class="container chapter__body">
+      <span class="chapter__kicker label">Movement</span>
+      <span class="chapter__title">In closing</span>
+    </div>
+  </aside>
+
   <section class="section contact" aria-labelledby="contact-h" data-movement="Contact">
     <div class="container">
       <div class="section-head">
@@ -364,6 +380,9 @@ const filmstripPlates = [
         <span class="label" data-scramble>Contact</span>
       </div>
       <h2 class="contact__title" id="contact-h" data-reveal-lines data-flux>Let's build something.</h2>
+      <svg class="contact__underline" viewBox="0 0 320 22" fill="none" aria-hidden="true" preserveAspectRatio="none">
+        <path data-draw-svg d="M5 13 C 60 4, 120 19, 175 11 S 270 5, 315 13" stroke-width="3" stroke-linecap="round" />
+      </svg>
       <p class="contact__body" data-reveal>
         One inbox, always open. Send a project worth building, a market worth arguing about, or a
         photograph worth chasing.
@@ -481,6 +500,23 @@ const filmstripPlates = [
   .movement-index__tick { width: 15px; height: 2px; background: var(--line-strong); transition: background 0.4s var(--ease-out); }
   .movement-index__tick.is-active { background: var(--ochre); }
   @media (max-width: 900px) { .movement-index { display: none; } }
+
+  /* Chapter dividers between movements: a band with a parallax-drifting ghost
+     numeral and a mask-revealed title. Decorative (aria-hidden). */
+  .chapter { position: relative; overflow: hidden; border-block: 1px solid var(--line);
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem); margin-block: clamp(1.5rem, 1rem + 2vw, 3rem); }
+  .chapter__ghost {
+    position: absolute; inset-block: 0; right: clamp(0.5rem, 3vw, 5rem);
+    display: flex; align-items: center;
+    font-family: 'Bricolage Grotesque', serif; font-weight: 500;
+    font-size: clamp(6rem, 3rem + 18vw, 18rem); line-height: 0.8; letter-spacing: -0.05em;
+    color: transparent; -webkit-text-stroke: 1.5px var(--line-strong);
+    pointer-events: none; user-select: none; z-index: 0;
+  }
+  .chapter__body { position: relative; z-index: 1; }
+  .chapter__kicker { display: block; color: var(--ochre); margin-bottom: 0.7rem; }
+  .chapter__title { display: block; font-family: 'Bricolage Grotesque', serif;
+    font-size: var(--step-4); letter-spacing: -0.02em; line-height: 1; max-width: 14ch; }
 
   /* ---------- 02 SELECTED WORK ---------- */
   /* Each row is a catalogue plate that develops on approach: the oversized index
@@ -602,8 +638,8 @@ const filmstripPlates = [
   .filmstrip { margin-top: clamp(1.5rem, 1rem + 2vw, 2.5rem); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .filmstrip::-webkit-scrollbar { display: none; }
   .filmstrip__track { display: flex; gap: clamp(0.9rem, 0.5rem + 1.5vw, 1.75rem); width: max-content; padding-inline: var(--gutter); margin: 0; list-style: none; }
-  .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); }
-  .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; }
+  .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); perspective: 1000px; }
+  .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; transform-style: preserve-3d; will-change: transform; }
   /* Desktop + motion: JS adds .is-pinned and pins the strip for a horizontal scroll. */
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
     .filmstrip.is-pinned { height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; }
@@ -633,7 +669,9 @@ const filmstripPlates = [
   }
 
   /* ---------- 06 CONTACT ---------- */
-  .contact__title { font-size: var(--step-5); max-width: 12ch; margin-bottom: 1.5rem; }
+  .contact__title { font-size: var(--step-5); max-width: 12ch; margin-bottom: 0.75rem; }
+  .contact__underline { display: block; width: min(62%, 19rem); height: 1.35rem; margin: 0 0 1.5rem; overflow: visible; }
+  .contact__underline path { stroke: var(--ochre); fill: none; vector-effect: non-scaling-stroke; }
   .contact__body { font-size: var(--step-1); color: var(--ink-soft); max-width: 46ch; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem); }
   /* The address itself is the finale brand mark: oversized mono, decoded on enter. */
   .contact__email {

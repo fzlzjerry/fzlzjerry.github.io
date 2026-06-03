@@ -424,8 +424,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       import { ScrollTrigger } from 'gsap/ScrollTrigger';
       import { SplitText } from 'gsap/SplitText';
       import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+      import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 
-      gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
+      gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin, DrawSVGPlugin);
       // Debug hook (harmless): inspect live ScrollTrigger instances from the console.
       (window as any).__ST = ScrollTrigger;
 
@@ -553,6 +554,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           cleanups.push(() => el.classList.remove('rule-armed', 'is-drawn'));
         });
 
+        // DrawSVG signature stroke: an inline SVG path draws itself on enter. JS
+        // arms it to 0% then draws to 100%; no-JS / reduced-motion keep it full.
+        gsap.utils.toArray<SVGPathElement>('[data-draw-svg]').forEach((path) => {
+          gsap.set(path, { drawSVG: '0%' });
+          ScrollTrigger.create({
+            trigger: (path.closest('svg') as Element) || path, start: 'top 88%', once: true,
+            onEnter: () => gsap.to(path, { drawSVG: '100%', duration: 1.15, ease: 'power2.inOut' }),
+          });
+          cleanups.push(() => gsap.set(path, { clearProps: 'all' }));
+        });
+
         // Hover zoom for editorial media (works alongside parallax: GSAP merges transforms)
         if (fine.matches) {
           gsap.utils.toArray<HTMLElement>('[data-zoom]').forEach((el) => {
@@ -608,6 +620,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         buildWorkShowpiece();
         buildVelocitySkew();
         buildMovementIndex();
+        buildTilt();
       }
 
       // A masked line-reveal wraps each line in an overflow:hidden box so the
@@ -1140,6 +1153,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         cleanups.push(() => { vis.kill(); hud.classList.remove('is-visible'); ticks.forEach((t) => t.classList.remove('is-active')); });
       }
 
+      // ---- 3D pointer tilt (fine pointers): an element rotates toward the cursor
+      // in perspective. On the filmstrip plate media-frames; composes with the
+      // plate's velocity-skew (li) and the image hover-zoom (img) as separate
+      // transform owners. Pointer-driven, so it does not jitter during the pin. ----
+      function buildTilt() {
+        if (!fine.matches) return;
+        const clamp = gsap.utils.clamp(-1, 1);
+        gsap.utils.toArray<HTMLElement>('[data-tilt]').forEach((el) => {
+          const max = parseFloat(el.dataset.tilt || '') || 8;
+          const rx = gsap.quickTo(el, 'rotationX', { duration: 0.5, ease: 'power3' });
+          const ry = gsap.quickTo(el, 'rotationY', { duration: 0.5, ease: 'power3' });
+          const move = (e: MouseEvent) => {
+            const r = el.getBoundingClientRect();
+            const nx = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
+            const ny = clamp((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
+            ry(nx * max); rx(ny * -max);
+          };
+          const leave = () => { rx(0); ry(0); };
+          el.addEventListener('mousemove', move);
+          el.addEventListener('mouseleave', leave);
+          cleanups.push(() => { el.removeEventListener('mousemove', move); el.removeEventListener('mouseleave', leave); gsap.set(el, { clearProps: 'rotationX,rotationY' }); });
+        });
+      }
+
       function buildLineMotion() {
         // Hero load timeline
         const hero = document.querySelector<HTMLElement>('[data-hero]');
@@ -1193,6 +1230,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
         });
 
+        // Chapter dividers: a choreographed entrance when each band scrolls in.
+        // The giant ghost numeral scales + slides + fades in, the kicker rises,
+        // and the title mask-reveals line by line. SplitText here (in buildLineMotion)
+        // so line breaks use final font metrics. Not built under reduced-motion, so
+        // the parts stay at their visible CSS defaults.
+        gsap.utils.toArray<HTMLElement>('[data-chapter]').forEach((ch) => {
+          const ghost = ch.querySelector<HTMLElement>('.chapter__ghost');
+          const kicker = ch.querySelector<HTMLElement>('.chapter__kicker');
+          const title = ch.querySelector<HTMLElement>('.chapter__title');
+          let split: any = null;
+          if (title) {
+            split = SplitText.create(title, { type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: false });
+            splits.push(split);
+            gsap.set(split.lines, { yPercent: 120 });
+          }
+          if (ghost) gsap.set(ghost, { autoAlpha: 0, scale: 1.16, xPercent: 8, transformOrigin: 'right center' });
+          if (kicker) gsap.set(kicker, { autoAlpha: 0, y: 22 });
+          ScrollTrigger.create({
+            trigger: ch, start: 'top 80%', once: true,
+            onEnter: () => {
+              const tl = gsap.timeline();
+              if (ghost) tl.to(ghost, { autoAlpha: 1, scale: 1, xPercent: 0, duration: 1.2, ease: 'power3.out' }, 0);
+              if (kicker) tl.to(kicker, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.12);
+              if (split) tl.to(split.lines, { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08, onComplete: () => unmaskLines(split) }, 0.2);
+            },
+          });
+        });
+
         ScrollTrigger.refresh();
       }
 
@@ -1218,6 +1283,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       // ---- Astro ClientRouter lifecycle ----
       document.addEventListener('astro:page-load', initMotion);
       document.addEventListener('astro:before-swap', clearMotion);
+
+      // The sticky header is transition:persist (it stays a fixed frame while page
+      // content cross-fades beneath it), so its server-rendered active state is
+      // frozen at first paint. Re-apply is-active / aria-current to the nav after
+      // each swap based on the new pathname.
+      function updateActiveNav() {
+        const path = location.pathname;
+        const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+        document.querySelectorAll<HTMLAnchorElement>('.nav-link, .mobile-link').forEach((a) => {
+          const href = a.getAttribute('href');
+          if (!href) return;
+          const active = isActive(href);
+          a.classList.toggle('is-active', active);
+          if (active) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        });
+      }
+      document.addEventListener('astro:after-swap', updateActiveNav);
 
       // ============================================================
       // Non-motion page chrome (mobile menu, copy buttons)
