@@ -10,24 +10,24 @@ import Layout from '../layouts/Layout.astro';
   <section class="notfound">
     <div class="container">
       <div class="notfound__top">
-        <span class="index-num">Err. 404</span>
-        <span class="label">Off the catalogue</span>
+        <span class="index-num" data-scramble>Err. 404</span>
+        <span class="label" data-scramble>Off the catalogue</span>
       </div>
       <hr class="rule" />
 
       <div class="notfound__grid">
         <div class="notfound__text">
-          <h1 class="notfound__title" data-reveal-lines>Page not found</h1>
+          <h1 class="notfound__title" data-reveal-lines data-flux>Page not found</h1>
           <p class="notfound__lead" data-reveal>
             This plate isn't in the collection. The link may have moved, or it
             never hung here at all.
           </p>
           <div class="notfound__cta" data-reveal>
-            <a class="btn btn-primary" href="/">Return to home<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn btn-primary" href="/" data-magnetic="0.25">Return to home<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
-        <figure class="notfound__media media-frame" data-reveal>
+        <figure class="notfound__media media-frame" data-reveal-clip>
           <video
             class="notfound__video"
             autoplay

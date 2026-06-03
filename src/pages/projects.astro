@@ -28,21 +28,21 @@ const projects = [
 >
   <div class="container">
     <header class="page-head">
-      <span class="label">Projects</span>
-      <h1 class="page-title" data-reveal-lines>Selected work</h1>
+      <span class="label" data-scramble>Projects</span>
+      <h1 class="page-title" data-reveal-lines data-flux>Selected work</h1>
       <p class="page-lead" data-reveal>
         A collection of open-source projects and experiments, from web applications to desktop software.
       </p>
     </header>
 
     <section class="section" aria-label="Projects">
-      <ol class="proj-list">
+      <ol class="proj-list" data-draw-rule>
         {projects.map((p, i) => (
           <li
             class:list={['proj-row', p.featured && 'proj-row--featured']}
             data-reveal
           >
-            <span class="proj-row__num index-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="proj-row__num index-num" data-scramble>{String(i + 1).padStart(2, '0')}</span>
 
             <div class="proj-row__main">
               <div class="proj-row__head">
@@ -81,7 +81,6 @@ const projects = [
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--line);
   }
 
   .proj-row {

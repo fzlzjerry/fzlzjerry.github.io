@@ -465,19 +465,8 @@ const filmstripPlates = [
   }
   .strip__dot { color: var(--ochre); margin-left: 2.8rem; font-size: 0.7em; }
 
-  /* Self-drawing hairlines: a structural rule strokes itself left-to-right as its
-     section enters. JS adds .rule-armed (hides) then .is-drawn (draws); without JS
-     or under reduced-motion the ::before stays at its default scaleX(1), visible. */
-  [data-draw-rule] { position: relative; }
-  [data-draw-rule]::before {
-    content: '';
-    position: absolute; left: 0; right: 0; top: 0;
-    height: 1px; background: var(--line);
-    transform-origin: left;
-    transition: transform 0.7s var(--ease-out);
-  }
-  [data-draw-rule].rule-armed::before { transform: scaleX(0); }
-  [data-draw-rule].rule-armed.is-drawn::before { transform: scaleX(1); }
+  /* The self-drawing hairline primitive ([data-draw-rule]) is defined globally in
+     Layout.astro so every page can use it; this page just opts in via the attribute. */
 
   /* Catalogue movement indicator: a small fixed paper tab (bottom-left) that tracks
      the current movement with a tick rail. Hidden by default; JS adds .is-visible

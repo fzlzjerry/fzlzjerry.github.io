@@ -340,12 +340,29 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         html.gsap-ready [data-hero] [data-hero-item] { opacity: 0; }
         html.gsap-ready [data-hero] [data-hero-headline] { visibility: hidden; }
         html.gsap-ready [data-hero-media] { clip-path: inset(0 0 100% 0); }
+        html.gsap-ready [data-reveal-clip] { clip-path: inset(0 0 100% 0); }
         html.gsap-ready [data-stagger] > * { opacity: 0; }
       }
       .split-line { will-change: transform; }
       [data-reveal], [data-reveal-lines], [data-hero] [data-hero-item], [data-stagger] > * {
         will-change: transform, opacity;
       }
+      [data-reveal-clip] { will-change: clip-path; }
+
+      /* Self-drawing hairlines (global primitive): a structural rule strokes itself
+         left-to-right as its element enters. JS adds .rule-armed (hides) then .is-drawn
+         (draws); without JS or under reduced-motion the ::before stays at its default
+         scaleX(1), statically visible, so no separator ever vanishes. */
+      [data-draw-rule] { position: relative; }
+      [data-draw-rule]::before {
+        content: '';
+        position: absolute; left: 0; right: 0; top: 0;
+        height: 1px; background: var(--line);
+        transform-origin: left;
+        transition: transform 0.7s var(--ease-out);
+      }
+      [data-draw-rule].rule-armed::before { transform: scaleX(0); }
+      [data-draw-rule].rule-armed.is-drawn::before { transform: scaleX(1); }
 
       /* Kinetic variable type (driven in buildLineMotion → setupFluxFor).
          Resting --wght:500 matches the headings' normal weight and opsz stays
@@ -464,7 +481,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
 
       function showEverything() {
-        gsap.set('[data-reveal], [data-reveal-lines], [data-hero] [data-hero-item], [data-stagger] > *', {
+        gsap.set('[data-reveal], [data-reveal-lines], [data-hero] [data-hero-item], [data-stagger] > *, [data-reveal-clip]', {
           clearProps: 'all', opacity: 1, visibility: 'visible', y: 0,
         });
         document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
@@ -510,6 +527,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               start: 'top bottom', end: 'bottom top', scrub: true,
             },
           });
+        });
+
+        // Clip-path "uncover": a print is slid into view top-to-bottom as it
+        // enters, like a plate drawn from a portfolio sleeve. Composes with the
+        // frame's [data-zoom] / [data-tilt] (those own transform; this owns
+        // clip-path). CSS pre-hides [data-reveal-clip]; reduced-motion clears it
+        // via showEverything. Works on touch too (not a hover/fine-pointer gate).
+        gsap.utils.toArray<HTMLElement>('[data-reveal-clip]').forEach((el) => {
+          gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
+          ScrollTrigger.create({
+            trigger: el, start: 'top 88%', once: true,
+            onEnter: () => gsap.to(el, { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }),
+          });
+          cleanups.push(() => gsap.set(el, { clearProps: 'clipPath' }));
         });
 
         // Number counters

@@ -53,8 +53,8 @@ const awardCategories = [
 >
   <div class="container">
     <header class="page-head">
-      <span class="label">Awards</span>
-      <h1 class="page-title" data-reveal-lines>Academic achievements</h1>
+      <span class="label" data-scramble>Awards</span>
+      <h1 class="page-title" data-reveal-lines data-flux>Academic achievements</h1>
       <p class="page-lead" data-reveal>
         Recognitions and awards from academic competitions.
       </p>
@@ -64,8 +64,8 @@ const awardCategories = [
       <section class="section" aria-labelledby={`cat-${cat.index}`}>
         <div class="section-head section-head--split">
           <div>
-            <span class="index-num">{cat.index}</span>
-            <h2 class="section-title" id={`cat-${cat.index}`} data-reveal-lines>
+            <span class="index-num" data-scramble>{cat.index}</span>
+            <h2 class="section-title" id={`cat-${cat.index}`} data-reveal-lines data-flux>
               {cat.name}
             </h2>
           </div>
@@ -76,11 +76,11 @@ const awardCategories = [
 
         <p class="cat-desc" data-reveal>{cat.description}</p>
 
-        <ol class="award-list" data-stagger>
+        <ol class="award-list" data-stagger data-draw-rule>
           {cat.awards.map((award, i) => (
             <li class="award-entry">
               <div class="award-entry__body">
-                <span class="award-entry__num index-num">
+                <span class="award-entry__num index-num" data-scramble>
                   {String(i + 1).padStart(2, '0')}
                 </span>
 
@@ -153,6 +153,7 @@ const awardCategories = [
                       href={award.certImage}
                       data-modal="certificate-modal"
                       class="cert-thumb media-frame"
+                      data-reveal-clip
                       aria-label={`View ${award.title} certificate, full size`}
                     >
                       <img
@@ -207,7 +208,6 @@ const awardCategories = [
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--line);
   }
   .award-entry {
     border-bottom: 1px solid var(--line);

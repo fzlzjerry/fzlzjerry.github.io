@@ -27,8 +27,8 @@ const fmtDate = (d: string) =>
 <Layout title={`${category} - Blog Category - Morax Cheng`} fullWidth={true}>
   <div class="container">
     <header class="page-head">
-      <span class="label">Category</span>
-      <h1 class="page-title" data-reveal-lines>{category}</h1>
+      <span class="label" data-scramble>Category</span>
+      <h1 class="page-title" data-reveal-lines data-flux>{category}</h1>
       <p class="page-lead" data-reveal>
         {posts.length} {posts.length === 1 ? 'post' : 'posts'} in this category.
       </p>
@@ -36,7 +36,7 @@ const fmtDate = (d: string) =>
     </header>
 
     <section class="section-sm" aria-label="Posts in category">
-      <ol class="post-list" data-stagger>
+      <ol class="post-list" data-stagger data-draw-rule>
         {sortedPosts.map((post) => (
           <li class="post-row">
             <article>
@@ -72,7 +72,7 @@ const fmtDate = (d: string) =>
   .tag-link { transition: color var(--t-base) ease, border-color var(--t-base) ease; }
   .tag-link:hover { color: var(--ochre); border-color: var(--ochre-faint); }
 
-  .post-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .post-list { list-style: none; margin: 0; padding: 0; }
   .post-row { border-bottom: 1px solid var(--line); padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem); }
   .post-row__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; color: var(--ink-faint); font-size: 0.78rem; }
   .post-row__title { font-size: var(--step-3); margin: 0.85rem 0 0; max-width: 24ch; }

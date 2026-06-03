@@ -28,10 +28,10 @@ const hasByline = (authors && authors.length) || institution || department || pr
     <header class="page-head post-head">
       <div class="post-head__meta">
         <time class="mono post-head__date" datetime={post.data.date}>{formattedDate}</time>
-        {category && <span class="label post-head__cat">{category}</span>}
+        {category && <span class="label post-head__cat" data-scramble>{category}</span>}
       </div>
 
-      <h1 class="post-title" data-reveal-lines>{title}</h1>
+      <h1 class="post-title" data-reveal-lines data-flux>{title}</h1>
 
       {hasByline && (
         <dl class="post-byline" data-reveal>
@@ -136,5 +136,3 @@ const hasByline = (authors && authors.length) || institution || department || pr
   .post-tag:hover { color: var(--ochre); border-color: var(--ochre-faint); }
   .post-foot__back { font-size: 0.95rem; color: var(--ink); }
 </style>
-</content>
-</invoke>
