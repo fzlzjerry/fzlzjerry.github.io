@@ -18,7 +18,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<!-- transition:animate="none" disables the native View-Transition root animation so
+     it can't render in the browser top layer over the GSAP page-turn curtain below. -->
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -403,6 +405,38 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         pointer-events: none;
       }
 
+      /* -------- Page-turn curtain -------- */
+      /* A warm-paper plate with ochre edges that sweeps up over the page during a
+         ClientRouter navigation. Parked one viewport below when idle; GSAP drives it
+         (yPercent). No-JS / reduced-motion never move it, so it stays out of the way. */
+      .page-curtain {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: var(--paper-sink);
+        border-block: 2px solid var(--ochre);
+        transform: translateY(100%);
+        will-change: transform;
+        /* auto (not none): while covering it blocks stray clicks on the page beneath;
+           parked off-screen when idle, so it intercepts nothing between navigations. */
+        pointer-events: auto;
+        display: flex;
+        align-items: flex-end;
+        padding: var(--gutter);
+      }
+      /* The destination reads as a quiet catalogue wall-label, not a loader heading. */
+      .page-curtain__label {
+        font-family: 'Spline Sans Mono', ui-monospace, monospace;
+        font-size: var(--step-0);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        opacity: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .page-curtain { display: none; }
+      }
+
       /* -------- Marquee -------- */
       .marquee { overflow: hidden; width: 100%; }
       .marquee__track { display: inline-flex; width: max-content; will-change: transform; }
@@ -427,6 +461,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </style>
   </head>
   <body class="gallery-shell">
+    <!-- Page-turn curtain: a warm-paper plate that sweeps up over the page during a
+         ClientRouter navigation, holds while the swap happens hidden, then lifts to
+         reveal the new page. transition:persist keeps this node (and its GSAP state)
+         across the swap; driven from the script below. Parked off-screen when idle. -->
+    <div class="page-curtain" aria-hidden="true" transition:persist="page-curtain">
+      <span class="page-curtain__label mono" data-curtain-label></span>
+    </div>
     <div id="scroll-progress" aria-hidden="true"></div>
     <Header />
     <CommandPalette />
@@ -1314,6 +1355,108 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       // ---- Astro ClientRouter lifecycle ----
       document.addEventListener('astro:page-load', initMotion);
       document.addEventListener('astro:before-swap', clearMotion);
+
+      // ---- Page-turn curtain: GSAP transition choreography over ClientRouter swaps ----
+      // The warm-paper plate sweeps up to cover the page (loading the next page in
+      // parallel via the overridden loader), holds while the swap happens hidden, then
+      // lifts to reveal the new page. The lift waits for the same fonts.ready / 800ms
+      // gate buildLineMotion uses, so the destination headline is revealed before the
+      // panel clears it (no flash). Skipped under reduced motion (the CSS also hides the
+      // curtain there) and for same-page navigations that don't swap.
+      const curtainEl = () => document.querySelector<HTMLElement>('.page-curtain');
+      const mainEl = () => document.getElementById('main-content');
+      function curtainLabelFor(path: string): string {
+        const p = (path || '/').replace(/\/+$/, '') || '/';
+        if (p === '/') return 'Home';
+        if (p === '/projects') return 'Projects';
+        if (p === '/gallery') return 'Gallery';
+        if (p === '/about') return 'About';
+        if (p === '/awards') return 'Awards';
+        if (p === '/blog' || p.startsWith('/blog/')) return 'Blog';
+        return '';
+      }
+
+      // coverShown tracks whether the plate is raised, so curtainLift() is idempotent and
+      // safe from any recovery path (page-load, post-loader fallback, watchdog) and never
+      // sweeps an already-parked curtain. navSeq tags each navigation so a superseded
+      // nav's timers no-op.
+      let coverShown = false;
+      let navSeq = 0;
+      let curtainTimer: number | undefined;
+
+      function curtainCoverIn(label: string) {
+        const c = curtainEl();
+        if (!c) return Promise.resolve();
+        const lbl = c.querySelector<HTMLElement>('[data-curtain-label]');
+        gsap.killTweensOf(c);
+        // y:0 zeroes the baseline GSAP reads from the CSS translateY(100%) (stored as
+        // y:900px, otherwise stacked onto yPercent). Re-park to yPercent:100 only when
+        // starting from rest; if a prior cover is still up (rapid re-nav) continue from
+        // the current position instead of snapping down first.
+        if (coverShown) gsap.set(c, { y: 0 });
+        else gsap.set(c, { y: 0, yPercent: 100 });
+        coverShown = true;
+        const m = mainEl(); if (m) (m as any).inert = true; // block interaction with the covered page
+        if (lbl) { gsap.killTweensOf(lbl); lbl.textContent = label ? '→ ' + label : ''; gsap.set(lbl, { opacity: 0, y: 12 }); }
+        const tl = gsap.timeline();
+        tl.to(c, { yPercent: 0, duration: 0.5, ease: 'power3.inOut' });
+        if (lbl) tl.to(lbl, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.22);
+        return tl;
+      }
+      function curtainLift() {
+        const c = curtainEl();
+        if (!c || !coverShown) return;
+        coverShown = false;
+        const m = mainEl(); if (m) (m as any).inert = false;
+        const lbl = c.querySelector<HTMLElement>('[data-curtain-label]');
+        gsap.killTweensOf(c);
+        const tl = gsap.timeline();
+        if (lbl) { gsap.killTweensOf(lbl); tl.to(lbl, { opacity: 0, y: -10, duration: 0.25, ease: 'power2.in' }, 0); }
+        tl.to(c, { yPercent: -100, duration: 0.6, ease: 'power4.out' }, 0.1);
+        tl.set(c, { y: 0, yPercent: 100 });
+      }
+
+      // Astro's router does NOT guarantee that every astro:before-preparation is followed
+      // by astro:page-load: an aborted nav (e.g. a same-page hash jump interrupting a
+      // cross-page nav) fires neither swap nor page-load. So the lift can't rely on
+      // page-load alone — it's driven by whichever signal reaches us first (page-load, a
+      // short post-loader fallback for aborted navs, or an absolute backstop), all guarded
+      // by coverShown (idempotent) and navSeq (a superseding nav makes older timers no-op).
+      document.addEventListener('astro:before-preparation', (e: any) => {
+        if (reduce.matches) return;
+        // Mirror the router's samePage (pathname + search): only those early-return
+        // without swapping, so only those skip the curtain. A query-only change still
+        // swaps and still gets the page-turn.
+        const to = e.to as URL | undefined;
+        if (to && to.pathname === location.pathname && to.search === location.search) return;
+        const seq = ++navSeq;
+        const original = e.loader;
+        const label = curtainLabelFor((to && to.pathname) || location.pathname);
+        e.loader = async () => {
+          try { await Promise.all([curtainCoverIn(label), original()]); }
+          catch (err) { /* aborted/failed load: recovered by the fallback below */ }
+          // Loader settled. A successful nav swaps next -> astro:page-load lifts. An
+          // aborted nav won't swap; recover here if nothing lifts shortly. Current nav only.
+          if (navSeq === seq) {
+            clearTimeout(curtainTimer);
+            curtainTimer = window.setTimeout(() => { if (navSeq === seq && coverShown) curtainLift(); }, 1200);
+          }
+        };
+        // Absolute backstop in case the loader itself never settles.
+        clearTimeout(curtainTimer);
+        curtainTimer = window.setTimeout(() => { if (navSeq === seq && coverShown) curtainLift(); }, 8000);
+      });
+      document.addEventListener('astro:page-load', () => {
+        clearTimeout(curtainTimer);
+        if (!coverShown) return;
+        // Gate the lift on the same fonts.ready / 800ms condition buildLineMotion uses,
+        // so the destination headline is up before the panel clears it (no flash).
+        let done = false;
+        const go = () => { if (done) return; done = true; curtainLift(); };
+        const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+        fontsReady.then(go).catch(go);
+        setTimeout(go, 850);
+      });
 
       // The sticky header is transition:persist (it stays a fixed frame while page
       // content cross-fades beneath it), so its server-rendered active state is
