@@ -91,7 +91,7 @@ import Layout from '../layouts/Layout.astro';
 
 ## Motion — GSAP, declarative via data-attributes
 
-GSAP (core + ScrollTrigger + SplitText) is registered and driven **once, globally** in `Layout.astro`. **Pages must NOT import GSAP or write their own animation scripts.** You animate by adding data-attributes; the Layout wires them on `astro:page-load` and tears everything down on `astro:before-swap` (ClientRouter-safe). Everything is guarded by `prefers-reduced-motion` (reduced → content shown statically, counters jump to final).
+GSAP (core + ScrollTrigger + SplitText + ScrambleText) is registered and driven **once, globally** in `Layout.astro`. **Pages must NOT import GSAP or write their own animation scripts.** You animate by adding data-attributes; the Layout wires them on `astro:page-load` and tears everything down on `astro:before-swap` (ClientRouter-safe). Everything is guarded by `prefers-reduced-motion` (reduced → content shown statically, counters jump to final).
 
 | Attribute | Effect |
 |---|---|
@@ -104,6 +104,20 @@ GSAP (core + ScrollTrigger + SplitText) is registered and driven **once, globall
 | `data-magnetic="0.3"` | element pulls toward the cursor (fine pointers); good for CTAs |
 | `data-marquee="36"` | seamless scrolling track; **its content must be duplicated 2×** for the −50% loop |
 | Hero: `data-hero` (container) + `data-hero-headline` (the h1, SplitText) + `data-hero-media` (clip-reveal) + `data-hero-item` (load-staggered) | first-load choreography |
+
+**Showpiece flourishes (fine pointers only; never run under reduced-motion):**
+
+| Attribute | Effect |
+|---|---|
+| `data-flux` (add to a heading that also has `data-reveal-lines` or `data-hero-headline`) | kinetic variable type: each glyph's `wght` eases toward the cursor (Bricolage is variable), plus a faint scroll-velocity breath. Resting weight 500 = unchanged; chars are only split when fine-pointer. |
+| `data-halftone` (on `[data-hero-media]`) | WebGL "developing plate": the photo loads as an ochre+ink halftone screen and resolves to full colour on the hero timeline, with a faint living grain. The cursor stirs it into a fluid ink wake (recent-sample displacement field) that warps the image into dense halftone dots and settles back. Falls back to the clip-path reveal if WebGL is unavailable. |
+| `data-image-trail` + `data-trail-images='[…json…]'` | gallery prints flick out along the cursor while it sweeps the element (recycled 12-node pool). Prints spawn only *outside* the `[data-hero-media]` photo, which is the halftone fluid zone. |
+| `data-pin-section` + `data-pin-track` (inner) | pinned horizontal filmstrip (ScrollTrigger pin + scrub) on desktop via `gsap.matchMedia` (`min-width:1024px` + no-reduced adds `.is-pinned`); below that / reduced-motion it's a plain CSS swipe strip (`overflow-x:auto`). |
+| `data-work-list` (on the Selected-work `<ol>`; each `.work-row` carries a `.work-row__ghost` index numeral) | "developing plate" hover on the work rows: the oversized index numeral (the projects have no photograph, so the *number* is the plate) fades + scales in and drifts with the cursor for parallax depth, while an ochre rule draws across the row and it warms (the draw + wash are pure CSS). The catalogue answer to a sparse list: each project gets a full plate. Fine pointers only. |
+| `data-scramble` (on a mono catalogue mark: a section index number, a kicker `.label`, a census/ledger numeral) | the mark decodes from scrambled glyphs to its final value as it scrolls in (ScrambleText), like a wall-label being set in the printshop. Monospace marks only, so there is no reflow; numeric marks scramble through digits, text through A-Z. Runs once per mark; reduced-motion keeps the final text. |
+| `data-draw-rule` (on an element with a structural top hairline) | the hairline strokes itself left-to-right (a CSS `::before` `scaleX(0→1)`) as the element enters. JS adds `.rule-armed` (hides) then `.is-drawn` (draws); **without JS or under reduced-motion the `::before` stays at its default `scaleX(1)`, statically visible** (so no separator ever vanishes). Used on the work list, the census + ledger, and the feature-post plate. |
+| `data-velocity-skew` (on small, non-animated elements: the marquee words, the filmstrip plates) | scroll-velocity skew: the element leans up to ±9° with scroll speed and springs back upright. A single global `ScrollTrigger.onUpdate` reads `getVelocity()`, clamps it, and drives `skewX` on every tagged element via one `quickSetter`. Put it on elements **inside** a GSAP-driven track, never on the track itself (its transform is already owned by a tween). |
+| `data-movement="Name"` (on each of the six `<section>`s) + `data-movement-index` (the fixed HUD markup) | catalogue movement indicator: a fixed bottom-left paper tab reads `0X / 06 · Name` with a 6-tick rail, tracking which movement is centred (one `ScrollTrigger` per section + a visibility trigger spanning 01→06). Homepage only (no-ops without the HUD); desktop + motion only (CSS hides it `<900px`; never built under reduced-motion). The paper backing keeps it legible over the full-bleed filmstrip. |
 
 Notes: `data-reveal-lines`/`data-hero-headline` get `text-wrap: wrap` (never `balance`). Don't nest `data-reveal` inside a `data-stagger` (double-hide). After adding/removing many images, the Layout calls `ScrollTrigger.refresh()` on fonts-ready automatically.
 

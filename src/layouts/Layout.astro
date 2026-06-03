@@ -224,7 +224,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .section-head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: clamp(1.5rem, 1rem + 2vw, 3rem); }
       .section-head--split { justify-content: space-between; align-items: flex-end; flex-wrap: wrap; }
       .section-title { font-size: var(--step-3); margin-top: 0.4rem; }
-      .section-link { font-size: 0.9rem; color: var(--ink); white-space: nowrap; }
+      .section-link { font-size: 0.9rem; color: var(--ink-soft); white-space: nowrap; transition: color var(--t-base) ease; }
+      .section-link:hover { color: var(--ochre); }
 
       /* Page intro block (sub-pages: kicker + big title + lead) */
       .page-head { padding-top: clamp(1.5rem, 1rem + 3vw, 3.5rem); }
@@ -346,6 +347,32 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         will-change: transform, opacity;
       }
 
+      /* Kinetic variable type (driven in buildLineMotion → setupFluxFor).
+         Resting --wght:500 matches the headings' normal weight and opsz stays
+         auto, so static / touch / reduced-motion render identically; only the
+         live weight field on fine pointers changes the var. */
+      .flux-char {
+        display: inline-block;
+        font-variation-settings: 'wght' var(--wght, 500);
+        font-optical-sizing: auto;
+        will-change: font-variation-settings;
+      }
+
+      /* WebGL "developing plate" canvas, layered over the hero photo. */
+      .halftone-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+      /* Cursor image-trail: mounted prints that flick out along the pointer. */
+      .trail-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
+      .trail-plate {
+        position: absolute; top: 0; left: 0;
+        width: clamp(8.5rem, 11vw, 12rem);
+        padding: 0.4rem; background: var(--paper);
+        border: 1px solid var(--line); border-radius: var(--radius);
+        box-shadow: 0 14px 34px -20px rgba(40, 30, 18, 0.55);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .trail-plate img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; border-radius: 1px; }
+
       /* -------- Scroll progress -------- */
       #scroll-progress {
         position: fixed;
@@ -396,8 +423,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       import gsap from 'gsap';
       import { ScrollTrigger } from 'gsap/ScrollTrigger';
       import { SplitText } from 'gsap/SplitText';
+      import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 
-      gsap.registerPlugin(ScrollTrigger, SplitText);
+      gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
       // Debug hook (harmless): inspect live ScrollTrigger instances from the console.
       (window as any).__ST = ScrollTrigger;
 
@@ -409,6 +437,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       let heroTl: gsap.core.Timeline | null = null;
       let initToken = 0;
 
+      // Kinetic-type ("flux") state — see setupFluxFor / fluxTick below.
+      type FluxReg = { el: HTMLElement; chars: HTMLElement[]; cx: number[]; cy: number[]; cur: number[]; radius: number };
+      let fluxRegs: FluxReg[] = [];
+      let fluxRunning = false;
+      let fluxAtRest = true;
+      let scrollFlux = 0;
+      let lastFluxScrollY = 0;
+      let lastFluxScrollT = 0;
+      const fluxPointer = { x: -9999, y: -9999, active: false };
+      const FLUX_BASE = 500, FLUX_PEAK = 200, FLUX_SCROLL = 28;
+
       function clearMotion() {
         initToken++;
         ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -416,6 +455,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         splits = [];
         cleanups.forEach((fn) => { try { fn(); } catch (e) {} });
         cleanups = [];
+        fluxRegs = [];
+        fluxAtRest = true;
+        scrollFlux = 0;
+        fluxPointer.active = false;
         if (heroTl) { heroTl.kill(); heroTl = null; }
       }
 
@@ -482,6 +525,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
         });
 
+        // Catalogue chrome decode: mono index numbers + kickers scramble from
+        // glyphs to their final value as they scroll in (printshop type-setting).
+        // Monospace marks (mono digits/labels) so there is no layout reflow.
+        gsap.utils.toArray<HTMLElement>('[data-scramble]').forEach((el) => {
+          const finalText = (el.textContent || '').trim();
+          if (!finalText) return;
+          const numeric = /^[\d.\s]+$/.test(finalText);
+          ScrollTrigger.create({
+            trigger: el, start: 'top 90%', once: true,
+            onEnter: () => gsap.to(el, {
+              duration: 0.9, ease: 'none',
+              scrambleText: { text: finalText, chars: numeric ? '0123456789' : 'upperCase', speed: 0.55, revealDelay: 0.12 },
+            }),
+          });
+        });
+
+        // Self-drawing hairlines: structural rules stroke themselves left-to-right
+        // as their section arrives. JS arms (hides) then draws, so no-JS and
+        // reduced-motion keep the rule statically visible (the CSS ::before default).
+        gsap.utils.toArray<HTMLElement>('[data-draw-rule]').forEach((el) => {
+          el.classList.add('rule-armed');
+          ScrollTrigger.create({
+            trigger: el, start: 'top 88%', once: true,
+            onEnter: () => el.classList.add('is-drawn'),
+          });
+          cleanups.push(() => el.classList.remove('rule-armed', 'is-drawn'));
+        });
+
         // Hover zoom for editorial media (works alongside parallax: GSAP merges transforms)
         if (fine.matches) {
           gsap.utils.toArray<HTMLElement>('[data-zoom]').forEach((el) => {
@@ -531,6 +602,542 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             onUpdate: (self) => gsap.set(prog, { scaleX: self.progress }),
           });
         }
+
+        buildImageTrail();
+        buildPinGallery();
+        buildWorkShowpiece();
+        buildVelocitySkew();
+        buildMovementIndex();
+      }
+
+      // A masked line-reveal wraps each line in an overflow:hidden box so the
+      // text can slide up from behind it. That mask is only needed *during* the
+      // slide; once the line settles at yPercent:0 it still clips anything past
+      // the (tight) line box — notably the "g" descender on the hero title.
+      // Restore overflow on the wrappers when the reveal finishes.
+      function unmaskLines(split: any) {
+        split.lines.forEach((line: HTMLElement) => {
+          const mask = line.parentElement;
+          if (mask) mask.style.overflow = 'visible';
+        });
+      }
+
+      // ---- Kinetic variable type: glyph weight follows the cursor ----
+      // Each split character carries a --wght var; one rAF loop eases every
+      // glyph toward a target set by its distance to the pointer (smooth
+      // falloff), plus a faint global breath driven by scroll velocity.
+      // Fine pointers only; reduced-motion never reaches here. Centres are
+      // measured once the reveal has settled, so they're read at rest.
+      function setupFluxFor(el: HTMLElement, split: any) {
+        const chars: HTMLElement[] = Array.from(split.chars || []);
+        if (!chars.length) return;
+        const base = el.getBoundingClientRect();
+        const fontSize = parseFloat(getComputedStyle(el).fontSize) || 48;
+        const radius = Math.min(360, Math.max(150, fontSize * 2));
+        const cx: number[] = [], cy: number[] = [], cur: number[] = [];
+        chars.forEach((c) => {
+          const r = c.getBoundingClientRect();
+          cx.push(r.left - base.left + r.width / 2);
+          cy.push(r.top - base.top + r.height / 2);
+          cur.push(FLUX_BASE);
+        });
+        fluxRegs.push({ el, chars, cx, cy, cur, radius });
+        ensureFluxRunning();
+      }
+
+      function fluxTick() {
+        scrollFlux *= 0.9;
+        if (scrollFlux < 0.001) scrollFlux = 0;
+        if (!fluxPointer.active && scrollFlux === 0 && fluxAtRest) return;
+        const vh = window.innerHeight;
+        const rects = fluxRegs.map((reg) => reg.el.getBoundingClientRect());
+        let allRest = true;
+        for (let r = 0; r < fluxRegs.length; r++) {
+          const reg = fluxRegs[r];
+          const box = rects[r];
+          const onscreen = box.bottom > -120 && box.top < vh + 120;
+          for (let i = 0; i < reg.chars.length; i++) {
+            let boost = scrollFlux * FLUX_SCROLL;
+            if (onscreen && fluxPointer.active) {
+              const dx = fluxPointer.x - (box.left + reg.cx[i]);
+              const dy = fluxPointer.y - (box.top + reg.cy[i]);
+              const f = 1 - Math.min(1, Math.hypot(dx, dy) / reg.radius);
+              if (f > 0) boost += f * f * FLUX_PEAK;
+            }
+            const target = FLUX_BASE + boost;
+            const next = reg.cur[i] + (target - reg.cur[i]) * 0.18;
+            if (Math.abs(next - reg.cur[i]) > 0.05) {
+              reg.cur[i] = next;
+              reg.chars[i].style.setProperty('--wght', next.toFixed(1));
+              allRest = false;
+            } else if (Math.abs(next - FLUX_BASE) > 0.05) {
+              allRest = false;
+            }
+          }
+        }
+        fluxAtRest = !fluxPointer.active && scrollFlux === 0 && allRest;
+      }
+
+      function onFluxMove(e: PointerEvent) { fluxPointer.x = e.clientX; fluxPointer.y = e.clientY; fluxPointer.active = true; fluxAtRest = false; }
+      function onFluxLeave() { fluxPointer.active = false; }
+      function onFluxScroll() {
+        const now = performance.now();
+        const dt = Math.max(16, now - lastFluxScrollT);
+        scrollFlux = Math.min(1, Math.max(scrollFlux, (Math.abs(window.scrollY - lastFluxScrollY) / dt) / 5));
+        lastFluxScrollY = window.scrollY;
+        lastFluxScrollT = now;
+        fluxAtRest = false;
+      }
+      let fluxResizeT: number | undefined;
+      function remeasureFlux() {
+        for (const reg of fluxRegs) {
+          const base = reg.el.getBoundingClientRect();
+          reg.chars.forEach((c, i) => {
+            const r = c.getBoundingClientRect();
+            reg.cx[i] = r.left - base.left + r.width / 2;
+            reg.cy[i] = r.top - base.top + r.height / 2;
+          });
+        }
+      }
+      function onFluxResize() {
+        clearTimeout(fluxResizeT);
+        fluxResizeT = window.setTimeout(remeasureFlux, 200);
+      }
+
+      function ensureFluxRunning() {
+        if (fluxRunning) return;
+        fluxRunning = true;
+        lastFluxScrollY = window.scrollY;
+        lastFluxScrollT = performance.now();
+        window.addEventListener('pointermove', onFluxMove, { passive: true });
+        document.addEventListener('pointerleave', onFluxLeave);
+        window.addEventListener('scroll', onFluxScroll, { passive: true });
+        window.addEventListener('resize', onFluxResize);
+        gsap.ticker.add(fluxTick);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasureFlux).catch(() => {});
+        cleanups.push(() => {
+          gsap.ticker.remove(fluxTick);
+          window.removeEventListener('pointermove', onFluxMove);
+          document.removeEventListener('pointerleave', onFluxLeave);
+          window.removeEventListener('scroll', onFluxScroll);
+          window.removeEventListener('resize', onFluxResize);
+          clearTimeout(fluxResizeT);
+          fluxRunning = false;
+        });
+      }
+
+      // ---- "Developing plate": WebGL halftone reveal for the hero photo ----
+      // The image loads as an ochre+ink halftone dot screen and "develops" into
+      // the full photograph as progress eases 0→1 on the hero timeline, with a
+      // faint living grain and a soft cursor ripple. Pure GPU; returns null if
+      // WebGL is unavailable so the caller keeps the clip-path reveal. Reduced
+      // motion never reaches here, so the plain <img> shows.
+      function readColor(prop: string, fb: number[]): number[] {
+        try {
+          const v = getComputedStyle(document.documentElement).getPropertyValue(prop).trim();
+          if (!v) return fb;
+          const c = document.createElement('canvas'); c.width = c.height = 1;
+          const ctx = c.getContext('2d'); if (!ctx) return fb;
+          ctx.fillStyle = '#000'; ctx.fillStyle = v; ctx.fillRect(0, 0, 1, 1);
+          const d = ctx.getImageData(0, 0, 1, 1).data;
+          if (d[0] === 0 && d[1] === 0 && d[2] === 0) return fb; // colour failed to parse
+          return [d[0] / 255, d[1] / 255, d[2] / 255];
+        } catch (e) { return fb; }
+      }
+
+      function setupHalftone(media: HTMLElement): any {
+        const img = media.querySelector('img') as HTMLImageElement | null;
+        if (!img) return null;
+        const canvas = document.createElement('canvas');
+        const gl = (canvas.getContext('webgl', { antialias: true, premultipliedAlpha: false })
+          || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+        if (!gl) return null;
+
+        const VERT = `attribute vec2 aPos; varying vec2 vUv;
+          void main(){ vUv = aPos * 0.5 + 0.5; gl_Position = vec4(aPos, 0.0, 1.0); }`;
+        const FRAG = `
+          #ifdef GL_FRAGMENT_PRECISION_HIGH
+          precision highp float;
+          #else
+          precision mediump float;
+          #endif
+          varying vec2 vUv;
+          uniform sampler2D uTex;
+          uniform float uProgress, uTime, uCells, uAspect, uImgAspect;
+          uniform vec3 uPaper, uInk, uOchre;
+          #define NPTS 14
+          uniform vec3 uPts[NPTS]; // xy = uv position, z = strength (decays)
+          float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+          vec2 coverUv(vec2 uv){
+            vec2 s = vec2(1.0);
+            if (uAspect > uImgAspect) s.y = uImgAspect / uAspect; else s.x = uAspect / uImgAspect;
+            return (uv - 0.5) * s + 0.5;
+          }
+          void main(){
+            vec2 asp = vec2(uAspect, 1.0);
+            // Fluid ink wake: sum decaying pushes from recent cursor samples.
+            vec2 disp = vec2(0.0);
+            float stir = 0.0;
+            for (int i = 0; i < NPTS; i++) {
+              vec3 p = uPts[i];
+              vec2 diff = (vUv - p.xy) * asp;
+              float d = length(diff) + 1e-4;
+              float infl = p.z * exp(-d * 8.0);
+              vec2 dir = diff / d;
+              disp += dir * infl * 0.06;                                 // outward push
+              disp += dir * sin(d * 26.0 - uTime * 0.006) * infl * 0.007; // ripple ring
+              stir += infl;
+            }
+            stir = clamp(stir, 0.0, 1.0);
+
+            vec2 iuv = coverUv(vUv + disp);
+            vec3 photo = texture2D(uTex, clamp(iuv, 0.0, 1.0)).rgb;
+            float lum = dot(photo, vec3(0.299, 0.587, 0.114));
+            vec2 gv = (vUv + disp) * asp * uCells;
+            vec2 cell = fract(gv) - 0.5;
+            float radius = sqrt(clamp(1.0 - lum, 0.0, 1.0)) * 0.60;
+            float inside = smoothstep(radius, radius - 0.06, length(cell));
+            vec3 dotCol = mix(uOchre, uInk, smoothstep(0.35, 0.78, 1.0 - lum));
+            vec3 halftone = mix(uPaper, dotCol, inside);
+            float raw = 0.60 * (1.0 - lum) + 0.25 * hash(floor(gv)) + 0.15 * (1.0 - vUv.y);
+            float phase = 0.24 + 0.64 * clamp(raw, 0.0, 1.0);
+            float t = smoothstep(phase - 0.22, phase + 0.10, uProgress);
+            vec3 col = mix(halftone, photo, t);
+            // cursor stirs up dense ochre-ink dots (visible over any brightness), settling as strength decays
+            float wakeInside = smoothstep(0.46, 0.30, length(cell));
+            vec3 wakeCol = mix(uPaper, mix(uOchre, uInk, 0.55), wakeInside);
+            col = mix(col, wakeCol, clamp(stir, 0.0, 1.0) * 0.8);
+            col += (hash(vUv * (1.0 + uTime * 0.0007)) - 0.5) * 0.016;
+            gl_FragColor = vec4(col, 1.0);
+          }`;
+
+        function compile(type: number, src: string) {
+          const sh = gl!.createShader(type)!; gl!.shaderSource(sh, src); gl!.compileShader(sh);
+          if (!gl!.getShaderParameter(sh, gl!.COMPILE_STATUS)) { gl!.deleteShader(sh); return null; }
+          return sh;
+        }
+        const vs = compile(gl.VERTEX_SHADER, VERT);
+        const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+        if (!vs || !fs) return null;
+        const prog = gl.createProgram()!;
+        gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+        gl.useProgram(prog);
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        const aPos = gl.getAttribLocation(prog, 'aPos');
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        const u = (n: string) => gl!.getUniformLocation(prog, n);
+        const uTex = u('uTex'), uProgress = u('uProgress'), uTime = u('uTime'), uCells = u('uCells'),
+          uAspect = u('uAspect'), uImgAspect = u('uImgAspect'), uPts = u('uPts'),
+          uPaper = u('uPaper'), uInk = u('uInk'), uOchre = u('uOchre');
+
+        const paper = readColor('--paper', [0.965, 0.945, 0.906]);
+        const ink = readColor('--ink', [0.17, 0.155, 0.14]);
+        const ochre = readColor('--ochre', [0.72, 0.47, 0.26]);
+
+        const tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([205, 195, 175, 255]));
+
+        const ctrl: any = { progress: 0, _t: 0, _imgAspect: 1, _ready: false, _cells: 80 };
+        // Ring buffer of recent cursor samples driving the fluid wake (xy uv + strength).
+        const HPTS = 14;
+        const pts = new Float32Array(HPTS * 3);
+        let ptHead = 0;
+
+        function uploadTexture() {
+          if (!img!.naturalWidth) return;
+          gl!.bindTexture(gl!.TEXTURE_2D, tex);
+          gl!.pixelStorei(gl!.UNPACK_FLIP_Y_WEBGL, true);
+          try { gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, img!); } catch (e) { return; }
+          ctrl._imgAspect = img!.naturalWidth / img!.naturalHeight;
+          ctrl._ready = true;
+        }
+        if (img.complete && img.naturalWidth) uploadTexture();
+        else img.addEventListener('load', uploadTexture, { once: true });
+
+        let cssW = 0, cssH = 0;
+        function resize() {
+          const dpr = Math.min(2, window.devicePixelRatio || 1);
+          const rect = media.getBoundingClientRect();
+          cssW = rect.width; cssH = rect.height;
+          canvas.width = Math.max(1, Math.round(cssW * dpr));
+          canvas.height = Math.max(1, Math.round(cssH * dpr));
+          gl!.viewport(0, 0, canvas.width, canvas.height);
+          ctrl._cells = Math.max(28, Math.min(80, Math.round(cssH / 11)));
+        }
+
+        function render() {
+          if (!cssW) resize();
+          gl!.useProgram(prog);
+          gl!.activeTexture(gl!.TEXTURE0);
+          gl!.bindTexture(gl!.TEXTURE_2D, tex);
+          gl!.uniform1i(uTex, 0);
+          gl!.uniform1f(uProgress, ctrl.progress);
+          gl!.uniform1f(uTime, ctrl._t);
+          gl!.uniform1f(uCells, ctrl._cells);
+          gl!.uniform1f(uAspect, cssW / Math.max(1, cssH));
+          gl!.uniform1f(uImgAspect, ctrl._ready ? ctrl._imgAspect : cssW / Math.max(1, cssH));
+          for (let i = 2; i < pts.length; i += 3) pts[i] *= 0.9; // decay sample strengths
+          gl!.uniform3fv(uPts, pts);
+          gl!.uniform3f(uPaper, paper[0], paper[1], paper[2]);
+          gl!.uniform3f(uInk, ink[0], ink[1], ink[2]);
+          gl!.uniform3f(uOchre, ochre[0], ochre[1], ochre[2]);
+          gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+        }
+
+        canvas.className = 'halftone-canvas';
+        canvas.setAttribute('aria-hidden', 'true');
+        media.insertBefore(canvas, media.firstChild);
+        img.style.opacity = '0';
+        resize();
+
+        const startT = performance.now();
+        let running = false;
+        function frame() { ctrl._t = performance.now() - startT; render(); }
+        function play() { if (!running) { running = true; gsap.ticker.add(frame); } }
+        function pause() { if (running) { running = false; gsap.ticker.remove(frame); } }
+
+        let io: IntersectionObserver | null = null;
+        if (typeof IntersectionObserver !== 'undefined') {
+          io = new IntersectionObserver((ents) => { if (ents[0].isIntersecting) play(); else pause(); }, { rootMargin: '140px' });
+          io.observe(media);
+        }
+        play();
+
+        const onWinResize = () => resize();
+        window.addEventListener('resize', onWinResize);
+
+        function onMove(e: MouseEvent) {
+          const rect = media.getBoundingClientRect();
+          const mx = (e.clientX - rect.left) / Math.max(1, rect.width);
+          const my = 1 - (e.clientY - rect.top) / Math.max(1, rect.height);
+          pts[ptHead * 3] = mx; pts[ptHead * 3 + 1] = my; pts[ptHead * 3 + 2] = 1.0;
+          ptHead = (ptHead + 1) % HPTS;
+        }
+        if (fine.matches) media.addEventListener('mousemove', onMove);
+
+        cleanups.push(() => {
+          pause();
+          if (io) io.disconnect();
+          window.removeEventListener('resize', onWinResize);
+          media.removeEventListener('mousemove', onMove);
+          img.style.opacity = '';
+          try { canvas.remove(); } catch (e) {}
+          const lose = gl!.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext();
+        });
+
+        return ctrl;
+      }
+
+      // ---- Cursor image-trail: gallery prints flick out along the pointer ----
+      // As the cursor sweeps the hero, real gallery frames spawn from a small
+      // recycled pool and animate in/out like prints spread across a table.
+      // Fine pointers only; never built under reduced-motion.
+      function buildImageTrail() {
+        if (!fine.matches) return;
+        const host = document.querySelector<HTMLElement>('[data-image-trail]');
+        if (!host) return;
+        let images: string[] = [];
+        try { images = JSON.parse(host.dataset.trailImages || '[]'); } catch (e) { images = []; }
+        if (!images.length) return;
+
+        const layer = document.createElement('div');
+        layer.className = 'trail-layer';
+        layer.setAttribute('aria-hidden', 'true');
+        host.appendChild(layer);
+
+        const POOL = 12;
+        const plates: HTMLElement[] = [];
+        for (let i = 0; i < POOL; i++) {
+          const fig = document.createElement('div');
+          fig.className = 'trail-plate';
+          const im = document.createElement('img');
+          im.decoding = 'async'; im.alt = '';
+          fig.appendChild(im);
+          layer.appendChild(fig);
+          plates.push(fig);
+        }
+        images.forEach((src) => { const p = new Image(); p.src = src; }); // warm the cache
+
+        // The hero photo is the fluid-ink zone; don't spawn prints over it.
+        const photoEl = host.querySelector<HTMLElement>('[data-hero-media]');
+        let imgIdx = 0, poolIdx = 0, lastX = 0, lastY = 0, primed = false;
+        const STEP2 = 92 * 92; // min px² travelled between spawns
+
+        function spawn(x: number, y: number) {
+          const fig = plates[poolIdx % POOL]; poolIdx++;
+          const im = fig.querySelector('img') as HTMLImageElement;
+          im.src = images[imgIdx % images.length]; imgIdx++;
+          const rot = (Math.random() * 2 - 1) * 7;
+          gsap.killTweensOf(fig);
+          gsap.set(fig, { left: x, top: y, xPercent: -50, yPercent: -50, rotate: rot, scale: 0.7, y: 0, opacity: 0, zIndex: poolIdx });
+          gsap.timeline()
+            .to(fig, { scale: 1, opacity: 1, duration: 0.38, ease: 'power3.out' })
+            .to(fig, { opacity: 0, scale: 1.06, y: 28, duration: 0.72, ease: 'power2.in' }, 0.42);
+        }
+
+        function onMove(e: PointerEvent) {
+          const rect = layer.getBoundingClientRect();
+          const x = e.clientX - rect.left, y = e.clientY - rect.top;
+          if (!primed) { lastX = x; lastY = y; primed = true; return; }
+          const dx = x - lastX, dy = y - lastY;
+          if (dx * dx + dy * dy >= STEP2) {
+            lastX = x; lastY = y;
+            if (photoEl) {
+              const pr = photoEl.getBoundingClientRect();
+              if (e.clientX >= pr.left && e.clientX <= pr.right && e.clientY >= pr.top && e.clientY <= pr.bottom) return;
+            }
+            spawn(x, y);
+          }
+        }
+        function onLeave() { primed = false; }
+
+        host.addEventListener('pointermove', onMove);
+        host.addEventListener('pointerleave', onLeave);
+
+        cleanups.push(() => {
+          host.removeEventListener('pointermove', onMove);
+          host.removeEventListener('pointerleave', onLeave);
+          plates.forEach((p) => gsap.killTweensOf(p));
+          try { layer.remove(); } catch (e) {}
+        });
+      }
+
+      // ---- Pinned horizontal filmstrip (ScrollTrigger pin + scrub) ----
+      // Desktop + motion only (gsap.matchMedia); below 1024px or reduced-motion
+      // it stays a normal CSS swipe strip. matchMedia reverts the pin + its
+      // ScrollTrigger cleanly when the query stops matching or on page swap.
+      function buildPinGallery() {
+        const section = document.querySelector<HTMLElement>('[data-pin-section]');
+        const track = section ? section.querySelector<HTMLElement>('[data-pin-track]') : null;
+        if (!section || !track) return;
+        const mm = gsap.matchMedia();
+        mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+          section.classList.add('is-pinned');
+          const distance = () => Math.max(0, track.scrollWidth - section.clientWidth);
+          gsap.to(track, {
+            x: () => -distance(),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top top',
+              end: () => '+=' + distance(),
+              pin: true,
+              scrub: 0.6,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+          return () => { section.classList.remove('is-pinned'); gsap.set(track, { clearProps: 'transform' }); };
+        });
+        cleanups.push(() => mm.revert());
+      }
+
+      // ---- Selected-work showpiece: each row is a developing catalogue plate ----
+      // On approach the oversized index numeral (the projects have no photograph,
+      // so the number IS the plate) fades up, scales in and drifts with the cursor
+      // for parallax depth; the ochre rule draws across and the row warms (CSS).
+      // Fine pointers only; never built under reduced-motion (initMotion bails).
+      function buildWorkShowpiece() {
+        if (!fine.matches) return;
+        const list = document.querySelector<HTMLElement>('[data-work-list]');
+        if (!list) return;
+        gsap.utils.toArray<HTMLElement>('.work-row', list).forEach((row) => {
+          const ghost = row.querySelector<HTMLElement>('.work-row__ghost');
+          const title = row.querySelector<HTMLElement>('.work-row__title');
+          if (!ghost) return;
+          gsap.set(ghost, { scale: 0.92, autoAlpha: 0 });
+          const gx = gsap.quickTo(ghost, 'x', { duration: 0.8, ease: 'power3' });
+          const gy = gsap.quickTo(ghost, 'y', { duration: 0.8, ease: 'power3' });
+          const tx = title ? gsap.quickTo(title, 'x', { duration: 0.6, ease: 'power3' }) : null;
+          const enter = () => gsap.to(ghost, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'power3.out' });
+          const move = (e: MouseEvent) => {
+            const r = row.getBoundingClientRect();
+            const nx = (e.clientX - (r.left + r.width / 2)) / r.width;
+            const ny = (e.clientY - (r.top + r.height / 2)) / r.height;
+            gx(nx * 48); gy(ny * 24);
+            if (tx) tx(nx * 10);
+          };
+          const leave = () => {
+            gsap.to(ghost, { autoAlpha: 0, scale: 0.92, duration: 0.5, ease: 'power2.out' });
+            gx(0); gy(0); if (tx) tx(0);
+          };
+          row.addEventListener('mouseenter', enter);
+          row.addEventListener('mousemove', move);
+          row.addEventListener('mouseleave', leave);
+          cleanups.push(() => {
+            row.removeEventListener('mouseenter', enter);
+            row.removeEventListener('mousemove', move);
+            row.removeEventListener('mouseleave', leave);
+            gsap.set(ghost, { clearProps: 'all' });
+            if (title) gsap.set(title, { clearProps: 'transform' });
+          });
+        });
+      }
+
+      // ---- Scroll-velocity skew: targets lean a few degrees with scroll speed and
+      // spring back to upright (the classic GSAP "scroll has weight" flourish).
+      // Applied to the marquee words and filmstrip plates (NOT their animated
+      // tracks, to avoid transform conflicts). Never built under reduced-motion.
+      function buildVelocitySkew() {
+        const targets = gsap.utils.toArray<HTMLElement>('[data-velocity-skew]');
+        if (!targets.length) return;
+        const setSkew = gsap.quickSetter(targets, 'skewX', 'deg');
+        const clamp = gsap.utils.clamp(-9, 9);
+        const proxy = { skew: 0 };
+        const st = ScrollTrigger.create({
+          onUpdate: (self) => {
+            const v = clamp(self.getVelocity() / -260);
+            if (Math.abs(v) > Math.abs(proxy.skew)) {
+              proxy.skew = v;
+              gsap.to(proxy, { skew: 0, duration: 0.7, ease: 'power3', overwrite: true, onUpdate: () => setSkew(proxy.skew) });
+            }
+          },
+        });
+        cleanups.push(() => { st.kill(); gsap.set(targets, { clearProps: 'skewX' }); });
+      }
+
+      // ---- Catalogue movement indicator: a fixed "you are here" tab tracking which
+      // of the six movements (01-06) is in view, with a tick rail. Homepage only
+      // (no-ops where [data-movement-index] is absent); shown on desktop via CSS.
+      function buildMovementIndex() {
+        const hud = document.querySelector<HTMLElement>('[data-movement-index]');
+        if (!hud) return;
+        const sections = gsap.utils.toArray<HTMLElement>('[data-movement]');
+        if (!sections.length) return;
+        const curEl = hud.querySelector<HTMLElement>('[data-movement-cur]');
+        const nameEl = hud.querySelector<HTMLElement>('[data-movement-name]');
+        const ticks = Array.from(hud.querySelectorAll<HTMLElement>('.movement-index__tick'));
+        let active = -1;
+        const setActive = (i: number) => {
+          if (i === active || i < 0 || i >= sections.length) return;
+          active = i;
+          if (curEl) curEl.textContent = String(i + 1).padStart(2, '0');
+          if (nameEl) nameEl.textContent = sections[i].dataset.movement || '';
+          ticks.forEach((t, j) => t.classList.toggle('is-active', j === i));
+        };
+        sections.forEach((sec, i) => {
+          ScrollTrigger.create({
+            trigger: sec, start: 'top 55%', end: 'bottom 55%',
+            onToggle: (self) => { if (self.isActive) setActive(i); },
+          });
+        });
+        const vis = ScrollTrigger.create({
+          trigger: sections[0], start: 'top 85%',
+          endTrigger: sections[sections.length - 1], end: 'bottom 60%',
+          onToggle: (self) => hud.classList.toggle('is-visible', self.isActive),
+        });
+        cleanups.push(() => { vis.kill(); hud.classList.remove('is-visible'); ticks.forEach((t) => t.classList.remove('is-active')); });
       }
 
       function buildLineMotion() {
@@ -540,15 +1147,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
           const headline = hero.querySelector<HTMLElement>('[data-hero-headline]');
           if (headline) {
-            const split = SplitText.create(headline, { type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: false });
+            const flux = headline.hasAttribute('data-flux') && fine.matches;
+            const split = SplitText.create(headline, { type: flux ? 'lines,chars' : 'lines', mask: 'lines', linesClass: 'split-line', charsClass: 'flux-char', autoSplit: false });
             splits.push(split);
             gsap.set(headline, { visibility: 'visible' });
-            heroTl.from(split.lines, { yPercent: 118, duration: 1.15, stagger: 0.09, ease: 'power4.out' }, 0.1);
+            heroTl.from(split.lines, {
+              yPercent: 118, duration: 1.15, stagger: 0.09, ease: 'power4.out',
+              onComplete: () => { unmaskLines(split); if (flux) setupFluxFor(headline, split); },
+            }, 0.1);
           }
           const media = hero.querySelector<HTMLElement>('[data-hero-media]');
           if (media) {
-            gsap.set(media, { clipPath: 'inset(0 0 100% 0)' });
-            heroTl.to(media, { clipPath: 'inset(0 0 0% 0)', duration: 1.25, ease: 'power4.out' }, 0.25);
+            const ht = media.hasAttribute('data-halftone') ? setupHalftone(media) : null;
+            if (ht) {
+              // The halftone "develop" IS the reveal — skip the clip-path wipe.
+              gsap.set(media, { clipPath: 'inset(0 0 0% 0)' });
+              heroTl.fromTo(ht, { progress: 0 }, { progress: 1, duration: 2.1, ease: 'power2.inOut' }, 0.2);
+            } else {
+              gsap.set(media, { clipPath: 'inset(0 0 100% 0)' });
+              heroTl.to(media, { clipPath: 'inset(0 0 0% 0)', duration: 1.25, ease: 'power4.out' }, 0.25);
+            }
           }
           const items = hero.querySelectorAll<HTMLElement>('[data-hero-item]');
           if (items.length) {
@@ -561,13 +1179,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         // Scroll-triggered line reveals for section headlines
         gsap.utils.toArray<HTMLElement>('[data-reveal-lines]').forEach((el) => {
-          const split = SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: false });
+          const flux = el.hasAttribute('data-flux') && fine.matches;
+          const split = SplitText.create(el, { type: flux ? 'lines,chars' : 'lines', mask: 'lines', linesClass: 'split-line', charsClass: 'flux-char', autoSplit: false });
           splits.push(split);
           gsap.set(el, { visibility: 'visible' });
           gsap.set(split.lines, { yPercent: 118 });
           ScrollTrigger.create({
             trigger: el, start: 'top 86%', once: true,
-            onEnter: () => gsap.to(split.lines, { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08 }),
+            onEnter: () => gsap.to(split.lines, {
+              yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08,
+              onComplete: () => { unmaskLines(split); if (flux) setupFluxFor(el, split); },
+            }),
           });
         });
 

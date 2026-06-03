@@ -34,9 +34,27 @@ const stats = [
   { value: '2', suffix: '', label: 'Projects' },
 ];
 
+// Specimen-ledger entries. Fields are pulled verbatim from src/pages/awards.astro
+// (body, discipline, year, document) so nothing here is fabricated.
 const awards = [
-  { title: 'Gold Division', event: 'USACO 2025–2026' },
-  { title: 'Meritorious Award', event: 'HiMCM 2025' },
+  {
+    num: '01',
+    title: 'Gold Division',
+    year: '2025–2026',
+    body: 'USACO',
+    discipline: 'Competitive programming',
+    doc: null,
+    docLabel: 'On file',
+  },
+  {
+    num: '02',
+    title: 'Meritorious Award',
+    year: '2025',
+    body: 'COMAP · HiMCM',
+    discipline: 'Mathematical modeling · Team 16400',
+    doc: '/certificates/16400.pdf',
+    docLabel: 'Doc. 16400',
+  },
 ];
 
 const galleryTeaser = [
@@ -44,6 +62,36 @@ const galleryTeaser = [
   { src: '/gallery/Paris_Sacre-Coeur-Basilica.webp', alt: 'Sacré-Cœur Basilica above Montmartre', place: 'Montmartre, Paris', span: 'tall' },
   { src: '/gallery/Skiing_Summit-Mountain-Panorama.webp', alt: 'Mountain summit panorama under blue sky', place: 'Beidahu, Jilin', span: 'wide' },
   { src: '/gallery/Paris_Eiffel-Tower-Dusk-Seine.webp', alt: 'The Eiffel Tower at dusk over the Seine', place: 'Seine, Paris', span: 'tall' },
+];
+
+// Cursor image-trail: real frames that flick out as the pointer sweeps the hero.
+const trailImages = [
+  '/gallery/Paris_Eiffel-Tower-Dusk-Seine.webp',
+  '/gallery/Paris_Louvre-Coronation-of-Napoleon.webp',
+  '/gallery/Skiing_Summit-Mountain-Panorama.webp',
+  '/gallery/Paris_Louvre-Mona-Lisa.webp',
+  '/gallery/Paris_Sacre-Coeur-Basilica.webp',
+  '/gallery/Paris_Louvre-Winged-Victory-of-Samothrace.webp',
+  '/gallery/Skiing_Red-Suit-Sunny-Carving.webp',
+  '/gallery/Paris_Notre-Dame-Apse-Stained-Glass.webp',
+  '/gallery/Paris_Arc-de-Triomphe-Up-Close.webp',
+  '/gallery/Paris_Musee-dOrsay-from-Seine.webp',
+  '/gallery/Skiing_Snowy-Run-Trees-Blue-Sky.webp',
+  '/gallery/Paris_Louvre-Venus-de-Milo.webp',
+  '/gallery/Paris_Seine-River-Quay-and-Boats.webp',
+  '/gallery/Paris_Louvre-Apollo-Gallery-Gilded-Ceiling.webp',
+];
+
+// Pinned horizontal filmstrip plates (section 04).
+const filmstripPlates = [
+  { src: '/gallery/Paris_Eiffel-Tower-Dusk-Seine.webp', alt: 'The Eiffel Tower at dusk over the Seine', place: 'Seine, Paris' },
+  { src: '/gallery/Paris_Louvre-Coronation-of-Napoleon.webp', alt: 'The Coronation of Napoleon in the Louvre', place: 'Louvre, Paris' },
+  { src: '/gallery/Paris_Sacre-Coeur-Basilica.webp', alt: 'Sacré-Cœur Basilica above Montmartre', place: 'Montmartre, Paris' },
+  { src: '/gallery/Paris_Louvre-Winged-Victory-of-Samothrace.webp', alt: 'The Winged Victory of Samothrace in the Louvre', place: 'Louvre, Paris' },
+  { src: '/gallery/Paris_Notre-Dame-Apse-Stained-Glass.webp', alt: 'Stained glass in the apse of Notre-Dame', place: 'Notre-Dame, Paris' },
+  { src: '/gallery/Skiing_Summit-Mountain-Panorama.webp', alt: 'Mountain summit panorama under a blue sky', place: 'Beidahu, Jilin' },
+  { src: '/gallery/Skiing_Red-Suit-Sunny-Carving.webp', alt: 'Carving a sunlit slope in a red suit', place: 'Beidahu, Jilin' },
+  { src: "/gallery/Paris_Musee-dOrsay-from-Seine.webp", alt: "The Musée d'Orsay seen from the Seine", place: "Seine, Paris" },
 ];
 ---
 
@@ -54,8 +102,24 @@ const galleryTeaser = [
 >
   <span id="top" aria-hidden="true"></span>
 
+  <!-- Catalogue movement indicator (you-are-here tab; desktop + motion only) -->
+  <aside class="movement-index" aria-hidden="true" data-movement-index>
+    <span class="movement-index__count">
+      <span class="movement-index__cur" data-movement-cur>01</span><span class="movement-index__total">/ 06</span>
+    </span>
+    <span class="movement-index__name" data-movement-name>Profile</span>
+    <span class="movement-index__rail">
+      <span class="movement-index__tick"></span>
+      <span class="movement-index__tick"></span>
+      <span class="movement-index__tick"></span>
+      <span class="movement-index__tick"></span>
+      <span class="movement-index__tick"></span>
+      <span class="movement-index__tick"></span>
+    </span>
+  </aside>
+
   <!-- ===================== HERO ===================== -->
-  <section class="hero" data-hero aria-labelledby="hero-title">
+  <section class="hero" data-hero data-image-trail data-trail-images={JSON.stringify(trailImages)} aria-labelledby="hero-title">
     <div class="container">
       <div class="hero__top">
         <span class="label" data-hero-item>Morax Cheng · Portfolio, Edition 2026</span>
@@ -63,7 +127,7 @@ const galleryTeaser = [
       </div>
       <hr class="rule" data-hero-item />
 
-      <h1 class="hero__title" id="hero-title" data-hero-headline>Morax Cheng</h1>
+      <h1 class="hero__title" id="hero-title" data-hero-headline data-flux>Morax Cheng</h1>
 
       <div class="hero__row">
         <div class="hero__lead">
@@ -83,7 +147,7 @@ const galleryTeaser = [
         </dl>
       </div>
 
-      <figure class="hero__media media-frame" data-hero-media>
+      <figure class="hero__media media-frame" data-hero-media data-halftone>
         <img data-parallax="6" src="/gallery/Paris_Montmartre-Panoramic-View.webp" alt="The rooftops of Paris seen from the steps of Montmartre" loading="eager" />
         <figcaption class="wall-label">
           <span class="index-num">Pl. 01</span>
@@ -95,15 +159,15 @@ const galleryTeaser = [
   </section>
 
   <!-- ===================== 01 · PROFILE ===================== -->
-  <section class="section" aria-labelledby="profile-h">
+  <section class="section" aria-labelledby="profile-h" data-movement="Profile">
     <div class="container">
       <div class="section-head">
-        <span class="index-num">01</span>
-        <span class="label">Profile</span>
+        <span class="index-num" data-scramble>01</span>
+        <span class="label" data-scramble>Profile</span>
       </div>
       <div class="profile">
         <div class="profile__text">
-          <h2 class="profile__title" id="profile-h" data-reveal-lines>Curious, by default.</h2>
+          <h2 class="profile__title" id="profile-h" data-reveal-lines data-flux>Curious, by default.</h2>
           <div class="profile__body">
             <p data-reveal>
               I'm Morax Cheng, a high-school student at BASIS International School Park Lane Harbour.
@@ -131,8 +195,9 @@ const galleryTeaser = [
           </dl>
         </div>
         <figure class="profile__portrait media-frame" data-reveal>
-          <img data-zoom src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="lazy" />
+          <img data-zoom data-parallax="5" src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="lazy" />
           <figcaption class="wall-label">
+            <span class="index-num">Pl. 00</span>
             <span>Morax Cheng</span>
             <span class="text-ink-faint">Open-source contributor</span>
           </figcaption>
@@ -147,7 +212,7 @@ const galleryTeaser = [
       {Array.from({ length: 2 }).map(() => (
         <span class="strip__inner">
           {['Developer', 'Economics', 'Open Source', 'Machine Learning', 'Mathematics', 'Python', 'C++', 'Rust', 'Photography'].map((w) => (
-            <span class="strip__item">{w}<span class="strip__dot">✦</span></span>
+            <span class="strip__item" data-velocity-skew>{w}<span class="strip__dot">✦</span></span>
           ))}
         </span>
       ))}
@@ -155,19 +220,20 @@ const galleryTeaser = [
   </div>
 
   <!-- ===================== 02 · SELECTED WORK ===================== -->
-  <section class="section" aria-labelledby="work-h">
+  <section class="section" aria-labelledby="work-h" data-movement="Selected work">
     <div class="container">
       <div class="section-head section-head--split">
         <div>
-          <span class="index-num">02</span>
-          <h2 class="section-title" id="work-h" data-reveal-lines>Selected work</h2>
+          <span class="index-num" data-scramble>02</span>
+          <h2 class="section-title" id="work-h" data-reveal-lines data-flux>Selected work</h2>
         </div>
         <a class="section-link link-underline" href="/projects">All projects →</a>
       </div>
 
-      <ol class="work-list">
+      <ol class="work-list" data-work-list data-draw-rule>
         {projects.map((p, i) => (
           <li class="work-row" data-reveal>
+            <span class="work-row__ghost" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <a class="work-row__link" href={p.github} target="_blank" rel="noopener noreferrer">
               <span class="work-row__num index-num">{String(i + 1).padStart(2, '0')}</span>
               <div class="work-row__main">
@@ -187,111 +253,136 @@ const galleryTeaser = [
   </section>
 
   <!-- ===================== 03 · RECOGNITION ===================== -->
-  <section class="section" aria-labelledby="rec-h">
+  <section class="section" aria-labelledby="rec-h" data-movement="On the record">
     <div class="container">
       <div class="section-head section-head--split">
         <div>
-          <span class="index-num">03</span>
-          <h2 class="section-title" id="rec-h" data-reveal-lines>On the record</h2>
+          <span class="index-num" data-scramble>03</span>
+          <h2 class="section-title" id="rec-h" data-reveal-lines data-flux>On the record</h2>
         </div>
         <a class="section-link link-underline" href="/awards">All awards →</a>
       </div>
 
-      <dl class="stats" data-stagger>
-        {stats.map((s) => (
-          <div class="stat">
-            <dd class="stat__value">
-              <span class="counter" data-count={s.value}>{s.value}</span><span class="stat__suffix">{s.suffix}</span>
+      <dl class="census" data-stagger data-draw-rule>
+        {stats.map((s, i) => (
+          <div class="census__row">
+            <span class="census__num index-num" data-scramble>{String(i + 1).padStart(2, '0')}</span>
+            <dt class="census__label label">{s.label}</dt>
+            <span class="census__leader" aria-hidden="true"></span>
+            <dd class="census__value">
+              <span class="counter" data-count={s.value}>{s.value}</span><span class="census__suffix">{s.suffix}</span>
             </dd>
-            <dt class="stat__label label">{s.label}</dt>
           </div>
         ))}
       </dl>
 
-      <ul class="awards" role="list">
+      <ol class="ledger" data-stagger data-draw-rule>
         {awards.map((a) => (
-          <li class="award" data-reveal>
-            <span class="award__title">{a.title}</span>
-            <span class="award__event mono">{a.event}</span>
+          <li class="ledger__row">
+            <div class="ledger__index">
+              <span class="ledger__num index-num" data-scramble>{a.num}</span>
+              <span class="ledger__year mono">{a.year}</span>
+            </div>
+            <div class="ledger__main">
+              <h3 class="ledger__title font-display">{a.title}</h3>
+              <p class="ledger__caption mono">{a.body} · {a.discipline}</p>
+            </div>
+            {a.doc ? (
+              <a class="ledger__doc mono link-ochre" href={a.doc} target="_blank" rel="noopener noreferrer">{a.docLabel} ↗</a>
+            ) : (
+              <span class="ledger__doc ledger__doc--quiet mono">{a.docLabel}</span>
+            )}
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   </section>
 
   <!-- ===================== 04 · THROUGH THE LENS ===================== -->
-  <section class="section" aria-labelledby="lens-h">
+  <section class="section section--lens" aria-labelledby="lens-h" data-movement="Through the lens">
     <div class="container">
       <div class="section-head section-head--split">
         <div>
-          <span class="index-num">04</span>
-          <h2 class="section-title" id="lens-h" data-reveal-lines>Through the lens</h2>
+          <span class="index-num" data-scramble>04</span>
+          <h2 class="section-title" id="lens-h" data-reveal-lines data-flux>Through the lens</h2>
         </div>
         <a class="section-link link-underline" href="/gallery">Full gallery →</a>
       </div>
-      <p class="lens-intro" data-reveal>Twenty-nine frames across Paris and the slopes of Jilin.</p>
+      <p class="lens-intro" data-reveal>Twenty-nine frames across Paris and the slopes of Jilin. Scroll to flip through the plates.</p>
+    </div>
 
-      <div class="lens-grid" data-stagger>
-        {galleryTeaser.map((g) => (
-          <a href="/gallery" class:list={['lens-cell media-frame', `lens-cell--${g.span}`]} aria-label={`Gallery: ${g.place}`}>
-            <img data-zoom src={g.src} alt={g.alt} loading="lazy" />
-            <figcaption class="wall-label wall-label--hover">
-              <span>{g.place}</span>
-            </figcaption>
-          </a>
+    <div class="filmstrip" data-pin-section>
+      <ol class="filmstrip__track" data-pin-track>
+        {filmstripPlates.map((g, i) => (
+          <li class="filmstrip__plate" data-velocity-skew>
+            <a href="/gallery" class="media-frame" aria-label={`Gallery: ${g.place}`}>
+              <img data-zoom src={g.src} alt={g.alt} loading="lazy" />
+              <figcaption class="wall-label">
+                <span class="index-num">{`Pl. ${String(i + 1).padStart(2, '0')}`}</span>
+                <span>{g.place}</span>
+              </figcaption>
+            </a>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 
   <!-- ===================== 05 · LATEST WRITING ===================== -->
   {latestPost && (
-    <section class="section" aria-labelledby="write-h">
+    <section class="section" aria-labelledby="write-h" data-movement="Latest writing">
       <div class="container">
         <div class="section-head section-head--split">
           <div>
-            <span class="index-num">05</span>
-            <h2 class="section-title" id="write-h" data-reveal-lines>Latest writing</h2>
+            <span class="index-num" data-scramble>05</span>
+            <h2 class="section-title" id="write-h" data-reveal-lines data-flux>Latest writing</h2>
           </div>
           <a class="section-link link-underline" href="/blog">All posts →</a>
         </div>
 
-        <a class="feature-post" href={`/blog/${latestPost.slug}`} data-reveal>
-          <div class="feature-post__meta">
-            <time class="mono" datetime={latestPost.data.date}>{fmtDate(latestPost.data.date)}</time>
+        <a class="feature-post" href={`/blog/${latestPost.slug}`} data-reveal data-draw-rule>
+          <div class="feature-post__rail">
+            <span class="feature-post__fraction index-num">01 / 01</span>
+            <time class="feature-post__date mono" datetime={latestPost.data.date}>{fmtDate(latestPost.data.date)}</time>
             {latestPost.data.category && <span class="feature-post__cat label">{latestPost.data.category}</span>}
           </div>
-          <h3 class="feature-post__title">{latestPost.data.title}</h3>
-          {latestPost.data.excerpt && <p class="feature-post__excerpt">{latestPost.data.excerpt}</p>}
-          <span class="feature-post__cta link-underline">Read the piece →</span>
+          <div class="feature-post__main">
+            <h3 class="feature-post__title">{latestPost.data.title}</h3>
+            {latestPost.data.excerpt && <p class="feature-post__excerpt">{latestPost.data.excerpt}</p>}
+            <span class="feature-post__cta link-underline">Read the piece →</span>
+          </div>
         </a>
       </div>
     </section>
   )}
 
   <!-- ===================== 06 · CONTACT ===================== -->
-  <section class="section contact" aria-labelledby="contact-h">
+  <section class="section contact" aria-labelledby="contact-h" data-movement="Contact">
     <div class="container">
       <div class="section-head">
-        <span class="index-num">06</span>
-        <span class="label">Contact</span>
+        <span class="index-num" data-scramble>06</span>
+        <span class="label" data-scramble>Contact</span>
       </div>
-      <h2 class="contact__title" id="contact-h" data-reveal-lines>Let's build something.</h2>
+      <h2 class="contact__title" id="contact-h" data-reveal-lines data-flux>Let's build something.</h2>
       <p class="contact__body" data-reveal>
-        I'm always up for collaborating on open source, talking economics, or comparing notes on
-        code and cameras.
+        One inbox, always open. Send a project worth building, a market worth arguing about, or a
+        photograph worth chasing.
       </p>
+      <a class="contact__email link-underline" href="mailto:james20081204@gmail.com" data-reveal aria-label="Email Morax Cheng">
+        <span data-scramble>james20081204@gmail.com</span>
+      </a>
       <div class="contact__cta" data-reveal>
-        <a class="btn btn-primary" href="mailto:james20081204@gmail.com">Get in touch<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn-primary" href="mailto:james20081204@gmail.com" data-magnetic="0.25">Get in touch<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
         <a class="btn btn-ghost" href="https://github.com/fzlzjerry" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
+      <p class="contact__signoff mono" data-reveal>End of catalogue · Edition 2026 · Shenzhen</p>
     </div>
   </section>
 </Layout>
 
 <style>
   /* ---------- HERO ---------- */
-  .hero { padding-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); padding-bottom: clamp(2rem, 1rem + 3vw, 4rem); }
+  .hero { position: relative; padding-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); padding-bottom: clamp(2rem, 1rem + 3vw, 4rem); }
   .hero__top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
   .hero .rule { margin-bottom: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
   .hero__title {
@@ -314,9 +405,15 @@ const galleryTeaser = [
   .hero__meta dd { color: var(--ink); font-size: 0.95rem; }
   .hero__media { aspect-ratio: 4 / 3; }
   @media (min-width: 900px) {
-    .hero__row { grid-template-columns: 1.1fr 0.9fr; align-items: end; }
-    .hero__title { font-size: var(--step-6); }
-    .hero__media { aspect-ratio: 16 / 8; }
+    /* On large screens the hero would otherwise overrun the viewport: a giant
+       title plus a 16:8 image ~620px tall pushes the fold well past one screen.
+       Tighten the vertical rhythm and bound the image band to viewport HEIGHT
+       (the real constraint) so the whole hero fits a single screen. */
+    .hero { padding-top: clamp(1.75rem, 1rem + 2vw, 3rem); padding-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.5rem); }
+    .hero .rule { margin-bottom: clamp(0.75rem, 0.25rem + 1.5vw, 1.75rem); }
+    .hero__row { grid-template-columns: 1.1fr 0.9fr; align-items: end; margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.5rem); }
+    .hero__title { font-size: var(--step-6); margin-bottom: clamp(1rem, 0.5rem + 1.5vw, 2rem); }
+    .hero__media { aspect-ratio: 16 / 8; max-height: min(44vh, 32rem); }
   }
 
   /* ---------- 01 PROFILE ---------- */
@@ -333,7 +430,11 @@ const galleryTeaser = [
   }
 
   /* ---------- marquee strip ---------- */
-  .strip { border-block: 1px solid var(--line); padding-block: 1.1rem; }
+  .strip {
+    border-block: 1px solid var(--line); padding-block: 1.1rem;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  }
   .strip__inner { display: inline-flex; align-items: center; }
   .strip__item {
     display: inline-flex; align-items: center;
@@ -345,19 +446,103 @@ const galleryTeaser = [
   }
   .strip__dot { color: var(--ochre); margin-left: 2.8rem; font-size: 0.7em; }
 
+  /* Self-drawing hairlines: a structural rule strokes itself left-to-right as its
+     section enters. JS adds .rule-armed (hides) then .is-drawn (draws); without JS
+     or under reduced-motion the ::before stays at its default scaleX(1), visible. */
+  [data-draw-rule] { position: relative; }
+  [data-draw-rule]::before {
+    content: '';
+    position: absolute; left: 0; right: 0; top: 0;
+    height: 1px; background: var(--line);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease-out);
+  }
+  [data-draw-rule].rule-armed::before { transform: scaleX(0); }
+  [data-draw-rule].rule-armed.is-drawn::before { transform: scaleX(1); }
+
+  /* Catalogue movement indicator: a small fixed paper tab (bottom-left) that tracks
+     the current movement with a tick rail. Hidden by default; JS adds .is-visible
+     once you scroll past the hero. The paper backing keeps it legible over the
+     full-bleed filmstrip. Desktop + motion only. */
+  .movement-index {
+    position: fixed; left: clamp(1rem, 1.5vw, 2.25rem); bottom: clamp(1.25rem, 2.5vh, 2.25rem);
+    z-index: 40; display: flex; flex-direction: column; gap: 0.45rem;
+    padding: 0.7rem 0.85rem; background: var(--paper); border: 1px solid var(--line);
+    font-family: 'Spline Sans Mono', monospace; pointer-events: none;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+  }
+  .movement-index.is-visible { opacity: 1; transform: translateY(0); }
+  .movement-index__count { font-size: 0.7rem; letter-spacing: 0.06em; line-height: 1; }
+  .movement-index__cur { color: var(--ochre); }
+  .movement-index__total { color: var(--ink-faint); margin-left: 0.2rem; }
+  .movement-index__name { font-size: 0.68rem; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; }
+  .movement-index__rail { display: flex; gap: 4px; margin-top: 0.1rem; }
+  .movement-index__tick { width: 15px; height: 2px; background: var(--line-strong); transition: background 0.4s var(--ease-out); }
+  .movement-index__tick.is-active { background: var(--ochre); }
+  @media (max-width: 900px) { .movement-index { display: none; } }
+
   /* ---------- 02 SELECTED WORK ---------- */
-  .work-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .work-row { border-bottom: 1px solid var(--line); }
+  /* Each row is a catalogue plate that develops on approach: the oversized index
+     numeral (the projects have no photograph, so the number IS the plate) fades
+     up, scales in and drifts with the cursor, an ochre rule draws across, and the
+     row warms. Drift + scale are driven from Layout.astro (data-work-list); the
+     rule draw + wash are pure CSS. */
+  .work-list { list-style: none; margin: 0; padding: 0; }
+  .work-row {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    transition: background-color var(--t-base) ease;
+  }
+  .work-row:hover { background: var(--paper-sink); }
+  .work-row__ghost {
+    position: absolute;
+    inset-block: 0;
+    right: clamp(0.5rem, 1vw, 2.5rem);
+    display: flex;
+    align-items: center;
+    font-family: 'Bricolage Grotesque', serif;
+    font-weight: 500;
+    font-size: clamp(7rem, 3rem + 18vw, 15rem);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1.25px var(--line-strong);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    will-change: transform, opacity;
+  }
   .work-row__link {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: auto 1fr auto auto;
     align-items: start;
     gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
     padding-block: clamp(1.75rem, 1rem + 2vw, 2.75rem);
   }
+  .work-row__link::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--ochre);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .work-row:hover .work-row__link::after { transform: scaleX(1); }
+  /* The row's overflow:hidden (clips the bleeding ghost) would also clip the
+     default outset focus-ring box-shadow at the row's top/bottom edges. Draw an
+     inset ring instead so keyboard focus stays fully visible inside the clip. */
+  .work-row__link:focus-visible { box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 4px var(--ochre); border-radius: 2px; }
   .work-row__num { padding-top: 0.45rem; }
-  .work-row__title { font-size: var(--step-2); transition: color var(--t-base) ease; }
-  .work-row__desc { margin-top: 0.6rem; color: var(--ink-soft); max-width: 60ch; line-height: 1.55; }
+  .work-row__title { font-size: var(--step-3); transition: color var(--t-base) ease; }
+  .work-row__desc { margin-top: 0.7rem; color: var(--ink-soft); max-width: 60ch; line-height: 1.55; }
   .work-row__tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; list-style: none; padding: 0; }
   .work-row__tech li {
     font-family: 'Spline Sans Mono', monospace; font-size: 0.7rem; letter-spacing: 0.03em;
@@ -370,46 +555,92 @@ const galleryTeaser = [
   @media (max-width: 640px) {
     .work-row__link { grid-template-columns: auto 1fr; }
     .work-row__year, .work-row__arrow { display: none; }
+    .work-row__ghost { display: none; }
   }
 
   /* ---------- 03 RECOGNITION ---------- */
-  .stats {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
-    background: var(--line); border: 1px solid var(--line); margin: 0 0 clamp(2rem, 1rem + 3vw, 3.5rem);
+  /* The census is exhibition back-matter, not a SaaS metric grid: ruled rows with
+     a mono label, a dotted leader, and a tabular figure that still counts up. */
+  .census { margin: 0 0 clamp(2.25rem, 1.5rem + 3vw, 4rem); padding: 0; }
+  .census__row {
+    display: flex; align-items: baseline; gap: 0.9rem;
+    padding-block: clamp(0.85rem, 0.6rem + 0.6vw, 1.2rem);
+    border-bottom: 1px solid var(--line);
   }
-  .stat { background: var(--paper); padding: clamp(1.25rem, 1rem + 2vw, 2.5rem) 1.25rem; }
-  .stat__value { font-family: 'Bricolage Grotesque', serif; font-size: var(--step-4); line-height: 1; color: var(--ink); font-weight: 500; margin: 0; }
-  .stat__suffix { color: var(--ochre); font-size: 0.5em; }
-  .stat__label { margin-top: 0.6rem; }
-  @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .census__num { flex: none; }
+  .census__label { flex: none; color: var(--ink); }
+  .census__leader { flex: 1 1 auto; min-width: 2rem; border-bottom: 1px dotted var(--line-strong); transform: translateY(-0.28em); opacity: 0.7; }
+  .census__value {
+    flex: none; font-family: 'Bricolage Grotesque', serif; font-size: var(--step-2);
+    line-height: 1; color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums;
+  }
+  .census__suffix { color: var(--ochre); font-size: 0.55em; vertical-align: super; margin-left: 0.08em; }
 
-  .awards { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .award { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; flex-wrap: wrap; padding-block: 1.15rem; border-bottom: 1px solid var(--line); }
-  .award__title { font-family: 'Bricolage Grotesque', serif; font-size: var(--step-1); color: var(--ink); }
-  .award__event { color: var(--ink-faint); font-size: 0.78rem; white-space: nowrap; }
+  /* The awards ledger: each recognition is a specimen entry (index + year, title +
+     body/discipline caption, and a document reference to the real certificate). */
+  .ledger { list-style: none; margin: 0; padding: 0; }
+  .ledger__row {
+    display: grid; grid-template-columns: minmax(7rem, auto) 1fr auto; align-items: baseline;
+    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    padding-block: clamp(1.25rem, 0.8rem + 1.5vw, 2rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .ledger__index { display: flex; flex-direction: column; gap: 0.4rem; }
+  .ledger__year { color: var(--ink-faint); font-size: 0.78rem; }
+  .ledger__title { font-size: var(--step-2); }
+  .ledger__caption { margin-top: 0.5rem; color: var(--ink-faint); font-size: 0.72rem; letter-spacing: 0.02em; }
+  .ledger__doc { font-size: 0.72rem; white-space: nowrap; align-self: center; }
+  .ledger__doc--quiet { color: var(--ink-ghost); }
+  @media (max-width: 640px) {
+    .ledger__row { grid-template-columns: 1fr auto; }
+    .ledger__index { flex-direction: row; gap: 0.75rem; align-items: baseline; grid-column: 1 / -1; }
+  }
 
-  /* ---------- 04 THROUGH THE LENS ---------- */
-  .lens-intro { color: var(--ink-soft); font-size: var(--step-1); max-width: 40ch; margin: -1rem 0 clamp(1.5rem, 1rem + 2vw, 2.5rem); }
-  .lens-grid { display: grid; grid-template-columns: 1fr; gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem); }
-  .lens-cell { display: block; aspect-ratio: 3 / 2; }
-  .lens-cell--tall { aspect-ratio: 4 / 5; }
-  @media (min-width: 720px) {
-    .lens-grid { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; }
-    .lens-cell--wide { grid-column: span 4; aspect-ratio: 16 / 10; }
-    .lens-cell--tall { grid-column: span 2; aspect-ratio: 3 / 4; }
+  /* ---------- 04 THROUGH THE LENS (pinned horizontal filmstrip) ---------- */
+  .lens-intro { color: var(--ink-soft); font-size: var(--step-1); max-width: 44ch; margin: clamp(0.5rem, 0.25rem + 0.5vw, 1rem) 0 0; }
+  /* Default (mobile / reduced-motion / no-JS): a normal horizontal swipe strip. */
+  .filmstrip { margin-top: clamp(1.5rem, 1rem + 2vw, 2.5rem); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .filmstrip::-webkit-scrollbar { display: none; }
+  .filmstrip__track { display: flex; gap: clamp(0.9rem, 0.5rem + 1.5vw, 1.75rem); width: max-content; padding-inline: var(--gutter); margin: 0; list-style: none; }
+  .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); }
+  .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; }
+  /* Desktop + motion: JS adds .is-pinned and pins the strip for a horizontal scroll. */
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    .filmstrip.is-pinned { height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; }
+    .filmstrip.is-pinned .filmstrip__track { align-items: stretch; will-change: transform; }
+    .filmstrip.is-pinned .filmstrip__plate { width: min(42vw, 34rem); }
   }
 
   /* ---------- 05 WRITING ---------- */
-  .feature-post { display: block; border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.75rem, 1rem + 3vw, 3.5rem); transition: border-color var(--t-base) ease, background-color var(--t-base) ease; }
-  .feature-post:hover { border-color: var(--line-strong); background: var(--panel); }
-  .feature-post__meta { display: flex; align-items: center; gap: 1rem; color: var(--ink-faint); font-size: 0.8rem; }
+  /* Opened from a boxed card into a catalogue plate: a mono rail (fraction, date,
+     category) beside the entry, top hairline drawn on enter, no panel fill. */
+  .feature-post {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(0.9rem, 0.5rem + 1.5vw, 2.25rem);
+    padding-block: clamp(1.75rem, 1rem + 2.5vw, 3rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .feature-post__rail { display: flex; flex-direction: column; gap: 0.55rem; }
+  .feature-post__fraction { color: var(--ochre); }
+  .feature-post__date { color: var(--ink-faint); font-size: 0.8rem; }
   .feature-post__cat { color: var(--ochre); }
-  .feature-post__title { font-size: var(--step-3); margin: 1rem 0; max-width: 22ch; }
-  .feature-post__excerpt { color: var(--ink-soft); max-width: 62ch; line-height: 1.6; margin-bottom: 1.5rem; }
+  .feature-post__title { font-size: var(--step-3); margin: 0 0 1rem; max-width: 20ch; transition: color var(--t-base) ease; }
+  .feature-post__excerpt { color: var(--ink-soft); max-width: 60ch; line-height: 1.6; margin-bottom: 1.5rem; }
   .feature-post__cta { font-size: 0.95rem; color: var(--ink); }
+  .feature-post:hover .feature-post__title { color: var(--ochre); }
+  @media (min-width: 820px) {
+    .feature-post { grid-template-columns: minmax(8rem, 0.22fr) 1fr; align-items: start; }
+  }
 
   /* ---------- 06 CONTACT ---------- */
   .contact__title { font-size: var(--step-5); max-width: 12ch; margin-bottom: 1.5rem; }
-  .contact__body { font-size: var(--step-1); color: var(--ink-soft); max-width: 46ch; margin-bottom: 2rem; }
+  .contact__body { font-size: var(--step-1); color: var(--ink-soft); max-width: 46ch; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem); }
+  /* The address itself is the finale brand mark: oversized mono, decoded on enter. */
+  .contact__email {
+    display: inline-block; font-family: 'Spline Sans Mono', monospace;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 2.5rem); letter-spacing: -0.01em;
+    color: var(--ink); margin-bottom: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  }
   .contact__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .contact__signoff { margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); color: var(--ink-faint); font-size: 0.75rem; letter-spacing: 0.05em; }
 </style>
