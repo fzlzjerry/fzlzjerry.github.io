@@ -345,6 +345,20 @@ const filmstripPlates = [
         <span class="filmstrip__hud-place" data-strip-place>{filmstripPlates[0].place}</span>
       </div>
     </div>
+
+    <!-- Coda: the printed proof. On fine pointers a darkroom loupe (data-loupe) resolves
+         the ochre+ink halftone screen into full colour wherever it rests. Reduced-motion /
+         touch / no-WebGL just shows the static colour proof. -->
+    <div class="container lens-coda">
+      <p class="lens-coda__lead" data-reveal>The same set, printed as a proof.<span class="contact-sheet__hint"> Pass the loupe across to develop a frame.</span></p>
+      <figure class="contact-sheet media-frame" data-loupe>
+        <img src="/contact-sheet.webp" alt="A contact sheet of twelve frames from Paris and the slopes of Jilin, printed as a proof" loading="lazy" decoding="async" width="1600" height="1042" />
+        <figcaption class="wall-label">
+          <span class="index-num">Proof</span>
+          <span>Paris &amp; Jilin</span>
+        </figcaption>
+      </figure>
+    </div>
   </section>
 
   <!-- ===================== 05 · LATEST WRITING ===================== -->
@@ -385,6 +399,12 @@ const filmstripPlates = [
   </aside>
 
   <section class="section contact" aria-labelledby="contact-h" data-movement="Contact">
+    <!-- Print registration crosses: the closing plate "goes to press" as it enters.
+         Static full crosses without JS / under reduced-motion (CSS default --reg:1). -->
+    <span class="contact__regmark contact__regmark--tl" aria-hidden="true"></span>
+    <span class="contact__regmark contact__regmark--tr" aria-hidden="true"></span>
+    <span class="contact__regmark contact__regmark--bl" aria-hidden="true"></span>
+    <span class="contact__regmark contact__regmark--br" aria-hidden="true"></span>
     <div class="container">
       <div class="section-head">
         <span class="index-num" data-scramble>06</span>
@@ -634,6 +654,18 @@ const filmstripPlates = [
 
   /* ---------- 04 THROUGH THE LENS (pinned horizontal filmstrip) ---------- */
   .lens-intro { color: var(--ink-soft); font-size: var(--step-1); max-width: 44ch; margin: clamp(0.5rem, 0.25rem + 0.5vw, 1rem) 0 0; }
+
+  /* ---------- 04 coda: the printed proof, inspected with a darkroom loupe ---------- */
+  /* A calm editorial beat between the pinned filmstrip and the bold halftone proof, so
+     the photography movement breathes instead of stacking two dense screens. */
+  .lens-coda { margin-top: clamp(3rem, 2rem + 5vw, 7rem); }
+  .lens-coda__lead { color: var(--ink-soft); font-size: var(--step-1); max-width: 46ch; line-height: 1.5; margin: 0 0 clamp(1.5rem, 1rem + 1.5vw, 2.5rem); }
+  .contact-sheet { display: block; aspect-ratio: 1600 / 1042; }
+  .contact-sheet img { width: 100%; height: 100%; object-fit: cover; }
+  /* Loupe hint only where the loupe actually runs (fine pointer + motion); touch and
+     reduced-motion show the static colour proof with no hint. */
+  .contact-sheet__hint { display: none; }
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) { .contact-sheet__hint { display: inline; } }
   /* Default (mobile / reduced-motion / no-JS): a normal horizontal swipe strip. */
   .filmstrip { margin-top: clamp(1.5rem, 1rem + 2vw, 2.5rem); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .filmstrip::-webkit-scrollbar { display: none; }
@@ -647,6 +679,12 @@ const filmstripPlates = [
     .filmstrip.is-pinned { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; }
     .filmstrip.is-pinned .filmstrip__track { align-items: stretch; will-change: transform; }
     .filmstrip.is-pinned .filmstrip__plate { width: min(42vw, 34rem); }
+    /* "The contact sheet develops": JS drives --develop 0->1 over the first ~35% of
+       the pin (default 1 = fully hung, so without JS every plate is shown). Maps to a
+       top-down clip reveal on the frame + the wall-label fading in. clip-path/opacity
+       only, so it composes with the frame's tilt and the plate's lit/dim state. */
+    .filmstrip.is-pinned .filmstrip__plate .media-frame { clip-path: inset(0 0 calc((1 - var(--develop, 1)) * 100%) 0); }
+    .filmstrip.is-pinned .filmstrip__plate .wall-label { opacity: var(--develop, 1); }
     /* Guided gallery walk: the centred plate is lit and lifted; neighbours recede.
        Opacity + box-shadow only (the plate owns velocity-skew, the frame owns tilt). */
     .filmstrip.is-pinned .filmstrip__plate { opacity: 0.72; transition: opacity 0.55s var(--ease-out); }
@@ -687,7 +725,18 @@ const filmstripPlates = [
   /* ---------- 06 CONTACT ---------- */
   /* The finale is a recessed closing plate: a full-bleed warm panel that opens with
      an ochre rule (a quiet callback to the page-turn curtain's ochre edges). */
-  .contact { background: var(--paper-sink); border-top: 2px solid var(--ochre); }
+  .contact { background: var(--paper-sink); border-top: 2px solid var(--ochre); position: relative; }
+  /* Registration crosses at the four corners of the closing plate. Each draws into
+     register from its centre (--reg 0->1, scaleX/scaleY) on enter; CSS default 1 keeps
+     a static full cross without JS / under reduced-motion. Ink, not ochre (restraint). */
+  .contact__regmark { position: absolute; width: 15px; height: 15px; pointer-events: none; --reg: 1; }
+  .contact__regmark::before, .contact__regmark::after { content: ''; position: absolute; background: var(--ink-ghost); }
+  .contact__regmark::before { left: 0; right: 0; top: 50%; height: 1px; transform: translateY(-50%) scaleX(var(--reg)); }
+  .contact__regmark::after { top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-50%) scaleY(var(--reg)); }
+  .contact__regmark--tl { top: clamp(1rem, 2.2vw, 2.25rem); left: clamp(1rem, 2.2vw, 2.25rem); }
+  .contact__regmark--tr { top: clamp(1rem, 2.2vw, 2.25rem); right: clamp(1rem, 2.2vw, 2.25rem); }
+  .contact__regmark--bl { bottom: clamp(1rem, 2.2vw, 2.25rem); left: clamp(1rem, 2.2vw, 2.25rem); }
+  .contact__regmark--br { bottom: clamp(1rem, 2.2vw, 2.25rem); right: clamp(1rem, 2.2vw, 2.25rem); }
   .contact__title { font-size: var(--step-5); max-width: 12ch; margin-bottom: 0.75rem; }
   .contact__underline { display: block; width: min(62%, 19rem); height: 1.35rem; margin: 0 0 1.5rem; overflow: visible; }
   .contact__underline path { stroke: var(--ochre); fill: none; vector-effect: non-scaling-stroke; }

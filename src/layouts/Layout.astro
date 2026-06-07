@@ -384,6 +384,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
       /* WebGL "developing plate" canvas, layered over the hero photo. */
       .halftone-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      /* WebGL darkroom-loupe canvas, layered over the contact-sheet proof. */
+      .loupe-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
       /* Cursor image-trail: mounted prints that flick out along the pointer. */
       .trail-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
@@ -714,6 +716,232 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         buildVelocitySkew();
         buildMovementIndex();
         buildTilt();
+        buildRegistration();
+        buildLoupe();
+      }
+
+      // ---- Print registration: the closing plate "goes to press" ----
+      // Four corner registration crosses draw into register as the finale enters (timed
+      // with the hand-drawn swoosh's own enter). NOT pointer-gated, so the payoff reaches
+      // touch. Static full crosses without JS / under reduced-motion (CSS default --reg:1),
+      // so the framing never vanishes. New mark elements own their own transform.
+      function buildRegistration() {
+        const contact = document.querySelector<HTMLElement>('.contact');
+        if (!contact) return;
+        const marks = gsap.utils.toArray<HTMLElement>('.contact__regmark', contact);
+        if (!marks.length) return;
+        gsap.set(marks, { '--reg': 0 });
+        const st = ScrollTrigger.create({
+          trigger: contact, start: 'top 72%', once: true,
+          onEnter: () => gsap.to(marks, { '--reg': 1, duration: 0.7, ease: 'power3.out', stagger: 0.07 }),
+        });
+        cleanups.push(() => { st.kill(); gsap.set(marks, { clearProps: '--reg' }); });
+      }
+
+      // ---- Darkroom loupe: inspect the printed contact-sheet proof ----
+      // The whole sheet renders as an ochre+ink halftone screen (the unexposed proof,
+      // developed in on enter); a cursor-following circular loupe resolves a window of
+      // true colour with a faint ochre rim and a slight magnify. Reuses the hero's
+      // halftone math at sheet scale. Fine pointers only; reduced-motion never reaches
+      // here (initMotion bails). If WebGL is unavailable, the static colour <img> shows.
+      function buildLoupe() {
+        if (!fine.matches) return;
+        const fig = document.querySelector<HTMLElement>('[data-loupe]');
+        if (!fig) return;
+        const img = fig.querySelector('img') as HTMLImageElement | null;
+        if (!img) return;
+        const canvas = document.createElement('canvas');
+        const gl = (canvas.getContext('webgl', { antialias: true, premultipliedAlpha: false })
+          || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+        if (!gl) return; // static colour proof shows
+
+        const VERT = `attribute vec2 aPos; varying vec2 vUv;
+          void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.0,1.0); }`;
+        const FRAG = `
+          #ifdef GL_FRAGMENT_PRECISION_HIGH
+          precision highp float;
+          #else
+          precision mediump float;
+          #endif
+          varying vec2 vUv;
+          uniform sampler2D uTex;
+          uniform float uTime, uCells, uAspect, uImgAspect, uReveal, uLoupeR, uActive;
+          uniform vec2 uLoupe;
+          uniform vec3 uPaper, uInk, uOchre;
+          float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+          vec2 coverUv(vec2 uv){
+            vec2 s = vec2(1.0);
+            if (uAspect > uImgAspect) s.y = uImgAspect/uAspect; else s.x = uAspect/uImgAspect;
+            return (uv-0.5)*s + 0.5;
+          }
+          void main(){
+            vec2 asp = vec2(uAspect, 1.0);
+            float d = length((vUv - uLoupe) * asp);
+            float inside = smoothstep(uLoupeR, uLoupeR-0.012, d) * uActive;
+            vec2 mag = mix(vUv, uLoupe + (vUv - uLoupe)/1.08, inside); // gentle glass bulge
+            vec3 photo = texture2D(uTex, clamp(coverUv(mag),0.0,1.0)).rgb;
+            vec3 screenSample = texture2D(uTex, clamp(coverUv(vUv),0.0,1.0)).rgb;
+            float lum = dot(screenSample, vec3(0.299,0.587,0.114));
+            vec2 gv = vUv * asp * uCells;
+            vec2 cell = fract(gv) - 0.5;
+            float radius = sqrt(clamp(1.0-lum,0.0,1.0)) * 0.60;
+            float dotv = smoothstep(radius, radius-0.06, length(cell));
+            vec3 dotCol = mix(uOchre, uInk, smoothstep(0.35,0.78,1.0-lum));
+            vec3 halftone = mix(uPaper, dotCol, dotv);
+            halftone = mix(uPaper, halftone, uReveal); // develop the proof in on enter
+            vec3 col = mix(halftone, photo, inside);    // true colour inside the lens
+            float rim = smoothstep(uLoupeR, uLoupeR-0.006, d) - smoothstep(uLoupeR-0.012, uLoupeR-0.018, d);
+            col = mix(col, uOchre, clamp(rim,0.0,1.0) * 0.7 * uActive);
+            col += (hash(vUv*(1.0+uTime*0.0006))-0.5)*0.012;
+            gl_FragColor = vec4(col,1.0);
+          }`;
+
+        function compile(type: number, src: string) {
+          const sh = gl!.createShader(type)!; gl!.shaderSource(sh, src); gl!.compileShader(sh);
+          if (!gl!.getShaderParameter(sh, gl!.COMPILE_STATUS)) { gl!.deleteShader(sh); return null; }
+          return sh;
+        }
+        const vs = compile(gl.VERTEX_SHADER, VERT);
+        const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+        if (!vs || !fs) return;
+        const prog = gl.createProgram()!;
+        gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+        gl.useProgram(prog);
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+        const aPos = gl.getAttribLocation(prog, 'aPos');
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        const u = (n: string) => gl!.getUniformLocation(prog, n);
+        const uTex = u('uTex'), uTime = u('uTime'), uCells = u('uCells'), uAspect = u('uAspect'),
+          uImgAspect = u('uImgAspect'), uReveal = u('uReveal'), uLoupeR = u('uLoupeR'), uActive = u('uActive'),
+          uLoupe = u('uLoupe'), uPaper = u('uPaper'), uInk = u('uInk'), uOchre = u('uOchre');
+
+        const paper = readColor('--paper', [0.965, 0.945, 0.906]);
+        const ink = readColor('--ink', [0.17, 0.155, 0.14]);
+        const ochre = readColor('--ochre', [0.72, 0.47, 0.26]);
+
+        const tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([238, 233, 224, 255]));
+
+        const ctrl: any = { reveal: 0, _t: 0, _imgAspect: 1.54, _ready: false, _cells: 80,
+          lx: 0.5, ly: 0.5, tx: 0.5, ty: 0.5, act: 0, actT: 0 };
+
+        function uploadTexture() {
+          if (!img!.naturalWidth) return;
+          gl!.bindTexture(gl!.TEXTURE_2D, tex);
+          gl!.pixelStorei(gl!.UNPACK_FLIP_Y_WEBGL, true);
+          try { gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, img!); } catch (e) { return; }
+          ctrl._imgAspect = img!.naturalWidth / img!.naturalHeight;
+          ctrl._ready = true;
+        }
+        if (img.complete && img.naturalWidth) uploadTexture();
+        else img.addEventListener('load', uploadTexture, { once: true });
+
+        let cssW = 0, cssH = 0;
+        function resize() {
+          const dpr = Math.min(1.5, window.devicePixelRatio || 1); // capped below the hero's 2
+          const rect = fig.getBoundingClientRect();
+          cssW = rect.width; cssH = rect.height;
+          canvas.width = Math.max(1, Math.round(cssW * dpr));
+          canvas.height = Math.max(1, Math.round(cssH * dpr));
+          gl!.viewport(0, 0, canvas.width, canvas.height);
+          ctrl._cells = Math.max(40, Math.min(96, Math.round(cssH / 9)));
+        }
+
+        function render() {
+          if (!cssW) resize();
+          ctrl.lx += (ctrl.tx - ctrl.lx) * 0.18;
+          ctrl.ly += (ctrl.ty - ctrl.ly) * 0.18;
+          ctrl.act += (ctrl.actT - ctrl.act) * 0.14;
+          gl!.useProgram(prog);
+          gl!.activeTexture(gl!.TEXTURE0);
+          gl!.bindTexture(gl!.TEXTURE_2D, tex);
+          gl!.uniform1i(uTex, 0);
+          gl!.uniform1f(uTime, ctrl._t);
+          gl!.uniform1f(uCells, ctrl._cells);
+          gl!.uniform1f(uAspect, cssW / Math.max(1, cssH));
+          gl!.uniform1f(uImgAspect, ctrl._ready ? ctrl._imgAspect : cssW / Math.max(1, cssH));
+          gl!.uniform1f(uReveal, ctrl.reveal);
+          gl!.uniform1f(uLoupeR, 0.13);
+          gl!.uniform1f(uActive, ctrl.act);
+          gl!.uniform2f(uLoupe, ctrl.lx, ctrl.ly);
+          gl!.uniform3f(uPaper, paper[0], paper[1], paper[2]);
+          gl!.uniform3f(uInk, ink[0], ink[1], ink[2]);
+          gl!.uniform3f(uOchre, ochre[0], ochre[1], ochre[2]);
+          gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+        }
+
+        canvas.className = 'loupe-canvas';
+        canvas.setAttribute('aria-hidden', 'true');
+        fig.insertBefore(canvas, fig.firstChild);
+        resize();
+
+        const startT = performance.now();
+        let running = false, onScreen = false, painted = false, lastWake = 0;
+        let wd: number | undefined;
+        function frame() {
+          ctrl._t = performance.now() - startT;
+          render();
+          if (!painted && ctrl._ready) { painted = true; img!.style.opacity = '0'; if (wd) clearTimeout(wd); }
+          // self-park once the proof has developed and the lens is idle and faded out
+          if (performance.now() - lastWake > 1400 && ctrl.reveal > 0.999 && ctrl.act < 0.01) pause();
+        }
+        function play() { if (!running) { running = true; gsap.ticker.add(frame); } }
+        function pause() { if (running) { running = false; gsap.ticker.remove(frame); } }
+        function wake() { lastWake = performance.now(); if (onScreen) play(); }
+
+        // Develop the proof in (paper -> halftone) when it scrolls into view.
+        const revealST = ScrollTrigger.create({
+          trigger: fig, start: 'top 80%', once: true,
+          onEnter: () => { wake(); gsap.to(ctrl, { reveal: 1, duration: 1.4, ease: 'power2.inOut' }); },
+        });
+
+        let io: IntersectionObserver | null = null;
+        if (typeof IntersectionObserver !== 'undefined') {
+          io = new IntersectionObserver((ents) => { onScreen = ents[0].isIntersecting; if (onScreen) wake(); else pause(); }, { rootMargin: '120px' });
+          io.observe(fig);
+        }
+        wake();
+        wd = window.setTimeout(() => { if (!painted) img!.style.opacity = ''; }, 1500);
+
+        function onMove(e: PointerEvent) {
+          const rect = fig.getBoundingClientRect();
+          ctrl.tx = (e.clientX - rect.left) / Math.max(1, rect.width);
+          ctrl.ty = 1 - (e.clientY - rect.top) / Math.max(1, rect.height);
+          ctrl.actT = 1; wake();
+        }
+        function onEnter() { ctrl.actT = 1; wake(); }
+        function onLeave() { ctrl.actT = 0; wake(); }
+        fig.addEventListener('pointermove', onMove, { passive: true });
+        fig.addEventListener('pointerenter', onEnter, { passive: true });
+        fig.addEventListener('pointerleave', onLeave, { passive: true });
+
+        const onWinResize = () => resize();
+        window.addEventListener('resize', onWinResize);
+
+        cleanups.push(() => {
+          pause();
+          if (wd) clearTimeout(wd);
+          revealST.kill();
+          if (io) io.disconnect();
+          window.removeEventListener('resize', onWinResize);
+          fig.removeEventListener('pointermove', onMove);
+          fig.removeEventListener('pointerenter', onEnter);
+          fig.removeEventListener('pointerleave', onLeave);
+          img!.style.opacity = '';
+          try { canvas.remove(); } catch (e) {}
+          const lose = gl!.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext();
+        });
       }
 
       // A masked line-reveal wraps each line in an overflow:hidden box so the
@@ -1158,6 +1386,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             if (placeEl) placeEl.textContent = plates[i]?.dataset.place || '';
           };
 
+          // "The contact sheet develops": the plates clip-reveal (top-down, the site's
+          // reveal-clip vocabulary) and their wall-labels fade in over the FIRST ~35% of
+          // the pin, so the wall is hung plate by plate as the walk begins underneath.
+          // Driven from this same tween's progress (no second ScrollTrigger). Writes only
+          // the --develop var (CSS maps it to clip-path on .media-frame + wall-label
+          // opacity); never plate transform/opacity, so it composes with tilt + the
+          // lit/dim current state. CSS default --develop:1 keeps everything shown without JS.
+          const N = plates.length;
+          const devSet = plates.map((p) => (v: number) => p.style.setProperty('--develop', String(v)));
+          devSet.forEach((set) => set(0));
+          const clamp01 = gsap.utils.clamp(0, 1);
+          const develop = (progress: number) => {
+            for (let i = 0; i < N; i++) devSet[i](clamp01(progress / 0.35 * N - i));
+          };
+
           gsap.to(track, {
             x: () => -distance(),
             ease: 'none',
@@ -1169,13 +1412,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               scrub: 0.6,
               anticipatePin: 1,
               invalidateOnRefresh: true,
-              onUpdate: (self) => setCurrent(Math.round(self.progress * (plates.length - 1))),
+              onUpdate: (self) => { setCurrent(Math.round(self.progress * (N - 1))); develop(self.progress); },
             },
           });
           setCurrent(0); // lit before the first scroll frame, so the strip never reads all-dimmed
 
           return () => {
-            plates.forEach((p) => p.classList.remove('is-current'));
+            plates.forEach((p) => { p.classList.remove('is-current'); p.style.removeProperty('--develop'); });
             section.classList.remove('is-pinned');
             gsap.set(track, { clearProps: 'transform' });
           };
