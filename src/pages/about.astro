@@ -56,7 +56,10 @@ const skillCategories = [
 
       <div class="profile">
         <figure class="profile__portrait media-frame" data-reveal-clip data-tilt="6">
-          <img data-zoom src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="eager" />
+          <picture>
+            <source srcset="/Morax.webp" type="image/webp" />
+            <img data-zoom src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="eager" decoding="async" width="920" height="921" />
+          </picture>
           <figcaption class="wall-label">
             <span>Morax Cheng</span>
             <span class="text-ink-faint">China</span>

@@ -40,7 +40,7 @@ const awards = [
   {
     num: '01',
     title: 'Gold Division',
-    year: '2025–2026',
+    year: '2025-2026',
     body: 'USACO',
     discipline: 'Competitive programming',
     doc: null,
@@ -96,10 +96,13 @@ const filmstripPlates = [
 ---
 
 <Layout
-  title="Morax Cheng — Student Developer & Economics Enthusiast"
+  title="Morax Cheng · Student Developer & Economics Enthusiast"
   description="Morax Cheng: student developer and economics enthusiast. Software, markets, and a camera. Projects, writing, awards, and a photo gallery."
   fullWidth={true}
 >
+  <!-- Hero photo is the LCP element; front-load it so the develop starts immediately -->
+  <link slot="head" rel="preload" as="image" href="/gallery/Paris_Montmartre-Panoramic-View.webp" fetchpriority="high" />
+
   <span id="top" aria-hidden="true"></span>
 
   <!-- Catalogue movement indicator (you-are-here tab; desktop + motion only) -->
@@ -150,7 +153,7 @@ const filmstripPlates = [
       <figure class="hero__media media-frame" data-hero-media data-halftone>
         <img data-parallax="6" src="/gallery/Paris_Montmartre-Panoramic-View.webp" alt="The rooftops of Paris seen from the steps of Montmartre" loading="eager" />
         <figcaption class="wall-label">
-          <span class="index-num">Pl. 01</span>
+          <span class="index-num">Cover</span>
           <span>Montmartre, Paris</span>
           <span class="text-ink-faint">Oct 2025</span>
         </figcaption>
@@ -195,7 +198,10 @@ const filmstripPlates = [
           </dl>
         </div>
         <figure class="profile__portrait media-frame" data-reveal>
-          <img data-zoom data-parallax="5" src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="lazy" />
+          <picture>
+            <source srcset="/Morax.webp" type="image/webp" />
+            <img data-zoom data-parallax="5" src="/Morax.JPG" alt="Portrait of Morax Cheng" loading="lazy" decoding="async" width="920" height="921" />
+          </picture>
           <figcaption class="wall-label">
             <span class="index-num">Pl. 00</span>
             <span>Morax Cheng</span>
@@ -322,9 +328,9 @@ const filmstripPlates = [
     <div class="filmstrip" data-pin-section>
       <ol class="filmstrip__track" data-pin-track>
         {filmstripPlates.map((g, i) => (
-          <li class="filmstrip__plate" data-velocity-skew>
+          <li class="filmstrip__plate" data-velocity-skew data-place={g.place}>
             <a href="/gallery" class="media-frame" data-tilt="7" aria-label={`Gallery: ${g.place}`}>
-              <img data-zoom src={g.src} alt={g.alt} loading="lazy" />
+              <img data-zoom src={g.src} alt={g.alt} loading="lazy" decoding="async" />
               <figcaption class="wall-label">
                 <span class="index-num">{`Pl. ${String(i + 1).padStart(2, '0')}`}</span>
                 <span>{g.place}</span>
@@ -333,6 +339,11 @@ const filmstripPlates = [
           </li>
         ))}
       </ol>
+      <!-- Guided-walk caption; shown only while the strip is pinned (desktop + motion) -->
+      <div class="filmstrip__hud" aria-hidden="true" data-strip-hud>
+        <span class="filmstrip__hud-num index-num"><span data-strip-cur>01</span> / {String(filmstripPlates.length).padStart(2, '0')}</span>
+        <span class="filmstrip__hud-place" data-strip-place>{filmstripPlates[0].place}</span>
+      </div>
     </div>
   </section>
 
@@ -629,11 +640,27 @@ const filmstripPlates = [
   .filmstrip__track { display: flex; gap: clamp(0.9rem, 0.5rem + 1.5vw, 1.75rem); width: max-content; padding-inline: var(--gutter); margin: 0; list-style: none; }
   .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); perspective: 1000px; }
   .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; transform-style: preserve-3d; will-change: transform; }
+  /* Guided-walk caption: hidden unless the strip is pinned (set below). */
+  .filmstrip__hud { display: none; }
   /* Desktop + motion: JS adds .is-pinned and pins the strip for a horizontal scroll. */
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-    .filmstrip.is-pinned { height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; }
+    .filmstrip.is-pinned { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; }
     .filmstrip.is-pinned .filmstrip__track { align-items: stretch; will-change: transform; }
     .filmstrip.is-pinned .filmstrip__plate { width: min(42vw, 34rem); }
+    /* Guided gallery walk: the centred plate is lit and lifted; neighbours recede.
+       Opacity + box-shadow only (the plate owns velocity-skew, the frame owns tilt). */
+    .filmstrip.is-pinned .filmstrip__plate { opacity: 0.72; transition: opacity 0.55s var(--ease-out); }
+    .filmstrip.is-pinned .filmstrip__plate.is-current { opacity: 1; }
+    .filmstrip.is-pinned .filmstrip__plate .media-frame { transition: box-shadow 0.55s var(--ease-out); }
+    .filmstrip.is-pinned .filmstrip__plate.is-current .media-frame { box-shadow: 0 36px 70px -34px rgba(40, 30, 18, 0.5); }
+    .filmstrip.is-pinned .filmstrip__hud {
+      display: inline-flex; gap: 0.85rem; align-items: baseline;
+      position: absolute; left: 50%; bottom: clamp(1.5rem, 4vh, 3rem); transform: translateX(-50%);
+      padding: 0.5rem 0.95rem; background: var(--paper); border: 1px solid var(--line);
+      font-family: 'Spline Sans Mono', monospace; font-size: 0.78rem; letter-spacing: 0.04em;
+      color: var(--ink); pointer-events: none; z-index: 5; white-space: nowrap;
+    }
+    .filmstrip.is-pinned .filmstrip__hud-place { color: var(--ink-soft); }
   }
 
   /* ---------- 05 WRITING ---------- */
@@ -658,6 +685,9 @@ const filmstripPlates = [
   }
 
   /* ---------- 06 CONTACT ---------- */
+  /* The finale is a recessed closing plate: a full-bleed warm panel that opens with
+     an ochre rule (a quiet callback to the page-turn curtain's ochre edges). */
+  .contact { background: var(--paper-sink); border-top: 2px solid var(--ochre); }
   .contact__title { font-size: var(--step-5); max-width: 12ch; margin-bottom: 0.75rem; }
   .contact__underline { display: block; width: min(62%, 19rem); height: 1.35rem; margin: 0 0 1.5rem; overflow: visible; }
   .contact__underline path { stroke: var(--ochre); fill: none; vector-effect: non-scaling-stroke; }
@@ -665,7 +695,7 @@ const filmstripPlates = [
   /* The address itself is the finale brand mark: oversized mono, decoded on enter. */
   .contact__email {
     display: inline-block; font-family: 'Spline Sans Mono', monospace;
-    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 2.5rem); letter-spacing: -0.01em;
+    font-size: clamp(1.3rem, 0.65rem + 3.3vw, 3.25rem); letter-spacing: -0.015em;
     color: var(--ink); margin-bottom: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
   }
   .contact__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }

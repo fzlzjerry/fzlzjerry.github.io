@@ -102,6 +102,7 @@ const groups = [
                     src={photo.src}
                     alt={photo.title}
                     loading="lazy"
+                    decoding="async"
                     class="gx-img"
                   />
                   <span class="gx-plate mono" aria-hidden="true">Pl. {String(idx + 1).padStart(2, '0')}</span>

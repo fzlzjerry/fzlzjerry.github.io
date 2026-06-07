@@ -24,6 +24,13 @@ const hasByline = (authors && authors.length) || institution || department || pr
 ---
 
 <Layout title={`${post.data.title} - Morax Cheng`} description={post.data.excerpt}>
+  <!-- KaTeX is only needed for math in long-form posts, so it loads here, not site-wide -->
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    crossorigin="anonymous"
+  />
   <article class="container">
     <header class="page-head post-head">
       <div class="post-head__meta">

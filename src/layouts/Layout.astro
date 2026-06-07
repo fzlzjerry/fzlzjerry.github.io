@@ -47,8 +47,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Hanken+Grotesk:wght@300;400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Per-page head injections (e.g. LCP image preload, KaTeX only on posts that need it) -->
+    <slot name="head" />
 
     <title>{title}</title>
     <style is:global>
@@ -65,8 +67,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         /* Ink (warm near-black). Never #000. */
         --ink:        oklch(0.225 0.014 70);
         --ink-soft:   oklch(0.405 0.014 68);
-        --ink-faint:  oklch(0.560 0.012 70);
-        --ink-ghost:  oklch(0.700 0.010 72);
+        --ink-faint:  oklch(0.520 0.012 70);  /* AA small-text on paper (~5:1); carries .label/.tag */
+        --ink-ghost:  oklch(0.590 0.010 72);  /* faintest tier, decorative/large only (~3.6:1) */
 
         /* Accent — a single burnt ochre, used sparingly */
         --ochre:       oklch(0.585 0.130 56);
@@ -274,6 +276,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
       .media-frame img { width: 100%; height: 100%; object-fit: cover; }
       .media-frame [data-parallax] { height: 116%; width: 100%; object-fit: cover; }
+      /* <picture> generates no box, so the <img> stays a layout child of the frame
+         (its percentage height still resolves against the aspect-ratio box). */
+      .media-frame picture { display: contents; }
 
       /* Link with animated underline */
       .link-underline {
@@ -345,11 +350,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         html.gsap-ready [data-reveal-clip] { clip-path: inset(0 0 100% 0); }
         html.gsap-ready [data-stagger] > * { opacity: 0; }
       }
-      .split-line { will-change: transform; }
-      [data-reveal], [data-reveal-lines], [data-hero] [data-hero-item], [data-stagger] > * {
-        will-change: transform, opacity;
-      }
-      [data-reveal-clip] { will-change: clip-path; }
+      /* will-change is applied just-in-time by the reveal tweens and cleared on
+         completion (see buildScrollMotion / buildLineMotion), so settled elements
+         don't keep permanent GPU layers. Promotion at animation start is still wanted;
+         permanent retention is not. */
 
       /* Self-drawing hairlines (global primitive): a structural rule strokes itself
          left-to-right as its element enters. JS adds .rule-armed (hides) then .is-drawn
@@ -374,7 +378,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         display: inline-block;
         font-variation-settings: 'wght' var(--wght, 500);
         font-optical-sizing: auto;
-        will-change: font-variation-settings;
+        /* No permanent will-change: font-variation-settings isn't a compositor
+           property, so a per-glyph layer costs memory without buying smoothness. */
       }
 
       /* WebGL "developing plate" canvas, layered over the hero photo. */
@@ -502,8 +507,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       let fluxRunning = false;
       let fluxAtRest = true;
       let scrollFlux = 0;
-      let lastFluxScrollY = 0;
-      let lastFluxScrollT = 0;
       const fluxPointer = { x: -9999, y: -9999, active: false };
       const FLUX_BASE = 500, FLUX_PEAK = 200, FLUX_SCROLL = 28;
 
@@ -536,10 +539,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           start: 'top 88%',
           once: true,
           onEnter: (batch) => {
-            gsap.set(batch, { visibility: 'visible' });
+            gsap.set(batch, { visibility: 'visible', willChange: 'transform, opacity' });
             gsap.to(batch, {
               opacity: 1, y: 0, duration: 0.95, ease: 'power3.out',
               stagger: 0.08, overwrite: true,
+              onComplete: () => gsap.set(batch, { willChange: 'auto' }),
             });
           },
         });
@@ -552,8 +556,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           ScrollTrigger.create({
             trigger: group, start: 'top 84%', once: true,
             onEnter: () => {
-              gsap.set(items, { visibility: 'visible' });
-              gsap.to(items, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.085 });
+              gsap.set(items, { visibility: 'visible', willChange: 'transform, opacity' });
+              gsap.to(items, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.085,
+                onComplete: () => gsap.set(items, { willChange: 'auto' }) });
             },
           });
         });
@@ -579,9 +584,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
           ScrollTrigger.create({
             trigger: el, start: 'top 88%', once: true,
-            onEnter: () => gsap.to(el, { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }),
+            onEnter: () => {
+              gsap.set(el, { willChange: 'clip-path' });
+              gsap.to(el, { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut',
+                onComplete: () => gsap.set(el, { willChange: 'auto' }) });
+            },
           });
-          cleanups.push(() => gsap.set(el, { clearProps: 'clipPath' }));
+          cleanups.push(() => gsap.set(el, { clearProps: 'clipPath,willChange' }));
         });
 
         // Number counters
@@ -687,6 +696,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
         }
 
+        // Hero plate "settles": a gentle scrub scale on the cover as it scrolls away,
+        // so the developed plate recedes into the catalogue. The figure's transform is
+        // unowned (clip-path and the inner img's parallax are separate properties).
+        const heroMedia = document.querySelector<HTMLElement>('[data-hero] [data-hero-media]');
+        if (heroMedia) {
+          gsap.fromTo(heroMedia, { scale: 1 }, {
+            scale: 1.06, ease: 'none',
+            scrollTrigger: { trigger: heroMedia, start: 'top top', end: 'bottom top', scrub: true },
+          });
+          cleanups.push(() => gsap.set(heroMedia, { clearProps: 'scale' }));
+        }
+
         buildImageTrail();
         buildPinGallery();
         buildWorkShowpiece();
@@ -704,6 +725,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         split.lines.forEach((line: HTMLElement) => {
           const mask = line.parentElement;
           if (mask) mask.style.overflow = 'visible';
+          line.style.willChange = 'auto'; // drop the GPU layer once the line has settled
         });
       }
 
@@ -765,14 +787,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
       function onFluxMove(e: PointerEvent) { fluxPointer.x = e.clientX; fluxPointer.y = e.clientY; fluxPointer.active = true; fluxAtRest = false; }
       function onFluxLeave() { fluxPointer.active = false; }
-      function onFluxScroll() {
-        const now = performance.now();
-        const dt = Math.max(16, now - lastFluxScrollT);
-        scrollFlux = Math.min(1, Math.max(scrollFlux, (Math.abs(window.scrollY - lastFluxScrollY) / dt) / 5));
-        lastFluxScrollY = window.scrollY;
-        lastFluxScrollT = now;
-        fluxAtRest = false;
-      }
       let fluxResizeT: number | undefined;
       function remeasureFlux() {
         for (const reg of fluxRegs) {
@@ -792,11 +806,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       function ensureFluxRunning() {
         if (fluxRunning) return;
         fluxRunning = true;
-        lastFluxScrollY = window.scrollY;
-        lastFluxScrollT = performance.now();
         window.addEventListener('pointermove', onFluxMove, { passive: true });
         document.addEventListener('pointerleave', onFluxLeave);
-        window.addEventListener('scroll', onFluxScroll, { passive: true });
+        // Scroll "breath" reads velocity from GSAP's own scroll machinery rather than a
+        // separate scroll listener (one source of truth; idiomatic ScrollTrigger).
+        const fluxST = ScrollTrigger.create({
+          onUpdate: (self) => {
+            const v = Math.min(1, Math.abs(self.getVelocity()) / 5000);
+            if (v > scrollFlux) { scrollFlux = v; fluxAtRest = false; }
+          },
+        });
         window.addEventListener('resize', onFluxResize);
         gsap.ticker.add(fluxTick);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasureFlux).catch(() => {});
@@ -804,7 +823,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           gsap.ticker.remove(fluxTick);
           window.removeEventListener('pointermove', onFluxMove);
           document.removeEventListener('pointerleave', onFluxLeave);
-          window.removeEventListener('scroll', onFluxScroll);
+          fluxST.kill();
           window.removeEventListener('resize', onFluxResize);
           clearTimeout(fluxResizeT);
           fluxRunning = false;
@@ -983,12 +1002,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         canvas.className = 'halftone-canvas';
         canvas.setAttribute('aria-hidden', 'true');
         media.insertBefore(canvas, media.firstChild);
-        img.style.opacity = '0';
+        // Don't hide the photo up front. If WebGL initialises but never paints
+        // (blacklisted/software GPU, lost context), an opaque-but-blank canvas would
+        // leave the hero empty. Keep the <img> until a real-texture frame is confirmed
+        // (the opaque canvas covers it while it develops, so no flash when GL works),
+        // and a watchdog restores the photo if that frame never lands.
         resize();
 
         const startT = performance.now();
-        let running = false;
-        function frame() { ctrl._t = performance.now() - startT; render(); }
+        let running = false, painted = false;
+        let wd: number | undefined;
+        function frame() {
+          ctrl._t = performance.now() - startT; render();
+          if (!painted && ctrl._ready) { painted = true; img.style.opacity = '0'; if (wd) clearTimeout(wd); }
+        }
         function play() { if (!running) { running = true; gsap.ticker.add(frame); } }
         function pause() { if (running) { running = false; gsap.ticker.remove(frame); } }
 
@@ -998,6 +1025,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           io.observe(media);
         }
         play();
+        // Safety net: if no real-texture frame paints within 1.5s, reveal the photo.
+        wd = window.setTimeout(() => { if (!painted) img.style.opacity = ''; }, 1500);
 
         const onWinResize = () => resize();
         window.addEventListener('resize', onWinResize);
@@ -1013,6 +1042,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         cleanups.push(() => {
           pause();
+          if (wd) clearTimeout(wd);
           if (io) io.disconnect();
           window.removeEventListener('resize', onWinResize);
           media.removeEventListener('mousemove', onMove);
@@ -1110,6 +1140,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
           section.classList.add('is-pinned');
           const distance = () => Math.max(0, track.scrollWidth - section.clientWidth);
+
+          // Guided gallery walk: a fixed caption tracks which plate is "current" and the
+          // current plate is lit/lifted (CSS .is-current). The index is driven from the
+          // pin tween's own progress, so it walks evenly 01 -> 08 and lights the first and
+          // last plates (edge plates never physically reach dead-centre, so a per-plate
+          // centre trigger would skip them).
+          const plates = gsap.utils.toArray<HTMLElement>('.filmstrip__plate', track);
+          const curEl = section.querySelector<HTMLElement>('[data-strip-cur]');
+          const placeEl = section.querySelector<HTMLElement>('[data-strip-place]');
+          let curIdx = -1;
+          const setCurrent = (i: number) => {
+            if (i === curIdx || i < 0 || i >= plates.length) return;
+            curIdx = i;
+            plates.forEach((p, j) => p.classList.toggle('is-current', j === i));
+            if (curEl) curEl.textContent = String(i + 1).padStart(2, '0');
+            if (placeEl) placeEl.textContent = plates[i]?.dataset.place || '';
+          };
+
           gsap.to(track, {
             x: () => -distance(),
             ease: 'none',
@@ -1121,9 +1169,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               scrub: 0.6,
               anticipatePin: 1,
               invalidateOnRefresh: true,
+              onUpdate: (self) => setCurrent(Math.round(self.progress * (plates.length - 1))),
             },
           });
-          return () => { section.classList.remove('is-pinned'); gsap.set(track, { clearProps: 'transform' }); };
+          setCurrent(0); // lit before the first scroll frame, so the strip never reads all-dimmed
+
+          return () => {
+            plates.forEach((p) => p.classList.remove('is-current'));
+            section.classList.remove('is-pinned');
+            gsap.set(track, { clearProps: 'transform' });
+          };
         });
         cleanups.push(() => mm.revert());
       }
@@ -1260,6 +1315,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             const split = SplitText.create(headline, { type: flux ? 'lines,chars' : 'lines', mask: 'lines', linesClass: 'split-line', charsClass: 'flux-char', autoSplit: false });
             splits.push(split);
             gsap.set(headline, { visibility: 'visible' });
+            gsap.set(split.lines, { willChange: 'transform' });
             heroTl.from(split.lines, {
               yPercent: 118, duration: 1.15, stagger: 0.09, ease: 'power4.out',
               onComplete: () => { unmaskLines(split); if (flux) setupFluxFor(headline, split); },
@@ -1270,8 +1326,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             const ht = media.hasAttribute('data-halftone') ? setupHalftone(media) : null;
             if (ht) {
               // The halftone "develop" IS the reveal — skip the clip-path wipe.
+              // A longer develop makes the signature plate read as a slower exposure.
               gsap.set(media, { clipPath: 'inset(0 0 0% 0)' });
-              heroTl.fromTo(ht, { progress: 0 }, { progress: 1, duration: 2.1, ease: 'power2.inOut' }, 0.2);
+              heroTl.fromTo(ht, { progress: 0 }, { progress: 1, duration: 2.6, ease: 'power2.inOut' }, 0.2);
             } else {
               gsap.set(media, { clipPath: 'inset(0 0 100% 0)' });
               heroTl.to(media, { clipPath: 'inset(0 0 0% 0)', duration: 1.25, ease: 'power4.out' }, 0.25);
@@ -1279,10 +1336,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           }
           const items = hero.querySelectorAll<HTMLElement>('[data-hero-item]');
           if (items.length) {
-            gsap.set(items, { visibility: 'visible' });
+            gsap.set(items, { visibility: 'visible', willChange: 'transform, opacity' });
             // fromTo (not from): CSS pre-hides these to opacity:0, so .from would
             // animate 0 -> current(0) and they'd stay invisible for motion users.
-            heroTl.fromTo(items, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.95, stagger: 0.08 }, 0.45);
+            heroTl.fromTo(items, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.95, stagger: 0.08,
+              onComplete: () => gsap.set(items, { willChange: 'auto' }) }, 0.45);
           }
         }
 
@@ -1295,10 +1353,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           gsap.set(split.lines, { yPercent: 118 });
           ScrollTrigger.create({
             trigger: el, start: 'top 86%', once: true,
-            onEnter: () => gsap.to(split.lines, {
-              yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08,
-              onComplete: () => { unmaskLines(split); if (flux) setupFluxFor(el, split); },
-            }),
+            onEnter: () => {
+              gsap.set(split.lines, { willChange: 'transform' });
+              gsap.to(split.lines, {
+                yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08,
+                onComplete: () => { unmaskLines(split); if (flux) setupFluxFor(el, split); },
+              });
+            },
           });
         });
 
@@ -1322,7 +1383,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           ScrollTrigger.create({
             trigger: ch, start: 'top 80%', once: true,
             onEnter: () => {
-              const tl = gsap.timeline();
+              if (ghost) gsap.set(ghost, { willChange: 'transform, opacity' });
+              if (kicker) gsap.set(kicker, { willChange: 'transform, opacity' });
+              if (split) gsap.set(split.lines, { willChange: 'transform' });
+              const tl = gsap.timeline({ onComplete: () => {
+                if (ghost) gsap.set(ghost, { willChange: 'auto' });
+                if (kicker) gsap.set(kicker, { willChange: 'auto' });
+              } });
               if (ghost) tl.to(ghost, { autoAlpha: 1, scale: 1, xPercent: 0, duration: 1.2, ease: 'power3.out' }, 0);
               if (kicker) tl.to(kicker, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.12);
               if (split) tl.to(split.lines, { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08, onComplete: () => unmaskLines(split) }, 0.2);
