@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import TableOfContents from '../../components/TableOfContents.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -11,7 +12,12 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+
+// Contents index: section + subsection titles (h2/h3). Shown only when the piece
+// is long enough to navigate (a two-or-three-entry post does not need an index).
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const showToc = toc.length >= 3;
 
 const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
   year: 'numeric',
@@ -72,9 +78,18 @@ const hasByline = (authors && authors.length) || institution || department || pr
 
     <hr class="rule post-rule" />
 
-    <div class="prose prose-lg post-body" data-reveal>
-      <Content />
-    </div>
+    {showToc ? (
+      <div class="post-layout">
+        <TableOfContents headings={toc} />
+        <div class="prose prose-lg post-body" data-reveal>
+          <Content />
+        </div>
+      </div>
+    ) : (
+      <div class="prose prose-lg post-body" data-reveal>
+        <Content />
+      </div>
+    )}
 
     <footer class="post-foot">
       <hr class="rule" />
@@ -133,6 +148,21 @@ const hasByline = (authors && authors.length) || institution || department || pr
 
   /* Constrain the reading column to the text measure (overrides prose's 68ch) */
   .post-body { max-width: var(--container-text); margin-inline: 0; }
+
+  /* Article + contents rail. The reading column keeps its left-aligned text measure;
+     the contents index takes the wide right margin on desktop and, below 70rem,
+     collapses to a disclosure stacked above the body (natural DOM order). */
+  .post-layout { display: block; }
+  @media (min-width: 70rem) {
+    .post-layout {
+      display: grid;
+      grid-template-columns: minmax(0, var(--container-text)) minmax(0, 1fr);
+      column-gap: clamp(2rem, 1rem + 3vw, 4.5rem);
+      align-items: start;
+    }
+    .post-layout .post-body { grid-column: 1; grid-row: 1; }
+    .post-layout :global(.post-toc) { grid-column: 2; grid-row: 1; }
+  }
 
   .post-foot {
     max-width: var(--container-text);

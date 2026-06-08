@@ -496,6 +496,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         overflow-x: auto;
         overflow-y: hidden;
       }
+
+      /* Contents-index offset: a jump from the index lands the heading clear of the
+         persistent masthead instead of tucked behind it. */
+      .post-body :is(h2, h3, h4) { scroll-margin-top: 5.85rem; }
+      /* setupToc moves focus to the jumped-to heading for keyboard continuity; that
+         is programmatic, so suppress the focus ring (the heading is already framed). */
+      .post-body :is(h2, h3, h4)[tabindex="-1"]:focus { outline: none; }
+
+      /* When the contents rail occupies the right margin (desktop article layout),
+         block equations can no longer breathe into it: keep them inside the reading
+         column and let the existing overflow-x give wide ones a scroll box instead. */
+      @media (min-width: 70rem) {
+        .post-layout .post-body .katex:has(math[display="block"]) { max-width: 100%; }
+      }
     </style>
   </head>
   <body class="gallery-shell">
@@ -1818,6 +1832,113 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       document.addEventListener('astro:after-swap', updateActiveNav);
 
       // ============================================================
+      // Article contents index (scroll-spy + breakpoint collapse)
+      // ============================================================
+      // Lives here, not in the page, because all behaviour is centralised in the
+      // Layout (the design system forbids per-page scripts). No-ops on any page
+      // without a [data-toc] index. Uses IntersectionObserver, never a scroll
+      // listener. Re-runs idempotently per astro:page-load; torn down on swap.
+      let tocCleanup: (() => void) | null = null;
+      function setupToc() {
+        tocCleanup?.();
+        tocCleanup = null;
+
+        const toc = document.querySelector<HTMLDetailsElement>('[data-toc]');
+        const body = document.querySelector<HTMLElement>('.post-body');
+        if (!toc || !body) return;
+
+        const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a[data-toc-link]'));
+        if (!links.length) return;
+        const linkBySlug = new Map<string, HTMLAnchorElement>();
+        links.forEach((a) => {
+          const id = decodeURIComponent((a.getAttribute('href') || '').slice(1));
+          if (id) linkBySlug.set(id, a);
+        });
+
+        const heads = Array.from(body.querySelectorAll<HTMLElement>('h2[id], h3[id]'))
+          .filter((h) => linkBySlug.has(h.id));
+        if (!heads.length) return;
+
+        const deskMQ = window.matchMedia('(min-width: 70rem)');
+        const scroller = toc.querySelector<HTMLElement>('.post-toc__scroll');
+        const cleanups: Array<() => void> = [];
+        let activeId: string | null = null;
+
+        function keepVisible(a: HTMLAnchorElement) {
+          // Scroll the rail (never the window) so the current link stays in view.
+          if (!scroller || scroller.scrollHeight <= scroller.clientHeight + 1) return;
+          const ar = a.getBoundingClientRect();
+          const sr = scroller.getBoundingClientRect();
+          if (ar.top < sr.top) scroller.scrollTop -= sr.top - ar.top + 8;
+          else if (ar.bottom > sr.bottom) scroller.scrollTop += ar.bottom - sr.bottom + 8;
+        }
+        function setActive(id: string) {
+          if (id === activeId) return;
+          activeId = id;
+          links.forEach((a) => {
+            const on = linkBySlug.get(id) === a;
+            a.classList.toggle('is-current', on);
+            if (on) { a.setAttribute('aria-current', 'location'); keepVisible(a); }
+            else a.removeAttribute('aria-current');
+          });
+        }
+
+        // ---- Scroll-spy via ScrollTrigger (mirrors the #scroll-progress bar) ----
+        // One batched, single-handler trigger over the whole scroll; onUpdate reads
+        // LIVE heading rects each frame, so it is immune to layout shifts (font swap,
+        // math, reveal) that would stale-out per-heading start positions, and it stays
+        // correct when the page jumps past several headings at once (anchor / flick).
+        const off = () => parseFloat(getComputedStyle(heads[0]).scrollMarginTop) || 94;
+        function spy() {
+          const line = off() + 1;
+          let current = heads[0];
+          for (const h of heads) {
+            if (h.getBoundingClientRect().top <= line) current = h;
+            else break;
+          }
+          const doc = document.documentElement;
+          if (window.scrollY + window.innerHeight >= doc.scrollHeight - 2) {
+            current = heads[heads.length - 1]; // pin the last section at the very bottom
+          }
+          setActive(current.id);
+        }
+        const spyST = ScrollTrigger.create({ start: 0, end: 'max', onUpdate: spy });
+        cleanups.push(() => spyST.kill());
+        spy();
+
+        // ---- Offset-aware jump + focus (reduced-motion safe) ----
+        const onLinkClick = (e: MouseEvent) => {
+          const a = e.currentTarget as HTMLAnchorElement;
+          const id = decodeURIComponent((a.getAttribute('href') || '').slice(1));
+          const target = id ? document.getElementById(id) : null;
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+          target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+          history.replaceState(history.state, '', `#${id}`);
+          if (!deskMQ.matches) toc.open = false; // collapse the mobile disclosure
+        };
+        links.forEach((a) => a.addEventListener('click', onLinkClick));
+        cleanups.push(() => links.forEach((a) => a.removeEventListener('click', onLinkClick)));
+
+        // ---- Disclosure: static-open rail on desktop, collapsible on mobile ----
+        const summary = toc.querySelector<HTMLElement>('.post-toc__summary');
+        const applyMode = () => { toc.open = deskMQ.matches; };
+        const onSummaryClick = (e: Event) => { if (deskMQ.matches) e.preventDefault(); };
+        summary?.addEventListener('click', onSummaryClick);
+        deskMQ.addEventListener('change', applyMode);
+        applyMode();
+        cleanups.push(() => {
+          summary?.removeEventListener('click', onSummaryClick);
+          deskMQ.removeEventListener('change', applyMode);
+        });
+
+        tocCleanup = () => { cleanups.forEach((fn) => fn()); tocCleanup = null; };
+      }
+      document.addEventListener('astro:before-swap', () => { tocCleanup?.(); });
+
+      // ============================================================
       // Non-motion page chrome (mobile menu, copy buttons)
       // ============================================================
       function setupChrome() {
@@ -1864,6 +1985,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
           pre.appendChild(btn);
         });
+
+        setupToc();
       }
       document.addEventListener('astro:page-load', setupChrome);
     </script>

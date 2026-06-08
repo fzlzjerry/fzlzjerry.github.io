@@ -1,0 +1,150 @@
+---
+// Catalogue "Contents" index for long-form articles.
+//
+// Desktop (>= 70rem): a sticky index rail set into the wide right margin (the
+// reading column is left-aligned at the text measure inside the 84rem container),
+// with a hairline spine and an ochre marker tracking the section being read.
+// Below 70rem: a collapsible disclosure that sits above the body.
+//
+// Markup + its own styling live here; the scroll-spy, the breakpoint collapse,
+// and the offset-aware jump are wired once, globally, in Layout.astro (setupToc),
+// keyed off [data-toc]. This component owns no script (per the design system).
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+interface Props {
+  headings: Heading[];
+}
+const { headings } = Astro.props;
+---
+
+<details class="post-toc" data-toc>
+  <summary class="post-toc__summary">
+    <span class="label post-toc__kicker">Contents</span>
+    <span class="post-toc__caret" aria-hidden="true"></span>
+  </summary>
+  <div class="post-toc__panel">
+    <nav class="post-toc__scroll" aria-label="Article contents">
+      <ol class="post-toc__list" role="list">
+        {headings.map((h) => (
+          <li class="post-toc__item" data-depth={h.depth}>
+            <a class="post-toc__link" href={`#${h.slug}`} data-toc-link>{h.text}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  </div>
+</details>
+
+<style>
+  /* ---- Mobile-first: a collapsible block above the article body ---- */
+  .post-toc {
+    margin: 0 0 clamp(2rem, 1.5rem + 2vw, 3rem);
+    max-width: var(--container-text);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .post-toc__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .post-toc__summary::-webkit-details-marker { display: none; }
+  .post-toc__kicker { color: var(--ink-faint); }
+
+  /* Pure-CSS caret (no hand-rolled SVG); flips when the disclosure is open. */
+  .post-toc__caret {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 1.5px solid var(--ink-faint);
+    border-bottom: 1.5px solid var(--ink-faint);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform var(--t-base) ease, border-color var(--t-base) ease;
+  }
+  .post-toc[open] .post-toc__caret { transform: translateY(1px) rotate(-135deg); }
+  .post-toc__summary:hover .post-toc__caret { border-color: var(--ochre); }
+
+  .post-toc__panel { padding-bottom: 0.5rem; }
+
+  .post-toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0.4rem;
+    border-left: 1px solid var(--line); /* the index spine */
+  }
+  .post-toc__item { margin: 0; }
+
+  .post-toc__link {
+    display: block;
+    padding: 0.32rem 0 0.32rem 0.95rem;
+    margin-left: -1px;                       /* the marker rides the spine */
+    border-left: 2px solid transparent;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: color var(--t-base) ease, border-color var(--t-base) ease;
+  }
+  .post-toc__item[data-depth="2"] .post-toc__link {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .post-toc__item[data-depth="3"] .post-toc__link {
+    padding-left: 1.9rem;                    /* indent the text, marker stays on the spine */
+    font-size: 0.82rem;
+  }
+  .post-toc__link:hover { color: var(--ink); }
+  .post-toc__link:focus-visible {
+    outline: 2px solid var(--ochre);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
+  /* The section currently being read (toggled by setupToc). */
+  .post-toc__link.is-current {
+    color: var(--ochre);
+    border-left-color: var(--ochre);
+  }
+
+  /* ---- Desktop: sticky index rail in the right margin ---- */
+  @media (min-width: 70rem) {
+    .post-toc {
+      position: sticky;
+      top: calc(4.25rem + 1.6rem);           /* masthead height + breathing */
+      align-self: start;
+      margin: 0;
+      max-width: none;
+      border: 0;
+    }
+    /* Always show the panel here, regardless of [open], so there is no first-paint
+       flash before setupToc sets open; the summary becomes a static label. */
+    .post-toc__panel { display: block !important; }
+    .post-toc__summary { cursor: default; padding: 0 0 0.85rem; }
+    .post-toc__caret { display: none; }
+    .post-toc__scroll {
+      max-height: calc(100dvh - 4.25rem - 4rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line-strong) transparent;
+    }
+    .post-toc__scroll::-webkit-scrollbar { width: 6px; }
+    .post-toc__scroll::-webkit-scrollbar-thumb {
+      background: var(--line-strong);
+      border-radius: 99px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-toc__caret,
+    .post-toc__link { transition: none; }
+  }
+</style>
