@@ -85,6 +85,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         --panel-hover: oklch(0.928 0.017 81);
         --code-bg:     oklch(0.258 0.016 74);
 
+        /* Warm elevation — one ink-tinted shadow color, layered as a tight contact
+           plus a soft ambient so a lifted plate reads off the paper the way a real
+           print sits in a mount. One scale replaces the ad-hoc per-page drop shadows
+           so every plate shares the same material. */
+        --shadow-tint:  40 30 18;  /* warm espresso ink (never neutral black) */
+        --shadow-2:     0 2px 6px -3px rgb(var(--shadow-tint) / 0.16), 0 14px 30px -18px rgb(var(--shadow-tint) / 0.50);
+        --shadow-3:     0 4px 10px -5px rgb(var(--shadow-tint) / 0.15), 0 24px 48px -28px rgb(var(--shadow-tint) / 0.50);
+        --shadow-4:     0 8px 18px -8px rgb(var(--shadow-tint) / 0.15), 0 36px 70px -34px rgb(var(--shadow-tint) / 0.50);
+        --shadow-panel: -2px 0 8px -4px rgb(var(--shadow-tint) / 0.14), -30px 0 60px -40px rgb(var(--shadow-tint) / 0.50);
+
         /* Semantic (tuned for light paper) */
         --ok:   oklch(0.520 0.130 150);
         --err:  oklch(0.530 0.180 28);
@@ -168,7 +178,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       /* SplitText targets must wrap normally; `balance` interferes with line splitting */
       [data-reveal-lines], [data-hero] [data-hero-headline] { text-wrap: wrap; }
 
-      p { margin: 0; }
+      /* Body copy gets prettier rag: pretty avoids orphans/widows and short last
+         lines. Display headings keep `balance` (set above); SplitText / reveal-lines
+         targets are overridden to `wrap` below, so this never fights line splitting. */
+      p { margin: 0; text-wrap: pretty; }
       a { color: inherit; text-decoration: none; transition: color var(--t-fast) ease; }
 
       code, pre, .mono { font-family: 'Spline Sans Mono', ui-monospace, monospace; }
@@ -312,7 +325,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         color: var(--ink);
         background: transparent;
         cursor: pointer;
-        transition: color 340ms var(--ease-out), background-color 340ms var(--ease-out), border-color 340ms var(--ease-out);
+        transition: color 340ms var(--ease-out), background-color 340ms var(--ease-out), border-color 340ms var(--ease-out), transform 140ms var(--ease-out);
       }
       /* Outline by default fills with ink; primary is filled and inverts to paper.
          A smooth ink/paper cross-fade, no color jump, no cursor-follow. */
@@ -323,6 +336,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .btn-ghost:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
       .btn-arrow { display: inline-block; will-change: transform; transition: transform 340ms var(--ease-out); }
       .btn:hover .btn-arrow { transform: translateX(4px); }
+      /* Tactile press: the button takes a small physical step down when pushed.
+         (Magnetic CTAs own their transform via GSAP inline styles, so this no-ops
+         there without conflict, and the global reduced-motion reset makes it instant.) */
+      .btn:active { transform: translateY(1px); }
 
       /* -------- Accessibility -------- */
       .sr-only {
@@ -394,7 +411,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         width: clamp(8.5rem, 11vw, 12rem);
         padding: 0.4rem; background: var(--paper);
         border: 1px solid var(--line); border-radius: var(--radius);
-        box-shadow: 0 14px 34px -20px rgba(40, 30, 18, 0.55);
+        box-shadow: var(--shadow-2);
         opacity: 0; will-change: transform, opacity;
       }
       .trail-plate img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; border-radius: 1px; }
@@ -464,6 +481,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .table-container {
         width: 100%; overflow-x: auto; margin: 2rem 0;
         border: 1px solid var(--line); border-radius: var(--radius);
+      }
+
+      /* A block display equation (rehype-katex MathML output) can render wider than
+         the reading column. Let it use its natural width up to the viewport (so on
+         desktop it shows in full, breathing into the wide right margin like before),
+         and only become a horizontal scroll box when even that won't fit, instead of
+         clipping under body{overflow-x:hidden} and silently losing terms on narrow
+         screens. Scoped to block math so inline math is untouched. */
+      .post-body .katex:has(math[display="block"]) {
+        display: block;
+        width: max-content;
+        max-width: calc(100vw - 2 * var(--gutter));
+        overflow-x: auto;
+        overflow-y: hidden;
       }
     </style>
   </head>

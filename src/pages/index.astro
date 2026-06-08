@@ -646,7 +646,7 @@ const filmstripPlates = [
   .ledger__title { font-size: var(--step-2); }
   .ledger__caption { margin-top: 0.5rem; color: var(--ink-faint); font-size: 0.72rem; letter-spacing: 0.02em; }
   .ledger__doc { font-size: 0.72rem; white-space: nowrap; align-self: center; }
-  .ledger__doc--quiet { color: var(--ink-ghost); }
+  .ledger__doc--quiet { color: var(--ink-faint); }
   @media (max-width: 640px) {
     .ledger__row { grid-template-columns: 1fr auto; }
     .ledger__index { flex-direction: row; gap: 0.75rem; align-items: baseline; grid-column: 1 / -1; }
@@ -671,7 +671,12 @@ const filmstripPlates = [
   .filmstrip::-webkit-scrollbar { display: none; }
   .filmstrip__track { display: flex; gap: clamp(0.9rem, 0.5rem + 1.5vw, 1.75rem); width: max-content; padding-inline: var(--gutter); margin: 0; list-style: none; }
   .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); perspective: 1000px; }
-  .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; transform-style: preserve-3d; will-change: transform; }
+  .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; transform-style: preserve-3d; will-change: transform; transition: box-shadow var(--t-base) var(--ease-out); }
+  /* When the strip is a browsable swipe gallery (not pinned), pair the pointer tilt
+     with a lift like the gallery plates it points at. During the pinned guided walk
+     the choreography is the opposite (the current plate is lit, the rest recede), so
+     the lift is suppressed there and only the .is-current plate carries shadow-4. */
+  .filmstrip:not(.is-pinned) .filmstrip__plate .media-frame:hover { box-shadow: var(--shadow-3); }
   /* Guided-walk caption: hidden unless the strip is pinned (set below). */
   .filmstrip__hud { display: none; }
   /* Desktop + motion: JS adds .is-pinned and pins the strip for a horizontal scroll. */
@@ -690,7 +695,7 @@ const filmstripPlates = [
     .filmstrip.is-pinned .filmstrip__plate { opacity: 0.72; transition: opacity 0.55s var(--ease-out); }
     .filmstrip.is-pinned .filmstrip__plate.is-current { opacity: 1; }
     .filmstrip.is-pinned .filmstrip__plate .media-frame { transition: box-shadow 0.55s var(--ease-out); }
-    .filmstrip.is-pinned .filmstrip__plate.is-current .media-frame { box-shadow: 0 36px 70px -34px rgba(40, 30, 18, 0.5); }
+    .filmstrip.is-pinned .filmstrip__plate.is-current .media-frame { box-shadow: var(--shadow-4); }
     .filmstrip.is-pinned .filmstrip__hud {
       display: inline-flex; gap: 0.85rem; align-items: baseline;
       position: absolute; left: 50%; bottom: clamp(1.5rem, 4vh, 3rem); transform: translateX(-50%);
