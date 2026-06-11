@@ -40,6 +40,11 @@ export default defineConfig({
   vite: {
     server: {
       allowedHosts: ['code.moraxcheng.me']
+    },
+    // three is only ever loaded as a lazy chunk (press finale); pre-bundle it so
+    // the dev server doesn't full-reload on first discovery.
+    optimizeDeps: {
+      include: ['three']
     }
   }
 });

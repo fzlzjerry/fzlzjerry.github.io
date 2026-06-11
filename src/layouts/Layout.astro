@@ -403,6 +403,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .halftone-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
       /* WebGL darkroom-loupe canvas, layered over the contact-sheet proof. */
       .loupe-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      /* Three.js press-finale canvas, layered under the closing plate's content
+         (the section's text container carries z-index above it). */
+      .press-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+
+      /* Print misregistration on chapter titles: the ochre plate runs in a hair
+         out of register (--misreg 1 -> 0 on the chapter entrance timeline) and
+         snaps in as the lines land. Global because SplitText creates .split-line
+         at runtime (scoped page styles can never match it); default 0 keeps
+         perfect register without JS / under reduced-motion. */
+      .chapter__title .split-line {
+        text-shadow: calc(var(--misreg, 0) * 0.05em) calc(var(--misreg, 0) * -0.04em) 0 var(--ochre);
+      }
 
       /* Cursor image-trail: mounted prints that flick out along the pointer. */
       .trail-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
@@ -551,6 +563,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       // Kinetic-type ("flux") state — see setupFluxFor / fluxTick below.
       type FluxReg = { el: HTMLElement; chars: HTMLElement[]; cx: number[]; cy: number[]; cur: number[]; radius: number };
       let fluxRegs: FluxReg[] = [];
+      // Marquee tweens, registered so the scroll-velocity trigger can surge their
+      // speed (buildVelocitySkew); `hovered` parks a track at reading speed.
+      let marqueeRegs: Array<{ tw: gsap.core.Tween; hovered: boolean }> = [];
       let fluxRunning = false;
       let fluxAtRest = true;
       let scrollFlux = 0;
@@ -565,6 +580,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         cleanups.forEach((fn) => { try { fn(); } catch (e) {} });
         cleanups = [];
         fluxRegs = [];
+        marqueeRegs = [];
         fluxAtRest = true;
         scrollFlux = 0;
         fluxPointer.active = false;
@@ -704,12 +720,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           });
         }
 
-        // Marquee: track must contain its content twice for a seamless -50% loop
+        // Marquee: track must contain its content twice for a seamless -50% loop.
+        // Each tween registers in marqueeRegs so scroll velocity can surge its
+        // speed (buildVelocitySkew); `hovered` stays true until the return tween
+        // completes, so hover reading-speed never fights the velocity writes.
         gsap.utils.toArray<HTMLElement>('[data-marquee]').forEach((track) => {
           const dur = parseFloat(track.dataset.marquee || '') || 34;
           const tw = gsap.to(track, { xPercent: -50, duration: dur, ease: 'none', repeat: -1 });
-          const slow = () => gsap.to(tw, { timeScale: 0.15, duration: 0.5 });
-          const fast = () => gsap.to(tw, { timeScale: 1, duration: 0.5 });
+          const reg = { tw, hovered: false };
+          marqueeRegs.push(reg);
+          const slow = () => { reg.hovered = true; gsap.to(tw, { timeScale: 0.15, duration: 0.5 }); };
+          const fast = () => gsap.to(tw, { timeScale: 1, duration: 0.5, onComplete: () => { reg.hovered = false; } });
           track.addEventListener('mouseenter', slow);
           track.addEventListener('mouseleave', fast);
           cleanups.push(() => { tw.kill(); track.removeEventListener('mouseenter', slow); track.removeEventListener('mouseleave', fast); });
@@ -763,6 +784,48 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         buildTilt();
         buildRegistration();
         buildLoupe();
+        buildPressFinale();
+      }
+
+      // ---- Press finale: the catalogue goes to press (movement 06) ----
+      // The cover photograph's halftone dots hang loose in 3D over the closing
+      // plate and settle into register on scroll; the pointer stirs them like
+      // loose ink (see src/scripts/press-finale.ts). three.js ships as its own
+      // lazy chunk, fetched only when the finale approaches on desktop
+      // fine-pointer motion-welcome visits; everyone else gets the section
+      // exactly as authored. Reduced motion never reaches here (initMotion bails).
+      function buildPressFinale() {
+        if (!fine.matches) return;
+        if (!window.matchMedia('(min-width: 1024px)').matches) return;
+        const section = document.querySelector<HTMLElement>('[data-press-finale]');
+        if (!section || !section.dataset.pressSrc) return;
+        // Probe WebGL before paying for the chunk download; release the probe
+        // context immediately so it never counts against the browser's budget.
+        const probe = document.createElement('canvas');
+        const probeGl = probe.getContext('webgl2') || probe.getContext('webgl');
+        if (!probeGl) return;
+        (probeGl as WebGLRenderingContext).getExtension('WEBGL_lose_context')?.loseContext();
+
+        const myToken = initToken;
+        let disposed = false;
+        let dispose: (() => void) | null = null;
+        const io = new IntersectionObserver(async (ents) => {
+          if (!ents.some((en) => en.isIntersecting)) return;
+          io.disconnect();
+          let mod: any = null;
+          try { mod = await import('../scripts/press-finale'); } catch (e) { return; }
+          // The page may have swapped while the chunk loaded; never mount a
+          // live renderer into a dead page (same token pattern as runLines).
+          if (disposed || myToken !== initToken) return;
+          const inst = mod.createPressFinale(section, {
+            src: section.dataset.pressSrc!,
+            ink: readColor('--ink', [0.17, 0.155, 0.14]),
+            ochre: readColor('--ochre', [0.72, 0.47, 0.26]),
+          });
+          if (inst) dispose = inst.dispose;
+        }, { rootMargin: '900px 0px' });
+        io.observe(section);
+        cleanups.push(() => { disposed = true; io.disconnect(); if (dispose) dispose(); dispose = null; });
       }
 
       // ---- Print registration: the closing plate "goes to press" ----
@@ -1455,6 +1518,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               end: () => '+=' + distance(),
               pin: true,
               scrub: 0.6,
+              // Settle on whole plates: a flick ends with one frame centred in the
+              // walk instead of paused between two. Snap points coincide with
+              // setCurrent's rounding, so the HUD always rests on its own number.
+              snap: {
+                snapTo: 1 / (N - 1),
+                duration: { min: 0.2, max: 0.6 },
+                ease: 'power2.inOut',
+                delay: 0.1,
+                directional: true,
+              },
               anticipatePin: 1,
               invalidateOnRefresh: true,
               onUpdate: (self) => { setCurrent(Math.round(self.progress * (N - 1))); develop(self.progress); },
@@ -1519,20 +1592,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       // tracks, to avoid transform conflicts). Never built under reduced-motion.
       function buildVelocitySkew() {
         const targets = gsap.utils.toArray<HTMLElement>('[data-velocity-skew]');
-        if (!targets.length) return;
-        const setSkew = gsap.quickSetter(targets, 'skewX', 'deg');
+        if (!targets.length && !marqueeRegs.length) return;
+        const setSkew = targets.length ? gsap.quickSetter(targets, 'skewX', 'deg') : null;
         const clamp = gsap.utils.clamp(-9, 9);
-        const proxy = { skew: 0 };
+        // One velocity reader drives both flourishes: the lean on tagged elements
+        // and a speed surge on the keyword marquee (fast scroll spins the press;
+        // both spring back to rest on the same decay tween).
+        const proxy = { skew: 0, boost: 0 };
+        const apply = () => {
+          if (setSkew) setSkew(proxy.skew);
+          for (const r of marqueeRegs) if (!r.hovered) r.tw.timeScale(1 + proxy.boost);
+        };
         const st = ScrollTrigger.create({
           onUpdate: (self) => {
-            const v = clamp(self.getVelocity() / -260);
-            if (Math.abs(v) > Math.abs(proxy.skew)) {
-              proxy.skew = v;
-              gsap.to(proxy, { skew: 0, duration: 0.7, ease: 'power3', overwrite: true, onUpdate: () => setSkew(proxy.skew) });
+            const raw = self.getVelocity();
+            const v = clamp(raw / -260);
+            const b = Math.min(2.5, Math.abs(raw) / 1200);
+            if (Math.abs(v) > Math.abs(proxy.skew) || b > proxy.boost) {
+              if (Math.abs(v) > Math.abs(proxy.skew)) proxy.skew = v;
+              if (b > proxy.boost) proxy.boost = b;
+              gsap.to(proxy, { skew: 0, boost: 0, duration: 0.7, ease: 'power3', overwrite: true, onUpdate: apply });
             }
           },
         });
-        cleanups.push(() => { st.kill(); gsap.set(targets, { clearProps: 'skewX' }); });
+        cleanups.push(() => {
+          st.kill();
+          if (targets.length) gsap.set(targets, { clearProps: 'skewX' });
+          for (const r of marqueeRegs) r.tw.timeScale(1);
+        });
       }
 
       // ---- Catalogue movement indicator: a fixed "you are here" tab tracking which
@@ -1665,6 +1752,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             split = SplitText.create(title, { type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: false });
             splits.push(split);
             gsap.set(split.lines, { yPercent: 120 });
+            // Arm the misregistration: the ochre plate starts a hair off-register
+            // (CSS maps --misreg to a text-shadow offset on the lines) and snaps
+            // in at the end of the entrance. Without JS the CSS default 0 holds.
+            gsap.set(title, { '--misreg': 1 });
           }
           if (ghost) gsap.set(ghost, { autoAlpha: 0, scale: 1.16, xPercent: 8, transformOrigin: 'right center' });
           if (kicker) gsap.set(kicker, { autoAlpha: 0, y: 22 });
@@ -1681,6 +1772,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               if (ghost) tl.to(ghost, { autoAlpha: 1, scale: 1, xPercent: 0, duration: 1.2, ease: 'power3.out' }, 0);
               if (kicker) tl.to(kicker, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.12);
               if (split) tl.to(split.lines, { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08, onComplete: () => unmaskLines(split) }, 0.2);
+              // The ochre plate snaps into register just as the last line lands.
+              if (split && title) tl.to(title, { '--misreg': 0, duration: 0.35, ease: 'power3.in' }, 0.75);
             },
           });
         });

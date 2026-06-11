@@ -396,7 +396,17 @@ const filmstripPlates = [
     </div>
   </aside>
 
-  <section class="section contact" aria-labelledby="contact-h" data-movement="Contact">
+  <!-- The press finale (desktop fine-pointer + motion + WebGL only): the cover
+       photo's halftone dots hang loose over the closing plate and settle into
+       register on scroll (Layout.astro buildPressFinale -> src/scripts/press-finale.ts).
+       Without it the section renders exactly as authored. -->
+  <section
+    class="section contact"
+    aria-labelledby="contact-h"
+    data-movement="Contact"
+    data-press-finale
+    data-press-src="/gallery/Paris_Montmartre-Panoramic-View.webp"
+  >
     <!-- Print registration crosses: the closing plate "goes to press" as it enters.
          Static full crosses without JS / under reduced-motion (CSS default --reg:1). -->
     <span class="contact__regmark contact__regmark--tl" aria-hidden="true"></span>
@@ -746,10 +756,13 @@ const filmstripPlates = [
   /* The finale is a recessed closing plate: a full-bleed warm panel that opens with
      an ochre rule (a quiet callback to the page-turn curtain's ochre edges). */
   .contact { background: var(--paper-sink); border-top: 2px solid var(--ochre); position: relative; }
+  /* The press-finale canvas mounts as the section's first child (inset: 0);
+     content and regmarks carry their own layer so the dots stay behind type. */
+  .contact .container { position: relative; z-index: 1; }
   /* Registration crosses at the four corners of the closing plate. Each draws into
      register from its centre (--reg 0->1, scaleX/scaleY) on enter; CSS default 1 keeps
      a static full cross without JS / under reduced-motion. Ink, not ochre (restraint). */
-  .contact__regmark { position: absolute; width: 15px; height: 15px; pointer-events: none; --reg: 1; }
+  .contact__regmark { position: absolute; width: 15px; height: 15px; pointer-events: none; --reg: 1; z-index: 1; }
   .contact__regmark::before, .contact__regmark::after { content: ''; position: absolute; background: var(--ink-ghost); }
   .contact__regmark::before { left: 0; right: 0; top: 50%; height: 1px; transform: translateY(-50%) scaleX(var(--reg)); }
   .contact__regmark::after { top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-50%) scaleY(var(--reg)); }
