@@ -119,17 +119,23 @@ const filmstripPlates = [
   </aside>
 
   <!-- ===================== HERO ===================== -->
+  <!-- The hero is a 3D paper stack (data-scene-3d): at rest every sheet lies flat
+       (pixel-identical to the authored page); on fine pointers the stack tilts
+       toward the cursor and the layers ease apart to their data-scene-layer z
+       depths, so the title, lead and cover plate genuinely separate in space.
+       The image-trail prints spawn on the section (outside the scene) and stay
+       at the screen plane on purpose. -->
   <section class="hero" data-hero data-image-trail data-trail-images={JSON.stringify(trailImages)} aria-labelledby="hero-title">
-    <div class="container">
-      <div class="hero__top">
+    <div class="container" data-scene-3d="1300">
+      <div class="hero__top" data-scene-layer="18">
         <span class="label" data-hero-item>Morax Cheng · Portfolio, Edition 2026</span>
         <span class="label" data-hero-item>Shenzhen, China · Open source</span>
       </div>
-      <hr class="rule" data-hero-item />
+      <hr class="rule" data-hero-item data-scene-layer="12" />
 
-      <h1 class="hero__title" id="hero-title" data-hero-headline data-flux>Morax Cheng</h1>
+      <h1 class="hero__title" id="hero-title" data-hero-headline data-flux data-scene-layer="55">Morax Cheng</h1>
 
-      <div class="hero__row">
+      <div class="hero__row" data-scene-layer="30">
         <div class="hero__lead">
           <p data-hero-item>
             Student developer and economics enthusiast. I build software, study how
@@ -147,7 +153,7 @@ const filmstripPlates = [
         </dl>
       </div>
 
-      <figure class="hero__media media-frame" data-hero-media data-halftone data-depth="0.97">
+      <figure class="hero__media media-frame" data-hero-media data-halftone data-depth="0.97" data-scene-layer="-55">
         <img data-parallax="6" src="/gallery/Paris_Montmartre-Panoramic-View.webp" alt="The rooftops of Paris seen from the steps of Montmartre" loading="eager" />
         <figcaption class="wall-label">
           <span class="index-num">Cover</span>
@@ -305,8 +311,11 @@ const filmstripPlates = [
   </section>
 
   <!-- ===================== 04 · THROUGH THE LENS ===================== -->
+  <!-- The ghost numeral's entrance (fold/scale/slide) animates the INNER span:
+       the outer span is a data-depth sheet whose scrubbed tween wipes any other
+       armed transform channel on itself at ScrollTrigger.refresh(). -->
   <aside class="chapter" aria-hidden="true" data-chapter>
-    <span class="chapter__ghost" data-depth="0.96">04</span>
+    <span class="chapter__ghost" data-depth="0.96"><span class="chapter__ghost-inner">04</span></span>
     <div class="container chapter__body">
       <span class="chapter__kicker label">Movement</span>
       <span class="chapter__title">The photographs</span>
@@ -329,13 +338,18 @@ const filmstripPlates = [
       <ol class="filmstrip__track" data-pin-track>
         {filmstripPlates.map((g, i) => (
           <li class="filmstrip__plate" data-velocity-skew data-place={g.place}>
-            <a href="/gallery" class="media-frame" data-tilt="7" aria-label={`Gallery: ${g.place}`}>
-              <img data-zoom src={g.src} alt={g.alt} loading="lazy" decoding="async" />
-              <figcaption class="wall-label">
-                <span class="index-num">{`Pl. ${String(i + 1).padStart(2, '0')}`}</span>
-                <span>{g.place}</span>
-              </figcaption>
-            </a>
+            <!-- The card is the corridor joint: it owns the walk-driven rotationY/z
+                 (plus the lit/dim opacity+filter states, which must NOT sit on the
+                 li — grouping properties there would flatten the corridor's 3D). -->
+            <div class="filmstrip__card" data-strip-card>
+              <a href="/gallery" class="media-frame" data-tilt="7" aria-label={`Gallery: ${g.place}`}>
+                <img data-zoom src={g.src} alt={g.alt} loading="lazy" decoding="async" />
+                <figcaption class="wall-label">
+                  <span class="index-num">{`Pl. ${String(i + 1).padStart(2, '0')}`}</span>
+                  <span>{g.place}</span>
+                </figcaption>
+              </a>
+            </div>
           </li>
         ))}
       </ol>
@@ -392,7 +406,7 @@ const filmstripPlates = [
 
   <!-- ===================== 06 · CONTACT ===================== -->
   <aside class="chapter" aria-hidden="true" data-chapter>
-    <span class="chapter__ghost" data-depth="0.96">06</span>
+    <span class="chapter__ghost" data-depth="0.96"><span class="chapter__ghost-inner">06</span></span>
     <div class="container chapter__body">
       <span class="chapter__kicker label">Movement</span>
       <span class="chapter__title">In closing</span>
@@ -563,6 +577,9 @@ const filmstripPlates = [
     color: transparent; -webkit-text-stroke: 1.5px var(--line-strong);
     pointer-events: none; user-select: none; z-index: 0;
   }
+  /* The entrance (fold/scale/slide) targets this inner span so its transform has
+     exactly one owner; the outer ghost keeps only the data-depth y channel. */
+  .chapter__ghost-inner { display: inline-block; }
   .chapter__body { position: relative; z-index: 1; }
   .chapter__kicker { display: block; color: var(--ochre); margin-bottom: 0.7rem; }
   .chapter__title { display: block; font-family: 'Bricolage Grotesque', serif;
@@ -721,7 +738,11 @@ const filmstripPlates = [
   .filmstrip { margin-top: clamp(1.5rem, 1rem + 2vw, 2.5rem); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .filmstrip::-webkit-scrollbar { display: none; }
   .filmstrip__track { display: flex; gap: clamp(0.9rem, 0.5rem + 1.5vw, 1.75rem); width: max-content; padding-inline: var(--gutter); margin: 0; list-style: none; }
-  .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); perspective: 1000px; }
+  .filmstrip__plate { flex: 0 0 auto; width: min(80vw, 22rem); }
+  /* The card carries the local perspective for the pointer tilt (and, when pinned,
+     the corridor's rotationY/z). A block wrapper, not display:contents — contents
+     cannot carry transforms. */
+  .filmstrip__card { display: block; height: 100%; perspective: 1000px; }
   .filmstrip__plate .media-frame { display: block; aspect-ratio: 4 / 3; height: 100%; transform-style: preserve-3d; will-change: transform; transition: box-shadow var(--t-base) var(--ease-out); }
   /* When the strip is a browsable swipe gallery (not pinned), pair the pointer tilt
      with a lift like the gallery plates it points at. During the pinned guided walk
@@ -732,9 +753,13 @@ const filmstripPlates = [
   .filmstrip__hud { display: none; }
   /* Desktop + motion: JS adds .is-pinned and pins the strip for a horizontal scroll. */
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-    .filmstrip.is-pinned { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; }
-    .filmstrip.is-pinned .filmstrip__track { align-items: stretch; will-change: transform; }
-    .filmstrip.is-pinned .filmstrip__plate { width: min(42vw, 34rem); }
+    /* The pinned walk is a 3D gallery corridor: the section is the room (one shared
+       perspective), track and plates keep preserve-3d so each card's walk-driven
+       rotationY/z (buildPinGallery) reads as real depth along the wall. */
+    .filmstrip.is-pinned { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; margin-top: 0; perspective: 1400px; perspective-origin: 50% 50%; }
+    .filmstrip.is-pinned .filmstrip__track { align-items: stretch; will-change: transform; transform-style: preserve-3d; }
+    .filmstrip.is-pinned .filmstrip__plate { width: min(42vw, 34rem); transform-style: preserve-3d; }
+    .filmstrip.is-pinned .filmstrip__card { will-change: transform; }
     /* "The contact sheet develops": JS drives --develop 0->1 over the first ~35% of
        the pin (default 1 = fully hung, so without JS every plate is shown). Maps to a
        top-down clip reveal on the frame + the wall-label fading in. clip-path/opacity
@@ -742,12 +767,15 @@ const filmstripPlates = [
     .filmstrip.is-pinned .filmstrip__plate .media-frame { clip-path: inset(0 0 calc((1 - var(--develop, 1)) * 100%) 0); }
     .filmstrip.is-pinned .filmstrip__plate .wall-label { opacity: var(--develop, 1); }
     /* Guided gallery walk: the centred plate is lit and lifted; neighbours recede.
-       Opacity + box-shadow only (the plate owns velocity-skew, the frame owns tilt). */
-    /* The current plate is the lit print on the wall: neighbours genuinely recede
-       (opacity alone read as nearly nothing). filter is unowned here: velocity-skew
-       owns the plate transform, tilt owns the frame transform, --develop owns clip. */
-    .filmstrip.is-pinned .filmstrip__plate { opacity: 0.5; filter: saturate(0.55); transition: opacity 0.55s var(--ease-out), filter 0.55s var(--ease-out); }
-    .filmstrip.is-pinned .filmstrip__plate.is-current { opacity: 1; filter: none; }
+       The lit/dim states live on the CARD, never the li: opacity/filter are grouping
+       properties that force transform-style:flat, and any of opacity / filter /
+       clip-path / mask on .filmstrip__plate would silently flatten the corridor's z.
+       (The card itself still rotates in the corridor; only its CHILDREN share no 3D,
+       which is today's per-plate behaviour.) Slightly lighter dim than the old flat
+       strip (0.6 vs 0.5): the corridor's angle + z recession now do part of the work,
+       and the angled neighbours must stay readable for the space to read as a room. */
+    .filmstrip.is-pinned .filmstrip__card { opacity: 0.6; filter: saturate(0.55); transition: opacity 0.55s var(--ease-out), filter 0.55s var(--ease-out); }
+    .filmstrip.is-pinned .filmstrip__plate.is-current .filmstrip__card { opacity: 1; filter: none; }
     /* Hung gallery wall: a real wall is never one straight rail. Alternating
        paint-time offsets (position, not transform: skew/tilt/track own those)
        plus a near-wall resting shadow that grades up when a plate is lit. */

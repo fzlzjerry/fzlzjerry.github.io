@@ -172,6 +172,21 @@ export function createPressFinale(
   camera.position.z = CAM_Z;
   const worldH = 2 * Math.tan((FOV * Math.PI) / 360) * CAM_Z;
 
+  // Volumetric camera parallax: the pointer trucks the camera a little off-axis
+  // — POSITION ONLY, never lookAt. Aiming the camera at the plate would project
+  // it onto the optical axis (the screen centre), tearing it out of its designed
+  // right-of-centre, above-the-email framing and running the ink into the type
+  // column. With the axis fixed, near and far dots still shift by different
+  // amounts while the cloud is loose (scatter spans roughly z −2..+1.6 world
+  // after scaling), which is what reads as volume; the settled plate only sways
+  // a few percent and returns to the exact authored framing at rest.
+  // Approximation, accepted: the wake's screen->plane mapping below assumes a
+  // centred camera, so under full parallax the stirred ink lands a few px off
+  // the cursor; the wake is a diffuse field, so it is not worth compensating.
+  const camTarget = { x: 0, y: 0 };
+  const PARALLAX_X = 0.55; // world units, full amplitude while the ink is loose
+  const PARALLAX_Y = 0.4;
+
   const ringPts: Vector3[] = Array.from({ length: RING }, () => new Vector3(0, 0, 0));
   let ringHead = 0;
 
@@ -209,9 +224,29 @@ export function createPressFinale(
       if (p.z < 0.001) p.z = 0;
       if (p.z > maxS) maxS = p.z;
     }
+    // camera glide toward the pointer's parallax target (per-frame lerp, no
+    // tween; pure truck — the axis stays fixed, see the parallax note above).
+    // The sway rides the LOOSE ink only: as the plate settles into register the
+    // amplitude fades to zero (same law as the cloud's turn below), so the
+    // printed sheet keeps its authored framing — and its clearance of the email
+    // mark beneath it — no matter where the pointer rests.
+    const loose = 1 - uniforms.uProgress.value;
+    const ex = camTarget.x * loose;
+    const ey = camTarget.y * loose;
+    camera.position.x += (ex - camera.position.x) * 0.06;
+    camera.position.y += (ey - camera.position.y) * 0.06;
+    // the loose cloud hangs slightly turned in the room; exactly 0 at register
+    if (pts) pts.rotation.y = loose * 0.18;
     renderer!.render(scene, camera);
-    // self-park once the scrub is quiet and the wake has died out
-    if (performance.now() - lastWake > 1600 && maxS < 0.01) pause();
+    // self-park once the scrub is quiet, the wake has died out AND the camera
+    // has finished its glide (never park mid-glide)
+    if (
+      performance.now() - lastWake > 1600 &&
+      maxS < 0.01 &&
+      Math.abs(camera.position.x - ex) < 0.002 &&
+      Math.abs(camera.position.y - ey) < 0.002
+    )
+      pause();
   }
   function play() {
     if (!running) {
@@ -260,8 +295,12 @@ export function createPressFinale(
   function onPointerMove(e: PointerEvent) {
     if (!pts) return;
     const r = section.getBoundingClientRect();
-    const wx = ((e.clientX - r.left) / Math.max(1, r.width) - 0.5) * worldW;
-    const wy = (0.5 - (e.clientY - r.top) / Math.max(1, r.height)) * worldH;
+    const nx = (e.clientX - r.left) / Math.max(1, r.width) - 0.5;
+    const ny = 0.5 - (e.clientY - r.top) / Math.max(1, r.height);
+    camTarget.x = nx * 2 * PARALLAX_X;
+    camTarget.y = ny * 2 * PARALLAX_Y;
+    const wx = nx * worldW;
+    const wy = ny * worldH;
     const lx = (wx - pts.position.x) / ptsScale;
     const ly = (wy - pts.position.y) / ptsScale;
     const dx = lx - lastX;
@@ -275,6 +314,11 @@ export function createPressFinale(
     }
     wake();
   }
+  const onPointerLeave = () => {
+    camTarget.x = 0;
+    camTarget.y = 0;
+    wake(); // the glide back to centre needs the ticker
+  };
   const onResize = () => {
     layout();
     wake();
@@ -338,6 +382,7 @@ export function createPressFinale(
     }
     window.addEventListener('resize', onResize);
     section.addEventListener('pointermove', onPointerMove, { passive: true });
+    section.addEventListener('pointerleave', onPointerLeave, { passive: true });
     wake();
   })();
 
@@ -349,6 +394,7 @@ export function createPressFinale(
     ro?.disconnect();
     window.removeEventListener('resize', onResize);
     section.removeEventListener('pointermove', onPointerMove);
+    section.removeEventListener('pointerleave', onPointerLeave);
     // clearMotion() kills ScrollTriggers globally but never their tweens; kill
     // both here so nothing keeps a handle on the uniforms across page swaps
     tween?.scrollTrigger?.kill();

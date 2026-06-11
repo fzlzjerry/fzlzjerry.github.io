@@ -777,6 +777,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         }
 
         buildImageTrail();
+        buildHeroScene(); // pointer-only, creates no ScrollTriggers
         buildPinGallery();
         // depth sheets AFTER the pin: ScrollTriggers refresh in creation order,
         // so triggers below the filmstrip only see its pin-spacer offset if the
@@ -1556,9 +1557,44 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             for (let i = 0; i < N; i++) devSet[i](clamp01(progress / 0.35 * N - i));
           };
 
-          gsap.to(track, {
+          // 3D gallery corridor: while pinned, each plate's card hangs angled in
+          // z-space like a print along a receding gallery wall; as the walk brings
+          // a plate to the current step its card turns face-on and lifts toward
+          // the viewer, then angles away behind. Driven from the pin TWEEN's
+          // onUpdate (not the ScrollTrigger's): scrub 0.6 + snap keep moving the
+          // track after the trigger goes quiet, and the corridor must track every
+          // rendered frame of that motion. Angles map from WALK-INDEX space
+          // (progress * (N-1), the same canonical mapping as setCurrent and the
+          // snap points), not from physical viewport centring: the track's snap
+          // step (distance/(N-1)) is smaller than the plate pitch, so a
+          // physically-centred mapping drifts off the lit plate toward the ends
+          // of the walk. Index space keeps every snapped stop with its lit plate
+          // exactly face-on, and needs no layout reads at all.
+          const cards = plates
+            .map((p) => p.querySelector<HTMLElement>('[data-strip-card]'))
+            .filter(Boolean) as HTMLElement[];
+          const rotTo = cards.map((c) => gsap.quickSetter(c, 'rotationY', 'deg'));
+          const zTo = cards.map((c) => gsap.quickSetter(c, 'z', 'px'));
+          const MAX_ROT = 32; // deg; flip the sign in corridor() if the room reads inside-out
+          const DEPTH = 260; // px behind the wall at the edges
+          const LIFT = 40; // px toward the viewer when a plate is the current step
+          const FALLOFF = 1.5; // plates of travel from face-on to fully turned
+          const clampN = gsap.utils.clamp(-1, 1);
+          let pinTween: gsap.core.Tween | null = null;
+          const corridor = () => {
+            if (!cards.length || !pinTween) return;
+            const p = pinTween.progress() * (N - 1);
+            for (let i = 0; i < cards.length; i++) {
+              const n = clampN((i - p) / FALLOFF);
+              rotTo[i](-n * MAX_ROT);
+              zTo[i](LIFT - Math.abs(n) * (DEPTH + LIFT));
+            }
+          };
+
+          pinTween = gsap.to(track, {
             x: () => -distance(),
             ease: 'none',
+            onUpdate: corridor,
             scrollTrigger: {
               trigger: section,
               start: 'top top',
@@ -1578,14 +1614,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               anticipatePin: 1,
               invalidateOnRefresh: true,
               onUpdate: (self) => { setCurrent(Math.round(self.progress * (N - 1))); develop(self.progress); },
+              // re-apply after refresh (the tween's playhead may have been re-derived)
+              onRefresh: () => corridor(),
             },
           });
           setCurrent(0); // lit before the first scroll frame, so the strip never reads all-dimmed
+          corridor(); // plates hang angled before the first scroll frame
 
           return () => {
             plates.forEach((p) => { p.classList.remove('is-current'); p.style.removeProperty('--develop'); });
             section.classList.remove('is-pinned');
             gsap.set(track, { clearProps: 'transform' });
+            // cards own no other channels, so clearing their whole transform is safe;
+            // the swipe fallback must get untouched cards
+            if (cards.length) gsap.set(cards, { clearProps: 'transform' });
           };
         });
         cleanups.push(() => mm.revert());
@@ -1728,6 +1770,58 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         });
       }
 
+      // ---- Hero 3D paper stack (data-scene-3d + data-scene-layer) ----
+      // The hero container is a perspective scene whose direct children are sheets
+      // of the catalogue at different depths. At REST everything sits at z:0 and
+      // rotation 0 (pixel-identical to the authored page, crisp type, the measured
+      // fold untouched). On fine pointers, entering the hero eases each layer out
+      // to its data-scene-layer z (title nearest, cover plate deepest) while the
+      // whole stack tilts toward the cursor; leaving settles back to exact identity.
+      // The differential motion between sheets is what reads as real 3D. z is each
+      // layer's NEW exclusive channel: it composes with the figure's scale (hero
+      // settle) and y (data-depth) because GSAP merges channels per element. The
+      // image-trail prints mount on the section (outside the scene) and stay at
+      // the screen plane on purpose.
+      function buildHeroScene() {
+        if (!fine.matches) return;
+        const scene = document.querySelector<HTMLElement>('[data-hero] [data-scene-3d]');
+        if (!scene) return;
+        const host = scene.closest<HTMLElement>('[data-hero]') as HTMLElement;
+        const persp = parseFloat(scene.dataset.scene3d || '') || 1300;
+        const layers = gsap.utils.toArray<HTMLElement>('[data-scene-layer]', scene);
+        gsap.set(host, { perspective: persp });
+        gsap.set(scene, { transformStyle: 'preserve-3d' });
+        const MAX = 2.2; // degrees; small enough that the flux chars stay legible mid-tilt
+        const rx = gsap.quickTo(scene, 'rotationX', { duration: 0.9, ease: 'power3' });
+        const ry = gsap.quickTo(scene, 'rotationY', { duration: 0.9, ease: 'power3' });
+        const zTos = layers.map((el) => gsap.quickTo(el, 'z', { duration: 0.8, ease: 'power3' }));
+        const depths = layers.map((el) => parseFloat(el.dataset.sceneLayer || '0') || 0);
+        const clamp = gsap.utils.clamp(-1, 1);
+        const enter = () => zTos.forEach((to, i) => to(depths[i]));
+        const move = (e: PointerEvent) => {
+          const r = host.getBoundingClientRect();
+          const nx = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
+          const ny = clamp((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
+          ry(nx * MAX); rx(ny * -MAX); // same sign convention as the plate tilt above
+        };
+        const leave = () => { rx(0); ry(0); zTos.forEach((to) => to(0)); };
+        host.addEventListener('pointerenter', enter);
+        host.addEventListener('pointermove', move, { passive: true });
+        host.addEventListener('pointerleave', leave);
+        cleanups.push(() => {
+          host.removeEventListener('pointerenter', enter);
+          host.removeEventListener('pointermove', move);
+          host.removeEventListener('pointerleave', leave);
+          gsap.set(scene, { clearProps: 'transform,transformStyle' });
+          gsap.set(host, { clearProps: 'perspective' });
+          // NEVER clearProps the layers: clearing any channel wipes the whole inline
+          // transform, stomping the figure's settle-scale / depth-y (their own
+          // cleanups handle those). Kill the z tweens and zero the channel instead.
+          layers.forEach((el) => gsap.killTweensOf(el, 'z'));
+          gsap.set(layers, { z: 0 });
+        });
+      }
+
       function buildLineMotion() {
         // Hero load timeline
         const hero = document.querySelector<HTMLElement>('[data-hero]');
@@ -1793,7 +1887,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         // so line breaks use final font metrics. Not built under reduced-motion, so
         // the parts stay at their visible CSS defaults.
         gsap.utils.toArray<HTMLElement>('[data-chapter]').forEach((ch) => {
-          const ghost = ch.querySelector<HTMLElement>('.chapter__ghost');
+          // Animate the INNER span when present: the outer .chapter__ghost is a
+          // data-depth sheet, and the depth tween's invalidateOnRefresh wipes any
+          // other transform channel armed on that same element at the
+          // ScrollTrigger.refresh() below (the entrance would silently lose its
+          // fold/scale/slide and keep only the fade).
+          const ghostOuter = ch.querySelector<HTMLElement>('.chapter__ghost');
+          const ghost = ghostOuter
+            ? ghostOuter.querySelector<HTMLElement>('.chapter__ghost-inner') || ghostOuter
+            : null;
           const kicker = ch.querySelector<HTMLElement>('.chapter__kicker');
           const title = ch.querySelector<HTMLElement>('.chapter__title');
           let split: any = null;
@@ -1806,7 +1908,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             // in at the end of the entrance. Without JS the CSS default 0 holds.
             gsap.set(title, { '--misreg': 1 });
           }
-          if (ghost) gsap.set(ghost, { autoAlpha: 0, scale: 1.16, xPercent: 8, transformOrigin: 'right center' });
+          // The ghost numeral folds in from a 3D turn (a sheet pivoting on its
+          // right edge); perspective on the band gives the fold depth. The
+          // timeline owns the ghost's whole transform and lands it at identity,
+          // so the stroked text ends crisp.
+          if (ghost) {
+            gsap.set(ch, { perspective: 800 });
+            gsap.set(ghost, { autoAlpha: 0, scale: 1.16, xPercent: 8, rotationY: 26, transformOrigin: 'right center' });
+            cleanups.push(() => gsap.set(ch, { clearProps: 'perspective' }));
+          }
           if (kicker) gsap.set(kicker, { autoAlpha: 0, y: 22 });
           ScrollTrigger.create({
             trigger: ch, start: 'top 80%', once: true,
@@ -1818,7 +1928,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
                 if (ghost) gsap.set(ghost, { willChange: 'auto' });
                 if (kicker) gsap.set(kicker, { willChange: 'auto' });
               } });
-              if (ghost) tl.to(ghost, { autoAlpha: 1, scale: 1, xPercent: 0, duration: 1.2, ease: 'power3.out' }, 0);
+              if (ghost) tl.to(ghost, { autoAlpha: 1, scale: 1, xPercent: 0, rotationY: 0, duration: 1.2, ease: 'power3.out' }, 0);
               if (kicker) tl.to(kicker, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.12);
               if (split) tl.to(split.lines, { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08, onComplete: () => unmaskLines(split) }, 0.2);
               // The ochre plate snaps into register just as the last line lands.
