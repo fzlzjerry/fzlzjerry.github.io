@@ -36,132 +36,179 @@ const projects = [
     </header>
 
     <section class="section" aria-label="Projects">
-      <ol class="proj-list" data-draw-rule>
+      <!-- Markup follows the homepage's developing-plate contract (.work-row /
+           __ghost / __title) so Layout.astro's data-work-list showpiece drives
+           the ghost numeral on hover. The page-scale plates below are unique to
+           this page; only the class contract is shared. -->
+      <ol class="work-list" data-work-list data-draw-rule>
         {projects.map((p, i) => (
           <li
-            class:list={['proj-row', p.featured && 'proj-row--featured']}
+            class:list={['work-row', 'plate-row', p.featured && 'plate-row--featured']}
             data-reveal
           >
-            <span class="proj-row__num index-num" data-scramble>{String(i + 1).padStart(2, '0')}</span>
-
-            <div class="proj-row__main">
-              <div class="proj-row__head">
-                <h2 class="proj-row__title">{p.title}</h2>
-                {p.featured && <span class="proj-row__flag label">Featured</span>}
+            <span class="work-row__ghost plate-row__ghost" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <a class="plate-row__link" href={p.github} target="_blank" rel="noopener">
+              <div class="plate-row__rail">
+                <span class="index-num" data-scramble>{String(i + 1).padStart(2, '0')}</span>
+                <span class="plate-row__year mono">{p.year}</span>
+                {p.featured && <span class="plate-row__flag label">Featured</span>}
               </div>
 
-              <p class="proj-row__desc">{p.description}</p>
+              <div class="plate-row__main">
+                <h2 class="work-row__title plate-row__title">{p.title}</h2>
+                <p class="plate-row__desc">{p.description}</p>
+                <span class="plate-row__tech mono" aria-label="Built with">
+                  {p.tech.join(' / ')}
+                </span>
+                <span class="plate-row__cta link-underline">View on GitHub</span>
+              </div>
 
-              <ul class="tag-list proj-row__tags" role="list">
-                {p.tech.map((t) => <li class="tag">{t}</li>)}
-              </ul>
-
-              <a
-                class="proj-row__link link-underline"
-                href={p.github}
-                target="_blank"
-                rel="noopener"
-              >
-                View on GitHub
-                <span class="proj-row__arrow" aria-hidden="true">↗</span>
-              </a>
-            </div>
-
-            <span class="proj-row__year mono">{p.year}</span>
+              <span class="plate-row__arrow" aria-hidden="true">↗</span>
+            </a>
           </li>
         ))}
       </ol>
+
+      <p class="archive-note" data-reveal>
+        <span class="archive-note__count mono" data-scramble>{String(projects.length).padStart(2, '0')}</span>
+        works on view. Forks, experiments and works in progress live in
+        <a class="link-ochre" href="https://github.com/fzlzjerry" target="_blank" rel="noopener">the GitHub archive ↗</a>
+      </p>
     </section>
   </div>
 </Layout>
 
 <style>
-  /* ---------- Projects index (typographic, no media) ---------- */
-  .proj-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  /* ---------- Catalogue plates (typographic; the numeral IS the plate) ---------- */
+  .work-list { list-style: none; margin: 0; padding: 0; }
+
+  .plate-row {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    transition: background-color var(--t-base) ease;
+  }
+  .plate-row:hover { background: var(--paper-sink); }
+
+  /* Oversized stroked numeral, revealed + cursor-drifted by Layout's
+     data-work-list wiring. CSS keeps it hidden so coarse pointers,
+     reduced-motion and no-JS never see a stray numeral. */
+  .plate-row__ghost {
+    position: absolute;
+    inset-block: 0;
+    right: clamp(0.5rem, 2vw, 4rem);
+    display: flex;
+    align-items: center;
+    font-family: 'Bricolage Grotesque', serif;
+    font-weight: 500;
+    font-size: clamp(9rem, 4rem + 22vw, 19rem);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1.25px var(--line-strong);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    will-change: transform, opacity;
   }
 
-  .proj-row {
+  .plate-row__link {
+    position: relative;
+    z-index: 1;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(7rem, 0.18fr) 1fr auto;
     align-items: start;
     gap: clamp(1rem, 0.5rem + 2vw, 3rem);
-    padding-block: clamp(2.25rem, 1.5rem + 3vw, 4rem);
-    border-bottom: 1px solid var(--line);
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  }
+  /* Ochre rule draws across the foot of the plate on hover. */
+  .plate-row__link::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--ochre);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .plate-row:hover .plate-row__link::after { transform: scaleX(1); }
+  /* Inset focus ring: the row's overflow:hidden would clip an outset ring. */
+  .plate-row__link:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 4px var(--ochre);
+    border-radius: 2px;
   }
 
-  .proj-row__num {
-    padding-top: 0.5rem;
-    font-size: var(--step-0);
-  }
-
-  .proj-row__main { min-width: 0; }
-
-  .proj-row__head {
+  .plate-row__rail {
     display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.1rem;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding-top: 0.6rem;
   }
+  .plate-row__year { color: var(--ink-faint); font-size: 0.8rem; letter-spacing: 0.04em; }
+  .plate-row__flag { color: var(--ochre); }
 
-  .proj-row__title {
-    font-size: var(--step-3);
+  .plate-row__main { min-width: 0; }
+  .plate-row__title {
+    font-size: var(--step-4);
     line-height: 1;
     letter-spacing: -0.03em;
+    transition: color var(--t-base) ease;
   }
-
-  .proj-row__flag { color: var(--ochre); }
-
-  .proj-row__desc {
-    margin-top: clamp(0.85rem, 0.5rem + 1vw, 1.4rem);
+  .plate-row__desc {
+    margin-top: clamp(1rem, 0.6rem + 1vw, 1.5rem);
     color: var(--ink-soft);
-    max-width: 58ch;
+    max-width: 56ch;
     line-height: 1.6;
     font-size: var(--step-0);
   }
-
-  .proj-row__tags { margin-top: clamp(1rem, 0.75rem + 1vw, 1.6rem); }
-
-  .proj-row__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45em;
-    margin-top: clamp(1.25rem, 1rem + 1vw, 2rem);
-    font-size: var(--step-0);
-  }
-
-  .proj-row__arrow {
-    font-size: 1.05em;
-    transition: transform var(--t-base) var(--ease-out);
-  }
-  .proj-row__link:hover .proj-row__arrow { transform: translate(3px, -3px); }
-
-  .proj-row__year {
-    padding-top: 0.55rem;
+  .plate-row__tech {
+    display: block;
+    margin-top: clamp(1rem, 0.75rem + 1vw, 1.6rem);
     color: var(--ink-faint);
-    font-size: 0.8rem;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
+  .plate-row__cta {
+    display: inline-block;
+    margin-top: clamp(1.25rem, 1rem + 1vw, 2rem);
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .plate-row__arrow {
+    font-size: 1.5rem;
+    color: var(--ink-ghost);
+    padding-top: 0.4rem;
+    transition: transform var(--t-base) var(--ease-out), color var(--t-base) ease;
+  }
+  .plate-row:hover .plate-row__title { color: var(--ochre); }
+  .plate-row:hover .plate-row__arrow { transform: translate(4px, -4px); color: var(--ochre); }
 
-  /* Featured: more weight via scale + breathing room, never a colored stripe */
-  .proj-row--featured {
-    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
-  }
-  .proj-row--featured .proj-row__title { font-size: var(--step-4); }
-  .proj-row--featured .proj-row__desc {
+  /* Featured: weight via scale and air, never a stripe or fill. */
+  .plate-row--featured .plate-row__title { font-size: var(--step-5); }
+  .plate-row--featured .plate-row__desc {
     font-size: var(--step-1);
     color: var(--ink);
-    max-width: 50ch;
+    max-width: 48ch;
   }
 
-  @media (max-width: 600px) {
-    .proj-row { grid-template-columns: auto 1fr; }
-    .proj-row__year {
-      grid-column: 2;
-      padding-top: 0.25rem;
-    }
+  /* Closing beat: the catalogue points at the archive instead of just stopping. */
+  .archive-note {
+    margin-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+    color: var(--ink-soft);
+    font-size: var(--step-0);
+    max-width: 52ch;
+    line-height: 1.7;
+  }
+  .archive-note__count { color: var(--ochre); margin-right: 0.35rem; }
+
+  @media (max-width: 700px) {
+    .plate-row__link { grid-template-columns: 1fr; gap: 1.1rem; }
+    .plate-row__rail { flex-direction: row; align-items: baseline; gap: 1rem; padding-top: 0; }
+    .plate-row__arrow { display: none; }
+    .plate-row__ghost { display: none; }
   }
 </style>

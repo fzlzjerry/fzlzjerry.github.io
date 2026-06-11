@@ -10,6 +10,10 @@ const latestPost = allPosts.sort((a, b) =>
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
+// Reading time from the real post body (~200 wpm), shown in the plate's mono rail.
+const postWords = latestPost ? latestPost.body.split(/\s+/).filter(Boolean).length : 0;
+const postReadMins = Math.max(1, Math.round(postWords / 200));
+
 const projects = [
   {
     title: 'Windows 12 Web',
@@ -55,13 +59,6 @@ const awards = [
     doc: '/certificates/16400.pdf',
     docLabel: 'Doc. 16400',
   },
-];
-
-const galleryTeaser = [
-  { src: '/gallery/Paris_Louvre-Coronation-of-Napoleon.webp', alt: 'The Coronation of Napoleon hanging in the Louvre', place: 'Louvre, Paris', span: 'wide' },
-  { src: '/gallery/Paris_Sacre-Coeur-Basilica.webp', alt: 'Sacré-Cœur Basilica above Montmartre', place: 'Montmartre, Paris', span: 'tall' },
-  { src: '/gallery/Skiing_Summit-Mountain-Panorama.webp', alt: 'Mountain summit panorama under blue sky', place: 'Beidahu, Jilin', span: 'wide' },
-  { src: '/gallery/Paris_Eiffel-Tower-Dusk-Seine.webp', alt: 'The Eiffel Tower at dusk over the Seine', place: 'Seine, Paris', span: 'tall' },
 ];
 
 // Cursor image-trail: real frames that flick out as the pointer sweeps the hero.
@@ -377,6 +374,7 @@ const filmstripPlates = [
           <div class="feature-post__rail">
             <span class="feature-post__fraction index-num">01 / 01</span>
             <time class="feature-post__date mono" datetime={latestPost.data.date}>{fmtDate(latestPost.data.date)}</time>
+            <span class="feature-post__read mono">{postReadMins} min read</span>
             {latestPost.data.category && <span class="feature-post__cat label">{latestPost.data.category}</span>}
           </div>
           <div class="feature-post__main">
@@ -434,6 +432,8 @@ const filmstripPlates = [
   /* ---------- HERO ---------- */
   .hero { position: relative; padding-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); padding-bottom: clamp(2rem, 1rem + 3vw, 4rem); }
   .hero__top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  /* On narrow screens the long edition label wraps; balance it so no word orphans. */
+  .hero__top .label { text-wrap: balance; }
   .hero .rule { margin-bottom: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
   .hero__title {
     font-size: var(--step-6);
@@ -464,6 +464,17 @@ const filmstripPlates = [
     .hero__row { grid-template-columns: 1.1fr 0.9fr; align-items: end; margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.5rem); }
     .hero__title { font-size: var(--step-6); margin-bottom: clamp(1rem, 0.5rem + 1.5vw, 2rem); }
     .hero__media { aspect-ratio: 16 / 8; max-height: min(44vh, 32rem); }
+  }
+  @media (min-width: 900px) and (max-height: 980px) {
+    /* Short laptop viewports: the cover plate is the signature reveal, so the whole
+       plate (wall label included) must land above the fold. Measured at 1440x900:
+       the generous rhythm above leaves the hero ~140px past the fold; this shaves
+       exactly that from the gaps and lets the photo carry the saved height. */
+    .hero { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .hero .rule { margin-bottom: 0.875rem; }
+    .hero__title { font-size: calc(var(--step-6) * 0.92); margin-bottom: 1rem; }
+    .hero__row { margin-bottom: 1.5rem; }
+    .hero__media { max-height: 38vh; }
   }
 
   /* ---------- 01 PROFILE ---------- */
@@ -529,7 +540,9 @@ const filmstripPlates = [
     position: absolute; inset-block: 0; right: clamp(0.5rem, 3vw, 5rem);
     display: flex; align-items: center;
     font-family: 'Bricolage Grotesque', serif; font-weight: 500;
-    font-size: clamp(6rem, 3rem + 18vw, 18rem); line-height: 0.8; letter-spacing: -0.05em;
+    /* Sized to sit fully inside the band: a clipped mid-stroke reads as a layout
+       bug, a whole folio numeral reads as set type. */
+    font-size: clamp(6rem, 3rem + 15vw, 15rem); line-height: 1; letter-spacing: -0.05em;
     color: transparent; -webkit-text-stroke: 1.5px var(--line-strong);
     pointer-events: none; user-select: none; z-index: 0;
   }
@@ -718,8 +731,10 @@ const filmstripPlates = [
   .feature-post__rail { display: flex; flex-direction: column; gap: 0.55rem; }
   .feature-post__fraction { color: var(--ochre); }
   .feature-post__date { color: var(--ink-faint); font-size: 0.8rem; }
+  .feature-post__read { color: var(--ink-faint); font-size: 0.8rem; }
   .feature-post__cat { color: var(--ochre); }
-  .feature-post__title { font-size: var(--step-3); margin: 0 0 1rem; max-width: 20ch; transition: color var(--t-base) ease; }
+  /* The post has no photograph, so the title IS the plate: display scale, set wide. */
+  .feature-post__title { font-size: var(--step-4); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 1.25rem; max-width: 24ch; transition: color var(--t-base) ease; }
   .feature-post__excerpt { color: var(--ink-soft); max-width: 60ch; line-height: 1.6; margin-bottom: 1.5rem; }
   .feature-post__cta { font-size: 0.95rem; color: var(--ink); }
   .feature-post:hover .feature-post__title { color: var(--ochre); }
