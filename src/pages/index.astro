@@ -147,7 +147,7 @@ const filmstripPlates = [
         </dl>
       </div>
 
-      <figure class="hero__media media-frame" data-hero-media data-halftone>
+      <figure class="hero__media media-frame" data-hero-media data-halftone data-depth="0.97">
         <img data-parallax="6" src="/gallery/Paris_Montmartre-Panoramic-View.webp" alt="The rooftops of Paris seen from the steps of Montmartre" loading="eager" />
         <figcaption class="wall-label">
           <span class="index-num">Cover</span>
@@ -179,7 +179,7 @@ const filmstripPlates = [
               with a camera. Most of what I make ends up open source.
             </p>
           </div>
-          <dl class="profile__facts" data-stagger>
+          <dl class="profile__facts" data-stagger data-depth="0.97">
             <div>
               <dt class="label">Currently building</dt>
               <dd><a class="link-underline" href="https://github.com/tjy-gitnub/win12" target="_blank" rel="noopener noreferrer">Windows 12 Web</a></dd>
@@ -210,8 +210,8 @@ const filmstripPlates = [
   </section>
 
   <!-- keyword marquee -->
-  <div class="marquee strip" aria-hidden="true">
-    <div class="marquee__track" data-marquee="36">
+  <div class="marquee strip" aria-hidden="true" data-depth="0.94">
+    <div class="marquee__track" data-marquee="48">
       {Array.from({ length: 2 }).map(() => (
         <span class="strip__inner">
           {['Developer', 'Economics', 'Open Source', 'Machine Learning', 'Mathematics', 'Python', 'C++', 'Rust', 'Photography'].map((w) => (
@@ -256,7 +256,10 @@ const filmstripPlates = [
   </section>
 
   <!-- ===================== 03 · RECOGNITION ===================== -->
-  <section class="section" aria-labelledby="rec-h" data-movement="On the record">
+  <section class="section record" aria-labelledby="rec-h" data-movement="On the record">
+    <!-- Folio numeral on the sheet beneath: the record movement is the densest text
+         plate, so its backdrop drifts at 0.94x and the ledger reads as laid over it. -->
+    <span class="record-ghost" aria-hidden="true" data-depth="0.94">03</span>
     <div class="container">
       <div class="section-head section-head--split">
         <div>
@@ -303,7 +306,7 @@ const filmstripPlates = [
 
   <!-- ===================== 04 · THROUGH THE LENS ===================== -->
   <aside class="chapter" aria-hidden="true" data-chapter>
-    <span class="chapter__ghost">04</span>
+    <span class="chapter__ghost" data-depth="0.96">04</span>
     <div class="container chapter__body">
       <span class="chapter__kicker label">Movement</span>
       <span class="chapter__title">The photographs</span>
@@ -348,7 +351,7 @@ const filmstripPlates = [
          touch / no-WebGL just shows the static colour proof. -->
     <div class="container lens-coda">
       <p class="lens-coda__lead" data-reveal>The same set, printed as a proof.<span class="contact-sheet__hint"> Pass the loupe across to develop a frame.</span></p>
-      <figure class="contact-sheet media-frame" data-loupe>
+      <figure class="contact-sheet media-frame" data-loupe data-depth="1.04">
         <img src="/contact-sheet.webp" alt="A contact sheet of twelve frames from Paris and the slopes of Jilin, printed as a proof" loading="lazy" decoding="async" width="1600" height="1042" />
         <figcaption class="wall-label">
           <span class="index-num">Proof</span>
@@ -371,7 +374,7 @@ const filmstripPlates = [
         </div>
 
         <a class="feature-post" href={`/blog/${latestPost.slug}`} data-reveal data-draw-rule>
-          <div class="feature-post__rail">
+          <div class="feature-post__rail" data-depth="0.95">
             <span class="feature-post__fraction index-num">01 / 01</span>
             <time class="feature-post__date mono" datetime={latestPost.data.date}>{fmtDate(latestPost.data.date)}</time>
             <span class="feature-post__read mono">{postReadMins} min read</span>
@@ -389,7 +392,7 @@ const filmstripPlates = [
 
   <!-- ===================== 06 · CONTACT ===================== -->
   <aside class="chapter" aria-hidden="true" data-chapter>
-    <span class="chapter__ghost">06</span>
+    <span class="chapter__ghost" data-depth="0.96">06</span>
     <div class="container chapter__body">
       <span class="chapter__kicker label">Movement</span>
       <span class="chapter__title">In closing</span>
@@ -409,17 +412,17 @@ const filmstripPlates = [
   >
     <!-- Print registration crosses: the closing plate "goes to press" as it enters.
          Static full crosses without JS / under reduced-motion (CSS default --reg:1). -->
-    <span class="contact__regmark contact__regmark--tl" aria-hidden="true"></span>
-    <span class="contact__regmark contact__regmark--tr" aria-hidden="true"></span>
-    <span class="contact__regmark contact__regmark--bl" aria-hidden="true"></span>
-    <span class="contact__regmark contact__regmark--br" aria-hidden="true"></span>
+    <span class="contact__regmark contact__regmark--tl" aria-hidden="true" data-depth="0.97"></span>
+    <span class="contact__regmark contact__regmark--tr" aria-hidden="true" data-depth="0.97"></span>
+    <span class="contact__regmark contact__regmark--bl" aria-hidden="true" data-depth="0.97"></span>
+    <span class="contact__regmark contact__regmark--br" aria-hidden="true" data-depth="0.97"></span>
     <div class="container">
       <div class="section-head">
         <span class="index-num" data-scramble>06</span>
         <span class="label" data-scramble>Contact</span>
       </div>
-      <h2 class="contact__title" id="contact-h" data-reveal-lines data-flux>Let's build something.</h2>
-      <svg class="contact__underline" viewBox="0 0 320 22" fill="none" aria-hidden="true" preserveAspectRatio="none">
+      <h2 class="contact__title" id="contact-h" data-reveal-lines data-flux data-depth="1.02">Let's build something.</h2>
+      <svg class="contact__underline" viewBox="0 0 320 22" fill="none" aria-hidden="true" preserveAspectRatio="none" data-depth="1.02">
         <path data-draw-svg d="M5 13 C 60 4, 120 19, 175 11 S 270 5, 315 13" stroke-width="3" stroke-linecap="round" />
       </svg>
       <p class="contact__body" data-reveal>
@@ -502,15 +505,19 @@ const filmstripPlates = [
 
   /* ---------- marquee strip ---------- */
   .strip {
-    border-block: 1px solid var(--line); padding-block: 1.1rem;
+    border-block: 1px solid var(--line); padding-block: 1.4rem;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
   }
   .strip__inner { display: inline-flex; align-items: center; }
+  /* Display scale, not body scale: this is the page's only full-bleed typographic
+     interstitial, and the velocity skew + press surge only register at this size. */
   .strip__item {
     display: inline-flex; align-items: center;
     font-family: 'Bricolage Grotesque', serif;
-    font-size: clamp(1.1rem, 0.9rem + 1vw, 1.8rem);
+    font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.4rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
     color: var(--ink);
     padding-inline: 1.4rem;
     white-space: nowrap;
@@ -646,12 +653,33 @@ const filmstripPlates = [
     padding-block: clamp(0.85rem, 0.6rem + 0.6vw, 1.2rem);
     border-bottom: 1px solid var(--line);
   }
+  /* Folio numeral behind the record: same stroked-outline voice as the chapter
+     ghosts, quieter (0.5), drifting on the sheet beneath via data-depth. The
+     container carries z-index:1 so the census/ledger always read over it. */
+  .record { position: relative; }
+  .record .container { position: relative; z-index: 1; }
+  .record-ghost {
+    position: absolute; top: 0; right: -1rem;
+    font-family: 'Bricolage Grotesque', serif; font-weight: 500;
+    font-size: clamp(8rem, 4rem + 12vw, 14rem); line-height: 1; letter-spacing: -0.05em;
+    color: transparent; -webkit-text-stroke: 1.5px var(--line-strong);
+    opacity: 0.5; pointer-events: none; user-select: none; z-index: 0;
+  }
+  @media (max-width: 1023.5px) {
+    .record-ghost { display: none; }
+  }
+
   .census__num { flex: none; }
   .census__label { flex: none; color: var(--ink); }
   .census__leader { flex: 1 1 auto; min-width: 2rem; border-bottom: 1px dotted var(--line-strong); transform: translateY(-0.28em); opacity: 0.7; }
+  /* Specimen-scale figures: the census is the proof-of-record movement, so the
+     counted numerals carry display weight (the count-up becomes a watched moment). */
   .census__value {
-    flex: none; font-family: 'Bricolage Grotesque', serif; font-size: var(--step-2);
+    flex: none; font-family: 'Bricolage Grotesque', serif; font-size: var(--step-4);
     line-height: 1; color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 640px) {
+    .census__value { font-size: var(--step-3); }
   }
   .census__suffix { color: var(--ochre); font-size: 0.55em; vertical-align: super; margin-left: 0.08em; }
 
@@ -715,9 +743,17 @@ const filmstripPlates = [
     .filmstrip.is-pinned .filmstrip__plate .wall-label { opacity: var(--develop, 1); }
     /* Guided gallery walk: the centred plate is lit and lifted; neighbours recede.
        Opacity + box-shadow only (the plate owns velocity-skew, the frame owns tilt). */
-    .filmstrip.is-pinned .filmstrip__plate { opacity: 0.72; transition: opacity 0.55s var(--ease-out); }
-    .filmstrip.is-pinned .filmstrip__plate.is-current { opacity: 1; }
-    .filmstrip.is-pinned .filmstrip__plate .media-frame { transition: box-shadow 0.55s var(--ease-out); }
+    /* The current plate is the lit print on the wall: neighbours genuinely recede
+       (opacity alone read as nearly nothing). filter is unowned here: velocity-skew
+       owns the plate transform, tilt owns the frame transform, --develop owns clip. */
+    .filmstrip.is-pinned .filmstrip__plate { opacity: 0.5; filter: saturate(0.55); transition: opacity 0.55s var(--ease-out), filter 0.55s var(--ease-out); }
+    .filmstrip.is-pinned .filmstrip__plate.is-current { opacity: 1; filter: none; }
+    /* Hung gallery wall: a real wall is never one straight rail. Alternating
+       paint-time offsets (position, not transform: skew/tilt/track own those)
+       plus a near-wall resting shadow that grades up when a plate is lit. */
+    .filmstrip.is-pinned .filmstrip__plate:nth-child(odd) { position: relative; top: -1.25rem; }
+    .filmstrip.is-pinned .filmstrip__plate:nth-child(even) { position: relative; top: 1.25rem; }
+    .filmstrip.is-pinned .filmstrip__plate .media-frame { box-shadow: var(--shadow-2); transition: box-shadow 0.55s var(--ease-out); }
     .filmstrip.is-pinned .filmstrip__plate.is-current .media-frame { box-shadow: var(--shadow-4); }
     .filmstrip.is-pinned .filmstrip__hud {
       display: inline-flex; gap: 0.85rem; align-items: baseline;

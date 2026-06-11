@@ -778,6 +778,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         buildImageTrail();
         buildPinGallery();
+        // depth sheets AFTER the pin: ScrollTriggers refresh in creation order,
+        // so triggers below the filmstrip only see its pin-spacer offset if the
+        // pin exists first (else every lower sheet's window lands ~3200px high)
+        buildDepth();
         buildWorkShowpiece();
         buildVelocitySkew();
         buildMovementIndex();
@@ -785,6 +789,49 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         buildRegistration();
         buildLoupe();
         buildPressFinale();
+      }
+
+      // ---- Depth sheets: scroll-rate layering (data-depth) ----
+      // A unitless rate relative to page scroll: r < 1 = a farther sheet (it
+      // enters the viewport early, lags downward, exits late), r > 1 = a
+      // nearer sheet that sweeps past faster. y reads exactly 0 when the
+      // scope's centre crosses the viewport centre, so the layout is true
+      // while you look at it. Elements sharing one scope ancestor drift as a
+      // single rigid sheet (the contact regmarks). Owns ONLY the y px channel:
+      // composes with owners of scale (hero settle), clip-path, xPercent /
+      // yPercent (img parallax, split lines), skewX (velocity), rotation
+      // (tilt), CSS vars and textContent. Never tag a node whose y a tween
+      // owns (data-reveal, stagger children, data-hero-item), and never
+      // inside the pinned filmstrip (guarded here).
+      function buildDepth() {
+        const els = gsap.utils
+          .toArray<HTMLElement>('[data-depth]')
+          .filter((el) => !el.closest('[data-pin-section]'));
+        if (!els.length) return;
+        const mm = gsap.matchMedia();
+        mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+          const tws = els.map((el) => {
+            const r = parseFloat(el.dataset.depth || '') || 0.96;
+            // figure-first scoping: tagged figures / bands / the marquee strip
+            // self-scope (their own transit is the sheet's transit); loose
+            // marks scope to their section so siblings share one trigger.
+            const scope = (el.closest('figure, aside, .strip, section') as HTMLElement) || el;
+            const drift = () => (1 - r) * (window.innerHeight + scope.offsetHeight) * 0.5;
+            return gsap.fromTo(el, { y: () => -drift() }, {
+              y: () => drift(),
+              ease: 'none',
+              scrollTrigger: {
+                trigger: scope, start: 'top bottom', end: 'bottom top',
+                scrub: true, invalidateOnRefresh: true,
+              },
+            });
+          });
+          return () => {
+            tws.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); });
+            gsap.set(els, { clearProps: 'y' });
+          };
+        });
+        cleanups.push(() => mm.revert());
       }
 
       // ---- Press finale: the catalogue goes to press (movement 06) ----
@@ -1557,7 +1604,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           const ghost = row.querySelector<HTMLElement>('.work-row__ghost');
           const title = row.querySelector<HTMLElement>('.work-row__title');
           if (!ghost) return;
-          gsap.set(ghost, { scale: 0.92, autoAlpha: 0 });
+          // Rest-state print-through: the numeral shows faintly behind the row
+          // (a back sheet through the paper); hover pulls that sheet forward.
+          gsap.set(ghost, { scale: 0.95, autoAlpha: 0.22 });
           const gx = gsap.quickTo(ghost, 'x', { duration: 0.8, ease: 'power3' });
           const gy = gsap.quickTo(ghost, 'y', { duration: 0.8, ease: 'power3' });
           const tx = title ? gsap.quickTo(title, 'x', { duration: 0.6, ease: 'power3' }) : null;
@@ -1570,7 +1619,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             if (tx) tx(nx * 10);
           };
           const leave = () => {
-            gsap.to(ghost, { autoAlpha: 0, scale: 0.92, duration: 0.5, ease: 'power2.out' });
+            gsap.to(ghost, { autoAlpha: 0.22, scale: 0.95, duration: 0.5, ease: 'power2.out' });
             gx(0); gy(0); if (tx) tx(0);
           };
           row.addEventListener('mouseenter', enter);
