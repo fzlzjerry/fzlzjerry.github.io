@@ -11,10 +11,29 @@ interface Props {
   title: string;
   description?: string;
   fullWidth?: boolean;
+  /** Share-card image. Root-relative path or absolute URL; resolved to absolute for og:image.
+      Must be a 1200x630 PNG/JPEG (not WebP: social scrapers don't render it). Built by
+      `node scripts/build-og.mjs`. Defaults to the catalogue cover plate. */
+  image?: string;
+  imageAlt?: string;
+  /** og:type — 'website' (default) for pages, 'article' for blog posts. */
+  ogType?: 'website' | 'article';
+  /** ISO date; emitted as article:published_time when ogType is 'article'. */
+  publishedTime?: string;
 }
 
-const { title, description = "Student developer and economics enthusiast. Software, markets, and a camera.", fullWidth = false } = Astro.props;
+const {
+  title,
+  description = "Student developer and economics enthusiast. Software, markets, and a camera.",
+  fullWidth = false,
+  image = '/og/cover.jpg',
+  imageAlt = 'Morax Cheng, student developer and economics enthusiast. A warm-paper catalogue cover plate.',
+  ogType = 'website',
+  publishedTime,
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Scrapers require an absolute URL; resolve the (possibly root-relative) image against the site origin.
+const ogImageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -30,11 +49,28 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
 
-    <meta property="og:type" content="website" />
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Morax Cheng" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {ogType === 'article' && <meta property="article:author" content="Morax Cheng" />}
+
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <ClientRouter />
     <Analytics />

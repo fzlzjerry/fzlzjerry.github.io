@@ -12,6 +12,9 @@ const blog = defineCollection({
     institution: z.string().optional(),
     department: z.string().optional(),
     excerpt: z.string().optional(),
+    // Per-post share card built by scripts/build-og.mjs, e.g. /og/<slug>.jpg.
+    // Omit to fall back to the site cover plate. Must be 1200x630 PNG/JPEG.
+    ogImage: z.string().optional(),
   }),
 });
 

@@ -29,7 +29,14 @@ const { title, category, authors, professor, institution, department, tags } = p
 const hasByline = (authors && authors.length) || institution || department || professor;
 ---
 
-<Layout title={`${post.data.title} - Morax Cheng`} description={post.data.excerpt}>
+<Layout
+  title={`${post.data.title} - Morax Cheng`}
+  description={post.data.excerpt}
+  ogType="article"
+  image={post.data.ogImage}
+  imageAlt={post.data.title}
+  publishedTime={post.data.date}
+>
   <!-- KaTeX is only needed for math in long-form posts, so it loads here, not site-wide -->
   <link
     slot="head"
