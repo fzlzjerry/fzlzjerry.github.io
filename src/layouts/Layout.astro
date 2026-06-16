@@ -121,6 +121,12 @@ const ogImageURL = new URL(image, Astro.site);
         --panel-hover: oklch(0.928 0.017 81);
         --code-bg:     oklch(0.258 0.016 74);
 
+        /* Scrims — warm dark veils behind overlays (one source for every modal/drawer).
+           --scrim is the opaque image-lightbox veil; --scrim-soft is the lighter
+           palette/drawer veil that lets the paper read through. */
+        --scrim:      oklch(0.2 0.01 70 / 0.86);
+        --scrim-soft: oklch(0.2 0.01 70 / 0.5);
+
         /* Warm elevation — one ink-tinted shadow color, layered as a tight contact
            plus a soft ambient so a lifted plate reads off the paper the way a real
            print sits in a mount. One scale replaces the ad-hoc per-page drop shadows
@@ -2230,30 +2236,86 @@ const ogImageURL = new URL(image, Astro.site);
       // Non-motion page chrome (mobile menu, copy buttons)
       // ============================================================
       function setupChrome() {
-        // Mobile menu
+        // Mobile menu (modal drawer). The header is transition:persist, so its nodes
+        // outlive page swaps; we tear down the previous wiring before re-binding to
+        // avoid stacking listeners, rather than cloning the toggle.
+        if ((window as any).__menuCleanup) { (window as any).__menuCleanup(); (window as any).__menuCleanup = null; }
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
+        const mobileScrim = document.getElementById('mobile-scrim');
         if (menuToggle && mobileMenu) {
-          const fresh = menuToggle.cloneNode(true) as HTMLElement;
-          menuToggle.parentNode?.replaceChild(fresh, menuToggle);
-          const openIcon = fresh.querySelector('.menu-open');
-          const closeIcon = fresh.querySelector('.menu-close');
-          fresh.addEventListener('click', () => {
-            const open = mobileMenu.classList.toggle('is-open');
-            fresh.setAttribute('aria-expanded', open ? 'true' : 'false');
+          const openIcon = menuToggle.querySelector('.menu-open');
+          const closeIcon = menuToggle.querySelector('.menu-close');
+          const menuCloseBtn = mobileMenu.querySelector<HTMLElement>('[data-menu-close]');
+          const menuSearchBtn = mobileMenu.querySelector<HTMLElement>('[data-menu-search]');
+          const navLinks = mobileMenu.querySelectorAll<HTMLElement>('a.mobile-link');
+
+          const removers: Array<() => void> = [];
+          const on = (el: EventTarget, type: string, fn: EventListener) => {
+            el.addEventListener(type, fn);
+            removers.push(() => el.removeEventListener(type, fn));
+          };
+
+          const isMenuOpen = () => mobileMenu.classList.contains('is-open');
+          const setIcons = (open: boolean) => {
             openIcon?.classList.toggle('hidden', open);
             closeIcon?.classList.toggle('hidden', !open);
-          });
-        }
-        const onOutside = (e: Event) => {
-          const mm = document.getElementById('mobile-menu');
-          const mt = document.getElementById('menu-toggle');
-          if (mm && mm.classList.contains('is-open') && !mm.contains(e.target as Node) && !mt?.contains(e.target as Node)) {
-            mm.classList.remove('is-open');
+          };
+
+          // Keep Tab within the open drawer.
+          const trapMenu = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab') return;
+            const f = mobileMenu.querySelectorAll<HTMLElement>('a[href], button');
+            if (!f.length) return;
+            const first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+          };
+          const escMenu = (e: KeyboardEvent) => { if (e.key === 'Escape' && isMenuOpen()) closeMenu(); };
+
+          function openMenu() {
+            mobileMenu!.classList.add('is-open');
+            mobileScrim?.classList.add('is-open');
+            menuToggle!.setAttribute('aria-expanded', 'true');
+            setIcons(true);
+            document.body.style.overflow = 'hidden';
+            document.addEventListener('keydown', escMenu);
+            mobileMenu!.addEventListener('keydown', trapMenu as EventListener);
+            setTimeout(() => menuCloseBtn?.focus(), 60);
           }
-        };
-        document.removeEventListener('click', onOutside);
-        document.addEventListener('click', onOutside);
+          function closeMenu(restore = true) {
+            if (!isMenuOpen()) return;
+            mobileMenu!.classList.remove('is-open');
+            mobileScrim?.classList.remove('is-open');
+            menuToggle!.setAttribute('aria-expanded', 'false');
+            setIcons(false);
+            document.body.style.overflow = '';
+            document.removeEventListener('keydown', escMenu);
+            mobileMenu!.removeEventListener('keydown', trapMenu as EventListener);
+            if (restore) menuToggle!.focus();
+          }
+
+          on(menuToggle, 'click', () => { isMenuOpen() ? closeMenu() : openMenu(); });
+          if (menuCloseBtn) on(menuCloseBtn, 'click', () => closeMenu());
+          if (mobileScrim) on(mobileScrim, 'click', () => closeMenu());
+          if (menuSearchBtn) on(menuSearchBtn, 'click', () => {
+            closeMenu();
+            document.dispatchEvent(new CustomEvent('open-command-palette'));
+          });
+          navLinks.forEach((lnk) => on(lnk, 'click', () => closeMenu(false)));
+
+          // Click outside the drawer (and not on the toggle) closes it.
+          on(document, 'click', (e) => {
+            if (isMenuOpen() && !mobileMenu.contains(e.target as Node) && !menuToggle.contains(e.target as Node)) closeMenu();
+          });
+
+          // On the next swap/teardown, drop all listeners and release the scroll lock.
+          (window as any).__menuCleanup = () => {
+            removers.forEach((fn) => fn());
+            document.removeEventListener('keydown', escMenu);
+            document.body.style.overflow = '';
+          };
+        }
 
         // Copy-code buttons
         document.querySelectorAll('pre').forEach((pre) => {

@@ -64,7 +64,7 @@ const elsewhere = [
       <p class="mono text-[0.72rem] tracking-wide text-ink-faint">
         © {currentYear} Morax Cheng. Set in Bricolage Grotesque &amp; Hanken Grotesk. Built with Astro and GSAP.
       </p>
-      <a href="#top" class="mono text-[0.72rem] tracking-wide text-ink-faint hover:text-accent transition-colors inline-flex items-center gap-2" onclick="event.preventDefault(); window.scrollTo({top:0, behavior:'smooth'});">
+      <a href="#top" class="mono text-[0.72rem] tracking-wide text-ink-faint hover:text-accent transition-colors inline-flex items-center gap-2" onclick="event.preventDefault(); window.scrollTo({top:0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});">
         Back to top <span aria-hidden="true">↑</span>
       </a>
     </div>

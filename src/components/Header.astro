@@ -68,13 +68,16 @@ const isActive = (href: string) => {
     </button>
   </nav>
 
+  <!-- Mobile drawer scrim: warm veil behind the panel; tap to close -->
+  <div id="mobile-scrim" class="mobile-scrim md:hidden" aria-hidden="true"></div>
+
   <!-- Mobile panel -->
-  <div id="mobile-menu" class="mobile-panel md:hidden" role="dialog" aria-label="Mobile navigation" aria-modal="false">
+  <div id="mobile-menu" class="mobile-panel md:hidden" role="dialog" aria-label="Mobile navigation" aria-modal="true">
     <div class="flex items-center justify-between px-6 h-[4.25rem] border-b border-border-subtle">
       <span class="label">Index</span>
       <button
-        class="text-ink-faint hover:text-ink transition-colors w-8 h-8 flex items-center justify-center"
-        onclick="document.getElementById('mobile-menu').classList.remove('is-open'); document.getElementById('menu-toggle')?.setAttribute('aria-expanded','false'); document.querySelector('.menu-open')?.classList.remove('hidden'); document.querySelector('.menu-close')?.classList.add('hidden');"
+        class="text-ink-faint hover:text-ink transition-colors w-11 h-11 -mr-2 flex items-center justify-center"
+        data-menu-close
         aria-label="Close menu"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -96,7 +99,7 @@ const isActive = (href: string) => {
       <li>
         <button
           class="mobile-link w-full text-left"
-          onclick="document.dispatchEvent(new CustomEvent('open-command-palette')); document.getElementById('mobile-menu').classList.remove('is-open');"
+          data-menu-search
         >
           <span class="index-num">⌘</span>
           <span>Search</span>
@@ -154,6 +157,21 @@ const isActive = (href: string) => {
     padding: 0.05rem 0.3rem;
   }
 
+  .mobile-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    background: var(--scrim-soft);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 420ms var(--ease-out), visibility 0s linear 420ms;
+  }
+  .mobile-scrim.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 420ms var(--ease-out), visibility 0s;
+  }
+
   .mobile-panel {
     position: fixed;
     top: 0; right: 0;
@@ -171,6 +189,10 @@ const isActive = (href: string) => {
     transform: translateX(0);
     visibility: visible;
     transition: transform 420ms var(--ease-out), visibility 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-scrim { transition: opacity 0.01ms; }
   }
   .mobile-link {
     display: flex;

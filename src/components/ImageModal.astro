@@ -9,8 +9,7 @@ const { id } = Astro.props;
 <div
   id={id}
   class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"
-  style="background-color: oklch(0.2 0.01 70 / 0.86);"
-  onclick="if (event.target === this) { this.classList.add('hidden'); this.classList.remove('flex'); }"
+  style="background-color: var(--scrim);"
   role="dialog"
   aria-modal="true"
   aria-labelledby={`${id}-title`}
@@ -18,7 +17,6 @@ const { id } = Astro.props;
   <div class="modal-content w-full max-w-4xl">
     <div class="relative bg-paper border border-border-strong rounded-card overflow-hidden">
       <button
-        onclick="this.closest('.modal').classList.add('hidden'); this.closest('.modal').classList.remove('flex');"
         class="close-btn absolute top-3 right-3 z-10 flex items-center justify-center w-10 h-10 rounded-card bg-paper border border-border-strong text-ink-faint transition-colors hover:text-accent hover:border-accent"
         aria-label="Close"
         tabindex="0"
@@ -98,57 +96,59 @@ const { id } = Astro.props;
 </style>
 
 <script define:vars={{ id }}>
-document.querySelectorAll(`[data-modal="${id}"]`).forEach(trigger => {
-  trigger.addEventListener('click', (e) => {
-    e.preventDefault();
-    const modal = document.getElementById(id);
+  const modal = document.getElementById(id);
+  if (modal) {
     const modalImg = document.getElementById(`${id}-image`);
     const modalCaption = document.getElementById(`${id}-caption`);
-    modalImg.src = trigger.getAttribute('href');
-    const label = trigger.getAttribute('aria-label');
-    if (modalCaption && label) {
-      modalCaption.textContent = label.replace(/^View\s+/i, '').replace(/,?\s*full size$/i, '');
-    }
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    const closeBtn = modal.querySelector('.close-btn');
+    // The element that opened the modal, so focus can return there on close.
+    let lastTrigger = null;
 
-    const focusableElements = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
+    const isOpen = () => !modal.classList.contains('hidden');
 
-    setTimeout(() => firstElement?.focus(), 100);
-
+    // Keep Tab within the dialog (the close button is the only focusable, so this
+    // pins focus to it). Attached on open, detached on every close path below.
     const trapFocus = (e) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement?.focus();
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement?.focus();
-          }
-        }
-      }
+      if (e.key !== 'Tab') return;
+      const f = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     };
 
-    modal.addEventListener('keydown', trapFocus);
-    modal._trapFocus = trapFocus;
-  });
-});
+    const openModal = (trigger) => {
+      lastTrigger = trigger;
+      modalImg.src = trigger.getAttribute('href');
+      const label = trigger.getAttribute('aria-label');
+      if (modalCaption && label) {
+        modalCaption.textContent = label.replace(/^View\s+/i, '').replace(/,?\s*full size$/i, '');
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      modal.addEventListener('keydown', trapFocus);
+      setTimeout(() => closeBtn?.focus(), 100);
+    };
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const modal = document.getElementById(id);
-    if (modal && !modal.classList.contains('hidden')) {
+    // Single close path for the button, the backdrop, and Escape: unlock scroll,
+    // detach the trap, and restore focus to whatever opened the modal.
+    const closeModal = () => {
+      if (!isOpen()) return;
       modal.classList.add('hidden');
       modal.classList.remove('flex');
-      if (modal._trapFocus) {
-        modal.removeEventListener('keydown', modal._trapFocus);
-      }
-    }
+      document.body.style.overflow = '';
+      modal.removeEventListener('keydown', trapFocus);
+      if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+      lastTrigger = null;
+    };
+
+    document.querySelectorAll(`[data-modal="${id}"]`).forEach((trigger) => {
+      trigger.addEventListener('click', (e) => { e.preventDefault(); openModal(trigger); });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) closeModal(); });
   }
-});
 </script>

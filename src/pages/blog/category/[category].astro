@@ -50,7 +50,7 @@ const fmtDate = (d: string) =>
                 <p class="post-row__excerpt">{post.data.excerpt}</p>
               )}
               {post.data.tags && post.data.tags.length > 0 && (
-                <ul class="tag-list post-row__tags">
+                <ul class="tag-list post-row__tags" role="list">
                   {post.data.tags.map(tag => (
                     <li>
                       <a class="tag tag-link" href={`/blog/tag/${tag.toLowerCase()}`}>#{tag}</a>

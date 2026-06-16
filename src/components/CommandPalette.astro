@@ -86,6 +86,8 @@ const searchItems = [
   let query = '';
   let selectedIndex = 0;
   let filteredItems = searchItems || [];
+  // The element focused before the palette opened, so focus can return there on close.
+  let lastFocused = null;
 
   // Helpers
   function getElements() {
@@ -99,6 +101,16 @@ const searchItems = [
     };
   }
 
+  // Contain focus and the screen-reader cursor to the dialog: inert + aria-hidden the
+  // rest of the page while open, so Tab can't escape behind the scrim and assistive
+  // tech doesn't read the page underneath. Removed on close (before focus is restored).
+  function setBackgroundInert(on) {
+    document.querySelectorAll('#main-content, .site-header, footer, #scroll-progress').forEach((el) => {
+      if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+      else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+    });
+  }
+
   function isPaletteOpen() {
     const { container } = getElements();
     return container && !container.classList.contains('hidden');
@@ -108,7 +120,10 @@ const searchItems = [
     const { container, backdrop, panel, input } = getElements();
     if (!container || isPaletteOpen()) return;
 
+    // Remember where focus came from so it can be restored on close.
+    lastFocused = document.activeElement;
     container.classList.remove('hidden');
+    setBackgroundInert(true);
 
     requestAnimationFrame(() => {
       backdrop.classList.remove('opacity-0');
@@ -125,15 +140,23 @@ const searchItems = [
   }
 
   function closePalette() {
-    const { container, backdrop, panel } = getElements();
+    const { container, backdrop, panel, input } = getElements();
     if (!container || !isPaletteOpen()) return;
 
     backdrop.classList.add('opacity-0');
     panel.classList.add('scale-95', 'opacity-0');
+    if (input) {
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+    }
 
     setTimeout(() => {
       container.classList.add('hidden');
       document.body.style.overflow = '';
+      // Lift inert before restoring focus, or the target can't receive it.
+      setBackgroundInert(false);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      lastFocused = null;
     }, 200);
   }
 
@@ -158,7 +181,7 @@ const searchItems = [
   }
 
   function renderResults() {
-    const { resultsList, emptyState } = getElements();
+    const { resultsList, emptyState, input } = getElements();
     if (!resultsList) return;
 
     resultsList.innerHTML = '';
@@ -166,6 +189,8 @@ const searchItems = [
     if (!filteredItems || filteredItems.length === 0) {
       resultsList.classList.add('hidden');
       if (emptyState) emptyState.classList.remove('hidden');
+      // No listbox is showing: collapse the combobox and drop the active descendant.
+      if (input) { input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
       return;
     }
 
@@ -174,6 +199,7 @@ const searchItems = [
 
     filteredItems.forEach((item, index) => {
       const li = document.createElement('li');
+      li.id = `palette-opt-${index}`;
       li.role = 'option';
       li.setAttribute('aria-selected', index === selectedIndex ? 'true' : 'false');
       li.className = `palette-option${index === selectedIndex ? ' is-active' : ''}`;
@@ -199,10 +225,16 @@ const searchItems = [
 
       resultsList.appendChild(li);
     });
+
+    // The listbox is showing: expand the combobox and point it at the active row.
+    if (input) {
+      input.setAttribute('aria-expanded', 'true');
+      input.setAttribute('aria-activedescendant', `palette-opt-${selectedIndex}`);
+    }
   }
 
   function updateSelection() {
-    const { resultsList } = getElements();
+    const { resultsList, input } = getElements();
     if (!resultsList) return;
 
     const items = resultsList.children;
@@ -212,6 +244,7 @@ const searchItems = [
         item.className = `palette-option${isSelected ? ' is-active' : ''}`;
         item.setAttribute('aria-selected', isSelected ? 'true' : 'false');
     }
+    if (input) input.setAttribute('aria-activedescendant', `palette-opt-${selectedIndex}`);
   }
 
   function handleKeydown(e) {
@@ -289,7 +322,7 @@ const searchItems = [
 
   /* Warm dark scrim over the warm paper */
   .palette-scrim {
-    background: oklch(0.2 0.01 70 / 0.5);
+    background: var(--scrim-soft);
     backdrop-filter: blur(2px);
   }
 
@@ -298,7 +331,7 @@ const searchItems = [
     --gutter-x: 1.25rem;
     border: 1px solid var(--line-strong);
     border-radius: var(--radius);
-    box-shadow: 0 28px 70px -32px oklch(0.2 0.01 70 / 0.45);
+    box-shadow: var(--shadow-4);
   }
 
   /* Search field row */
@@ -355,7 +388,7 @@ const searchItems = [
     gap: 0.85rem;
     padding: 0.65rem 1rem 0.65rem 1.5rem;
     border-radius: var(--radius);
-    cursor: default;
+    cursor: pointer;
     user-select: none;
     color: var(--ink-soft);
     transition: background-color var(--t-fast) ease, color var(--t-fast) ease;
