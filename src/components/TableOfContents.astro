@@ -9,6 +9,10 @@
 // Markup + its own styling live here; the scroll-spy, the breakpoint collapse,
 // and the offset-aware jump are wired once, globally, in Layout.astro (setupToc),
 // keyed off [data-toc]. This component owns no script (per the design system).
+//
+// The h2/h3 indent hook is data-level (NOT data-depth): [data-depth] is owned by
+// the parallax depth-sheet system (Layout.astro buildDepth), which would read the
+// heading level as a scroll rate and translate the sticky rail's items off-screen.
 interface Heading {
   depth: number;
   slug: string;
@@ -29,7 +33,7 @@ const { headings } = Astro.props;
     <nav class="post-toc__scroll" aria-label="Article contents">
       <ol class="post-toc__list" role="list">
         {headings.map((h) => (
-          <li class="post-toc__item" data-depth={h.depth}>
+          <li class="post-toc__item" data-level={h.depth}>
             <a class="post-toc__link" href={`#${h.slug}`} data-toc-link>{h.text}</a>
           </li>
         ))}
@@ -94,11 +98,11 @@ const { headings } = Astro.props;
     text-decoration: none;
     transition: color var(--t-base) ease, border-color var(--t-base) ease;
   }
-  .post-toc__item[data-depth="2"] .post-toc__link {
+  .post-toc__item[data-level="2"] .post-toc__link {
     color: var(--ink-soft);
     font-weight: 500;
   }
-  .post-toc__item[data-depth="3"] .post-toc__link {
+  .post-toc__item[data-level="3"] .post-toc__link {
     padding-left: 1.9rem;                    /* indent the text, marker stays on the spine */
     font-size: 0.82rem;
   }
